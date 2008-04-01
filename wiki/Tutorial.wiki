@@ -3,8 +3,8 @@
 public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
 	public String identifier() { return "/hello"; }
-	public void create() throws Exception {}
-	public void destroy() throws Exception {}
+	public void create() {}
+	public void destroy() {}
 	public void filter(Event event) throws Event, IOException {
 		event.reply().output().print("hello");
 	}
