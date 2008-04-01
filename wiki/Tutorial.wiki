@@ -1,10 +1,4 @@
-#summary A very simple service implementation.
-
-* Introduction
-
-The usual hello world example.
-
-* Code
+#summary The usual hello world example.
 {{{
 public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
