@@ -22,7 +22,7 @@ Compile this into a jar file and the submit in your ant script like this:
 <target name="deploy">
 	<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
 		<arg line="localhost:8000"/>
-		<arg line="myservice(s).jar"/>
+		<arg line="hello.jar"/>
 	</java>
 </target>
 }}}
