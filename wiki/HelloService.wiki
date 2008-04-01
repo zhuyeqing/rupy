@@ -17,7 +17,7 @@ public Hello implements se.rupy.http.Service {
 	}
 }
 }}}
-Compile this into a jar file and the submit in your ant script like this:
+Compile this into a jar file and submit it in your ant script like this:
 {{{
 <target name="deploy">
 	<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
