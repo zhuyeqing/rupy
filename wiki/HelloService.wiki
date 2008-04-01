@@ -26,3 +26,4 @@ Compile this into a jar file and the submit in your ant script like this:
 	</java>
 </target>
 }}}
+Now try browsing to http://localhost:8000/hello.
