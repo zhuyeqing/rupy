@@ -1,7 +1,8 @@
+#labels Phase-Design
 You have to be careful how you write your hot-deployable code and make sure you do not include it in the classpath of the Daemon.
 
 Common solutions:
 
-* Implemented interfaces in separate jar and inner classes need to be public.
-* Inner classes also have to be static
-* All classes have to have a void attribute constructor.
+# Implemented interfaces in separate jar and inner classes need to be public.
+# Inner classes also have to be static
+# All classes have to have a void attribute constructor.
