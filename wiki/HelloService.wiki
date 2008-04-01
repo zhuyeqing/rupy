@@ -1,11 +1,11 @@
 #summary A very simple service implementation.
 #labels Phase-Implementation
 
-=== Introduction ===
+* Introduction
 
 The usual hello world example.
 
-=== Code ===
+* Code
 {{{
 public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
