@@ -8,7 +8,7 @@ The usual hello world example.
 = Details =
 
 import se.rupy.http.Service;
-
+<pre>
 public *Hello* implements _Service_ {
 	public int index() { return 0; }
 	public String identifier() { return "/hello"; }
@@ -18,12 +18,13 @@ public *Hello* implements _Service_ {
 		event.reply().output().print("hello");
 	}
 }
-
+</pre>
 Compile this into a jar file and the submit it to the server like this:
-
+<pre>
 	<target name="deploy">
 		<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
 			<arg line="localhost:8000"/>
 			<arg line="myservice(s).jar"/>
 		</java>
 	</target>
+</pre>
