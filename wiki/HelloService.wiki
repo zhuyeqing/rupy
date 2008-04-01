@@ -7,9 +7,7 @@ The usual hello world example.
 
 === Code ===
 {{{
-import se.rupy.http.Service;
-
-public *Hello* implements _Service_ {
+public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
 	public String identifier() { return "/hello"; }
 	public void create() throws Exception {}
