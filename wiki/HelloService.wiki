@@ -19,10 +19,10 @@ public Hello implements se.rupy.http.Service {
 }}}
 Compile this into a jar file and the submit it to the server like this:
 {{{
-	<target name="deploy">
-		<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
-			<arg line="localhost:8000"/>
-			<arg line="myservice(s).jar"/>
-		</java>
-	</target>
+<target name="deploy">
+	<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
+		<arg line="localhost:8000"/>
+		<arg line="myservice(s).jar"/>
+	</java>
+</target>
 }}}
