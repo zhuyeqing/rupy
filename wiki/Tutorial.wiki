@@ -1,4 +1,5 @@
 #summary The usual hello world example.
+#labels Phase-Implementation
 {{{
 public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
