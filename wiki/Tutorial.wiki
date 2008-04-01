@@ -1,0 +1,28 @@
+#summary A very simple service implementation.
+
+* Introduction
+
+The usual hello world example.
+
+* Code
+{{{
+public Hello implements se.rupy.http.Service {
+	public int index() { return 0; }
+	public String identifier() { return "/hello"; }
+	public void create() throws Exception {}
+	public void destroy() throws Exception {}
+	public void filter(Event event) throws Event, IOException {
+		event.reply().output().print("hello");
+	}
+}
+}}}
+Compile this into a jar file and submit it in your ant script like this:
+{{{
+<target name="deploy">
+	<java fork="yes" classname="se.rupy.http.plugin.Deploy" classpath="http.jar">
+		<arg line="localhost:8000"/>
+		<arg line="hello.jar"/>
+	</java>
+</target>
+}}}
+Now try browsing to http://localhost:8000/hello.
