@@ -1,9 +1,11 @@
 #summary Common class loading pitfalls.
 #labels Phase-Design
 
-You have to be careful how you write your hot-deployable code and make sure you do not include it in the classpath of the Daemon.
+You have to be careful how you write your hot-deployable code.
 
-Common problems:
+Common problems (in order of popularity):
 
-  * Implemented interfaces in separate jars and inner classes need to be public.
+  * Make sure the hot-deployed classes are not in the Deamon classpath.
   * All classes have to have a void attribute constructor.
+  * Inner classes need to be public static.
+  * Implemented interfaces in separate jars need to be public.
