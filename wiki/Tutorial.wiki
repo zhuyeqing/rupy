@@ -8,6 +8,7 @@ public Hello implements se.rupy.http.Service {
 	public void destroy() {}
 	public void filter(Event event) throws Event, IOException {
 		event.reply().output().print("hello");
+		event.reply().commit(); // send reply immediately
 	}
 }
 }}}
