@@ -6,7 +6,7 @@ That means that the HTTP server will only reply to the clients query when there 
 
 Firewalls and proxies sometimes interrupt passive queries that lingered for too long, so make sure your solution tears down and recreates the update queries at regular intervalls.
 
-This is how you wakeup Rupy so that it will assign a worker thread to write your reply asynchronously:
+This is how you wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
 {{{
 public Comet implements se.rupy.http.Service {
 	Event comet;
