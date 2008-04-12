@@ -8,20 +8,16 @@ This is how you wakeup Rupy so that it will assign a worker thread to write your
 {{{
 public Comet implements se.rupy.http.Service {
 	Event comet;
-
 	...
-
 	public void filter(Event event) throws Event, IOException {
-		comet = event;
-	}
-
-	/* method called by another thread, 
-	 * most likely another filtered event.
-	 */
-	public void comet() {
-		Output out = comet.reply().output();
-		... // write your reply data ...
-		comet.reply().wakeup();
+		if(saveEventForLater) {
+			comet = event;
+		}
+		else if(sendUpdate) {
+			Output out = comet.reply().output();
+			... // write your reply data
+			comet.reply().wakeup();
+		}
 	}
 }
 }}}
