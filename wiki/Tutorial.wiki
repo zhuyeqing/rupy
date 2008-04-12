@@ -6,6 +6,7 @@ public Hello implements se.rupy.http.Service {
 	public String identifier() { return "/hello"; }
 	public void create() {}
 	public void destroy() {}
+	public void remove(Session session, int type) {}
 	public void filter(Event event) throws Event, IOException {
 		event.reply().output().print("hello");
 	}
