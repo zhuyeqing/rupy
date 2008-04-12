@@ -1,6 +1,6 @@
 If you want the server to send updates to the client you usually had to use polling, but since that is not very scalable modern HTTP bound applications use asynchronous reply instead. That means that the HTTP query will only get a reply when there is something to update. Your client basically 'hangs' so you will need to thread the client too.
 
-This is how you wakeup Rupy so that it will assign a worker thread to write you asynchronized reply:
+This is how you wakeup Rupy so that it will assign a worker thread to write your asynchronized reply:
 {{{
 	Output out = event.reply().output();
 
