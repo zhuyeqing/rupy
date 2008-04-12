@@ -7,21 +7,21 @@ That means that the HTTP server will only reply to the clients query when there 
 This is how you wakeup Rupy so that it will assign a worker thread to write your asynchronized reply:
 {{{
 public Service implements se.rupy.http.Service {
-	Event event;
+	Event comet;
 
 	...
 
 	public void filter(Event event) throws Event, IOException {
-		this.event = event;
+		comet = event;
 	}
 
 	/* method called by another thread, 
-	 * most likely another filter event thread
+	 * most likely another filtered event.
 	 */
 	public void comet() {
-		Output out = event.reply().output();
+		Output out = comet.reply().output();
 		... // write your reply data ...
-		event.reply().wakeup();
+		comet.reply().wakeup();
 	}
 }
 }}}
