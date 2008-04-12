@@ -1,4 +1,4 @@
-#summary Real-time updates over HTTP.
+#summary Real-time over HTTP.
 #labels Phase-Implementation
 If you want the HTTP server to send updates to the client you can use polling, where the client asks the server for updates at regular intervalls. But since this doesen't provide any real-time functionality, not to mention the performance overhead and unscalability, modern HTTP bound applications use asynchronous reply instead.
 
