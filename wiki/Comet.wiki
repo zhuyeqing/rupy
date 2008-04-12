@@ -6,22 +6,22 @@ That means that the HTTP server will only reply to the clients query when there 
 
 This is how you wakeup Rupy so that it will assign a worker thread to write your asynchronized reply:
 {{{
-	public Service implements se.rupy.http.Service {
-		Event event;
+public Service implements se.rupy.http.Service {
+	Event event;
 
-		...
+	...
 
-		public void filter(Event event) throws Event, IOException {
-			this.event = event;
-		}
-
-		/* method called by another thread, 
-		 * most likely another filter event thread
-		 */
-		public void comet() {
-			Output out = event.reply().output();
-			... // write your reply data ...
-			event.reply().wakeup();
-		}
+	public void filter(Event event) throws Event, IOException {
+		this.event = event;
 	}
+
+	/* method called by another thread, 
+	 * most likely another filter event thread
+	 */
+	public void comet() {
+		Output out = event.reply().output();
+		... // write your reply data ...
+		event.reply().wakeup();
+	}
+}
 }}}
