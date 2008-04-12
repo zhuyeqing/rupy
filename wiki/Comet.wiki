@@ -15,7 +15,10 @@ This is how you wakeup Rupy so that it will assign a worker thread to write your
 			this.event = event;
 		}
 
-		public void comet() { // method called by another thread
+		/* method called by another thread, 
+		 * most likely another filter event thread
+		 */
+		public void comet() {
 			Output out = event.reply().output();
 			... // write your reply data ...
 			event.reply().wakeup();
