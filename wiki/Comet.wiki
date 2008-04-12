@@ -2,7 +2,7 @@
 #labels Phase-Implementation
 If you want the HTTP server to send updates to the client you can use polling, where the client asks the server for updates at regular intervalls. But since this doesen't provide any real-time functionality, not to mention the performance overhead, modern HTTP bound applications use asynchronous reply instead.
 
-The HTTP server will only reply to the clients query when there is something to update. Your client basically 'hangs' in the meantime, so you will need to thread the client. Some even setup two HTTP connections; one for outgoing data, one for incoming, and use chunked transfer encoding to stream data between client and server over HTTP just as if it was a normal TCP stream connection.
+The HTTP server only replies to the clients query when there is some new information to send. Your client basically 'hangs' in the meantime, so you will need to thread the client. Some even setup two HTTP connections; one for outgoing data, one for incoming, and use chunked transfer encoding to stream data between client and server over HTTP just as if it was a normal TCP stream connection.
 
 Firewalls and proxies sometimes interrupt passive queries that lingered for too long, so make sure your solution tears down and recreates the update queries at regular intervalls.
 
