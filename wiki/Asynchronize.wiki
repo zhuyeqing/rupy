@@ -1,3 +1,4 @@
+#summary Real-time services over HTTP.
 #labels Phase-Implementation
 If you want the server to send updates to the client you usually had to use polling, but since that is not very scalable modern HTTP bound applications use asynchronous reply instead. That means that the HTTP query will only get a reply when there is something to update. Your client basically 'hangs' so you will need to thread the client too.
 
