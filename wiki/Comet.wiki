@@ -26,6 +26,7 @@ public Comet implements se.rupy.http.Service {
 		else if(sendUpdate && event.index() == comet.index()) {
 			Output out = event.reply().output();
 			... // write the message
+			sendUpdate = false;
 		}
 	}
 }
