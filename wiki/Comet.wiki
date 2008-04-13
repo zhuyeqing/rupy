@@ -21,7 +21,7 @@ public Comet implements se.rupy.http.Service {
 			// when you for example got a chat message 
 			// destined to the cached client
 			sendUpdate = true;
-			comet.reply().wakeup();
+			cache.reply().wakeup();
 		}
 		else if(sendUpdate && event.index() == comet.index()) {
 			Output out = event.reply().output();
