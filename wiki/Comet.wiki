@@ -14,7 +14,9 @@ public Comet implements se.rupy.http.Service {
 	...
 	public void filter(Event event) throws Event, IOException {
 		if(saveEventForLater) {
-			// you need to somehow cache your clients
+			// you need to somehow cache the event
+			// it is important to NOT call reply.output()
+			// if you want to be able to reply later
 			cache = event;
 		}
 		else if(caughtUpdate) {
