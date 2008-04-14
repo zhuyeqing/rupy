@@ -12,7 +12,7 @@ public Hello implements se.rupy.http.Service {
 	}
 }
 }}}
-Compile the Hello class above and put it in a jar file (hello.jar in the example below) together with any static content you wish to deploy. Finally, upload it with your ant script like this:
+Compile the Hello class above and put it in a jar file (hello.jar in the example below). Finally, upload it in your ant script like this:
 {{{
 <target name="deploy">
 	<java fork="yes" classname="se.rupy.http.Deploy" classpath="http.jar">
