@@ -23,4 +23,4 @@ Compile the Hello class above and put it in a jar file (hello.jar in the example
 }}}
 Now try browsing to http://localhost:8000.
 
-_Static content has to be placed under a service identifier path in the same jar for it to be accessible, for example a jar containing /res/icon.gif will onlybe able to serve the image if there is a service with either "/" or "/res" as identitfier in the jar. This limitation exists so services won't overwrite each others content._
+_Static content has to be placed under a service identifier path in the same jar for it to be accessible, for example a jar containing /res/icon.gif will onlybe able to serve the image if there is a service with either "/" or "/res" as identitfier in the jar. This limitation exists so subservices (all except "/") won't overwrite each others content._
