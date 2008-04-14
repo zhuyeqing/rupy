@@ -15,13 +15,12 @@ public Comet implements se.rupy.http.Service {
 	public void filter(Event event) throws Event, IOException {
 		if(saveEventForLater) {
 			// you need to somehow cache the event
-			// it is important to NOT call reply.output()
-			// if you want to be able to reply later
+			// it's important to NOT call reply.output()
 			cache = event;
 		}
 		else if(caughtUpdate) {
-			// when you for example got a chat message 
-			// destined to the cached client
+			// when you for example received a chat 
+			// message destined to the cached client
 			sendUpdate = true;
 			cache.reply().wakeup();
 		}
