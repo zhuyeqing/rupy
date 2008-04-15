@@ -23,4 +23,4 @@ At the end the only thing that matters is how quickly you can solve the task at 
 
 *Performance!* _"Addup the electricity used by XML parsers and you can power a small nation"_
 
-So just take a deep breath and dive in, you can rest assured that you will be able to sleep well even when your application gets successful, this thing scales!
+So just take a deep breath and dive in, you can REST assured that you will be able to sleep well even when your application gets successful, this thing scales!
