@@ -20,3 +20,7 @@ Source: http://www.restlet.org/about/introduction
 *Agility!* _"WebServices are just XML Schemas over HTTP"_
 
 At the end the only thing that matters is how quickly you can solve the task at hand. We give you the tool you need to get the job done, quickly!
+
+*Performance!* _"Addup the electricity used by XML parsers and you can power a small nation"_
+
+So just take a deep breath and dive in, you can rest assured that you will be able to sleep well even when your application gets successful, this thing scales!
