@@ -1,6 +1,6 @@
 #summary The usual hello world example.
 #labels Phase-Implementation
-Lets create a rootservice (when you browse to "/") that returns 'hello'.
+Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
 public Hello implements se.rupy.http.Service {
 	public int index() { return 0; }
