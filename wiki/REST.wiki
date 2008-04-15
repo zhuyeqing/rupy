@@ -1,11 +1,11 @@
 #summary Why yet another Java HTTP server?
 #labels Phase-Design
 
-"Size matters, and less is more"
+_"Size matters, and less is more"_
 
 *Modularity!* Cutting the verbosity of the current Java HTTP landscape. I mean, for example, who ever said JSP should be bundled with every Java Web server, what if you don't need JSP? And thats just for starters, try booting JBoss, WebSphere or WebLogic, they take like 5 minutes to boot! Rupy is just HTTP in Java, plain and simple, on top of that you can add what you need... 
 
-"To the point"
+_"To the point"_
 
 *Focus!* At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
 
@@ -15,6 +15,6 @@
 
 Source: http://www.restlet.org/about/introduction
 
-"WebServices are just XML Schemas over HTTP"
+_"WebServices are just XML Schemas over HTTP"_
 
 *Agility!* At the end the only thing that matters is how quickly you can solve the task at hand. We give you the tool you need to get the job done, quickly!
