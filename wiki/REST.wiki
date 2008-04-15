@@ -13,8 +13,8 @@
   * Unable to take full advantage of the non-blocking NIO due to blocking IO assumptions. 
   * Full Servlet Web containers are overkill for many applications. 
 
+Source: http://www.restlet.org/about/introduction
+
 "WebServices are just XML Schemas over HTTP"
 
 *Agility!* At the end the only thing that matters is how quickly you can solve the task at hand. We give you the tool you need to get the job done, quickly!
-
-Source: http://www.restlet.org/about/introduction
