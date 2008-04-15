@@ -3,7 +3,9 @@
 
 _"Size matters, and less is more"_
 
-*Modularity!* Cutting the verbosity of the current Java HTTP landscape. I mean, for example, who ever said JSP should be bundled with every Java Web server, what if you don't need JSP? And thats just for starters. When booting JBoss, WebSphere or WebLogic, you have time to get coffee while it initializes stuff you'll never need! Rupy is just HTTP in Java, plain and simple, on top of that you can add what you need... 
+*Modularity!* Cutting the verbosity of the current Java HTTP landscape. I mean, for example, who ever said JSP should be bundled with every Java Web server, what if you don't need JSP? And thats just for starters.
+
+When booting JBoss, WebSphere or WebLogic, you have time to get coffee while it initializes stuff you'll never need! Rupy is just HTTP in Java, plain and simple, on top of that you can add what you need... 
 
 _"To the point"_
 
