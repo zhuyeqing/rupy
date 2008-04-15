@@ -17,4 +17,4 @@ At the end of 2003, Greg Wilkins, the author of the Jetty Web container and cont
 
 Source: http://www.restlet.org/about/introduction
 
-Ona final note: _"WebServices are just XML Schemas over HTTP, but if you addup the electricity used by XML parsers and you can power a small nation"_
+Ona final note: _"WebServices are just XML Schemas over HTTP, but if you addup the electricity used by XML parsers and you can power a small nation, now that I come to think about it, what is the cost of HTTP?"_
