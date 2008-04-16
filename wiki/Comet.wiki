@@ -26,7 +26,7 @@ public Comet implements Service {
 			cache.reply().wakeup();
 		}
 		else if(sendUpdate && event.index() == cache.index()) {
-			Output out = event.reply().output();
+			Output out = event.output();
 			... // write the message
 			sendUpdate = false;
 		}
