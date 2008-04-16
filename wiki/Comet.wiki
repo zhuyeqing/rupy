@@ -16,7 +16,7 @@ public Comet implements Service {
 	public void filter(Event event) throws Event, IOException {
 		if(saveEventForLater) {
 			// you need to somehow cache the event
-			// it's important to NOT call event.output()
+			// and avoid calling code() or output()
 			cache = event;
 		}
 		else if(caughtUpdate) {
