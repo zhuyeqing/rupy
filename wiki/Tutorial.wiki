@@ -2,7 +2,9 @@
 #labels Phase-Implementation
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
-public Hello implements se.rupy.http.Service {
+import se.rupy.http.*;
+
+public Hello implements Service {
 	public int index() { return 0; }
 	public String identifier() { return "/"; }
 	public void create() {}
