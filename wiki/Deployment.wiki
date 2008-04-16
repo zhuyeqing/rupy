@@ -6,6 +6,7 @@ You have to be careful how you write your hot-deployable code.
 Common problems (in order of popularity):
 
   * Make sure the hot-deployed classes are not in the Daemon classpath.
+  * Use Class.forName("your.Class", true, Thread.currentThread().getContextClassLoader()) instead of Class.forName(name) and only use this in the Service.create() method, you never know what class-loader your worker might have in the Service.filter() method!
   * All classes have to have a void attribute constructor.
   * Inner classes need to be public static.
   * Implemented interfaces in Daemon classpath need to be public.
