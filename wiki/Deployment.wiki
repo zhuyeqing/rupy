@@ -9,4 +9,4 @@ Other common problems (in order of popularity):
   * Don't try to load a hot-deployed class with {{{Class.forName(String)}}}.
   * All classes have to have a void attribute constructor.
   * Inner classes need to be public static.
-  * Implemented interfaces from bootclasspath need to be public, even if the hot-deployed implementing class is in the same package.
+  * Implemented interfaces in the bootclasspath need to be public, even if the hot-deployed implementing class is in the same package.
