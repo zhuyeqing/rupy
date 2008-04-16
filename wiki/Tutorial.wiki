@@ -11,7 +11,7 @@ public Hello implements Service {
 	public void destroy() {}
 	public void remove(Session session, int type) {}
 	public void filter(Event event) throws Event {
-		event.reply().output().print("hello");
+		event.output().print("hello");
 	}
 }
 }}}
