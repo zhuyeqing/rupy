@@ -1,7 +1,7 @@
 #summary Why yet another Java HTTP server?
 #labels Phase-Design
 
-*Modularity!* _"Size matters, and less is more"_
+*Modularity* _"Size matters, and less is more"_
 
  Ideally, you should be able to choose your tools. And you should also be able to replace a broken part with a new working one. That's what modular software is all about, like binary lego.
 
@@ -9,7 +9,7 @@
 
  Why not have both, the compact size makes it easier to optimize the performance which still gracefully degrades thanks to the Java NIO package.
 
-*Focus!* _"To the point design"_
+*Focus* _"To the point design"_
 
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
 
