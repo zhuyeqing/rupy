@@ -16,5 +16,3 @@
   * Full Servlet Web containers are overkill for many applications. 
 
  Source: http://www.restlet.org/about/introduction
-
-On a final note: _"WebServices are just XML Schemas over HTTP, but if you addup the electricity used by XML parsers you can power a small nation! Now that we're on the subject, if you think about it, what's the global energy overhead of HTTP compared to TCP?"_
