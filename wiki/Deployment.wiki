@@ -1,7 +1,7 @@
 #summary Common class loading pitfalls.
 #labels Phase-Design
 
-You have to be careful how you write your hot-deployable code. If your application needs instantiation by class name, use {{{Class.forName("your.Class", true, Thread.currentThread().getContextClassLoader())}}} instead of {{{Class.forName(name)}}} and only use this in the {{{Service.create()}}} method, you never know what class-loader your worker might have in the {{{Service.filter()}}} method!
+You have to be careful how you write your hot-deployable code. If your application needs instantiation by class name, use *{{{Class.forName("class.Name", true, Thread.currentThread().getContextClassLoader())}}}* instead of {{{Class.forName(("class.Name")}}} and only use this in the {{{Service.create()}}} method, you never know what class-loader your worker might have in the {{{Service.filter()}}} method!
 
 Other common problems (in order of popularity):
 
