@@ -8,14 +8,15 @@ Firewalls and proxies sometimes interrupt passive queries that linger for too lo
 
 This is how you wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
 {{{
-public Comet implements se.rupy.http.Service {
+import se.rupy.http.*;
+public Comet implements Service {
 	boolean sendUpdate;
 	Event cache;
 	...
 	public void filter(Event event) throws Event, IOException {
 		if(saveEventForLater) {
 			// you need to somehow cache the event
-			// it's important to NOT call reply.output()
+			// it's important to NOT call event.output()
 			cache = event;
 		}
 		else if(caughtUpdate) {
@@ -25,7 +26,7 @@ public Comet implements se.rupy.http.Service {
 			cache.reply().wakeup();
 		}
 		else if(sendUpdate && event.index() == cache.index()) {
-			Output out = event.reply().output();
+			Output out = event.output();
 			... // write the message
 			sendUpdate = false;
 		}
