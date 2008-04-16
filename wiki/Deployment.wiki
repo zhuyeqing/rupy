@@ -1,7 +1,7 @@
 #summary Common class loading pitfalls.
 #labels Phase-Design
 
-The classloader in rupy is very simplistic so you have to be careful how you write your hot-deployable code. And what you store in the session with: {{{Session.value(Object);}}}, we recommend that you do not store hot-deployable classes there, since it will throw a ClassCastException if you re-deploy your application.
+The classloader in rupy is very simplistic, so you have to be careful how you write your hot-deployable code and what you store in the session. We recommend that you do not store hot-deployable classes with the {{{Session.value(Object);}}} method, since it will throw a ClassCastException if you re-deploy your application.
 
 Other common problems (in order of popularity):
 
