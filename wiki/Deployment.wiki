@@ -1,11 +1,12 @@
 #summary Common class loading pitfalls.
 #labels Phase-Design
 
-You have to be careful how you write your hot-deployable code. If your application needs instantiation of a hot-deployed class by name, use {{{Class.forName("class.Name", true, Thread.currentThread().getContextClassLoader())}}} instead of {{{Class.forName("class.Name")}}} and only use this in the {{{Service.create()}}} method, you never know what class-loader your worker might have in the {{{Service.filter()}}} method!
+The classloader in rupy is very simplistic so you have to be careful how you write your hot-deployable code. And what you store in the session with: {{{Session.value(Object);}}}, we recommend that you do not store hot-deployable classes there, since it will throw a ClassCastException if you re-deploy your application.
 
 Other common problems (in order of popularity):
 
   * Make sure the hot-deployed classes are not in the Daemon classpath.
+  * Don't use {{{Class.forName(String);}}}
   * All classes have to have a void attribute constructor.
   * Inner classes need to be public static.
   * Implemented interfaces in Daemon classpath need to be public.
