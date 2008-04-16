@@ -5,7 +5,7 @@
 
  Cutting the verbosity of the current Java HTTP landscape. I mean, for example, who ever said JSP should be bundled with every server, what if you don't need JSP? And that's just for starters.
 
- When booting Java HTTP servers in general and JBoss, WebSphere or WebLogic specifically; you have the time to get coffee, while it initializes stuff you'll never use. rupy on the other hand is only HTTP, on top of which you can add what you need...
+ When booting Java HTTP servers in general and JBoss, WebSphere or WebLogic specifically; you have the time to get coffee, while it initializes stuff you'll never use. With rupy on the other hand, the only thing you get is HTTP, on top of which you can add what you need...
 
 *Focus!* _"To the point design"_
 
