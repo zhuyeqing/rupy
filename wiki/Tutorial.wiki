@@ -3,13 +3,8 @@
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
 import se.rupy.http.*;
-
-public Hello implements Service {
-	public int index() { return 0; }
-	public String identifier() { return "/"; }
-	public void create() {}
-	public void destroy() {}
-	public void remove(Session session, int type) {}
+public Hello extends Service {
+	public String path() { return "/"; }
 	public void filter(Event event) throws Event {
 		event.output().print("hello");
 	}

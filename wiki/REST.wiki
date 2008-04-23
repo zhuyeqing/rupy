@@ -1,15 +1,17 @@
 #summary Why yet another Java HTTP server?
 #labels Phase-Design
 
-*Modularity* _"Size matters, and less is more"_
+_"Size matters, and less is more!"_
 
- Ideally, you should be able to choose your tools. And you should also be able to replace a broken part with a new working one. That's what modular software is all about, like binary lego.
+*Modularity* 
+
+ Ideally, you should be able to choose your tools and you should also be able to replace a broken part with a new working one quickly. That's what modular software is all about, like binary lego. Now taking that one step further, with rupy you can hot-replace a major refactoring, with dynamic classloading and session persistence, without _any_ kind of interruption!
 
 *Speed and Scalability*
 
- Why not have both, the compact size makes it easier to optimize the performance which still gracefully degrades thanks to the Java NIO package.
+ Why not have both, the compact size makes it easier to optimize the performance which still gracefully degrades thanks to non-blocking asynchronous IO.
 
-*Focus* _"To the point design"_
+*Design*
 
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
 

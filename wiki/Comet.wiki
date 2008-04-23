@@ -6,29 +6,28 @@ The HTTP server only replies to the clients query when there is some new informa
 
 Firewalls and proxies sometimes interrupt passive queries that linger for too long, so make sure your solution tears down and recreates the comet queries at regular intervalls.
 
-This is how you wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
+This is an example of how you could wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
 {{{
 import se.rupy.http.*;
-public Comet implements Service {
-	boolean sendUpdate;
+public Comet extends Service {
+	boolean update;
 	Event cache;
 	...
-	public void filter(Event event) throws Event, IOException {
-		if(saveEventForLater) {
+	public void filter(Event event) throws Event {
+		if( ... ) {
 			// you need to somehow cache the event
-			// and avoid calling code() or output()
 			cache = event;
 		}
-		else if(caughtUpdate) {
+		else if( ... ) {
 			// when you for example received a chat 
 			// message destined to the cached client
-			sendUpdate = true;
+			update = true;
 			cache.reply().wakeup();
 		}
-		else if(sendUpdate && event.index() == cache.index()) {
+		else if(update && event.index() == cache.index()) {
 			Output out = event.output();
 			... // write the message
-			sendUpdate = false;
+			update = false;
 		}
 	}
 }
