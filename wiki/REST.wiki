@@ -5,7 +5,7 @@ _"Size matters, and less is more!"_
 
 *Modularity* 
 
- Ideally, you should be able to choose your tools and you should also be able to replace a broken part with a new working one quickly. That's what modular software is all about, like binary lego. Now taking that one step further, with rupy you can hot-replace a major refactoring, with dynamic classloading and session persistence, without _any_ kind of interruption!
+ Ideally, you should be able to choose your tools and you should also be able to replace a broken tool with a new working one quickly. That's what modular software is all about, like binary lego. Now taking that one step further, with rupy you can hot-replace a major refactoring, with dynamic classloading and session persistence, without _any_ kind of interruption for your end users!
 
 *Speed and Scalability*
 
