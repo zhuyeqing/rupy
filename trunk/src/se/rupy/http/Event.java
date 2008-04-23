@@ -62,10 +62,7 @@ public class Event extends Throwable implements Chain.Link {
 		query = new Query(this);
 		reply = new Reply(this);
 
-		key = channel.register(key.selector(), READ, this);
-		key.selector().wakeup();
-		
-		//interest(READ, true);
+		interest(READ, true);
 	}
 	
 	void interest(int interest, boolean set) throws IOException {
@@ -305,7 +302,7 @@ public class Event extends Throwable implements Chain.Link {
 	final void session(String cookie, Event event) {
 		String session = cookie(cookie, "session");
 
-		if(session != null) {
+		if(this.session != null) {
 			this.session = (Session) daemon.session().get(session);
 		}
 
