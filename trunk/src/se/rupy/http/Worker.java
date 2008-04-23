@@ -1,7 +1,6 @@
 package se.rupy.http;
 
 import java.nio.*;
-import java.nio.charset.*;
 
 /**
  * Worker gets the job done. The worker holds the in/out buffers 

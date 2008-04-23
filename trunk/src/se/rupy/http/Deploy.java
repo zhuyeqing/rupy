@@ -5,8 +5,6 @@ import java.net.*;
 import java.util.*;
 import java.util.jar.*;
 
-import javax.security.auth.login.FailedLoginException;
-
 /**
  * Hot-deploys an application containing one or many service filters 
  * from disk with simplistic dynamic class loading, eventually after 
