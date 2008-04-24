@@ -256,7 +256,10 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	void register() throws IOException {
-		key = channel.register(key.selector(), interest, this);
+		if(interest != key.interestOps()) {
+			key = channel.register(key.selector(), interest, this);
+		}
+		
 		key.selector().wakeup();
 
 		if (daemon.debug)
@@ -303,8 +306,10 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect() {
 		try {
-			channel.close();
-			channel = null;
+			if (channel != null) {
+				channel.close();
+				channel = null;
+			}
 
 			if (session != null) {
 				daemon.remove(this, session);
