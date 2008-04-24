@@ -72,7 +72,7 @@ public class Event extends Throwable implements Chain.Link {
 		return interest;
 	}
 
-	void interest(int interest) throws IOException {
+	void interest(int interest) {
 		this.interest = interest;
 	}
 
@@ -118,6 +118,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	void worker(Worker worker) {
 		this.worker = worker;
+		register(READ);
 	}
 
 	SocketChannel channel() {
@@ -266,15 +267,11 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	void register(int interest) {
-		try {
-			key = channel.register(key.selector(), interest, this);
-			key.selector().wakeup();
+		interest(interest);
 
-			if (daemon.debug)
-				System.out.println("["
-						+ (worker == null ? "*" : "" + worker.index()) + "-"
-						+ index + "] " + (interest == READ ? "read" : "write")
-						+ " interest");
+		try {
+			if (channel != null)
+				register();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -307,10 +304,11 @@ public class Event extends Throwable implements Chain.Link {
 	void disconnect() {
 		try {
 			channel.close();
+			channel = null;
+
 			if (session != null) {
 				daemon.remove(this, session);
 			}
-			daemon.index--;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
