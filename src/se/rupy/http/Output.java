@@ -99,9 +99,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		if (length > 0) {
 			reply.event().log("reply " + length, Event.VERBOSE);
-			reply.event().interest(Event.READ);
 		}
 
+		reply.event().interest(Event.READ);
+		
 		length = 0;
 		init = false;
 	}
