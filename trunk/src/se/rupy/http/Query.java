@@ -8,6 +8,7 @@ import java.util.*;
 
 /**
  * HTTP request and query in one.
+ * 
  * @author marc
  */
 public class Query extends HashMap {
@@ -29,36 +30,33 @@ public class Query extends HashMap {
 		StringTokenizer http = new StringTokenizer(line, " ");
 		String method = http.nextToken();
 
-		if(method.equalsIgnoreCase("get")) {
+		if (method.equalsIgnoreCase("get")) {
 			this.method = GET;
-		}
-		else if(method.equalsIgnoreCase("post")) {
+		} else if (method.equalsIgnoreCase("post")) {
 			this.method = POST;
-		}
-		else {
+		} else {
 			throw new IOException("Unsupported method.");
 		}
 
 		String get = http.nextToken();
 		int index = get.indexOf('?');
-		
-		if(index > 0) {
+
+		if (index > 0) {
 			path = get.substring(0, index);
 			parameters = get.substring(index + 1);
-		}
-		else {
+		} else {
 			path = get;
 			parameters = null;
 		}
-		
+
 		version = http.nextToken();
 		line = input.line();
 		int lines = 0;
 
-		while(line != null && !line.equals("")) {
+		while (line != null && !line.equals("")) {
 			int colon = line.indexOf(":");
 
-			if(colon > -1) {
+			if (colon > -1) {
 				String name = line.substring(0, colon).toLowerCase();
 				String value = line.substring(colon + 1).trim();
 
@@ -68,43 +66,43 @@ public class Query extends HashMap {
 			line = input.line();
 			lines++;
 
-			if(lines > 30) {
+			if (lines > 30) {
 				throw new IOException("Too many headers.");
 			}
 		}
 
-		if(header("transfer-encoding").equalsIgnoreCase("chunked")) {
+		if (header("transfer-encoding").equalsIgnoreCase("chunked")) {
 			length = -1;
-		}
-		else {
+		} else {
 			length = Integer.parseInt(header("content-length"));
 		}
 
 		String since = header("if-modified-since");
 
-		if(!since.equals("0")) {
+		if (!since.equals("0")) {
 			try {
 				modified = input.event().DATE.parse(since).getTime();
-			}
-			catch(ParseException e) {
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
 
-		if(header("connection").equalsIgnoreCase("close")) {
+		if (header("connection").equalsIgnoreCase("close")) {
 			input.event().close(true);
 		}
 
 		clear();
 
-		input.event().log(method + " " + (length > -1 ? "" + length : "*") + " " + path, Event.VERBOSE);
+		input.event().log(
+				method + " " + (length > -1 ? "" + length : "*") + " " + path,
+				Event.VERBOSE);
 		input.init();
 	}
 
 	/**
-	 * Parse the parameters from GET or POST. This method 
-	 * will only parse once per query and cache the result 
-	 * so don't be afraid of calling this method.
+	 * Parse the parameters from GET or POST. This method will only parse once
+	 * per query and cache the result so don't be afraid of calling this method.
+	 * 
 	 * @throws Exception
 	 */
 	public void parse() throws Exception {
@@ -112,37 +110,35 @@ public class Query extends HashMap {
 	}
 
 	void parse(int size) throws Exception {
-		if(parameters == null) {
-			if(method == POST && length > 0) {
+		if (parameters == null) {
+			if (method == POST && length > 0) {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				if(Deploy.pipe(input, out, size, size) > 0)
+				if (Deploy.pipe(input, out, size, size) > 0)
 					parameters = new String(out.toByteArray());
-			}
-			else {
+			} else {
 				return;
 			}
-		}
-		else if(!isEmpty()) {
+		} else if (!isEmpty()) {
 			return;
 		}
-		
+
 		parameters = new URLDecoder().decode(parameters, "UTF-8");
-		
+
 		input.event().log(parameters, Event.VERBOSE);
 
-		if(parameters != null) {
+		if (parameters != null) {
 			StringTokenizer amp = new StringTokenizer(parameters, "&");
 
-			while(amp.hasMoreTokens()) {
+			while (amp.hasMoreTokens()) {
 				StringTokenizer equ = new StringTokenizer(amp.nextToken(), "=");
-				
+
 				String key = equ.nextToken();
 				String value = "";
 
-				if(equ.hasMoreTokens()) {
+				if (equ.hasMoreTokens()) {
 					value = equ.nextToken();
 				}
-				
+
 				put(key, value);
 			}
 		}
@@ -151,7 +147,7 @@ public class Query extends HashMap {
 	public int integer(String key) {
 		String value = (String) super.get(key);
 
-		if(value == null) {
+		if (value == null) {
 			return 0;
 		}
 
@@ -161,7 +157,7 @@ public class Query extends HashMap {
 	public String parameter(String key) {
 		String value = (String) super.get(key);
 
-		if(value == null) {
+		if (value == null) {
 			return "";
 		}
 
@@ -171,13 +167,13 @@ public class Query extends HashMap {
 	public boolean bool(String key) {
 		String value = (String) super.get(key);
 
-		if(value == null) {
+		if (value == null) {
 			return false;
 		}
 
 		return true;
 	}
-	
+
 	void done() throws IOException {
 		headers.clear();
 		input.end();
@@ -210,6 +206,7 @@ public class Query extends HashMap {
 
 	/**
 	 * Important: this returns "0" if the header is not found!
+	 * 
 	 * @param name
 	 * @return the header value or "0".
 	 */

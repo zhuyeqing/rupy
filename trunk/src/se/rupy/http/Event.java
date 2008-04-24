@@ -10,12 +10,13 @@ import java.nio.channels.*;
 import javax.activation.*;
 
 /**
- * Asynchronous HTTP request/response, this virtually represents a 
- * client socket, but in the case where the server is behind a proxy 
- * we cannot depend on that fact since sockets will be reused by 
- * multiple different external clients. It's a performance tradeoff 
- * that we gladly accept though, since hiding behind an Apache or 
- * some other proxy is this servers most probable use.
+ * Asynchronous HTTP request/response, this virtually represents a client
+ * socket, but in the case where the server is behind a proxy we cannot depend
+ * on that fact since sockets will be reused by multiple different external
+ * clients. It's a performance tradeoff that we gladly accept though, since
+ * hiding behind an Apache or some other proxy is this servers most probable
+ * use.
+ * 
  * @author marc
  */
 public class Event extends Throwable implements Chain.Link {
@@ -23,8 +24,10 @@ public class Event extends Throwable implements Chain.Link {
 	static int WRITE = 1 << 2;
 	static int VERBOSE = 1 << 0;
 	static int DEBUG = 1 << 1;
-	
-	private static char[] BASE_24 = {'B','C','D','F','G','H','J','K','M','P','Q','R','T','V','W','X','Y','2','3','4','6','7','8','9'};
+
+	private static char[] BASE_24 = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K',
+			'M', 'P', 'Q', 'R', 'T', 'V', 'W', 'X', 'Y', '2', '3', '4', '6',
+			'7', '8', '9' };
 	private static MimetypesFileTypeMap MIME;
 	static DateFormat DATE;
 
@@ -61,25 +64,26 @@ public class Event extends Throwable implements Chain.Link {
 		query = new Query(this);
 		reply = new Reply(this);
 
-		interest(READ, true);
+		interest(READ);
 	}
-	
-	void interest(int interest, boolean set) throws IOException {
-		if(set || this.interest != interest) {
-			key = channel.register(key.selector(), interest, this);
-			key.selector().wakeup();
-			
-			if(daemon.debug)
-				System.out.println("[" + (worker == null ? "*" : "" + worker.index()) + "-" + index + "] " + (interest == READ ? "read" : "write") + " interest set");
-		}
-		else {
-			if(daemon.debug)
-				System.out.println("[" + (worker == null ? "*" : "" + worker.index()) + "-" + index + "] " + (interest == READ ? "read" : "write") + " interest prepared");
-		}
-		
+
+	int interest() {
+		return interest;
+	}
+
+	void interest(int interest) throws IOException {
+		key = channel.register(key.selector(), interest, this);
+		key.selector().wakeup();
+
 		this.interest = interest;
+
+		if (daemon.debug)
+			System.out.println("["
+					+ (worker == null ? "*" : "" + worker.index()) + "-"
+					+ index + "] " + (interest == READ ? "read" : "write")
+					+ " interest");
 	}
-	
+
 	public Daemon daemon() {
 		return daemon;
 	}
@@ -142,21 +146,21 @@ public class Event extends Throwable implements Chain.Link {
 	public int integer(String key) {
 		return query.integer(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#bool(String)}.
 	 */
 	public boolean bool(String key) {
 		return query.bool(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#parameter(String)}.
 	 */
 	public String parameter(String key) {
 		return query.parameter(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#input()}.
 	 */
@@ -175,15 +179,16 @@ public class Event extends Throwable implements Chain.Link {
 	void read() throws IOException {
 		query.headers();
 
-		if(daemon.timeout > 0) {
+		if (daemon.timeout > 0) {
 			session(query.header("cookie"), this);
 		}
 
 		remote = address();
 
-		if(!content() && !service()) {
+		if (!content() && !service()) {
 			reply.code("404 Not Found");
-			reply.output().print("<pre>'" + query.path() + "' was not found.</pre>");
+			reply.output().print(
+					"<pre>'" + query.path() + "' was not found.</pre>");
 		}
 
 		reply.done();
@@ -193,8 +198,9 @@ public class Event extends Throwable implements Chain.Link {
 	String address() {
 		String remote = query.header("x-forwarded-for");
 
-		if(remote.equals("0")) {
-			InetSocketAddress address = (InetSocketAddress) channel.socket().getRemoteSocketAddress();
+		if (remote.equals("0")) {
+			InetSocketAddress address = (InetSocketAddress) channel.socket()
+					.getRemoteSocketAddress();
 			remote = address.getAddress().getHostAddress();
 		}
 
@@ -206,7 +212,7 @@ public class Event extends Throwable implements Chain.Link {
 	boolean content() throws IOException {
 		Deploy.Stream stream = daemon.content(query.path());
 
-		if(stream == null)
+		if (stream == null)
 			return false;
 
 		String type = MIME.getContentType(query.path());
@@ -214,11 +220,10 @@ public class Event extends Throwable implements Chain.Link {
 		reply.type(type);
 		reply.modified(stream.date());
 
-		if(query.modified() == 0 || query.modified() < reply.modified()) {
+		if (query.modified() == 0 || query.modified() < reply.modified()) {
 			Deploy.pipe(stream.input(), reply.output());
 			log(type, VERBOSE);
-		}
-		else {
+		} else {
 			reply.code("304 Not Modified");
 		}
 
@@ -228,19 +233,16 @@ public class Event extends Throwable implements Chain.Link {
 	boolean service() throws IOException {
 		Chain chain = daemon.get(query.path());
 
-		if(chain == null)
+		if (chain == null)
 			return false;
 
 		try {
 			chain.filter(this);
-		}
-		catch(Failure f) {
+		} catch (Failure f) {
 			throw f;
-		}
-		catch(Event e) {
+		} catch (Event e) {
 			// Break the filter chain.
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			log(e);
 
 			StringWriter trace = new StringWriter();
@@ -262,13 +264,13 @@ public class Event extends Throwable implements Chain.Link {
 
 	int block(Block block) throws IOException {
 		long max = System.currentTimeMillis() + daemon.delay;
-		
-		interest(interest, true);
-		
-		while(System.currentTimeMillis() < max) {
+
+		interest(interest);
+
+		while (System.currentTimeMillis() < max) {
 			int available = block.fill(true);
 
-			if(available > 0) {
+			if (available > 0) {
 				long delay = daemon.delay - (max - System.currentTimeMillis());
 				log("delay " + delay, VERBOSE);
 				return available;
@@ -286,14 +288,12 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect() {
 		try {
-			if(session != null) {
+			channel.close();
+			if (session != null) {
 				daemon.remove(this, session);
 			}
-			if(channel.isConnected() && channel.isOpen()) {
-				channel.close();
-			}
-		}
-		catch(Exception e) {
+			daemon.index--;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -301,48 +301,47 @@ public class Event extends Throwable implements Chain.Link {
 	final void session(String cookie, Event event) {
 		String session = cookie(cookie, "session");
 
-		if(this.session != null) {
+		if (this.session != null) {
 			this.session = (Session) daemon.session().get(session);
 		}
 
-		log((this.session == null ? "new" : "old") + " cookie " + session, VERBOSE);
-		
-		if(this.session != null) {
+		log((this.session == null ? "new" : "old") + " cookie " + session,
+				VERBOSE);
+
+		if (this.session != null) {
 			this.session.add(event);
 			this.session.touch();
 			return;
 		}
-		
+
 		do {
 			session = random(daemon.cookie);
-		}
-		while(daemon.session().get(session) != null);
+		} while (daemon.session().get(session) != null);
 
 		this.session = new Session(session);
 		this.session.add(event);
 
-		synchronized(daemon.session()) {
+		synchronized (daemon.session()) {
 			daemon.session().put(session, this.session);
 		}
 	}
 
 	public static String cookie(String cookie, String key) {
 		String value = null;
-		
-		if(cookie != null) {
+
+		if (cookie != null) {
 			StringTokenizer tokenizer = new StringTokenizer(cookie, " ");
 
-			while(tokenizer.hasMoreTokens()) {
+			while (tokenizer.hasMoreTokens()) {
 				String part = tokenizer.nextToken();
 				int equals = part.indexOf("=");
 
-				if(equals > -1 && part.substring(0, equals).equals(key)) {
+				if (equals > -1 && part.substring(0, equals).equals(key)) {
 					String subpart = part.substring(equals + 1);
 
-					if(subpart.endsWith(";")) {
+					if (subpart.endsWith(";")) {
 						value = subpart.substring(0, subpart.length() - 1);
-					}
-					else {
+					} else {
 						value = subpart;
 					}
 				}
@@ -351,18 +350,18 @@ public class Event extends Throwable implements Chain.Link {
 
 		return value;
 	}
-	
+
 	public static String random(int length) {
 		Random random = new Random();
 		StringBuffer buffer = new StringBuffer();
 
-		while(buffer.length() < length) {
+		while (buffer.length() < length) {
 			buffer.append(BASE_24[Math.abs(random.nextInt() % 24)]);
 		}
 
 		return buffer.toString();
 	}
-	
+
 	public String toString() {
 		return String.valueOf(index);
 	}

@@ -3,10 +3,10 @@ package se.rupy.http;
 import java.io.IOException;
 
 /**
- * The failure, if thrown, does not display the error to the user 
- * but disconnects the client. Useful if you receive hack attempts
- * or similar unwanted requests. Also used internally to jump the 
- * 500 Internal Server Error bridge.
+ * The failure, if thrown, does not display the error to the user but
+ * disconnects the client. Useful if you receive hack attempts or similar
+ * unwanted requests. Also used internally to jump the 500 Internal Server Error
+ * bridge.
  * 
  * @author marc
  */
@@ -31,7 +31,7 @@ public class Failure extends IOException {
 		Throwable root;
 
 		public Helper(Throwable t) {
-			while(t.getCause() != null) {
+			while (t.getCause() != null) {
 				t = t.getCause();
 			}
 

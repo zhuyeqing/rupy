@@ -5,56 +5,55 @@ import java.util.*;
 class Chain extends LinkedList {
 	private int next;
 
-	/* smart add to maintain positional integrity and return old link
+	/*
+	 * smart add to maintain positional integrity and return old link
 	 */
 	Link put(Link link) {
-		if(size() > link.index()) {
+		if (size() > link.index()) {
 			Link old = (Link) super.get(link.index());
-			
-			if(link.index() == old.index()) {
+
+			if (link.index() == old.index()) {
 				return (Link) set(link.index(), link);
-			}
-			else {
+			} else {
 				add(link.index(), link);
 			}
-		}
-		else {
+		} else {
 			add(link);
 		}
-		
+
 		return null;
 	}
-	
-	/* smart remove to maintain positional integrity and return old link
+
+	/*
+	 * smart remove to maintain positional integrity and return old link
 	 */
 	Link del(Link link) {
-		if(size() > link.index()) {
+		if (size() > link.index()) {
 			Link old = (Link) super.get(link.index());
-			
-			if(link.index() == old.index()) {
+
+			if (link.index() == old.index()) {
 				return (Link) super.remove(link.index());
 			}
-		}
-		else {
+		} else {
 			remove(link);
 		}
-		
+
 		return null;
 	}
 
 	void filter(Event event) throws Event, Exception {
-		for(int i = 0; i < size(); i++) {
+		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
 			service.filter(event);
 			Session session = event.session();
-			if(session != null) {
+			if (session != null) {
 				session.add(service);
 			}
 		}
 	}
 
 	void exit(Session session, int type) throws Exception {
-		for(int i = 0; i < size(); i++) {
+		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
 			service.exit(session, type);
 		}
@@ -63,9 +62,9 @@ class Chain extends LinkedList {
 	void reset() {
 		next = 0;
 	}
-	
+
 	Link next() {
-		if(next >= size()) {
+		if (next >= size()) {
 			next = 0;
 			return null;
 		}
