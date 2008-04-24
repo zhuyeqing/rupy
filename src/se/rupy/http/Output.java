@@ -31,56 +31,55 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	void init() throws IOException {
-		if(init) {
+		if (init) {
 			reply.event().log("already inited", Event.DEBUG);
 			return;
-		}
-		else
-			reply.event().log("init " + reply.event().query().version(), Event.DEBUG);
+		} else
+			reply.event().log("init " + reply.event().query().version(),
+					Event.DEBUG);
 
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 
-		if(chunk) {
-			/* TODO: What am I doing wrong?
+		if (chunk) {
+			/*
+			 * TODO: What am I doing wrong?
 			 * 
-			 * Browsers do NOT support "Transfer-Encoding: Chunked" with 
-			 * length 0 from status codes that they expect to have 
-			 * "Content-Length: 0" for some reason it seems? Or is it my fault?
+			 * Browsers do NOT support "Transfer-Encoding: Chunked" with length
+			 * 0 from status codes that they expect to have "Content-Length: 0"
+			 * for some reason it seems? Or is it my fault?
 			 * 
-			 * If an Event returns chunked with length 0 it will, upon next 
-			 * use, leave the browser waiting for more... then "An established 
-			 * connection was aborted by the software in your host machine"
-			 * with IE and "Socket closed" with Firefox. Help needed!
+			 * If an Event returns chunked with length 0 it will, upon next use,
+			 * leave the browser waiting for more... then "An established
+			 * connection was aborted by the software in your host machine" with
+			 * IE and "Socket closed" with Firefox. Help needed!
 			 * 
-			 * This workaround works fine for now though.
-			 * See end() and Chunked.flush().
+			 * This workaround works fine for now though. See end() and
+			 * Chunked.flush().
 			 */
-			if(reply.code().startsWith("302") || 
-					reply.code().startsWith("304")) {
+			if (reply.code().startsWith("302")
+					|| reply.code().startsWith("304")) {
 				headers(0);
-			}
-			else {
+			} else {
 				headers(-1);
 			}
-		}
-		else {
+		} else {
 			cache = true;
 
-			if(array == null) {
+			if (array == null) {
 				array = new ByteArrayOutputStream();
 			}
 		}
 
-		reply.event().interest(Event.WRITE, false);
-		
+		reply.event().interest(Event.WRITE);
+
 		init = true;
 	}
 
 	void end() throws IOException {
 		reply.event().log("end", Event.DEBUG);
 
-		if(!chunk) {
-			if(array != null && array.size() > 0) {
+		if (!chunk) {
+			if (array != null && array.size() > 0) {
 				array.flush();
 
 				int length = array.size();
@@ -90,18 +89,17 @@ public abstract class Output extends OutputStream implements Event.Block {
 				write(data, 0, length);
 
 				array.reset();
-			}
-			else if(reply.code().startsWith("302") || 
-					reply.code().startsWith("304")) {
+			} else if (reply.code().startsWith("302")
+					|| reply.code().startsWith("304")) {
 				headers(0);
 			}
 		}
 
 		flush();
-		
-		if(length > 0) {
+
+		if (length > 0) {
 			reply.event().log("reply " + length, Event.VERBOSE);
-			reply.event().interest(Event.READ, false);
+			reply.event().interest(Event.READ);
 		}
 
 		length = 0;
@@ -113,40 +111,44 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		reply.event().log(reply.code(), Event.VERBOSE);
 
-		wrote((reply.event().query().version() + " " + reply.code() + EOL).getBytes());
-		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL).getBytes());
+		wrote((reply.event().query().version() + " " + reply.code() + EOL)
+				.getBytes());
+		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
+				.getBytes());
 		wrote(("Server: Rupy/0.2 (beta)" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 		wrote(("Connection: Keep-Alive" + EOL).getBytes());
 
-		if(length > -1) {
+		if (length > -1) {
 			wrote(("Content-Length: " + length + EOL).getBytes());
-		}
-		else {
+		} else {
 			wrote(("Transfer-Encoding: Chunked" + EOL).getBytes());
 		}
 
-		if(reply.modified() > 0) {
-			wrote(("Last-Modified: " + reply.event().DATE.format(new Date(reply.modified())) + EOL).getBytes());
+		if (reply.modified() > 0) {
+			wrote(("Last-Modified: "
+					+ reply.event().DATE.format(new Date(reply.modified())) + EOL)
+					.getBytes());
 		}
 
-		if(reply.event().session() != null && !reply.event().session().set()) {
+		if (reply.event().session() != null && !reply.event().session().set()) {
 			wrote(("Cache-Control: private" + EOL).getBytes());
-			wrote(("Set-Cookie: session=" + reply.event().session().key() + "; path=/" + EOL).getBytes());
+			wrote(("Set-Cookie: session=" + reply.event().session().key()
+					+ "; path=/" + EOL).getBytes());
 
 			reply.event().session().set(true);
 		}
 
-		if(reply.event().close()) {
+		if (reply.event().close()) {
 			wrote(("Connection: close" + EOL).getBytes());
 		}
 
 		HashMap headers = reply.headers();
 
-		if(headers != null) {
+		if (headers != null) {
 			Iterator it = headers.keySet().iterator();
 
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				String name = (String) it.next();
 				String value = (String) reply.headers().get(name);
 
@@ -170,14 +172,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	void wrote(byte[] b, int off, int len) throws IOException {
 		try {
-			if(cache) {
+			if (cache) {
 				array.write(b, off, len);
-			}
-			else {
+			} else {
 				ByteBuffer out = reply.event().worker().out();
 				int remaining = out.remaining();
 
-				while(len > remaining) {
+				while (len > remaining) {
 					out.put(b, off, remaining);
 
 					internal(false);
@@ -186,12 +187,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 					len -= remaining;
 				}
 
-				if(len > 0) {
+				if (len > 0) {
 					out.put(b, off, len);
 				}
 			}
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			Failure.chain(e);
 		}
 	}
@@ -199,21 +199,22 @@ public abstract class Output extends OutputStream implements Event.Block {
 	void internal(boolean debug) throws IOException {
 		ByteBuffer out = reply.event().worker().out();
 
-		if(out.remaining() < size) {
+		if (out.remaining() < size) {
 			out.flip();
 
-			while(out.remaining() > 0) {
+			while (out.remaining() > 0) {
 				int sent = fill(debug);
 
-				if(debug) {
+				if (debug) {
 					reply.event().log("sent " + sent, Event.DEBUG);
 				}
 
-				if(sent == 0) {
+				if (sent == 0) {
 					reply.event().block(this);
 
-					if(debug) {
-						reply.event().log("still in buffer " + out.remaining(), Event.DEBUG);
+					if (debug) {
+						reply.event().log("still in buffer " + out.remaining(),
+								Event.DEBUG);
 					}
 				}
 			}
@@ -232,21 +233,23 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		int remaining = 0;
 
-		if(debug) {
+		if (debug) {
 			remaining = out.remaining();
 		}
 
 		int sent = reply.event().channel().write(out);
 
-		if(debug) {
-			reply.event().log("filled " + sent + " out of " + remaining, Event.DEBUG);
+		if (debug) {
+			reply.event().log("filled " + sent + " out of " + remaining,
+					Event.DEBUG);
 		}
 
 		length += sent;
 		return sent;
 	}
 
-	/* Borrowed from sun.net.httpserver.ChunkedOutputStream.java
+	/*
+	 * Borrowed from sun.net.httpserver.ChunkedOutputStream.java
 	 */
 	static class Chunked extends Output {
 		private static int OFFSET = 6;
@@ -257,11 +260,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 			super(reply);
 		}
 
-		public void write (int b) throws IOException {
+		public void write(int b) throws IOException {
 			chunk[cursor++] = (byte) b;
 			count++;
 
-			if(count == size) {
+			if (count == size) {
 				write();
 			}
 		}
@@ -270,15 +273,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 			write(b, 0, b.length);
 		}
 
-		public void write (byte[] b, int off, int len) throws IOException {
-			if(!chunk()) {
+		public void write(byte[] b, int off, int len) throws IOException {
+			if (!chunk()) {
 				wrote(b, off, len);
 				return;
 			}
 
 			int remain = size - count;
 
-			if(len > remain) {
+			if (len > remain) {
 				System.arraycopy(b, off, chunk, cursor, remain);
 
 				count = size;
@@ -287,7 +290,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				len -= remain;
 				off += remain;
 
-				while(len > size) {
+				while (len > size) {
 					System.arraycopy(b, off, chunk, OFFSET, size);
 
 					len -= size;
@@ -299,7 +302,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 				cursor = OFFSET;
 			}
-			if(len > 0) {
+			if (len > 0) {
 				System.arraycopy(b, off, chunk, cursor, len);
 				count += len;
 				cursor += len;
@@ -310,7 +313,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			char[] header = Integer.toHexString(count).toCharArray();
 			int length = header.length, start = 4 - length, cursor;
 
-			for(cursor = 0; cursor < length; cursor++) {
+			for (cursor = 0; cursor < length; cursor++) {
 				chunk[start + cursor] = (byte) header[cursor];
 			}
 
@@ -326,13 +329,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void flush() throws IOException {
-			if(chunk() && init) {
-				if(reply.code().startsWith("302") || 
-						reply.code().startsWith("304")) {
+			if (chunk() && init) {
+				if (reply.code().startsWith("302")
+						|| reply.code().startsWith("304")) {
 					reply.event().log("length " + length, Event.DEBUG);
-				}
-				else {
-					if(count > 0) {
+				} else {
+					if (count > 0) {
 						write();
 					}
 

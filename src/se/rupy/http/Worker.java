@@ -3,8 +3,9 @@ package se.rupy.http;
 import java.nio.*;
 
 /**
- * Worker gets the job done. The worker holds the in/out buffers 
- * in order to save resources, since the worker is locked per event.
+ * Worker gets the job done. The worker holds the in/out buffers in order to
+ * save resources, since the worker is locked per event.
+ * 
  * @author marc
  */
 public class Worker implements Runnable, Chain.Link {
@@ -38,8 +39,8 @@ public class Worker implements Runnable, Chain.Link {
 		return out;
 	}
 
-	void wakeup() {			
-		synchronized(thread) {
+	void wakeup() {
+		synchronized (thread) {
 			thread.notify();
 		}
 	}
@@ -49,16 +50,15 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	void snooze(long delay) {
-		synchronized(thread) {
+		synchronized (thread) {
 			try {
-				if(delay > 0) {
+				if (delay > 0) {
 					thread.wait(delay);
-				}
-				else {
+				} else {
 					thread.wait();
 				}
+			} catch (InterruptedException e) {
 			}
-			catch(InterruptedException e) {}
 		}
 	}
 
@@ -79,53 +79,46 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	void log(Object o, int level) {
-		if(o instanceof Exception) {
+		if (o instanceof Exception) {
 			Exception e = (Exception) o;
 
-			if(daemon.debug) {
+			if (daemon.debug) {
 				e.printStackTrace();
-			}
-			else if(daemon.verbose)
-				System.out.println("[" + index + "-" + event.index() + "] " + e);
-		}
-		else if(daemon.debug || daemon.verbose && level == Event.VERBOSE)
+			} else if (daemon.verbose)
+				System.out
+						.println("[" + index + "-" + event.index() + "] " + e);
+		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
 			System.out.println("[" + index + "-" + event.index() + "] " + o);
 	}
 
 	public void run() {
-		while(true) {
+		while (true) {
 			try {
-				if(event != null) {
-					if(write) {
+				if (event != null) {
+					if (write) {
 						event.write();
 						write = false;
-					}
-					else {
+					} else {
 						event.read();
 					}
 				}
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				log(e);
 				event.disconnect();
-			}
-			finally {
-				if(event != null) {
+			} finally {
+				if (event != null) {
 					event.worker(null);
 					event = daemon.next(this);
-					
-					if(event != null) {
+
+					if (event != null) {
 						event.worker(this);
-					}
-					else {
+					} else {
 						snooze();
 					}
-				}
-				else {
+				} else {
 					snooze();
 				}
 			}
 		}
 	}
 }
-

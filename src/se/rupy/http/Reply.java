@@ -5,13 +5,14 @@ import java.nio.*;
 import java.util.*;
 
 /**
- * HTTP response. Inherently non-blocking asynchronous; even if you 
- * don't write any output, the worker will still be released immediately. 
- * The order of execution is {@link #header(String, String)}, 
- * {@link #code(String)} and finally {@link #output()}. If you call the 
- * {@link #code(String)} or {@link #output()} method, the reply will flush 
- * output, so then you won't be able to do an asynchronous reply. To wakeup 
- * a dormant asynchronous event use {@link #wakeup()}.
+ * HTTP response. Inherently non-blocking asynchronous; even if you don't write
+ * any output, the worker will still be released immediately. The order of
+ * execution is {@link #header(String, String)}, {@link #code(String)} and
+ * finally {@link #output()}. If you call the {@link #code(String)} or
+ * {@link #output()} method, the reply will flush output, so then you won't be
+ * able to do an asynchronous reply. To wakeup a dormant asynchronous event use
+ * {@link #wakeup()}.
+ * 
  * @author marc
  */
 public class Reply {
@@ -33,7 +34,7 @@ public class Reply {
 
 		output.end();
 
-		if(headers != null) {
+		if (headers != null) {
 			headers.clear();
 		}
 
@@ -59,17 +60,19 @@ public class Reply {
 	}
 
 	/**
-	 * Important: call {@link #header(String, String)} before you call 
-	 * this. If you manually set a code, the reply will flush even if 
-	 * empty. So do not call this if you wan't to reply asynchronously.
-	 * For example if you want to redirect a browser.
+	 * Important: call {@link #header(String, String)} before you call this. If
+	 * you manually set a code, the reply will flush even if empty. So do not
+	 * call this if you wan't to reply asynchronously. For example if you want
+	 * to redirect a browser.
+	 * 
 	 * <pre>
 	 * public void filter(Event event) throw Event {
-	 *     event.reply().header("Location", "/login");
-	 *     event.reply().code("302 Found");
+	 *     event.reply().header(&quot;Location&quot;, &quot;/login&quot;);
+	 *     event.reply().code(&quot;302 Found&quot;);
 	 *     throw event; // stop the chain
 	 * }
 	 * </pre>
+	 * 
 	 * @param code
 	 */
 	public void code(String code) throws IOException {
@@ -87,7 +90,7 @@ public class Reply {
 	}
 
 	public void header(String name, String value) {
-		if(headers == null) {
+		if (headers == null) {
 			headers = new HashMap();
 		}
 
@@ -103,13 +106,13 @@ public class Reply {
 	}
 
 	/**
-	 * Important: call {@link #header(String, String)} and {@link #code(String)} 
-	 * first, in that order, this method is the point of no return 
-	 * for delivery of a request. It enables OP_WRITE and writes the 
-	 * headers immediately if your reply is chunked, ie. if your client 
-	 * is HTTP/1.1. If your client is HTTP/1.0, the headers will be 
-	 * prepended automatically after the {@link Service#filter(Event)} 
-	 * method returns.
+	 * Important: call {@link #header(String, String)} and {@link #code(String)}
+	 * first, in that order, this method is the point of no return for delivery
+	 * of a request. It enables OP_WRITE and writes the headers immediately if
+	 * your reply is chunked, ie. if your client is HTTP/1.1. If your client is
+	 * HTTP/1.0, the headers will be prepended automatically after the
+	 * {@link Service#filter(Event)} method returns.
+	 * 
 	 * @return the output stream.
 	 * @throws IOException
 	 */
@@ -120,20 +123,20 @@ public class Reply {
 	}
 
 	/**
-	 * To send data asynchronously, call this and the event will be 
-	 * re-filtered. Just make sure you didn't already flush the 
-	 * reply and that are ready to catch the event when it recycles!
+	 * To send data asynchronously, call this and the event will be re-filtered.
+	 * Just make sure you didn't already flush the reply and that are ready to
+	 * catch the event when it recycles!
+	 * 
 	 * @throws IOException
 	 */
 	public void wakeup() throws IOException {
-		if(false) { // TODO: If the reply has already been sent!
+		if (false) { // TODO: If the reply has already been sent!
 			throw new IOException("Reply already executed.");
 		}
 
-		if(event.worker() == null) {
+		if (event.worker() == null) {
 			event.daemon().employ(event, true);
-		}
-		else {
+		} else {
 			throw new IOException("Reply still processing.");
 		}
 	}

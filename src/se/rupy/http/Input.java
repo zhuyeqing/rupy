@@ -15,13 +15,13 @@ public abstract class Input extends InputStream implements Event.Block {
 
 	void init() {
 		chunk = event.query().length() > -1 ? false : true;
-		event.log("header " + length, Event.VERBOSE); 
+		event.log("header " + length, Event.VERBOSE);
 		length = 0;
 		init = true;
 	}
 
 	void end() {
-		if(length > 0)
+		if (length > 0)
 			event.log("query " + length, Event.VERBOSE);
 
 		available = 0;
@@ -35,9 +35,9 @@ public abstract class Input extends InputStream implements Event.Block {
 	boolean chunk() {
 		return chunk;
 	}
-	
+
 	int real() throws IOException {
-		if(real(one, 0, 1) > 0) {
+		if (real(one, 0, 1) > 0) {
 			return one[0] & 0xFF;
 		}
 		return -1;
@@ -51,8 +51,8 @@ public abstract class Input extends InputStream implements Event.Block {
 		try {
 			available = fill(false);
 
-			if(available == 0) {
-				if(init && !chunk && length >= event.query().length()) {
+			if (available == 0) {
+				if (init && !chunk && length >= event.query().length()) {
 					return -1; // fixed length EOF
 				}
 
@@ -64,8 +64,7 @@ public abstract class Input extends InputStream implements Event.Block {
 			available -= read;
 			length += read;
 			return read;
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			Failure.chain(e);
 		}
 
@@ -75,51 +74,48 @@ public abstract class Input extends InputStream implements Event.Block {
 	public int available() {
 		return available;
 	}
-	
+
 	public boolean markSupported() {
 		return false;
 	}
-	
+
 	public int fill(boolean debug) throws IOException {
-		if(available > 0)
+		if (available > 0)
 			return available;
 
 		ByteBuffer buffer = event.worker().in();
 		buffer.clear();
 		available = event.channel().read(buffer);
 
-		if(available > 0) {
+		if (available > 0) {
 			buffer.flip();
-		}
-		else if(available < 0) {
+		} else if (available < 0) {
 			throw new IOException("Socket closed.");
 		}
 
 		return available;
 	}
-	
+
 	String line() throws IOException {
 		StringBuffer buffer = new StringBuffer("");
 
-		while(true) {
-			if(buffer.length() > event.daemon().size) {
+		while (true) {
+			if (buffer.length() > event.daemon().size) {
 				throw new IOException("Line too long.");
 			}
 
 			int a = real();
 
-			if(a == '\r') {
+			if (a == '\r') {
 				int b = real();
 
-				if(b == '\n') {
+				if (b == '\n') {
 					return buffer.toString();
-				}
-				else if(b > -1) {
+				} else if (b > -1) {
 					buffer.append((char) a);
 					buffer.append((char) b);
 				}
-			}
-			else if(a > -1) {
+			} else if (a > -1) {
 				buffer.append((char) a);
 			}
 		}
@@ -134,7 +130,7 @@ public abstract class Input extends InputStream implements Event.Block {
 		}
 
 		public int read() throws IOException {
-			if(read(one, 0, 1) > 0) {
+			if (read(one, 0, 1) > 0) {
 				return one[0] & 0xFF;
 			}
 			return -1;
@@ -145,31 +141,27 @@ public abstract class Input extends InputStream implements Event.Block {
 		}
 
 		public int read(byte[] b, int off, int len) throws IOException {
-			if(!chunk()) {
+			if (!chunk()) {
 				return real(b, off, len);
 			}
 
-			if(length == 0) {
+			if (length == 0) {
 				boolean done = false;
 				int c = real();
 
-				while(c != '\n') {
+				while (c != '\n') {
 					int val = 0;
 
-					if(c == ';' || c == '\r') {
+					if (c == ';' || c == '\r') {
 						done = true;
-					}
-					else if(!done) {
-						if(c >= '0' && c <= '9') {
+					} else if (!done) {
+						if (c >= '0' && c <= '9') {
 							val = c - '0';
-						}
-						else if(c >= 'a' && c <= 'f') {
+						} else if (c >= 'a' && c <= 'f') {
 							val = c - 'a' + 10;
-						}
-						else if(c >= 'A' && c <= 'F') {
+						} else if (c >= 'A' && c <= 'F') {
 							val = c - 'A' + 10;
-						}
-						else {
+						} else {
 							throw new IOException("Chunked input.");
 						}
 
@@ -179,23 +171,23 @@ public abstract class Input extends InputStream implements Event.Block {
 					c = real();
 				}
 
-				if(length == 0) {
-					return -1;  // chunked EOF
+				if (length == 0) {
+					return -1; // chunked EOF
 				}
 			}
 
-			if(len > length) {
+			if (len > length) {
 				len = length;
 			}
 
 			int read = real(b, off, len);
 
-			if(read == length) {
+			if (read == length) {
 				real();
 				real();
 			}
 
-			if(read > 0) {
+			if (read > 0) {
 				length -= read;
 			}
 
