@@ -5,10 +5,7 @@ import java.net.*;
 import java.text.*;
 import java.util.*;
 
-import java.nio.ByteBuffer;
 import java.nio.channels.*;
-
-import se.rupy.http.Deploy.Client;
 
 /**
  * A tiny HTTP daemon. The whole server is non-static so that you can launch
@@ -277,16 +274,14 @@ public class Daemon implements Runnable {
 							Worker worker = event.worker();
 
 							if (debug) {
+								System.out.print("["
+										+ (worker == null ? "*" : ""
+												+ worker.index()) + "-"
+										+ event.index() + "]");
 								if (key.isReadable())
-									System.out.println("["
-											+ (worker == null ? "*" : ""
-													+ worker.index()) + "-"
-											+ event.index() + "] readable ---");
+									System.out.println(" readable ---");
 								if (key.isWritable())
-									System.out.println("["
-											+ (worker == null ? "*" : ""
-													+ worker.index()) + "-"
-											+ event.index() + "] writable ---");
+									System.out.println(" writable ---");
 							}
 
 							if (worker == null) {
@@ -295,9 +290,7 @@ public class Daemon implements Runnable {
 								worker.wakeup();
 							}
 
-							if (event.interest() == key.interestOps()) {
-								key.interestOps(0);
-							}
+							key.interestOps(0);
 						}
 					}
 				}
@@ -513,7 +506,7 @@ public class Daemon implements Runnable {
 				InputStream in = new Deploy.Client().send(url, file, null);
 
 				if (host.endsWith("/error")) {
-					System.out.println(Client.toString(in));
+					System.out.println(Deploy.Client.toString(in));
 				} else if (host.endsWith("/io")) {
 					save("IO Write", in);
 				} else {

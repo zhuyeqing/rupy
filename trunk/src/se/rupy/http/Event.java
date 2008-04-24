@@ -65,6 +65,7 @@ public class Event extends Throwable implements Chain.Link {
 		reply = new Reply(this);
 
 		interest(READ);
+		register();
 	}
 
 	int interest() {
@@ -72,16 +73,7 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	void interest(int interest) throws IOException {
-		key = channel.register(key.selector(), interest, this);
-		key.selector().wakeup();
-
 		this.interest = interest;
-
-		if (daemon.debug)
-			System.out.println("["
-					+ (worker == null ? "*" : "" + worker.index()) + "-"
-					+ index + "] " + (interest == READ ? "read" : "write")
-					+ " interest");
 	}
 
 	public Daemon daemon() {
@@ -262,10 +254,36 @@ public class Event extends Throwable implements Chain.Link {
 		query.done();
 	}
 
+	void register() throws IOException {
+		key = channel.register(key.selector(), interest, this);
+		key.selector().wakeup();
+
+		if (daemon.debug)
+			System.out.println("["
+					+ (worker == null ? "*" : "" + worker.index()) + "-"
+					+ index + "] " + (interest == READ ? "read" : "write")
+					+ " interest");
+	}
+
+	void register(int interest) {
+		try {
+			key = channel.register(key.selector(), interest, this);
+			key.selector().wakeup();
+
+			if (daemon.debug)
+				System.out.println("["
+						+ (worker == null ? "*" : "" + worker.index()) + "-"
+						+ index + "] " + (interest == READ ? "read" : "write")
+						+ " interest");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	int block(Block block) throws IOException {
 		long max = System.currentTimeMillis() + daemon.delay;
 
-		interest(interest);
+		register();
 
 		while (System.currentTimeMillis() < max) {
 			int available = block.fill(true);
