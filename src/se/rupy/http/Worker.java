@@ -4,7 +4,8 @@ import java.nio.*;
 
 /**
  * Worker gets the job done. The worker holds the in/out buffers in order to
- * save resources, since the worker is locked per event.
+ * save resources, since the worker is assigned per event until a request is
+ * completed.
  * 
  * @author marc
  */
@@ -74,23 +75,6 @@ public class Worker implements Runnable, Chain.Link {
 		return index;
 	}
 
-	void log(Object o) {
-		log(o, Event.DEBUG);
-	}
-
-	void log(Object o, int level) {
-		if (o instanceof Exception) {
-			Exception e = (Exception) o;
-
-			if (daemon.debug) {
-				e.printStackTrace();
-			} else if (daemon.verbose)
-				System.out
-						.println("[" + index + "-" + event.index() + "] " + e);
-		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
-			System.out.println("[" + index + "-" + event.index() + "] " + o);
-	}
-
 	public void run() {
 		while (true) {
 			try {
@@ -103,8 +87,7 @@ public class Worker implements Runnable, Chain.Link {
 					}
 				}
 			} catch (Exception e) {
-				log(e);
-				event.disconnect();
+				event.disconnect(e);
 			} finally {
 				if (event != null) {
 					event.worker(null);

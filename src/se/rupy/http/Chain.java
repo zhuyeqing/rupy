@@ -46,6 +46,7 @@ class Chain extends LinkedList {
 			Service service = (Service) get(i);
 			service.filter(event);
 			Session session = event.session();
+			
 			if (session != null) {
 				session.add(service);
 			}

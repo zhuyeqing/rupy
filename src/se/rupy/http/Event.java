@@ -64,8 +64,8 @@ public class Event extends Throwable implements Chain.Link {
 		query = new Query(this);
 		reply = new Reply(this);
 
-		interest(READ);
-		register();
+		key = channel.register(key.selector(), READ, this);
+		key.selector().wakeup();
 	}
 
 	int interest() {
@@ -125,12 +125,17 @@ public class Event extends Throwable implements Chain.Link {
 		return channel;
 	}
 
-	void log(Object o, int level) {
-		worker.log(o, level);
+	void log(Object o) {
+		log(o, Event.DEBUG);
 	}
 
-	void log(Object o) {
-		worker.log(o);
+	void log(Object o, int level) {
+		if (o instanceof Exception && daemon.debug) {
+			((Exception) o).printStackTrace();
+		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
+			System.out.println("["
+					+ (worker == null ? "*" : "" + worker.index()) + "-"
+					+ index + "] " + o);
 	}
 
 	/**
@@ -256,17 +261,13 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	void register() throws IOException {
-		if(interest != key.interestOps()) {
+		if (interest != key.interestOps()) {
 			key = channel.register(key.selector(), interest, this);
 		}
-		
+
 		key.selector().wakeup();
 
-		if (daemon.debug)
-			System.out.println("["
-					+ (worker == null ? "*" : "" + worker.index()) + "-"
-					+ index + "] " + (interest == READ ? "read" : "write")
-					+ " interest");
+		log((interest == READ ? "read" : "write") + " interest ", DEBUG);
 	}
 
 	void register(int interest) {
@@ -304,7 +305,7 @@ public class Event extends Throwable implements Chain.Link {
 		public int fill(boolean debug) throws IOException;
 	}
 
-	void disconnect() {
+	void disconnect(Exception e) {
 		try {
 			if (channel != null) {
 				channel.close();
@@ -312,10 +313,13 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			if (session != null) {
-				daemon.remove(this, session);
+				session.remove(this);
+				System.out.println("FORCED REMOVE");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			log(e);
+		} catch (Exception de) {
+			de.printStackTrace();
 		}
 	}
 
