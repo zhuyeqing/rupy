@@ -108,9 +108,6 @@ public class Worker implements Runnable, Chain.Link {
 			} finally {
 				if (event != null) {
 					event.worker(null);
-
-					event.register(Event.READ);
-
 					event = daemon.next(this);
 
 					if (event != null) {
