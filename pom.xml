@@ -17,7 +17,6 @@
   <!-- Build Settings -->
   <build>
     <defaultGoal>install</defaultGoal>
-    <outputDirectory>${basedir}/tmp</outputDirectory>
     <directory>${basedir}/bin</directory>
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <resources>
@@ -29,6 +28,31 @@
         </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <mainClass>se.rupy.http.Daemon</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Class-Path>../lib</Class-Path>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
   <reporting></reporting>
 
