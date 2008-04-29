@@ -5,7 +5,7 @@ Let's create a rootservice (when you browse to "/") that returns 'hello'.
 import se.rupy.http.*;
 public Hello extends Service {
 	public String path() { return "/"; }
-	public void filter(Event event) throws Event {
+	public void filter(Event event) throws Event, Exception {
 		event.output().print("hello");
 	}
 }
