@@ -13,7 +13,7 @@ public Comet extends Service {
 	boolean update;
 	Event cache;
 	...
-	public void filter(Event event) throws Event {
+	public void filter(Event event) throws Event, Exception {
 		if( ... ) {
 			// you need to somehow cache the event
 			cache = event;
