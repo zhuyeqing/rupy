@@ -33,15 +33,16 @@ public class Daemon implements Runnable {
 	 * @param port
 	 *            which TCP port
 	 * @param threads
-	 *            how many threads
+	 *            how many worker threads, the daemon also starts one selector
+	 *            thread.
 	 * @param timeout
 	 *            session timeout in seconds or 0 to disable sessions
 	 * @param cookie
 	 *            session key length; default and minimum is 4, > 10 can be
 	 *            considered secure
 	 * @param delay
-	 *            time in seconds before active query/reply drops the connection
-	 *            due to inactivity
+	 *            time in seconds before started event gets dropped due to
+	 *            inactivity.
 	 * @param size
 	 *            IO buffer size, should be proportional to the data sizes
 	 *            received/sent by the server currently this is input/output
@@ -369,11 +370,15 @@ public class Daemon implements Runnable {
 						Iterator it = session.values().iterator();
 
 						while (it.hasNext()) {
-							Session session = (Session) it.next();
+							Session s = (Session) it.next();
 
-							if (System.currentTimeMillis() - session.date() > timeout) {
-								session.remove();
-								System.out.println("TIMEOUT REMOVE");
+							if (System.currentTimeMillis() - s.date() > timeout) {
+								s.remove();
+
+								if (debug)
+									System.out.println("session timeout "
+											+ s.key());
+
 								it.remove();
 							}
 						}
@@ -434,11 +439,17 @@ public class Daemon implements Runnable {
 	}
 
 	/*
-	 * Test cases can be performed in parallel.
+	 * Test cases are performed in parallel with one worker thread, in order to
+	 * detect synchronous errors.
 	 */
 	void test() throws IOException {
-		System.out
-				.println("Test will begin in one second, estimated duration: ~2 sec.");
+		System.out.println("Parallel testing begins in one second:");
+		System.out.println("- OP_READ, OP_WRITE and selector wakeup.");
+		System.out.println("- Asynchronous non-blocking reply.");
+		System.out.println("- Session creation and timeout.");
+		System.out.println("- Exception handling.");
+		System.out.println("Estimated duration: ~2 sec.");
+		System.out.println("             ---o---");
 
 		try {
 			Thread.sleep(1000);

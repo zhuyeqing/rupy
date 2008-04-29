@@ -10,15 +10,22 @@ package se.rupy.http;
  */
 public abstract class Service implements Chain.Link {
 	/**
+	 * When the session is created, set the key you wish to be stored and the
+	 * expire date, which is when the cookie should expire, the sessions
+	 * duration is set when you start the daemon.
+	 */
+	public final static int CREATE = 1;
+
+	/**
 	 * Normal timeout, the client simply was inactive for too long.
 	 */
-	public final static int NORMAL = 1;
+	public final static int NORMAL = 2;
 
 	/**
 	 * The client actively disconnected it's last TCP socket. This will not work
 	 * correctly if the server is placed behind a proxy.
 	 */
-	public final static int FORCED = 2;
+	public final static int FORCED = 3;
 
 	/**
 	 * Where in the filter chain is this service? Default position is first
@@ -71,14 +78,15 @@ public abstract class Service implements Chain.Link {
 
 	/**
 	 * If sessions are used and a session invokes a service, that service will
-	 * then be notified when and how that session was removed with a call to
-	 * this method.
+	 * then be notified before the session is added, so that you may assign your
+	 * own session cookie id; or removed, so that you may act upon both session
+	 * timeout and physical TCP disconnects.
 	 * 
 	 * @param session
 	 * @param type
 	 * @throws Exception
 	 */
-	public void exit(Session session, int type) throws Exception {
+	public void session(Session session, int type) throws Exception {
 	}
 
 	/**

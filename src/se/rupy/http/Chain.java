@@ -41,14 +41,13 @@ class Chain extends LinkedList {
 		return null;
 	}
 
-	void filter(Event event) throws Event, Exception {
+	void filter(Daemon daemon, Event event) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
 			service.filter(event);
-			Session session = event.session();
-			
-			if (session != null) {
-				session.add(service);
+
+			if (daemon.timeout > 0) {
+				event.session(service);
 			}
 		}
 	}
@@ -56,7 +55,7 @@ class Chain extends LinkedList {
 	void exit(Session session, int type) throws Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
-			service.exit(session, type);
+			service.session(session, type);
 		}
 	}
 

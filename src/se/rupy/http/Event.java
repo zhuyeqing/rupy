@@ -176,11 +176,6 @@ public class Event extends Throwable implements Chain.Link {
 
 	void read() throws IOException {
 		query.headers();
-
-		if (daemon.timeout > 0) {
-			session(query.header("cookie"), this);
-		}
-
 		remote = address();
 
 		if (!content() && !service()) {
@@ -235,7 +230,7 @@ public class Event extends Throwable implements Chain.Link {
 			return false;
 
 		try {
-			chain.filter(this);
+			chain.filter(daemon, this);
 		} catch (Failure f) {
 			throw f;
 		} catch (Event e) {
@@ -314,7 +309,6 @@ public class Event extends Throwable implements Chain.Link {
 
 			if (session != null) {
 				session.remove(this);
-				System.out.println("FORCED REMOVE");
 			}
 
 			log(e);
@@ -323,31 +317,45 @@ public class Event extends Throwable implements Chain.Link {
 		}
 	}
 
-	final void session(String cookie, Event event) {
-		String session = cookie(cookie, "session");
+	final void session(Service service) {
+		String key = cookie(query.header("cookie"), "key");
 
-		if (this.session != null) {
-			this.session = (Session) daemon.session().get(session);
+		if (key != null) {
+			session = (Session) daemon.session().get(key);
 		}
 
-		log((this.session == null ? "new" : "old") + " cookie " + session,
-				VERBOSE);
+		if (session != null) {
+			log("old key " + key, VERBOSE);
 
-		if (this.session != null) {
-			this.session.add(event);
-			this.session.touch();
+			session.add(this);
+			session.touch();
+
 			return;
 		}
 
-		do {
-			session = random(daemon.cookie);
-		} while (daemon.session().get(session) != null);
+		session = new Session(daemon);
 
-		this.session = new Session(session);
-		this.session.add(event);
+		session.add(service);
+		session.add(this);
+
+		session.key(key);
+
+		try {
+			service.session(session, Service.CREATE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (session.key() == null) {
+			do {
+				key = random(daemon.cookie);
+			} while (daemon.session().get(key) != null);
+			session.key(key);
+		}
 
 		synchronized (daemon.session()) {
-			daemon.session().put(session, this.session);
+			log("new key " + session.key(), VERBOSE);
+			daemon.session().put(session.key(), session);
 		}
 	}
 

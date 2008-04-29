@@ -372,6 +372,20 @@ public class Deploy extends Service {
 		return total;
 	}
 
+	/**
+	 * <pre>
+	 * &lt;target name="deploy"&gt;
+	 * &lt;java fork="yes" 
+	 *     classname="se.rupy.http.Deploy" 
+	 *     classpath="http.jar"&gt;
+     *      &lt;arg line="localhost:8000"/&gt;&lt;!-- any host:port --&gt;
+     *      &lt;arg line="service.jar"/&gt;&lt;!-- your application jar --&gt;
+     *      &lt;arg line="secret"/&gt;&lt;!-- see run.bat and run.sh --&gt;
+     * &lt;/java&gt;
+     * &lt;/target&gt;
+     * </pre>
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		if (args.length > 2) {
 			try {

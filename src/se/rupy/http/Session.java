@@ -1,17 +1,20 @@
 package se.rupy.http;
 
 public class Session {
+	private Daemon daemon;
 	private Chain service;
 	private Chain event;
 	private Object value;
 	private boolean set;
-	private String key;
-	private long date;
+	private String key, domain;
+	private long date, expires;
 
-	Session(String key) {
+	Session(Daemon daemon) {
+		this.daemon = daemon;
+		
 		service = new Chain();
 		event = new Chain();
-		this.key = key;
+		
 		touch();
 	}
 
@@ -37,9 +40,7 @@ public class Session {
 			service.exit(this, Service.NORMAL);
 			return true;
 		} else {
-			event.session(null);
 			boolean found = this.event.remove(event);
-
 			if (this.event.isEmpty() && found) {
 				service.exit(this, Service.FORCED);
 				return true;
@@ -57,8 +58,49 @@ public class Session {
 		this.set = set;
 	}
 
+	long expires() {
+		return expires;
+	}
+
+	void expires(long expires) {
+		this.expires = expires;
+	}
+
 	public String key() {
 		return key;
+	}
+
+	void key(String key) {
+		this.key = key;
+		set = false;
+	}
+	
+	public String domain() {
+		return domain;
+	}
+	
+	/**
+	 * Set the key you wish to store in the clients cookie here, together with
+	 * the expire date. You can only set one at the time and it will be for the
+	 * path=/;
+	 * 
+	 * @param key
+	 * @param expires
+	 */
+	public void key(String key, String domain, long expires) {
+		if(key == null)
+			return;
+		
+		synchronized (daemon.session()) {
+			daemon.session().remove(this.key);
+			this.key = key;
+			daemon.session().put(key, this);
+		}
+		
+		this.domain = domain;
+		this.expires = expires;
+		
+		set = false;
 	}
 
 	public Object value() {
