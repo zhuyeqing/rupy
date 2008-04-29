@@ -102,7 +102,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		reply.event().interest(Event.READ);
-		
+
 		length = 0;
 		init = false;
 	}
@@ -118,7 +118,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Server: Rupy/0.2 (beta)" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
-		wrote(("Connection: Keep-Alive" + EOL).getBytes());
 
 		if (length > -1) {
 			wrote(("Content-Length: " + length + EOL).getBytes());
@@ -133,15 +132,26 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		if (reply.event().session() != null && !reply.event().session().set()) {
-			wrote(("Cache-Control: private" + EOL).getBytes());
-			wrote(("Set-Cookie: session=" + reply.event().session().key()
-					+ "; path=/" + EOL).getBytes());
+			Session session = reply.event().session();
+			String cookie = "Set-Cookie: key="
+					+ reply.event().session().key()
+					+ ";"
+					+ (session.expires() > 0 ? " expires="
+							+ reply.event().DATE.format(new Date(session
+									.expires())) + ";" : "")
+					+ (session.domain() != null ? " domain=" + session.domain()
+							+ ";" : "") + " path=/;";
+
+			wrote((cookie + EOL).getBytes());
 
 			reply.event().session().set(true);
+			reply.event().log(cookie, Event.DEBUG);
 		}
 
 		if (reply.event().close()) {
-			wrote(("Connection: close" + EOL).getBytes());
+			wrote(("Connection: Close" + EOL).getBytes());
+		} else {
+			wrote(("Connection: Keep-Alive" + EOL).getBytes());
 		}
 
 		HashMap headers = reply.headers();

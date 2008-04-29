@@ -3,9 +3,10 @@ package se.rupy.http;
 import java.io.*;
 import java.net.*;
 
-public class Test implements Runnable {
+class Test implements Runnable {
 	static String original = "lib/activation.jar";
 	static String copy = "copy.jar";
+	static boolean done;
 
 	File file;
 	String host;
@@ -47,9 +48,8 @@ public class Test implements Runnable {
 				save("Asynchronous", in);
 			}
 		} catch (ConnectException ce) {
-			System.out
-					.println("Connection failed, is there a server running on "
-							+ host + "?");
+			System.out.println("Connection failed, is there a server on "
+					+ host + "?");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,13 +71,19 @@ public class Test implements Runnable {
 			return path;
 		}
 
-		public void exit(Session session, int type) {
-			if (type == 1) {
+		public void session(Session session, int type) {
+			if (type == Service.CREATE) {
+				if (!done) {
+					System.out.println("Session successful.");
+					done = true;
+				}
+			} else if (type == Service.NORMAL) {
 				System.out.println("Timeout successful.");
 				new File(copy).delete();
 				System.exit(0);
-			} else if (type == 2)
+			} else { // FORCED, Sometimes you get it, all is good! ;P
 				System.out.println("Socket closed.");
+			}
 		}
 
 		public void filter(Event event) throws Event, Exception {
