@@ -77,7 +77,7 @@ class Test implements Runnable {
 					System.out.println("Session successful.");
 					done = true;
 				}
-			} else if (type == Service.NORMAL) {
+			} else if (type == Service.TIMEOUT) {
 				System.out.println("Timeout successful.");
 				new File(copy).delete();
 				System.exit(0);

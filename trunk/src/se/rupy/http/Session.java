@@ -37,12 +37,12 @@ public class Session {
 	boolean remove(Event event) throws Exception {
 		if (event == null) {
 			this.event.clear();
-			service.exit(this, Service.NORMAL);
+			service.exit(this, Service.TIMEOUT);
 			return true;
 		} else {
 			boolean found = this.event.remove(event);
 			if (this.event.isEmpty() && found) {
-				service.exit(this, Service.FORCED);
+				service.exit(this, Service.DISCONNECT);
 				return true;
 			}
 		}
