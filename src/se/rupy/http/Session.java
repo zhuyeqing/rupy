@@ -11,10 +11,10 @@ public class Session {
 
 	Session(Daemon daemon) {
 		this.daemon = daemon;
-		
+
 		service = new Chain();
 		event = new Chain();
-		
+
 		touch();
 	}
 
@@ -50,11 +50,23 @@ public class Session {
 		return false;
 	}
 
-	boolean set() {
+	/**
+	 * Has the session cookie been set?
+	 * 
+	 * @return
+	 */
+	public boolean set() {
 		return set;
 	}
 
-	void set(boolean set) {
+	/**
+	 * Has the session cookie been set? false means no and therefore set it,
+	 * true means yea; so don't set it. A little backwards but you'll get used
+	 * to it! ;)
+	 * 
+	 * @param set
+	 */
+	public void set(boolean set) {
 		this.set = set;
 	}
 
@@ -74,11 +86,11 @@ public class Session {
 		this.key = key;
 		set = false;
 	}
-	
+
 	public String domain() {
 		return domain;
 	}
-	
+
 	/**
 	 * Set the key you wish to store in the clients cookie here, together with
 	 * the expire date. You can only set one at the time and it will be for the
@@ -88,18 +100,18 @@ public class Session {
 	 * @param expires
 	 */
 	public void key(String key, String domain, long expires) {
-		if(key == null)
+		if (key == null)
 			return;
-		
+
 		synchronized (daemon.session()) {
 			daemon.session().remove(this.key);
 			this.key = key;
 			daemon.session().put(key, this);
 		}
-		
+
 		this.domain = domain;
 		this.expires = expires;
-		
+
 		set = false;
 	}
 
