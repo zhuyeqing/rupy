@@ -286,13 +286,10 @@ public class Deploy extends Service {
 		}
 	}
 
-	public static interface Stream {
+	static interface Stream {
 		public String name();
-
 		public InputStream input();
-
 		public long length();
-
 		public long date();
 	}
 
