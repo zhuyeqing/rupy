@@ -13,7 +13,7 @@ _"Size matters, and less is more!"_
 
 *Agility*
 
- With rupy you can hot-replace a major refactoring, with dynamic classloading and session persistence, without _any_ kind of interruption for your end users directly from your development station to the live environment. Let your users do the QA!
+ With rupy you can hot-replace a major refactoring, if you serialize your session data, without _any_ kind of interruption for your end users directly from your development station to the live environment. Let your users do the QA!
 
 *Speed and Scalability*
 
