@@ -9,7 +9,7 @@ _"Size matters, and less is more!"_
 
 *Handcraft*
 
- Or why not build your own JSP compiler? During all times talented craftsmen have always built their own tools. We strongly recommend that you hire creative individuals instead of buying products, and 10 years of experience will tell you that the argument "It is quicker!" is *NOT* true!
+ Or why not build your own JSP compiler? During all times talented craftsmen have always built their own tools. We strongly recommend that you hire creative individuals instead of buying products, the argument "It is quicker!" is simply *NOT* true!
 
 *Agility*
 
