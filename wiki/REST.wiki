@@ -17,7 +17,7 @@ _"Size matters, and less is more!"_
 
 *Speed and Scalability*
 
- Why not have both, the low-level compact size inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
+ Why not have both, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
 *Design*
 
