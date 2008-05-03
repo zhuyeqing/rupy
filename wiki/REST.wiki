@@ -13,7 +13,7 @@ _"Size matters, and less is more!"_
 
 *Speed and Scalability*
 
- Why not have both, the compact size makes it easier to optimize the performance which still gracefully degrades thanks to non-blocking asynchronous IO.
+ Why not have both, the compact size makes it easier to optimize the performance which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
 *Design*
 
