@@ -322,22 +322,20 @@ public class Event extends Throwable implements Chain.Link {
 
 		if (key != null) {
 			session = (Session) daemon.session().get(key);
-		}
+			
+			if (session != null) {
+				log("old key " + key, VERBOSE);
 
-		if (session != null) {
-			log("old key " + key, VERBOSE);
+				session.add(this);
+				session.touch();
 
-			session.add(this);
-			session.touch();
-
-			return;
+				return;
+			}
 		}
 
 		session = new Session(daemon);
-
 		session.add(service);
 		session.add(this);
-
 		session.key(key);
 
 		try {
