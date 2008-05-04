@@ -11,7 +11,7 @@ import java.util.*;
  * 
  * @author marc
  */
-public class Query extends HashMap {
+public class Query extends Hash {
 	public final static int GET = 1 << 0, POST = 1 << 1;
 	private String path, version, parameters;
 	private HashMap headers;
@@ -142,36 +142,6 @@ public class Query extends HashMap {
 				put(key, value);
 			}
 		}
-	}
-
-	public int integer(String key) {
-		String value = (String) super.get(key);
-
-		if (value == null) {
-			return 0;
-		}
-
-		return Integer.parseInt(value);
-	}
-
-	public String parameter(String key) {
-		String value = (String) super.get(key);
-
-		if (value == null) {
-			return "";
-		}
-
-		return value;
-	}
-
-	public boolean bool(String key) {
-		String value = (String) super.get(key);
-
-		if (value == null) {
-			return false;
-		}
-
-		return true;
 	}
 
 	void done() throws IOException {
