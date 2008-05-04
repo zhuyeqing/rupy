@@ -204,10 +204,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 			}
 		} catch (IOException e) {
 			Failure.chain(e);
+		} catch (Exception e) {
+			throw new IOException(e.getMessage());
 		}
 	}
 
-	void internal(boolean debug) throws IOException {
+	void internal(boolean debug) throws Exception {
 		ByteBuffer out = reply.event().worker().out();
 
 		if (out.remaining() < size) {
@@ -236,7 +238,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	public void flush() throws IOException {
 		reply.event().log("flush " + length, Event.DEBUG);
-		internal(true);
+		try {
+			internal(true);
+		} catch (Exception e) {
+			throw new IOException(e.getMessage());
+		}
 	}
 
 	public int fill(boolean debug) throws IOException {

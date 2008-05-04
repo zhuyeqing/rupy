@@ -1,10 +1,12 @@
 package se.rupy.http;
 
+import java.util.*;
+
 public class Session {
+	private HashMap values;
 	private Daemon daemon;
 	private Chain service;
 	private Chain event;
-	private Object value;
 	private boolean set;
 	private String key, domain;
 	private long date, expires;
@@ -12,6 +14,7 @@ public class Session {
 	Session(Daemon daemon) {
 		this.daemon = daemon;
 
+		values = new HashMap();
 		service = new Chain();
 		event = new Chain();
 
@@ -53,7 +56,7 @@ public class Session {
 	/**
 	 * Has the session cookie been set?
 	 * 
-	 * @return
+	 * @return has the cookie BEEN set.
 	 */
 	public boolean set() {
 		return set;
@@ -115,8 +118,8 @@ public class Session {
 		set = false;
 	}
 
-	public Object value() {
-		return value;
+	public Object get(Object key) {
+		return values.get(key);
 	}
 
 	/**
@@ -124,10 +127,11 @@ public class Session {
 	 * ClassCastException if you re-deploy the application. We advise to only
 	 * store bootclasspath loaded classes here.
 	 * 
+	 * @param key
 	 * @param value
 	 */
-	public void value(Object value) {
-		this.value = value;
+	public void put(Object key, Object value) {
+		values.put(key, value);
 	}
 
 	public long date() {
