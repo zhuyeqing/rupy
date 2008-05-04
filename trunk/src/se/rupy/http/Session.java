@@ -2,8 +2,14 @@ package se.rupy.http;
 
 import java.util.*;
 
-public class Session {
-	private HashMap values;
+/**
+ * If you save a class that is hot-deployed here it will throw a
+ * ClassCastException if you re-deploy the application. We advise to only store
+ * bootclasspath loaded classes in the session.
+ * 
+ * @author Marc
+ */
+public class Session extends Hash {
 	private Daemon daemon;
 	private Chain service;
 	private Chain event;
@@ -14,7 +20,6 @@ public class Session {
 	Session(Daemon daemon) {
 		this.daemon = daemon;
 
-		values = new HashMap();
 		service = new Chain();
 		event = new Chain();
 
@@ -116,22 +121,6 @@ public class Session {
 		this.expires = expires;
 
 		set = false;
-	}
-
-	public Object get(Object key) {
-		return values.get(key);
-	}
-
-	/**
-	 * If you save a class that is hot-deployed here it will throw a
-	 * ClassCastException if you re-deploy the application. We advise to only
-	 * store bootclasspath loaded classes here.
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public void put(Object key, Object value) {
-		values.put(key, value);
 	}
 
 	public long date() {

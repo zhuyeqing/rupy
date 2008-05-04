@@ -153,10 +153,10 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	/**
-	 * @return same as {@link Query#parameter(String)}.
+	 * @return same as {@link Query#string(String)}.
 	 */
-	public String parameter(String key) {
-		return query.parameter(key);
+	public String string(String key) {
+		return query.string(key);
 	}
 
 	/**
