@@ -276,7 +276,7 @@ public class Event extends Throwable implements Chain.Link {
 		}
 	}
 
-	int block(Block block) throws IOException {
+	int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
 
 		register();
@@ -293,7 +293,7 @@ public class Event extends Throwable implements Chain.Link {
 			worker.snooze(daemon.delay);
 		}
 
-		throw new IOException("IO timeout.");
+		throw new Exception("IO timeout.");
 	}
 
 	interface Block {

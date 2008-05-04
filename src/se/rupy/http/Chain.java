@@ -44,11 +44,12 @@ class Chain extends LinkedList {
 	void filter(Daemon daemon, Event event) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
-			service.filter(event);
-
+			
 			if (daemon.timeout > 0) {
 				event.session(service);
 			}
+			
+			service.filter(event);
 		}
 	}
 
