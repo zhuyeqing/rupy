@@ -360,6 +360,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			}
+			else {
+				reply.event().log("nothing to flush", Event.DEBUG);
+			}
 
 			super.flush();
 		}
