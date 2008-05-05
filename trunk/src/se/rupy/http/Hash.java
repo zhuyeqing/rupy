@@ -17,7 +17,14 @@ public class Hash extends HashMap {
 		throw new ClassCastException();
 	}
 
-	public boolean bool(String key) {
+	/**
+	 * Returns the boolean value, with a twist though 
+	 * since the parameter is true is it's key is present.
+	 * @param key
+	 * @param exist
+	 * @return if the parameter is true or exists
+	 */
+	public boolean bool(String key, boolean exist) {
 		Object value = super.get(key);
 
 		if (value == null) {
@@ -25,7 +32,7 @@ public class Hash extends HashMap {
 		} else if (value instanceof Boolean) {
 			return ((Boolean) value).booleanValue();
 		} else if (value instanceof String) {
-			return Boolean.parseBoolean((String) value);
+			return (exist ? true : Boolean.parseBoolean((String) value));
 		}
 
 		throw new ClassCastException();
