@@ -39,7 +39,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 					Event.DEBUG);
 
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
-
+		reply.event().interest(Event.WRITE);
+		init = true;
+		
 		if (chunk) {
 			/*
 			 * TODO: What am I doing wrong?
@@ -69,10 +71,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 				array = new ByteArrayOutputStream();
 			}
 		}
-
-		reply.event().interest(Event.WRITE);
-
-		init = true;
 	}
 
 	void end() throws IOException {
@@ -168,7 +166,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		wrote(EOL.getBytes());
-		flush();
+		//flush();
 		length = 0;
 	}
 
@@ -361,7 +359,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				}
 			}
 			else {
-				reply.event().log("nothing to flush", Event.DEBUG);
+				reply.event().log("nothing to flush? " + count, Event.DEBUG);
 			}
 
 			super.flush();
