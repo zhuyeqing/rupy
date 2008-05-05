@@ -139,21 +139,21 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	/**
-	 * @return same as {@link Query#integer(String)}.
+	 * @return same as {@link Hash#integer(String)}.
 	 */
 	public int integer(String key) {
 		return query.integer(key);
 	}
 
 	/**
-	 * @return same as {@link Query#bool(String)}.
+	 * @return same as {@link Hash#bool(String, boolean)}.
 	 */
 	public boolean bool(String key) {
-		return query.bool(key);
+		return query.bool(key, true);
 	}
 
 	/**
-	 * @return same as {@link Query#string(String)}.
+	 * @return same as {@link Hash#string(String)}.
 	 */
 	public String string(String key) {
 		return query.string(key);
