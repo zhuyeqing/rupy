@@ -269,15 +269,18 @@ public class Daemon implements Runnable {
 						if (key.isAcceptable()) {
 							// TODO: Event pool?
 							event = new Event(this, key, index++);
+							event.log("accept ---");
 						} else if (key.isReadable() || key.isWritable()) {
+							key.interestOps(0);
+							
 							event = (Event) key.attachment();
 							Worker worker = event.worker();
 
 							if (debug) {
 								if (key.isReadable())
-									event.log("readable ---");
+									event.log("read ---");
 								if (key.isWritable())
-									event.log("writable ---");
+									event.log("write ---");
 							}
 
 							if (worker == null) {
@@ -285,8 +288,6 @@ public class Daemon implements Runnable {
 							} else {
 								worker.wakeup();
 							}
-
-							key.interestOps(0);
 						}
 					}
 				}

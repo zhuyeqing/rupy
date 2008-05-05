@@ -257,12 +257,14 @@ public class Event extends Throwable implements Chain.Link {
 
 	void register() throws IOException {
 		if (interest != key.interestOps()) {
+			log((interest == READ ? "read" : "write") + " prereg " + interest + " " + key.interestOps() + " " + key.readyOps(), DEBUG);
 			key = channel.register(key.selector(), interest, this);
+			log((interest == READ ? "read" : "write") + " postreg " + interest + " " + key.interestOps() + " " + key.readyOps(), DEBUG);
 		}
 
 		key.selector().wakeup();
 
-		log((interest == READ ? "read" : "write") + " interest ", DEBUG);
+		log((interest == READ ? "read" : "write") + " wakeup", DEBUG);
 	}
 
 	void register(int interest) {
