@@ -2,6 +2,11 @@ package se.rupy.http;
 
 import java.util.HashMap;
 
+/**
+ * Convenience class to avoid casting and parsing everywhere.
+ * 
+ * @author marc
+ */
 public class Hash extends HashMap {
 	public int integer(String key) {
 		Object value = super.get(key);
@@ -19,7 +24,7 @@ public class Hash extends HashMap {
 
 	/**
 	 * Returns the boolean value, with a twist though 
-	 * since the parameter is true is it's key is present.
+	 * since a parameter is true if its key is present.
 	 * @param key
 	 * @param exist
 	 * @return if the parameter is true or exists

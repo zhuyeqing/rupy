@@ -174,7 +174,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	public Deploy.Stream content(String path) {
+	Deploy.Stream content(String path) {
 		synchronized (this.content) {
 			return (Deploy.Stream) this.content.get(path);
 		}
