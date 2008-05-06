@@ -95,8 +95,20 @@ public class Hash extends HashMap {
 		return value;
 	}
 	
+	public void put(String key,long value) {
+		super.put(key, new Long(value));
+	}
+	
 	public void put(String key, int value) {
 		super.put(key, new Integer(value));
+	}
+	
+	public void put(String key, short value) {
+		super.put(key, new Short(value));
+	}
+	
+	public void put(String key, byte value) {
+		super.put(key, new Byte(value));
 	}
 	
 	public void put(String key, boolean value) {
