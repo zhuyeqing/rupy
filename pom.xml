@@ -60,8 +60,8 @@
   <name>Rupy</name>
   <description>
     Weighing roughly 45KB, rupy is probably the smallest Java NIO HTTP server in the world. Rupy is inherently non-blocking asynchronous, which makes it the
-    ideal candidate for high concurrency real-time applications serving dynamic data. Tested with acme, rupy performs on average ~1300 requests per second
-    (RPS). To put that figure in perspective; acme doesn't use keep-alive, so that means 1300 unique TCP connections serving dynamic content per second! Thanks
+    ideal candidate for high concurrency real-time applications serving dynamic data. Tested with acme, rupy performs on average ~1500 requests per second.
+    To put that figure in perspective; acme doesn't use keep-alive, so that means 1500 unique TCP connections serving dynamic content per second! Thanks
     to NIO and an event queue to avoid selector trashing, this figure degrades gracefully under high concurrency.
   </description>
   <url>http://code.google.com/p/rupy</url>
