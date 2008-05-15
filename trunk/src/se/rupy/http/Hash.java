@@ -13,9 +13,15 @@ public class Hash extends HashMap {
 
 		if (value == null) {
 			return 0;
-		} else if (value instanceof Long) {
+		} else if(value instanceof Long) {
 			return ((Long) value).longValue();
-		} else if (value instanceof String) {
+		} else if (value instanceof Integer) {
+			return ((Integer) value).intValue();
+		} else if (value instanceof Short) {
+			return ((Short) value).shortValue();
+		} else if (value instanceof Byte) {
+			return ((Byte) value).byteValue();
+		} else if(value instanceof String) {
 			return Long.parseLong((String) value);
 		}
 
@@ -29,6 +35,10 @@ public class Hash extends HashMap {
 			return 0;
 		} else if (value instanceof Integer) {
 			return ((Integer) value).intValue();
+		} else if (value instanceof Short) {
+			return ((Short) value).shortValue();
+		} else if (value instanceof Byte) {
+			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
 			return Integer.parseInt((String) value);
 		}
@@ -41,8 +51,10 @@ public class Hash extends HashMap {
 
 		if (value == null) {
 			return 0;
-		} else if (value instanceof Integer) {
+		} else if (value instanceof Short) {
 			return ((Short) value).shortValue();
+		} else if (value instanceof Byte) {
+			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
 			return Short.parseShort((String) value);
 		}
@@ -55,7 +67,7 @@ public class Hash extends HashMap {
 
 		if (value == null) {
 			return 0;
-		} else if (value instanceof Integer) {
+		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
 			return Byte.parseByte((String) value);
