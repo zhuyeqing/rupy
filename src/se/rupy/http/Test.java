@@ -81,7 +81,10 @@ class Test implements Runnable {
 				System.out.println("Timeout successful.");
 				new File(copy).delete();
 				System.exit(0);
-			} else { // FORCED, Sometimes you get it, all is good! ;P
+			} else {
+				/* FORCED, HttpURLConnection timeout, 
+				 * has the time to happen sometimes.
+				 */
 				System.out.println("Socket closed.");
 			}
 		}
