@@ -15,9 +15,10 @@ import java.nio.channels.*;
  */
 
 public class Daemon implements Runnable {
-	int thread, port, cookie, size, index;
-	public boolean verbose, debug, test;
-	long timeout, delay;
+	public Properties properties;
+	public boolean verbose, debug;
+
+	int threads, timeout, cookie, delay, size, port;
 
 	private HashMap service, content, session;
 	private Chain workers, queue;
@@ -25,7 +26,8 @@ public class Daemon implements Runnable {
 	private String pass;
 
 	/**
-	 * Use this to start the daemon from your application.
+	 * Use this to start the daemon from your application. The parameters below
+	 * should be in the properties argument.
 	 * 
 	 * @param pass
 	 *            the pass used to deploy services via HTTP POST or null/"" to
@@ -49,24 +51,20 @@ public class Daemon implements Runnable {
 	 *            buffer sizes, chunk length and max header size! :P
 	 * @param verbose
 	 */
-	public Daemon(String pass, int port, int threads, int timeout, int cookie,
-			int delay, int size, boolean verbose, boolean debug) {
-		this(pass, port, threads, timeout, cookie, delay, size, verbose, debug,
-				false);
-	}
+	public Daemon(Properties properties) {
+		this.properties = properties;
 
-	Daemon(String pass, int port, int thread, int timeout, int cookie,
-			int delay, int size, boolean verbose, boolean debug, boolean test) {
-		this.pass = pass;
-		this.port = port;
-		this.thread = thread;
-		this.timeout = timeout * 1000;
-		this.cookie = cookie < 4 ? 4 : cookie;
-		this.delay = delay * 1000;
-		this.size = size;
-		this.verbose = verbose;
-		this.debug = debug;
-		this.test = test;
+		threads = Integer.parseInt(properties.getProperty("threads", "5"));
+		cookie = Integer.parseInt(properties.getProperty("cookie", "4"));
+		port = Integer.parseInt(properties.getProperty("port", "8000"));
+		timeout = Integer.parseInt(properties.getProperty("timeout", "300")) * 1000;
+		delay = Integer.parseInt(properties.getProperty("delay", "5")) * 1000;
+		size = Integer.parseInt(properties.getProperty("size", "1024"));
+		
+		verbose = properties.getProperty("verbose", "false").toLowerCase()
+				.equals("true");
+		debug = properties.getProperty("debug", "false").toLowerCase().equals(
+				"true");
 
 		if (!verbose) {
 			debug = false;
@@ -82,7 +80,10 @@ public class Daemon implements Runnable {
 		try {
 			new Heart();
 
-			for (int i = 0; i < thread; i++) {
+			int threads = Integer.parseInt(properties.getProperty("threads",
+					"5"));
+
+			for (int i = 0; i < threads; i++) {
 				workers.add(new Worker(this, i));
 			}
 
@@ -212,6 +213,8 @@ public class Daemon implements Runnable {
 	}
 
 	public void run() {
+		String pass = properties.getProperty("pass", "");
+
 		try {
 			selector = Selector.open();
 			ServerSocketChannel server = ServerSocketChannel.open();
@@ -225,11 +228,11 @@ public class Daemon implements Runnable {
 			if (verbose)
 				System.out.println("daemon started\n" + "- pass       \t"
 						+ pass + "\n" + "- port       \t" + port + "\n"
-						+ "- worker     \t" + thread + " thread"
-						+ (thread > 1 ? "s" : "") + "\n" + "- timeout    \t"
+						+ "- worker(s)  \t" + threads + " thread"
+						+ (threads > 1 ? "s" : "") + "\n" + "- session    \t"
+						+ cookie + " characters\n" + "- timeout    \t"
 						+ decimal.format((double) timeout / 60000) + " minute"
 						+ (timeout / 60000 > 1 ? "s" : "") + "\n"
-						+ "- session    \t" + cookie + " characters\n"
 						+ "- IO timeout \t" + delay / 1000 + " second"
 						+ (delay / 1000 > 1 ? "s" : "") + "\n"
 						+ "- IO buffer  \t" + size + " bytes\n"
@@ -246,13 +249,15 @@ public class Daemon implements Runnable {
 				}
 			}
 
-			if (test)
+			if (properties.getProperty("test", "false").toLowerCase().equals(
+					"true"))
 				test();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
+		int index = 0;
 		Event event = null;
 		SelectionKey key = null;
 
@@ -272,7 +277,7 @@ public class Daemon implements Runnable {
 							event.log("accept ---");
 						} else if (key.isReadable() || key.isWritable()) {
 							key.interestOps(0);
-							
+
 							event = (Event) key.attachment();
 							Worker worker = event.worker();
 
@@ -367,6 +372,9 @@ public class Daemon implements Runnable {
 				try {
 					Thread.sleep(1000);
 
+					int timeout = Integer.parseInt(properties.getProperty(
+							"timeout", "300")) * 1000;
+
 					synchronized (session) {
 						Iterator it = session.values().iterator();
 
@@ -392,7 +400,7 @@ public class Daemon implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Properties flags = new Properties();
+		Properties properties = new Properties();
 
 		for (int i = 0; i < args.length; i++) {
 			String flag = args[i];
@@ -408,35 +416,19 @@ public class Daemon implements Runnable {
 			}
 
 			if (value == null) {
-				flags.put(flag.substring(1).toLowerCase(), "true");
+				properties.put(flag.substring(1).toLowerCase(), "true");
 			} else {
-				flags.put(flag.substring(1).toLowerCase(), value);
+				properties.put(flag.substring(1).toLowerCase(), value);
 			}
 		}
 
-		if (flags.getProperty("help", "false").toLowerCase().equals("true")) {
+		if (properties.getProperty("help", "false").toLowerCase()
+				.equals("true")) {
 			System.out.println("Usage: java -jar http.jar -verbose");
 			return;
 		}
 
-		String pass = flags.getProperty("pass", "");
-
-		int port = Integer.parseInt(flags.getProperty("port", "8000"));
-		int threads = Integer.parseInt(flags.getProperty("threads", "5"));
-		int timeout = Integer.parseInt(flags.getProperty("timeout", "300"));
-		int cookie = Integer.parseInt(flags.getProperty("cookie", "4"));
-		int delay = Integer.parseInt(flags.getProperty("delay", "5"));
-		int size = Integer.parseInt(flags.getProperty("size", "1024"));
-
-		boolean verbose = flags.getProperty("verbose", "false").toLowerCase()
-				.equals("true");
-		boolean debug = flags.getProperty("debug", "false").toLowerCase()
-				.equals("true");
-		boolean test = flags.getProperty("test", "false").toLowerCase().equals(
-				"true");
-
-		new Daemon(pass, port, threads, timeout, cookie, delay, size, verbose,
-				debug, test);
+		new Daemon(properties);
 	}
 
 	/*
