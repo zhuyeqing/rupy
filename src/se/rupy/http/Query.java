@@ -12,6 +12,7 @@ import java.util.*;
  * @author marc
  */
 public class Query extends Hash {
+	static URLDecoder decoder = new URLDecoder();
 	public final static int GET = 1 << 0, POST = 1 << 1;
 	private String path, version, parameters;
 	private HashMap headers;
@@ -122,8 +123,6 @@ public class Query extends Hash {
 			return;
 		}
 
-		parameters = new URLDecoder().decode(parameters, "UTF-8");
-
 		input.event().log(parameters, Event.VERBOSE);
 
 		if (parameters != null) {
@@ -136,7 +135,7 @@ public class Query extends Hash {
 				String value = "";
 
 				if (equ.hasMoreTokens()) {
-					value = equ.nextToken();
+					value = decoder.decode(equ.nextToken(), "UTF-8");
 				}
 
 				put(key, value);
