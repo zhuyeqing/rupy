@@ -27,6 +27,8 @@ public class Query extends Hash {
 	}
 
 	void headers() throws IOException {
+		headers.clear();
+		
 		String line = input.line();
 		StringTokenizer http = new StringTokenizer(line, " ");
 		String method = http.nextToken();
@@ -144,11 +146,10 @@ public class Query extends Hash {
 	}
 
 	void done() throws IOException {
-		headers.clear();
 		input.end();
 		modified = 0;
 	}
-
+	
 	public int method() {
 		return method;
 	}
