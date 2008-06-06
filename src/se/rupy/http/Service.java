@@ -94,8 +94,7 @@ public abstract class Service implements Chain.Link {
 	 * 
 	 * @param event
 	 * @throws Event
-	 *             if you want to break the filter chain and disconnect the
-	 *             client
+	 *             if you want to break the filter chain
 	 * @throws Exception
 	 */
 	public abstract void filter(Event event) throws Event, Exception;
