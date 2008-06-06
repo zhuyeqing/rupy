@@ -9,10 +9,14 @@ import java.util.HashMap;
  */
 public class Hash extends HashMap {
 	public long large(String key) {
+		return large(key, 0);
+	}
+	
+	public long large(String key, long fail) {
 		Object value = super.get(key);
 
 		if (value == null) {
-			return 0;
+			return fail;
 		} else if(value instanceof Long) {
 			return ((Long) value).longValue();
 		} else if (value instanceof Integer) {
@@ -28,11 +32,15 @@ public class Hash extends HashMap {
 		throw new ClassCastException();
 	}
 	
-	public int integer(String key) {
+	public int medium(String key) {
+		return medium(key, 0);
+	}
+	
+	public int medium(String key, int fail) {
 		Object value = super.get(key);
 
 		if (value == null) {
-			return 0;
+			return fail;
 		} else if (value instanceof Integer) {
 			return ((Integer) value).intValue();
 		} else if (value instanceof Short) {
@@ -47,10 +55,14 @@ public class Hash extends HashMap {
 	}
 	
 	public short small(String key) {
+		return small(key, (short) 0);
+	}
+	
+	public short small(String key, short fail) {
 		Object value = super.get(key);
 
 		if (value == null) {
-			return 0;
+			return fail;
 		} else if (value instanceof Short) {
 			return ((Short) value).shortValue();
 		} else if (value instanceof Byte) {
@@ -63,10 +75,14 @@ public class Hash extends HashMap {
 	}
 
 	public byte tiny(String key) {
+		return tiny(key, (byte) 0);
+	}
+	
+	public byte tiny(String key, byte fail) {
 		Object value = super.get(key);
 
 		if (value == null) {
-			return 0;
+			return fail;
 		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
@@ -83,7 +99,7 @@ public class Hash extends HashMap {
 	 * @param exist
 	 * @return if the parameter is true or exists
 	 */
-	public boolean bool(String key, boolean exist) {
+	public boolean binary(String key, boolean exist) {
 		Object value = super.get(key);
 
 		if (value == null) {
