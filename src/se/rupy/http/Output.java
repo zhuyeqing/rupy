@@ -114,7 +114,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
 				.getBytes());
-		wrote(("Server: Rupy/0.2 (beta)" + EOL).getBytes());
+		wrote(("Server: Rupy/0.2.1 (Beta)" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 
 		if (length > -1) {
@@ -194,6 +194,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					off += remaining;
 					len -= remaining;
+					
+					//reply.event().log("wrote off " + off + " len " + len + " remaining " + remaining, Event.DEBUG);
+					
+					/* oh, nasty little bugger, added this when a page 
+					 * with exact multiple of IO buffer length was sent 
+					 * and the trailing empty chunked line blocked the 
+					 * server at 99% CPU!
+					 */
+					remaining = out.remaining();
 				}
 
 				if (len > 0) {
@@ -217,7 +226,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				int sent = fill(debug);
 
 				if (debug) {
-					reply.event().log("sent " + sent, Event.DEBUG);
+					reply.event().log("sent " + sent + " remaining " + out.remaining(), Event.DEBUG);
 				}
 
 				if (sent == 0) {
