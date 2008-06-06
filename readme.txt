@@ -43,7 +43,7 @@ APPLICATION REMOTE HOT DEPLOYMENT:
 
 VERSION:
 
-    0.1
+    0.1 - Alpha
 
     - Asynchronous response.
     - Added OP_WRITE so that the server can send 
@@ -57,7 +57,7 @@ VERSION:
     - 500 Internal Server Error.
     - Static content to disk.
     
-    0.2
+    0.2 - Beta
     
     - Fixed a ton of bugs and refactored most classes.
     - Added multipathed services, so that you can deploy 
@@ -66,5 +66,15 @@ VERSION:
     - Added javadoc ant task.
     - Queue events when all workers are busy to avoid 
       selector thrashing.
+
+      0.2.1 - Apollo
+
+      - Fixes an extremely rare but fatal bug which left 
+        the server throttling at 99% CPU.
+      - Also includes some helper method additions and 
+        re-factorings to Hash.
+      - Daemon now takes Properties, so you can use a 
+        properties text file!
+      - Probably some other small things here and there.
 
 have fun!

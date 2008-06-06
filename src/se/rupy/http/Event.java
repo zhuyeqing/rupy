@@ -146,10 +146,10 @@ public class Event extends Throwable implements Chain.Link {
 	}
 	
 	/**
-	 * @return same as {@link Query#integer(String)}.
+	 * @return same as {@link Query#medium(String)}.
 	 */
-	public int integer(String key) {
-		return query.integer(key);
+	public int medium(String key) {
+		return query.medium(key);
 	}
 	
 	/**
@@ -167,10 +167,10 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	/**
-	 * @return same as {@link Query#bool(String, boolean)}.
+	 * @return same as {@link Query#binary(String, boolean)}.
 	 */
-	public boolean bool(String key) {
-		return query.bool(key, true);
+	public boolean binary(String key) {
+		return query.binary(key, true);
 	}
 
 	/**
