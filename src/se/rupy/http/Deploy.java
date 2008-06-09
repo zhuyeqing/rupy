@@ -92,7 +92,7 @@ public class Deploy extends Service {
 			date = file.lastModified();
 
 			try {
-				JarInputStream in = new Input(new FileInputStream(file));
+				JarInputStream in = new JarInput(new FileInputStream(file));
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				JarEntry entry = null;
 
@@ -195,16 +195,6 @@ public class Deploy extends Service {
 
 		public HashSet service() {
 			return service;
-		}
-
-		public static class Input extends JarInputStream {
-			public Input(InputStream in) throws IOException {
-				super(in);
-			}
-
-			public void close() {
-				// geez
-			}
 		}
 	}
 
@@ -345,6 +335,12 @@ public class Deploy extends Service {
 		}
 	}
 
+	public static String name(String name) {
+		name = name.substring(0, name.indexOf("."));
+		name = name.replace("/", ".");
+		return name;
+	}
+	
 	public static int pipe(InputStream in, OutputStream out) throws IOException {
 		return pipe(in, out, 1024, 0);
 	}
@@ -368,7 +364,21 @@ public class Deploy extends Service {
 		}
 		return total;
 	}
+	
+	/**
+	 * Avoids the jar stream being cutoff.
+	 * @author marc.larue
+	 */
+	public static class JarInput extends JarInputStream {
+		public JarInput(InputStream in) throws IOException {
+			super(in);
+		}
 
+		public void close() {
+			// geez
+		}
+	}
+	
 	/**
 	 * <pre>
 	 * &lt;target name="deploy"&gt;

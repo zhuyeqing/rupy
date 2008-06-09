@@ -187,7 +187,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	Chain get(String path) {
+	public Chain get(String path) {
 		synchronized (this.service) {
 			return (Chain) this.service.get(path);
 		}
