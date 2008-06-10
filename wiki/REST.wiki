@@ -5,7 +5,7 @@ _"Size matters, and less is more!"_
 
 *Modularity* 
 
- Ideally, you should be able to choose your tools and you should also be able to fix or replace a broken tool with a new working one quickly. That's what modular software is all about, like binary lego. If you need a JSP compiler, _choose_ a JSP compiler!
+ Ideally, you should be able to choose your tools and you should also be able to fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. If you need a JSP compiler, _choose_ a JSP compiler!
 
 *Creativity*
 
