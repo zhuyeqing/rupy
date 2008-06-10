@@ -15,7 +15,7 @@ _"Size matters, and less is more!"_
 
 *Retrofitting*
 
- Rupy is SOS (Simple Open-Source), you should be able to understand the codebase enough to modify it in a coffee-break.
+ Rupy is SOS (Simple Open-Source), you should be able to understand the codebase enough to comfortably modify it in a coffee-break.
 
 *Agility*
 
