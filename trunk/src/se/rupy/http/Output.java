@@ -29,6 +29,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 	public void print(String s) throws IOException {
 		write(s.getBytes("UTF-8"));
 	}
+	
+	public void print(int i) throws IOException {
+		write(String.valueOf(i).getBytes("UTF-8"));
+	}
 
 	void init() throws IOException {
 		if (init) {
