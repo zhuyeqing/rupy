@@ -9,7 +9,7 @@ _"Size matters, and less is more!"_
 
 *Creativity*
 
- Or why not build your own JSP compiler? Actually we would rather generate Java from HTML and precompile; so we built a [http://rupy.googlecode.com/files/page-0.1.zip generator]  to try and prove our point.
+ Or why not build your own JSP compiler? Actually we would rather generate Java from HTML and precompile; so we built a [http://rupy.googlecode.com/files/page-0.1.zip generator]  to try and prove this point.
 
  In general we recommend that you be creative about how to solve _your_ technical challenges without the use of multi-purpose high-level tools.
 
