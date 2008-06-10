@@ -34,10 +34,3 @@ _"Size matters, and less is more!"_
   * Full Servlet Web containers are overkill for many applications. 
 
  Source: http://www.restlet.org/about/introduction
-
-*BTW, what rupy is not*
-
- Just to check off the buzzwords:
-
-  * MVC or any other pattern that limits the developer!
-  * XML spagetti configuration.
