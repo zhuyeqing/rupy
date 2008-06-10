@@ -13,9 +13,9 @@ _"Size matters, and less is more!"_
 
  During all times craftsmen have built their own tools. We strongly recommend that you be creative about how to solve _your_ technical challenges without the use of multi-purpose high-level tools.
 
-*Retrofitting*
+*Simplicity*
 
- Rupy is SOS (Simple Open-Source), you should be able to understand the codebase enough to comfortably modify it in a coffee-break.
+ Rupy is SOS (Simple Open-Source), you should be able to understand the codebase enough to comfortably modify it in a coffee-break. Retro-fitting of desired features should never provoke any hesitation.
 
 *Agility*
 
