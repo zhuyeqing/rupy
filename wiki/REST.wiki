@@ -15,7 +15,7 @@ _"Size matters, and less is more!"_
 
 *Retrofitting*
 
- You know thoose frustrating moments when you wish the product you're using had a generic feature that would be very simple to implement but oh, so painful to fit in there because of mere practicalities, poof... gone!
+ You know those frustrating moments when you wish the product you're using had a generic feature that would be very simple to implement but is too painful to fit in the codebase because of collaterals (knowledge and setup mainly). Rupy is SOS (Simple Open-Source), you should understand the codebase enough to modify it in a coffee-break.
 
 *Agility*
 
