@@ -15,7 +15,7 @@ _"Size matters, and less is more!"_
 
 *Simplicity*
 
- Rupy is SOS (Simple Open-Source), you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Super-fitting of desired features should never provoke any hesitation.
+ Rupy is SOS (Simple Open-Source) you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Super-fitting of desired features should be hesitationless.
 
 *Agility*
 
