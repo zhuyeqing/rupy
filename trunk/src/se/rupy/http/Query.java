@@ -19,7 +19,7 @@ public class Query extends Hash {
 	private Input input;
 	private int length, method;
 	private long modified;
-	private boolean done;
+	private boolean done, parsed;
 
 	Query(Event event) throws IOException {
 		headers = new HashMap();
@@ -28,7 +28,7 @@ public class Query extends Hash {
 
 	void headers() throws IOException {
 		headers.clear();
-		
+
 		String line = input.line();
 		StringTokenizer http = new StringTokenizer(line, " ");
 		String method = http.nextToken();
@@ -37,6 +37,7 @@ public class Query extends Hash {
 			this.method = GET;
 		} else if (method.equalsIgnoreCase("post")) {
 			this.method = POST;
+			parsed = false;
 		} else {
 			throw new IOException("Unsupported method.");
 		}
@@ -47,6 +48,7 @@ public class Query extends Hash {
 		if (index > 0) {
 			path = get.substring(0, index);
 			parameters = get.substring(index + 1);
+			parsed = false;
 		} else {
 			path = get;
 			parameters = null;
@@ -97,7 +99,8 @@ public class Query extends Hash {
 		clear();
 
 		input.event().log(
-				method + " " + (length > -1 ? "" + length : "*") + " " + path,
+				method + " " + (length > -1 ? "" + length : "*") + " " + path
+				+ (parameters != null ? "?" + parameters : ""),
 				Event.VERBOSE);
 		input.init();
 	}
@@ -113,16 +116,17 @@ public class Query extends Hash {
 	}
 
 	void parse(int size) throws Exception {
-		if (parameters == null) {
-			if (method == POST && length > 0) {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				if (Deploy.pipe(input, out, size, size) > 0)
-					parameters = new String(out.toByteArray());
-			} else {
-				return;
-			}
-		} else if (!isEmpty()) {
+		if (parsed) {
 			return;
+		}
+		else {
+			parsed = true;
+		}
+		
+		if (method == POST) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			if (Deploy.pipe(input, out, size, size) > 0)
+				parameters = new String(out.toByteArray());
 		}
 
 		input.event().log(parameters, Event.VERBOSE);
@@ -149,7 +153,7 @@ public class Query extends Hash {
 		input.end();
 		modified = 0;
 	}
-	
+
 	public int method() {
 		return method;
 	}

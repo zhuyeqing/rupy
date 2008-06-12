@@ -119,6 +119,8 @@ public class Daemon implements Runnable {
 
 			Service old = (Service) chain.put(service);
 
+			//System.out.println("initing " + path + " " + chain);
+			
 			try {
 				service.init();
 			} catch (Exception e) {
@@ -145,6 +147,8 @@ public class Daemon implements Runnable {
 			if (chain != null) {
 				old = (Service) chain.del(service);
 			}
+			
+			//System.out.println("doing " + path + " " + chain);
 		}
 
 		try {
