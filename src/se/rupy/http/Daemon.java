@@ -20,7 +20,7 @@ public class Daemon implements Runnable {
 
 	int threads, timeout, cookie, delay, size, port;
 
-	private HashMap service, content, session;
+	private HashMap archive, service, session;
 	private Chain workers, queue;
 	private Selector selector;
 	private String pass;
@@ -60,18 +60,18 @@ public class Daemon implements Runnable {
 		timeout = Integer.parseInt(properties.getProperty("timeout", "300")) * 1000;
 		delay = Integer.parseInt(properties.getProperty("delay", "5")) * 1000;
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
-		
+
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
-				.equals("true");
+		.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(
-				"true");
+		"true");
 
 		if (!verbose) {
 			debug = false;
 		}
 
+		archive = new HashMap();
 		service = new HashMap();
-		content = new HashMap();
 		session = new HashMap();
 
 		workers = new Chain();
@@ -81,7 +81,7 @@ public class Daemon implements Runnable {
 			new Heart();
 
 			int threads = Integer.parseInt(properties.getProperty("threads",
-					"5"));
+			"5"));
 
 			for (int i = 0; i < threads; i++) {
 				workers.add(new Worker(this, i));
@@ -101,106 +101,124 @@ public class Daemon implements Runnable {
 		return selector;
 	}
 
-	public void add(Service service) {
+	public void chain(Deploy.Archive archive) throws Exception {
+		Deploy.Archive old = (Deploy.Archive) this.archive.get(archive.name());
+
+		if(old != null) {
+			Iterator it = old.service().iterator();
+
+			while (it.hasNext()) {
+				Service service = (Service) it.next();
+
+				try {
+					service.done();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		Iterator it = archive.service().iterator();
+
+		while (it.hasNext()) {
+			Service service = (Service) it.next();
+			add(archive.chain(), service);
+		}
+
+		this.archive.put(archive.name(), archive);
+	}
+
+	public void add(Service service) throws Exception {
+		add(this.service, service);
+	}
+
+	void add(HashMap folder, Service service) throws Exception {
 		StringTokenizer paths = new StringTokenizer(service.path(), ":");
 
 		while (paths.hasMoreTokens()) {
 			String path = paths.nextToken();
-			Chain chain = null;
-
-			synchronized (this.service) {
-				chain = (Chain) this.service.get(path);
-			}
+			Chain chain = (Chain) folder.get(path);
 
 			if (chain == null) {
 				chain = new Chain();
-				this.service.put(path, chain);
+				folder.put(path, chain);
 			}
 
 			Service old = (Service) chain.put(service);
-
-			//System.out.println("initing " + path + " " + chain);
 			
+			if(old != null) {
+				throw new Exception(service.getClass().getName() + " with path '" + path + "' and index [" + service.index() + "] is conflicting with " + old.getClass().getName() + " for the same path and index.");
+			}
+			
+			if (verbose)
+				System.out.println("init " + path + " " + chain);
+
 			try {
 				service.init();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
-		if (verbose)
-			System.out.println("init " + service.path());
 	}
 
-	public void remove(Service service) {
-		Service old = null;
-		StringTokenizer paths = new StringTokenizer(service.path(), ":");
+	void verify(Deploy.Archive archive) throws Exception {
+		Iterator it = archive.chain().keySet().iterator();
 
-		while (paths.hasMoreTokens()) {
-			String path = paths.nextToken();
-			Chain chain = null;
-
-			synchronized (this.service) {
-				chain = (Chain) this.service.get(path);
-			}
-
-			if (chain != null) {
-				old = (Service) chain.del(service);
-			}
+		while(it.hasNext()) {
+			String path = (String) it.next();
+			Chain chain = (Chain) archive.chain().get(path);
 			
-			//System.out.println("doing " + path + " " + chain);
-		}
+			for(int i = 0; i < chain.size(); i++) {
+				Service service = (Service) chain.get(i);
 
-		try {
-			if (old != null) {
-				old.done();
-
-				if (verbose)
-					System.out.println("done " + service.path());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	void add(HashMap content) {
-		Iterator it = content.keySet().iterator();
-
-		while (it.hasNext()) {
-			String name = (String) it.next();
-			Deploy.Stream stream = (Deploy.Stream) content.get(name);
-
-			if (verbose)
-				System.out.println(name + " " + stream.length());
-
-			synchronized (this.content) {
-				this.content.put(name, stream);
+				if(i != service.index()) {
+					this.archive.remove(archive.name());
+					throw new Exception(service.getClass().getName() + " with path '" + path + "' has index [" + service.index() + "] which is too high.");
+				}
 			}
 		}
 	}
 
 	Deploy.Stream content(String path) {
-		synchronized (this.content) {
-			return (Deploy.Stream) this.content.get(path);
+		synchronized (this.archive) {
+			Iterator it = this.archive.values().iterator();
+
+			while (it.hasNext()) {
+				Deploy.Archive archive = (Deploy.Archive) it.next();
+				Deploy.Stream stream = (Deploy.Stream) archive.content().get(path);
+
+				if(stream != null) {
+					return stream;
+				}
+			}
 		}
+
+		return null;
 	}
 
-	boolean remove(String path) {
+	public Chain chain(String path) {
 		synchronized (this.service) {
-			return this.service.remove(path) != null;
-		}
-	}
+			Chain chain = (Chain) this.service.get(path);
 
-	public Chain get(String path) {
-		synchronized (this.service) {
-			return (Chain) this.service.get(path);
+			if(chain != null) {
+				return chain;
+			}
 		}
-	}
 
-	public Service get(String path, int index) {
-		synchronized (this.service) {
-			return (Service) get(path).get(index);
+		synchronized (this.archive) {
+			Iterator it = this.archive.values().iterator();
+
+			while(it.hasNext()) {
+				Deploy.Archive archive = (Deploy.Archive) it.next();
+				Chain chain = (Chain) archive.chain().get(path);
+
+				if(chain != null) {
+					return chain;
+				}
+			}
 		}
+
+		return null;
 	}
 
 	synchronized Event next(Worker worker) {
@@ -254,7 +272,7 @@ public class Daemon implements Runnable {
 			}
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
-					"true"))
+			"true"))
 				test();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -439,7 +457,7 @@ public class Daemon implements Runnable {
 	 * Test cases are performed in parallel with one worker thread, in order to
 	 * detect synchronous errors.
 	 */
-	void test() throws IOException {
+	void test() throws Exception {
 		System.out.println("Parallel testing begins in one second:");
 		System.out.println("- OP_READ, OP_WRITE and selector wakeup.");
 		System.out.println("- Asynchronous non-blocking reply.");
