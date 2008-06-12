@@ -17,7 +17,17 @@ class Chain extends LinkedList {
 			} else {
 				add(link.index(), link);
 			}
-		} else {
+		} else if(size() > 0) {
+			Link old = (Link) super.get(size() - 1);
+			
+			if(old.index() > link.index()) {
+				add(size() - 1, link);
+			}
+			else {
+				add(link);
+			}
+		}
+		else {
 			add(link);
 		}
 
