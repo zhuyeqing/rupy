@@ -67,7 +67,7 @@ VERSION:
     - Queue events when all workers are busy to avoid 
       selector thrashing.
 
-      0.2.1 - Apollo
+      0.2.1
 
       - Fixes an extremely rare but fatal bug which left 
         the server throttling at 99% CPU.
@@ -76,5 +76,10 @@ VERSION:
       - Daemon now takes Properties, so you can use a 
         properties text file!
       - Probably some other small things here and there.
+      
+      0.2.2
+
+      - Refactored the deployment of archives completely.
+      - Fixed a couple of bugs with the query parameters.
 
 have fun!

@@ -5,25 +5,30 @@ import java.util.*;
 class Chain extends LinkedList {
 	private int next;
 
-	/*
-	 * smart add to maintain positional integrity and return old link
-	 */
 	Link put(Link link) {
-		if (size() > link.index()) {
-			Link old = (Link) super.get(link.index());
-
-			if (link.index() == old.index()) {
-				return (Link) set(link.index(), link);
-			} else {
-				add(link.index(), link);
-			}
-		} else if(size() > 0) {
-			Link old = (Link) super.get(size() - 1);
+		if(size() > 0) {
+			int index = 0;
+			Link old = null;
 			
-			if(old.index() > link.index()) {
-				add(size() - 1, link);
+			if(size() > link.index()) {
+				index = link.index();
+				old = (Link) super.get(link.index());
 			}
 			else {
+				index = size() - 1;
+				old = (Link) super.get(index);
+
+				while(old.index() > link.index() && index > 0) {
+					index--;
+					old = (Link) super.get(index);
+				}
+			}
+			
+			if (link.index() < old.index()) {
+				add(index, link);
+			} else if (link.index() == old.index()) {
+				return (Link) set(index, link);
+			} else {
 				add(link);
 			}
 		}
@@ -34,31 +39,14 @@ class Chain extends LinkedList {
 		return null;
 	}
 
-	/*
-	 * smart remove to maintain positional integrity and return old link
-	 */
-	Link del(Link link) {
-		if (size() > link.index()) {
-			Link old = (Link) super.get(link.index());
-
-			if (link.index() == old.index()) {
-				return (Link) super.remove(link.index());
-			}
-		} else {
-			remove(link);
-		}
-
-		return null;
-	}
-
 	void filter(Daemon daemon, Event event) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
-			
+
 			if (daemon.timeout > 0) {
 				event.session(service);
 			}
-			
+
 			service.filter(event);
 		}
 	}

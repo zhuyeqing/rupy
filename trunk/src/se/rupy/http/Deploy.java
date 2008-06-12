@@ -56,38 +56,26 @@ public class Deploy extends Service {
 		event.reply().output().print("Application '" + deploy + "' deployed.");
 	}
 
-	public static String deploy(Daemon daemon, File file) {
-		try {
-			Loader loader = new Loader(daemon, file);
-			HashMap content = loader.content();
-			Iterator it = loader.service().iterator();
+	public static String deploy(Daemon daemon, File file) throws Exception {
+		Archive archive = new Archive(daemon, file);
 
-			daemon.add(content);
+		daemon.chain(archive);
+		daemon.verify(archive);
 
-			while (it.hasNext()) {
-				Service service = (Service) it.next();
-				daemon.remove(service);
-				daemon.add(service);
-			}
-
-			return loader.name();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return archive.name();
 	}
 
-	static class Loader extends ClassLoader {
-		HashSet service;
-		HashMap content;
-		String name;
-		long date;
+	static class Archive extends ClassLoader {
+		private HashSet service;
+		private HashMap content;
+		private HashMap chain;
+		private String name;
+		private long date;
 
-		Loader(Daemon daemon, File file) {
+		Archive(Daemon daemon, File file) {
 			service = new HashSet();
 			content = new HashMap();
-
+			chain = new HashMap();
 			name = file.getName();
 			date = file.lastModified();
 
@@ -137,7 +125,7 @@ public class Deploy extends Service {
 					Service service = (Service) it.next();
 
 					StringTokenizer paths = new StringTokenizer(service.path(),
-							":");
+					":");
 
 					while (paths.hasMoreTokens()) {
 						String path = paths.nextToken();
@@ -170,7 +158,7 @@ public class Deploy extends Service {
 
 			if (service != null
 					&& service.getCanonicalName()
-							.equals("se.rupy.http.Service")) {
+					.equals("se.rupy.http.Service")) {
 				this.service.add((Service) small.clazz.newInstance());
 			}
 		}
@@ -189,6 +177,10 @@ public class Deploy extends Service {
 			return date;
 		}
 
+		public HashMap chain() {
+			return chain;
+		}
+		
 		public HashMap content() {
 			return content;
 		}
@@ -340,13 +332,13 @@ public class Deploy extends Service {
 		name = name.replace("/", ".");
 		return name;
 	}
-	
+
 	public static int pipe(InputStream in, OutputStream out) throws IOException {
 		return pipe(in, out, 1024, 0);
 	}
 
 	public static int pipe(InputStream in, OutputStream out, int length)
-			throws IOException {
+	throws IOException {
 		return pipe(in, out, length, 0);
 	}
 
@@ -364,7 +356,7 @@ public class Deploy extends Service {
 		}
 		return total;
 	}
-	
+
 	/**
 	 * Avoids the jar stream being cutoff.
 	 * @author marc.larue
@@ -378,19 +370,19 @@ public class Deploy extends Service {
 			// geez
 		}
 	}
-	
+
 	/**
 	 * <pre>
 	 * &lt;target name="deploy"&gt;
 	 * &lt;java fork="yes" 
 	 *     classname="se.rupy.http.Deploy" 
 	 *     classpath="http.jar"&gt;
-     *      &lt;arg line="localhost:8000"/&gt;&lt;!-- any host:port --&gt;
-     *      &lt;arg line="service.jar"/&gt;&lt;!-- your application jar --&gt;
-     *      &lt;arg line="secret"/&gt;&lt;!-- see run.bat and run.sh --&gt;
-     * &lt;/java&gt;
-     * &lt;/target&gt;
-     * </pre>
+	 *      &lt;arg line="localhost:8000"/&gt;&lt;!-- any host:port --&gt;
+	 *      &lt;arg line="service.jar"/&gt;&lt;!-- your application jar --&gt;
+	 *      &lt;arg line="secret"/&gt;&lt;!-- see run.bat and run.sh --&gt;
+	 * &lt;/java&gt;
+	 * &lt;/target&gt;
+	 * </pre>
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -402,8 +394,8 @@ public class Deploy extends Service {
 				System.out.println(Client.toString(in));
 			} catch (ConnectException ce) {
 				System.out
-						.println("Connection failed, is there a server running on "
-								+ args[0] + "?");
+				.println("Connection failed, is there a server running on "
+						+ args[0] + "?");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
