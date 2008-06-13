@@ -101,7 +101,7 @@ public class Daemon implements Runnable {
 		return selector;
 	}
 
-	public void chain(Deploy.Archive archive) throws Exception {
+	void chain(Deploy.Archive archive) throws Exception {
 		Deploy.Archive old = (Deploy.Archive) this.archive.get(archive.name());
 
 		if(old != null) {
@@ -132,16 +132,16 @@ public class Daemon implements Runnable {
 		add(this.service, service);
 	}
 
-	void add(HashMap folder, Service service) throws Exception {
+	void add(HashMap map, Service service) throws Exception {
 		StringTokenizer paths = new StringTokenizer(service.path(), ":");
 
 		while (paths.hasMoreTokens()) {
 			String path = paths.nextToken();
-			Chain chain = (Chain) folder.get(path);
+			Chain chain = (Chain) map.get(path);
 
 			if (chain == null) {
 				chain = new Chain();
-				folder.put(path, chain);
+				map.put(path, chain);
 			}
 
 			Service old = (Service) chain.put(service);
@@ -196,7 +196,7 @@ public class Daemon implements Runnable {
 		return null;
 	}
 
-	public Chain chain(String path) {
+	public Chain get(String path) {
 		synchronized (this.service) {
 			Chain chain = (Chain) this.service.get(path);
 
@@ -260,14 +260,15 @@ public class Daemon implements Runnable {
 						+ "- IO buffer  \t" + size + " bytes\n"
 						+ "- debug      \t" + debug);
 
-			if (pass != null && pass.length() > 0)
+			if (pass != null && pass.length() > 0) {
 				add(new Deploy("app/", pass));
 
-			File[] app = new File("app/").listFiles(new Filter());
+				File[] app = new File("app/").listFiles(new Filter());
 
-			if (app != null) {
-				for (int i = 0; i < app.length; i++) {
-					Deploy.deploy(this, app[i]);
+				if (app != null) {
+					for (int i = 0; i < app.length; i++) {
+						Deploy.deploy(this, app[i]);
+					}
 				}
 			}
 

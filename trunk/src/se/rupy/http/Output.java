@@ -4,6 +4,10 @@ import java.io.*;
 import java.nio.*;
 import java.util.*;
 
+/**
+ * Handles the outgoing response data.
+ * @author marc.larue
+ */
 public abstract class Output extends OutputStream implements Event.Block {
 	private final static String EOL = "\r\n";
 	private ByteArrayOutputStream array;
@@ -26,6 +30,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 		write((s + EOL).getBytes("UTF-8"));
 	}
 
+	public void println(int i) throws IOException {
+		write((String.valueOf(i) + EOL).getBytes("UTF-8"));
+	}
+	
 	public void print(String s) throws IOException {
 		write(s.getBytes("UTF-8"));
 	}
