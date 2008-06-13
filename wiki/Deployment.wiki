@@ -3,9 +3,9 @@
 
 The classloader in rupy is very simplistic, so you have to be careful how you write your hot-deployable code and what you store in the session. We recommend that you don't store hot-deployable classes with the {{{Session.put(key, value)}}} method, since {{{Session.get(key)}}} will throw a {{{ClassCastException}}} if you hot-deploy your application.
 
-*Think small, reap benefits!*
+*Think small*
 
-We serialze our beans to byte arrays that we store in the session, which is quick and saves memory. The advantage of hot-deploying only the application code and putting all libs in the bootclasspath, is that your server is much less likely to run out of memory after many hot-deployments!
+We serialze our beans to byte arrays that we store in the session, which is quick and saves memory. Another advantage is to hot-deploy only the application code and putting all libs in the bootclasspath; this way your server is much less likely to run out of memory after many hot-deployments!
 
 *Common problems* (in order of popularity)
 
