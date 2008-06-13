@@ -361,7 +361,7 @@ public class Deploy extends Service {
 	 * Avoids the jar stream being cutoff.
 	 * @author marc.larue
 	 */
-	public static class JarInput extends JarInputStream {
+	static class JarInput extends JarInputStream {
 		public JarInput(InputStream in) throws IOException {
 			super(in);
 		}

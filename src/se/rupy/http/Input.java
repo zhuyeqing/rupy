@@ -3,6 +3,10 @@ package se.rupy.http;
 import java.io.*;
 import java.nio.*;
 
+/**
+ * Handles the incoming request data.
+ * @author marc.larue
+ */
 public abstract class Input extends InputStream implements Event.Block {
 	private boolean chunk, init;
 	private byte[] one = new byte[1];
