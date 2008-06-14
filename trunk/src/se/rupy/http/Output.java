@@ -30,16 +30,24 @@ public abstract class Output extends OutputStream implements Event.Block {
 		write((s + EOL).getBytes("UTF-8"));
 	}
 
-	public void println(int i) throws IOException {
-		write((String.valueOf(i) + EOL).getBytes("UTF-8"));
+	public void println(long l) throws IOException {
+		write((String.valueOf(l) + EOL).getBytes("UTF-8"));
+	}
+	
+	public void println(boolean b) throws IOException {
+		write((String.valueOf(b) + EOL).getBytes("UTF-8"));
 	}
 	
 	public void print(String s) throws IOException {
 		write(s.getBytes("UTF-8"));
 	}
 	
-	public void print(int i) throws IOException {
-		write(String.valueOf(i).getBytes("UTF-8"));
+	public void print(long l) throws IOException {
+		write(String.valueOf(l).getBytes("UTF-8"));
+	}
+	
+	public void print(boolean b) throws IOException {
+		write(String.valueOf(b).getBytes("UTF-8"));
 	}
 
 	void init() throws IOException {
