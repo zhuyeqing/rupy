@@ -5,7 +5,7 @@ The classloader in rupy is very simplistic, so you have to be careful how you wr
 
 *Think small*
 
-We serialze our beans to byte arrays that we store in the session, which is quick and saves memory. Another advantage is to hot-deploy only the application code and putting all libs in the bootclasspath; this way your server is much less likely to run out of memory after many hot-deployments!
+We serialze our beans to byte arrays that we store in the session, which is quick and saves memory. If you hot-deploy only the application code and add your libs to the bootclasspath your server runs out of memory later rather than sooner!
 
 *Common problems* (in order of popularity)
 
