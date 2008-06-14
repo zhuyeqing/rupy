@@ -72,79 +72,75 @@ public class Deploy extends Service {
 		private String name;
 		private long date;
 
-		Archive(Daemon daemon, File file) {
+		Archive(Daemon daemon, File file) throws Exception {
 			service = new HashSet();
 			content = new HashMap();
 			chain = new HashMap();
 			name = file.getName();
 			date = file.lastModified();
 
-			try {
-				JarInputStream in = new JarInput(new FileInputStream(file));
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				JarEntry entry = null;
+			JarInputStream in = new JarInput(new FileInputStream(file));
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			JarEntry entry = null;
 
-				Vector classes = new Vector();
-				Vector content = new Vector();
+			Vector classes = new Vector();
+			Vector content = new Vector();
 
-				while ((entry = in.getNextJarEntry()) != null) {
-					if (entry.getName().endsWith(".class")) {
-						pipe(in, out);
-						byte[] data = out.toByteArray();
-						out.reset();
+			while ((entry = in.getNextJarEntry()) != null) {
+				if (entry.getName().endsWith(".class")) {
+					pipe(in, out);
+					byte[] data = out.toByteArray();
+					out.reset();
 
-						String name = name(entry.getName());
-						classes.add(new Small(name, data));
-					} else if (!entry.isDirectory()) {
-						content.add(new Big("/" + entry.getName(), in, date));
+					String name = name(entry.getName());
+					classes.add(new Small(name, data));
+				} else if (!entry.isDirectory()) {
+					content.add(new Big("/" + entry.getName(), in, date));
+				}
+			}
+
+			int length = classes.size();
+			Small small = null;
+
+			while (classes.size() > 0) {
+				try {
+					small = (Small) classes.elementAt(0);
+					classes.removeElement(small);
+					instantiate(small);
+				} catch (NoClassDefFoundError e) {
+					// the superclass has still not been loaded yet
+					classes.addElement(small);
+					length--;
+					if (length < 0) {
+						throw e;
 					}
 				}
+			}
 
-				int length = classes.size();
-				Small small = null;
+			Stream stream = null;
+			Iterator it = service.iterator();
 
-				while (classes.size() > 0) {
-					try {
-						small = (Small) classes.elementAt(0);
-						classes.removeElement(small);
-						instantiate(small);
-					} catch (NoClassDefFoundError e) {
-						// the superclass has still not been loaded yet
-						classes.addElement(small);
-						length--;
-						if (length < 0) {
-							throw e;
+			while (it.hasNext()) {
+				Service service = (Service) it.next();
+
+				StringTokenizer paths = new StringTokenizer(service.path(),
+						":");
+
+				while (paths.hasMoreTokens()) {
+					String path = paths.nextToken();
+
+					Enumeration en = content.elements();
+
+					while (en.hasMoreElements()) {
+						stream = (Stream) en.nextElement();
+
+						// so that deploys can't overwrite each others
+						// content
+						if (stream.name().startsWith(path)) {
+							this.content.put(stream.name(), stream);
 						}
 					}
 				}
-
-				Stream stream = null;
-				Iterator it = service.iterator();
-
-				while (it.hasNext()) {
-					Service service = (Service) it.next();
-
-					StringTokenizer paths = new StringTokenizer(service.path(),
-					":");
-
-					while (paths.hasMoreTokens()) {
-						String path = paths.nextToken();
-
-						Enumeration en = content.elements();
-
-						while (en.hasMoreElements()) {
-							stream = (Stream) en.nextElement();
-
-							// so that deploys can't overwrite each others
-							// content
-							if (stream.name().startsWith(path)) {
-								this.content.put(stream.name(), stream);
-							}
-						}
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 
@@ -180,7 +176,7 @@ public class Deploy extends Service {
 		public HashMap chain() {
 			return chain;
 		}
-		
+
 		public HashMap content() {
 			return content;
 		}
