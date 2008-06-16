@@ -251,7 +251,7 @@ public class Event extends Throwable implements Chain.Link {
 			return false;
 
 		try {
-			chain.filter(daemon, this);
+			chain.filter(this);
 		} catch (Failure f) {
 			throw f;
 		} catch (Event e) {

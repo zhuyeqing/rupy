@@ -2,7 +2,7 @@ package se.rupy.http;
 
 import java.util.*;
 
-class Chain extends LinkedList {
+public class Chain extends LinkedList {
 	private int next;
 
 	Link put(Link link) {
@@ -39,11 +39,11 @@ class Chain extends LinkedList {
 		return null;
 	}
 
-	void filter(Daemon daemon, Event event) throws Event, Exception {
+	public void filter(Event event) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
 
-			if (daemon.timeout > 0) {
+			if (event.daemon().timeout > 0) {
 				event.session(service);
 			}
 
