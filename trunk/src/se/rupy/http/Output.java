@@ -26,8 +26,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 		return chunk;
 	}
 
-	public void println(String s) throws IOException {
-		write((s + EOL).getBytes("UTF-8"));
+	public void println(Object o) throws IOException {
+		write((o.toString() + EOL).getBytes("UTF-8"));
 	}
 
 	public void println(long l) throws IOException {
@@ -38,8 +38,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 		write((String.valueOf(b) + EOL).getBytes("UTF-8"));
 	}
 	
-	public void print(String s) throws IOException {
-		write(s.getBytes("UTF-8"));
+	public void print(Object o) throws IOException {
+		write(o.toString().getBytes("UTF-8"));
 	}
 	
 	public void print(long l) throws IOException {
