@@ -8,11 +8,11 @@ import java.util.HashMap;
  * @author marc
  */
 public class Hash extends HashMap {
-	public long large(String key) {
-		return large(key, 0);
+	public long big(String key) {
+		return big(key, 0);
 	}
 	
-	public long large(String key, long fail) {
+	public long big(String key, long fail) {
 		Object value = super.get(key);
 
 		if (value == null) {
@@ -99,7 +99,7 @@ public class Hash extends HashMap {
 	 * @param exist
 	 * @return if the parameter is true or exists
 	 */
-	public boolean binary(String key, boolean exist) {
+	public boolean bit(String key, boolean exist) {
 		Object value = super.get(key);
 
 		if (value == null) {
