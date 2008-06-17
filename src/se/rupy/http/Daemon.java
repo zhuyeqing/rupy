@@ -62,9 +62,9 @@ public class Daemon implements Runnable {
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
 
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
-		.equals("true");
+				.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(
-		"true");
+				"true");
 
 		if (!verbose) {
 			debug = false;
@@ -81,7 +81,7 @@ public class Daemon implements Runnable {
 			new Heart();
 
 			int threads = Integer.parseInt(properties.getProperty("threads",
-			"5"));
+					"5"));
 
 			for (int i = 0; i < threads; i++) {
 				workers.add(new Worker(this, i));
@@ -104,7 +104,7 @@ public class Daemon implements Runnable {
 	void chain(Deploy.Archive archive) throws Exception {
 		Deploy.Archive old = (Deploy.Archive) this.archive.get(archive.name());
 
-		if(old != null) {
+		if (old != null) {
 			Iterator it = old.service().iterator();
 
 			while (it.hasNext()) {
@@ -145,11 +145,15 @@ public class Daemon implements Runnable {
 			}
 
 			Service old = (Service) chain.put(service);
-			
-			if(old != null) {
-				throw new Exception(service.getClass().getName() + " with path '" + path + "' and index [" + service.index() + "] is conflicting with " + old.getClass().getName() + " for the same path and index.");
+
+			if (old != null) {
+				throw new Exception(service.getClass().getName()
+						+ " with path '" + path + "' and index ["
+						+ service.index() + "] is conflicting with "
+						+ old.getClass().getName()
+						+ " for the same path and index.");
 			}
-			
+
 			if (verbose)
 				System.out.println("init " + path + " " + chain);
 
@@ -164,16 +168,18 @@ public class Daemon implements Runnable {
 	void verify(Deploy.Archive archive) throws Exception {
 		Iterator it = archive.chain().keySet().iterator();
 
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			String path = (String) it.next();
 			Chain chain = (Chain) archive.chain().get(path);
-			
-			for(int i = 0; i < chain.size(); i++) {
+
+			for (int i = 0; i < chain.size(); i++) {
 				Service service = (Service) chain.get(i);
 
-				if(i != service.index()) {
+				if (i != service.index()) {
 					this.archive.remove(archive.name());
-					throw new Exception(service.getClass().getName() + " with path '" + path + "' has index [" + service.index() + "] which is too high.");
+					throw new Exception(service.getClass().getName()
+							+ " with path '" + path + "' has index ["
+							+ service.index() + "] which is too high.");
 				}
 			}
 		}
@@ -185,9 +191,10 @@ public class Daemon implements Runnable {
 
 			while (it.hasNext()) {
 				Deploy.Archive archive = (Deploy.Archive) it.next();
-				Deploy.Stream stream = (Deploy.Stream) archive.content().get(path);
+				Deploy.Stream stream = (Deploy.Stream) archive.content().get(
+						path);
 
-				if(stream != null) {
+				if (stream != null) {
 					return stream;
 				}
 			}
@@ -200,7 +207,7 @@ public class Daemon implements Runnable {
 		synchronized (this.service) {
 			Chain chain = (Chain) this.service.get(path);
 
-			if(chain != null) {
+			if (chain != null) {
 				return chain;
 			}
 		}
@@ -208,11 +215,11 @@ public class Daemon implements Runnable {
 		synchronized (this.archive) {
 			Iterator it = this.archive.values().iterator();
 
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				Deploy.Archive archive = (Deploy.Archive) it.next();
 				Chain chain = (Chain) archive.chain().get(path);
 
-				if(chain != null) {
+				if (chain != null) {
 					return chain;
 				}
 			}
@@ -273,7 +280,7 @@ public class Daemon implements Runnable {
 			}
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
-			"true"))
+					"true"))
 				test();
 		} catch (Exception e) {
 			e.printStackTrace();
