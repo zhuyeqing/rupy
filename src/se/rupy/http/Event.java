@@ -141,8 +141,8 @@ public class Event extends Throwable implements Chain.Link {
 	/**
 	 * @return same as {@link Query#large(String)}.
 	 */
-	public long large(String key) {
-		return query.large(key);
+	public long big(String key) {
+		return query.big(key);
 	}
 	
 	/**
@@ -169,8 +169,8 @@ public class Event extends Throwable implements Chain.Link {
 	/**
 	 * @return same as {@link Query#binary(String, boolean)}.
 	 */
-	public boolean binary(String key) {
-		return query.binary(key, true);
+	public boolean bit(String key) {
+		return query.bit(key, true);
 	}
 
 	/**
