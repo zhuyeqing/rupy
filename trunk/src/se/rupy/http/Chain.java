@@ -5,37 +5,25 @@ import java.util.*;
 public class Chain extends LinkedList {
 	private int next;
 
+	/*
+	 * Dynamic size list with positional integrity. If anyone has a better
+	 * solution to this please tell me!
+	 */
 	Link put(Link link) {
-		if(size() > 0) {
-			int index = 0;
-			Link old = null;
+		for(int i = 0; i < size(); i++) {
+			Link tmp = (Link) super.get(i);
 			
-			if(size() > link.index()) {
-				index = link.index();
-				old = (Link) super.get(link.index());
+			if (link.index() == tmp.index()) {
+				return (Link) set(i, link);
 			}
-			else {
-				index = size() - 1;
-				old = (Link) super.get(index);
-
-				while(old.index() > link.index() && index > 0) {
-					index--;
-					old = (Link) super.get(index);
-				}
-			}
-			
-			if (link.index() < old.index()) {
-				add(index, link);
-			} else if (link.index() == old.index()) {
-				return (Link) set(index, link);
-			} else {
-				add(link);
+			else if (link.index() < tmp.index()) {
+				add(i, link);
+				return null;
 			}
 		}
-		else {
-			add(link);
-		}
-
+		
+		add(link);
+		
 		return null;
 	}
 
