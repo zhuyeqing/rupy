@@ -25,6 +25,8 @@ _"Size matters, and less is more!"_
 
  Why not have both, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
+If you are an experimental developer like me you will appreciate the code update roundtrip of a couple of seconds, I find that my mind always strays away from the task at hand of it takes more than that.
+
 *Design*
 
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
