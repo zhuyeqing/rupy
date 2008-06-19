@@ -11,7 +11,7 @@ _"Size matters, and less is more!"_
 
  Or why not build your own JSP compiler? Actually we figured that generating Java from HTML to services and precompiling before deploy would accelerate development; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
 
-_In general I recommend that you be creative about how to solve _your_ technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you'll enjoy your work more because you will actually lean something worthwhile, and at the same time you can solve problems at their origin instead of working with workarounds!_
+_In general I recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you'll enjoy your work more because you will actually lean something worthwhile, and at the same time you can solve problems at their origin instead of working with workarounds!_
 
 *Simplicity*
 
