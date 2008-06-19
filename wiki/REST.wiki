@@ -25,7 +25,7 @@ _"Size matters, and less is more!"_
 
  Why not have both, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
-_If you are an experimental developer like me, you will appreciate the code update roundtrip of a couple of seconds. I find that my mind often strays away from the task at hand if it takes more than that._
+_If you are an experimental developer like me, you will appreciate the compile-archive-deploy roundtrip of a couple of seconds. I find that my mind often strays away from the task at hand if it takes more than that._
 
 *Design*
 
