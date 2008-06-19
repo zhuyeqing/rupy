@@ -5,7 +5,9 @@ _"Size matters, and less is more!"_
 
 *Modularity* 
 
- Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. If you need a JSP compiler, _choose_ a JSP compiler!
+ Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego.
+
+_Of course one might argue that rupy is the opposite of modularity, since it doesent implement any API. But what I mean is modularity on top rupy, where you choose what tools you use so that your service only runs what it needs to run. If you need a JSP compiler, choose a JSP compiler!_
 
 *Creativity*
 
