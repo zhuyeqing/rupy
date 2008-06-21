@@ -11,7 +11,7 @@ _Rupy has executive modularity, not abstaction modularity, see last point._
 
 *Creativity*
 
- You want to write dynamic HTML? We figured that generating Java from HTML and precompiling before deployment would be faster than JSP; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
+ You want to write dynamic HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than serverside compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
 
 _In general I recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you might enjoy your work more when you actually learn something worthwhile, and at the same time you can solve problems at their origin instead of working around them!_
 
