@@ -7,8 +7,6 @@ _"Size matters, and less is more!"_
 
  Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego.
 
-_Rupy has executive modularity, not abstaction modularity, see last point._
-
 *Creativity*
 
  You want to write dynamic HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than serverside compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
