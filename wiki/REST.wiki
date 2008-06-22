@@ -19,7 +19,7 @@ _In general I recommend that you be creative about how to solve your technical c
 
 *Agility*
 
- With rupy you can hot-replace a major refactoring, if you serialize your session data, without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
+ With rupy you can hot-replace a major refactoring, if you serialize your session data (see [Deployment]), without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
 
 *Speed and Scalability*
 
