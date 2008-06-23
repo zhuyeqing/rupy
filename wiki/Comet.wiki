@@ -8,6 +8,8 @@ There are two ways to perform Ajax Push, one is called *long poll*, where the re
 
 Firewalls and proxies sometimes interrupt passive queries that linger for too long, so make sure your solution tears down and recreates (long poll) or sends keep-alive (stream) comet queries at regular intervalls. Another thing that isn't documented properly anywhere is that the only way to keep the site browsable while holding a Comet session is to use an <iframe>.
 
+23/06/08 EDIT: Currently Rupy only supports long poll, but we will be adding streaming in the next couple of days!
+
 This is an example of how you could wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
 {{{
 import se.rupy.http.*;
