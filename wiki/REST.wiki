@@ -15,7 +15,9 @@ _In general I recommend that you be creative about how to solve your technical c
 
 *Simplicity*
 
- Rupy is SOS (Simple Open-Source) you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+ Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+
+_Again, I encourage you to create simple solutions to complicated problems and take responsability and ownership of your solution instead of using off the shelf products that solve more than you need and in a often complicated way. For example avoiding web-services and using good old parameters is a good trick!_
 
 *Agility*
 
