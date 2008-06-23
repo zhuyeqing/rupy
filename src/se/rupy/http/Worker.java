@@ -3,7 +3,7 @@ package se.rupy.http;
 import java.nio.*;
 
 /**
- * Worker gets the job done. The worker holds the in/out buffers in order to
+ * Worker gets the job done. The worker holds the in/out/chunk buffers in order to
  * save resources, since the worker is assigned per event until a request is
  * completed.
  * 
@@ -12,6 +12,7 @@ import java.nio.*;
 public class Worker implements Runnable, Chain.Link {
 	private Daemon daemon;
 	private ByteBuffer in, out;
+	private byte[] chunk;
 	private Thread thread;
 	private Event event;
 	private int index;
@@ -40,6 +41,14 @@ public class Worker implements Runnable, Chain.Link {
 		return out;
 	}
 
+	byte[] chunk() {
+		if(chunk == null) {
+			chunk = new byte[daemon.size + Output.Chunked.OFFSET + 2];
+		}
+	
+		return chunk;
+	}
+	
 	void wakeup() {
 		synchronized (thread) {
 			thread.notify();
