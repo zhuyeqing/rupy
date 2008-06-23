@@ -296,16 +296,16 @@ public abstract class Output extends OutputStream implements Event.Block {
 	 * Borrowed from sun.net.httpserver.ChunkedOutputStream.java
 	 */
 	static class Chunked extends Output {
-		private static int OFFSET = 6;
+		public static int OFFSET = 6;
 		private int cursor = OFFSET, count = 0;
-		private byte[] chunk = new byte[size + OFFSET + 2];
+		//private byte[] chunk;
 
 		Chunked(Reply reply) throws IOException {
 			super(reply);
 		}
 
 		public void write(int b) throws IOException {
-			chunk[cursor++] = (byte) b;
+			reply.event().worker().chunk()[cursor++] = (byte) b;
 			count++;
 
 			if (count == size) {
@@ -322,7 +322,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 				wrote(b, off, len);
 				return;
 			}
-
+			
+			byte[] chunk = reply.event().worker().chunk();
 			int remain = size - count;
 
 			if (len > remain) {
@@ -354,6 +355,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		void write() throws IOException {
+			byte[] chunk = reply.event().worker().chunk();
 			char[] header = Integer.toHexString(count).toCharArray();
 			int length = header.length, start = 4 - length, cursor;
 
