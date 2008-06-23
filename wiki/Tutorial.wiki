@@ -1,5 +1,5 @@
 #summary The usual hello world example.
-#labels Phase-Implementation
+#labels Phase-Implementation,Featured
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
 import se.rupy.http.*;
