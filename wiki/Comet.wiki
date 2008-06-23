@@ -1,5 +1,5 @@
 #summary HTTP reply in real-time (Browser Ajax Push).
-#labels Phase-Implementation
+#labels Phase-Implementation,Featured
 First see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet]. 
 
 This is an example of how you could wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
