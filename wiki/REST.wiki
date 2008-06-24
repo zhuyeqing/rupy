@@ -1,5 +1,5 @@
 #summary Why yet another Java HTTP server?
-#labels Phase-Design
+#labels Phase-Design,Featured
 
 _"Size matters, and less is more!"_
 
