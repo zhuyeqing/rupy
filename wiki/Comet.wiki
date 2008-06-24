@@ -2,7 +2,7 @@
 #labels Phase-Implementation,Featured
 First see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet]. 
 
-Currently Rupy only supports _long poll_, though chunked transfer encoded _streaming_ should be easy to implement. We are still weighing the advantages, seen the [http://meteorserver.org/browser-techniques/ browser techniques] needed to enable streaming push. We will however release a small Comet tutorial package as soon as we get thing down.
+Currently Rupy only supports _long poll_, though chunked transfer encoded _streaming_ should be easy to implement. We are still weighing the advantages, seen the [http://meteorserver.org/browser-techniques/ browser techniques] needed to enable streaming push. We will however release a small Comet tutorial package as soon as we get things down.
 
 This is an example of how you could wakeup rupy so that it will assign a worker thread to write your reply asynchronously:
 {{{
