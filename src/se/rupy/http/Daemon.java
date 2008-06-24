@@ -319,7 +319,7 @@ public class Daemon implements Runnable {
 							}
 
 							if (worker == null) {
-								worker = employ(event, false);
+								worker = employ(event);
 							} else {
 								worker.wakeup();
 							}
@@ -338,7 +338,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	synchronized Worker employ(Event event, boolean write) {
+	synchronized Worker employ(Event event) {
 		workers.reset();
 		Worker worker = (Worker) workers.next();
 
@@ -370,10 +370,6 @@ public class Daemon implements Runnable {
 
 		if (debug)
 			System.out.println("worker " + worker.index() + " hired " + queue);
-
-		if (write) {
-			worker.write();
-		}
 
 		event.worker(worker);
 		worker.event(event);

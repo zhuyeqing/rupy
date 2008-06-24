@@ -135,7 +135,8 @@ public class Reply {
 		}
 
 		if (event.worker() == null) {
-			event.daemon().employ(event, true);
+			event.push(true);
+			event.daemon().employ(event);
 		} else {
 			throw new IOException("Reply still processing.");
 		}

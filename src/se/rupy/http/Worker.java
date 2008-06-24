@@ -16,7 +16,6 @@ public class Worker implements Runnable, Chain.Link {
 	private Thread thread;
 	private Event event;
 	private int index;
-	private boolean write;
 
 	Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
@@ -27,10 +26,6 @@ public class Worker implements Runnable, Chain.Link {
 
 		thread = new Thread(this);
 		thread.start();
-	}
-
-	void write() {
-		write = true;
 	}
 
 	ByteBuffer in() {
@@ -88,9 +83,9 @@ public class Worker implements Runnable, Chain.Link {
 		while (true) {
 			try {
 				if (event != null) {
-					if (write) {
+					if (event.push()) {
 						event.write();
-						write = false;
+						event.push(false);
 					} else {
 						event.read();
 					}

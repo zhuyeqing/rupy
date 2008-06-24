@@ -232,7 +232,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
-			throw new IOException(e.getMessage());
+			throw (IOException) new IOException().initCause(e);
 		}
 	}
 
@@ -268,7 +268,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		try {
 			internal(true);
 		} catch (Exception e) {
-			throw new IOException(e.getMessage());
+			throw (Failure) new Failure("No flush!").initCause(e);
 		}
 	}
 
@@ -281,6 +281,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 			remaining = out.remaining();
 		}
 
+		//System.out.println(reply);
+		//System.out.println(reply.event());
+		//System.out.println(reply.event().channel());
+		
 		int sent = reply.event().channel().write(out);
 
 		if (debug) {
