@@ -51,7 +51,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	private int index, interest;
 	private String remote;
-	private boolean close;
+	private boolean close, push;
 
 	Event(Daemon daemon, SelectionKey key, int index) throws IOException {
 		channel = ((ServerSocketChannel) key.channel()).accept();
@@ -325,6 +325,8 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect(Exception e) {
 		try {
+			e.printStackTrace();
+			
 			if (channel != null) {
 				channel.close();
 				channel = null;
@@ -417,6 +419,14 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	public String toString() {
-		return String.valueOf(index);
+		return String.valueOf(index) + query.path();
+	}
+
+	public boolean push() {
+		return push;
+	}
+
+	public void push(boolean push) {
+		this.push = push;
 	}
 }

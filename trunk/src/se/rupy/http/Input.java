@@ -71,7 +71,7 @@ public abstract class Input extends InputStream implements Event.Block {
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
-			throw new IOException(e.getMessage());
+			throw (IOException) new IOException().initCause(e);
 		}
 
 		return 0; // will never happen, you silly compiler ...
