@@ -1,6 +1,6 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
-Let's create a rootservice (when you browse to "/") that returns 'hello'. If you want to have a tutorial all packaged just download the page application!
+Let's create a rootservice (when you browse to "/") that returns 'hello'. If you want it all premashed for you, simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, and run the _ant deploy_ task!
 {{{
 import se.rupy.http.*;
 public Hello extends Service {
