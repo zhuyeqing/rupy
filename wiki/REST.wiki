@@ -17,7 +17,7 @@ _In general I recommend that you be creative about how to solve your technical c
 
  Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
-_Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; I encourage you to create a web of small simple solutions to big complicated problems and delegate responsability and ownership of these amongst your team. The usual "what happens if you quit" argument is really poor management!_
+_Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; I encourage you to create a web of small simple solutions to big complicated problems and delegate responsability and ownership of these amongst your team. The usual "what happens if you quit" argument is really just an excuse for poor management!_
 
 *Agility*
 
