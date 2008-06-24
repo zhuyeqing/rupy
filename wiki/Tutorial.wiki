@@ -1,6 +1,6 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
-Let's create a rootservice (when you browse to "/") that returns 'hello'.
+Let's create a rootservice (when you browse to "/") that returns 'hello'. If you want to have a tutorial all packaged just download the page application!
 {{{
 import se.rupy.http.*;
 public Hello extends Service {
