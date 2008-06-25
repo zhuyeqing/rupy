@@ -131,6 +131,9 @@ public class Event extends Throwable implements Chain.Link {
 
 	void log(Object o, int level) {
 		if (o instanceof Exception && daemon.debug) {
+			System.out.print("["
+					+ (worker == null ? "*" : "" + worker.index()) + "-"
+					+ index + "] ");
 			((Exception) o).printStackTrace();
 		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
 			System.out.println("["
@@ -325,8 +328,6 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect(Exception e) {
 		try {
-			e.printStackTrace();
-			
 			if (channel != null) {
 				channel.close();
 				channel = null;
@@ -426,7 +427,7 @@ public class Event extends Throwable implements Chain.Link {
 		return push;
 	}
 
-	public void push(boolean push) {
+	void push(boolean push) {
 		this.push = push;
 	}
 }
