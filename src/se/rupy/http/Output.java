@@ -281,10 +281,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 			remaining = out.remaining();
 		}
 
-		//System.out.println(reply);
-		//System.out.println(reply.event());
-		//System.out.println(reply.event().channel());
-		
 		int sent = reply.event().channel().write(out);
 
 		if (debug) {
