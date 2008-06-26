@@ -5,7 +5,7 @@ In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/w
 
 Currently Rupy only supports _long poll_, though chunked transfer encoded _streaming_ should be easy to implement. We are still weighing the advantages seen the [http://meteorserver.org/browser-techniques/ browser techniques] needed to enable streaming push. We will however release a small Comet tutorial package as soon as we get things down.
 
-_26/06 Update: Ok, we got everything working with "long poll", it's a hack as always with javascript (or when you have a fragmented platform) but it's a tiny hack, I'll post it this weekend! *Ignore the tutorial below until then, some changes have been made to the core!*
+_26/06 Update: Ok, we got everything working with "long poll", it's a hack as always with javascript (or when you have a fragmented platform) but it's a tiny hack (or atleast smaller than the forever iframe required by the _streaming_ push solution), I'll post it this weekend! *Ignore the tutorial below until then, some changes have been made to the core!*
 
 ~~This is an example of how you could wakeup rupy so that it will assign a worker thread to write your reply asynchronously:~~
 {{{
