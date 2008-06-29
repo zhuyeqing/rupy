@@ -62,9 +62,9 @@ public class Daemon implements Runnable {
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
 
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
-				.equals("true");
+		.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(
-				"true");
+		"true");
 
 		if (!verbose) {
 			debug = false;
@@ -81,7 +81,7 @@ public class Daemon implements Runnable {
 			new Heart();
 
 			int threads = Integer.parseInt(properties.getProperty("threads",
-					"5"));
+			"5"));
 
 			for (int i = 0; i < threads; i++) {
 				workers.add(new Worker(this, i));
@@ -280,7 +280,7 @@ public class Daemon implements Runnable {
 			}
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
-					"true"))
+			"true"))
 				test();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -397,9 +397,6 @@ public class Daemon implements Runnable {
 			while (true) {
 				try {
 					Thread.sleep(1000);
-
-					int timeout = Integer.parseInt(properties.getProperty(
-							"timeout", "300")) * 1000;
 
 					synchronized (session) {
 						Iterator it = session.values().iterator();

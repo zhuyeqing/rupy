@@ -130,15 +130,15 @@ public class Reply {
 	 * @throws IOException
 	 */
 	public void wakeup() throws IOException {
-		if (false) { // TODO: If the reply has already been sent!
-			throw new IOException("Reply already executed.");
+		if (output.complete()) {
+			throw new IOException("Reply already complete.");
 		}
 
-		if (event.worker() == null) {
-			event.push(true);
-			event.daemon().employ(event);
-		} else {
+		if (event.worker() != null) {
 			throw new IOException("Reply still processing.");
 		}
+		
+		event.push(true);
+		event.daemon().employ(event);
 	}
 }

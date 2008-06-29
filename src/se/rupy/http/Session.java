@@ -38,6 +38,10 @@ public class Session extends Hash {
 		}
 	}
 
+	public Chain event() {
+		return event;
+	}
+	
 	void remove() throws Exception {
 		remove(null);
 	}

@@ -76,15 +76,24 @@ public class Query extends Hash {
 			}
 		}
 
-		if (header("transfer-encoding").equalsIgnoreCase("chunked")) {
+		String encoding = header("transfer-encoding");
+		
+		if (encoding != null && encoding.equalsIgnoreCase("chunked")) {
 			length = -1;
 		} else {
-			length = Integer.parseInt(header("content-length"));
+			String content = header("content-length");
+			
+			if(content != null) {
+				length = Integer.parseInt(content);
+			}
+			else {
+				length = 0;
+			}
 		}
 
 		String since = header("if-modified-since");
 
-		if (!since.equals("0")) {
+		if (since != null) {
 			try {
 				modified = input.event().DATE.parse(since).getTime();
 			} catch (ParseException e) {
@@ -92,7 +101,9 @@ public class Query extends Hash {
 			}
 		}
 
-		if (header("connection").equalsIgnoreCase("close")) {
+		String connection = header("connection");
+		
+		if (connection != null && connection.equalsIgnoreCase("close")) {
 			input.event().close(true);
 		}
 
@@ -100,7 +111,7 @@ public class Query extends Hash {
 
 		input.event().log(
 				method + " " + (length > -1 ? "" + length : "*") + " " + path
-				+ (parameters != null ? "?" + parameters : ""),
+						+ (parameters != null ? "?" + parameters : ""),
 				Event.VERBOSE);
 		input.init();
 	}
@@ -118,18 +129,17 @@ public class Query extends Hash {
 	void parse(int size) throws Exception {
 		if (parsed) {
 			return;
-		}
-		else {
+		} else {
 			parsed = true;
 		}
-		
+
 		if (method == POST) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			if (Deploy.pipe(input, out, size, size) > 0)
 				parameters = new String(out.toByteArray());
 		}
 
-		input.event().log(parameters, Event.VERBOSE);
+		input.event().log("query " + parameters, Event.VERBOSE);
 
 		if (parameters != null) {
 			StringTokenizer amp = new StringTokenizer(parameters, "&");
@@ -179,14 +189,17 @@ public class Query extends Hash {
 	}
 
 	/**
-	 * Important: this returns "0" if the header is not found!
+	 * The headers are stored and fetched as lower case.
 	 * 
 	 * @param name
-	 * @return the header value or "0".
+	 * @return the header value.
 	 */
 	public String header(String name) {
-		String value = (String) headers.get(name);
-		return value == null ? "0" : value;
+		return (String) headers.get(name.toLowerCase());
+	}
+	
+	void header(String name, String value) {
+		headers.put(name, value);
 	}
 
 	public Input input() {
