@@ -131,9 +131,8 @@ public class Event extends Throwable implements Chain.Link {
 
 	void log(Object o, int level) {
 		if (o instanceof Exception && daemon.debug) {
-			System.out.print("["
-					+ (worker == null ? "*" : "" + worker.index()) + "-"
-					+ index + "] ");
+			System.out.print("[" + (worker == null ? "*" : "" + worker.index())
+					+ "-" + index + "] ");
 			((Exception) o).printStackTrace();
 		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
 			System.out.println("["
@@ -142,26 +141,26 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	/**
-	 * @return same as {@link Query#large(String)}.
+	 * @return same as {@link Query#big(String)}.
 	 */
 	public long big(String key) {
 		return query.big(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#medium(String)}.
 	 */
 	public int medium(String key) {
 		return query.medium(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#small(String)}.
 	 */
 	public short small(String key) {
 		return query.small(key);
 	}
-	
+
 	/**
 	 * @return same as {@link Query#tiny(String)}.
 	 */
@@ -170,7 +169,7 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	/**
-	 * @return same as {@link Query#binary(String, boolean)}.
+	 * @return same as {@link Query#bit(String, boolean)}.
 	 */
 	public boolean bit(String key) {
 		return query.bit(key, true);
@@ -215,7 +214,7 @@ public class Event extends Throwable implements Chain.Link {
 	String address() {
 		String remote = query.header("x-forwarded-for");
 
-		if (remote.equals("0")) {
+		if (remote == null) {
 			InetSocketAddress address = (InetSocketAddress) channel.socket()
 					.getRemoteSocketAddress();
 			remote = address.getAddress().getHostAddress();
@@ -239,7 +238,7 @@ public class Event extends Throwable implements Chain.Link {
 
 		if (query.modified() == 0 || query.modified() < reply.modified()) {
 			Deploy.pipe(stream.input(), reply.output());
-			log(type, VERBOSE);
+			log("content " + type, VERBOSE);
 		} else {
 			reply.code("304 Not Modified");
 		}
@@ -281,9 +280,11 @@ public class Event extends Throwable implements Chain.Link {
 
 	void register() throws IOException {
 		if (interest != key.interestOps()) {
-			log((interest == READ ? "read" : "write") + " prereg " + interest + " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			log((interest == READ ? "read" : "write") + " prereg " + interest
+					+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
 			key = channel.register(key.selector(), interest, this);
-			log((interest == READ ? "read" : "write") + " postreg " + interest + " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			log((interest == READ ? "read" : "write") + " postreg " + interest
+					+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
 		}
 
 		key.selector().wakeup();
@@ -337,7 +338,7 @@ public class Event extends Throwable implements Chain.Link {
 				session.remove(this);
 			}
 
-			log(e);
+			log("disconnect " + e);
 		} catch (Exception de) {
 			de.printStackTrace();
 		}
@@ -345,10 +346,10 @@ public class Event extends Throwable implements Chain.Link {
 
 	final void session(Service service) {
 		String key = cookie(query.header("cookie"), "key");
-
+		
 		if (key != null) {
 			session = (Session) daemon.session().get(key);
-			
+
 			if (session != null) {
 				log("old key " + key, VERBOSE);
 
@@ -420,9 +421,13 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	public String toString() {
-		return String.valueOf(index) + query.path();
+		return String.valueOf(index);
 	}
 
+	/**
+	 * @return true if the Event is being recycled due to a call to
+	 *         {@link Reply#wakeup()}.
+	 */
 	public boolean push() {
 		return push;
 	}

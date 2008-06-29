@@ -20,7 +20,7 @@ public abstract class Service implements Chain.Link {
 	 * is specified when you start the daemon.
 	 */
 	public final static int TIMEOUT = 2;
-
+	
 	/**
 	 * The client actively disconnected it's last TCP socket. This will not work
 	 * correctly if the server is placed behind a proxy.

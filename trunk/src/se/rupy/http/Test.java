@@ -61,7 +61,6 @@ class Test implements Runnable {
 	static class Service extends se.rupy.http.Service implements Runnable {
 		String path;
 		Event event;
-		boolean update;
 
 		public Service(String identifier) {
 			this.path = identifier;
@@ -82,8 +81,9 @@ class Test implements Runnable {
 				new File(copy).delete();
 				System.exit(0);
 			} else {
-				/* FORCED, HttpURLConnection timeout, 
-				 * has the time to happen sometimes.
+				/*
+				 * FORCED, HttpURLConnection timeout, has the time to happen
+				 * sometimes.
 				 */
 				System.out.println("Socket closed.");
 			}
@@ -100,12 +100,17 @@ class Test implements Runnable {
 				}
 				write(event.output());
 			} else if (path.equals("/async")) {
-				if (update) {
+				if (event.push()) {
 					write(event.output());
+					event.output().finish(); // important
 				} else {
+					/*
+					 * In a real application managing the push events is the
+					 * tricky part, making sure there is no memory leak can be
+					 * very difficult. See our Comet tutorial for more info.
+					 */
 					this.event = event;
 					new Thread(this).start();
-					update = true;
 				}
 			} else {
 				throw new Exception("Error successful.");

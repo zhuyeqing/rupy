@@ -32,11 +32,11 @@ public class Deploy extends Service {
 		String name = event.query().header("file");
 		String pass = event.query().header("pass");
 
-		if (name.equals("0")) {
+		if (name == null) {
 			throw new Failure("File header missing.");
 		}
 
-		if (pass.equals("0")) {
+		if (pass == null) {
 			throw new Failure("Pass header missing.");
 		} else if (!Deploy.pass.equals(pass)) {
 			throw new Failure("Pass verification failed. (" + pass + ")");

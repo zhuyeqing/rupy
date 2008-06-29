@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * Handles the outgoing response data.
+ * 
  * @author marc.larue
  */
 public abstract class Output extends OutputStream implements Event.Block {
@@ -15,7 +16,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private boolean chunk, cache;
 	protected int length, size;
 	protected Reply reply;
-	protected boolean init;
+	protected boolean init, push;
 
 	Output(Reply reply) throws IOException {
 		this.reply = reply;
@@ -26,6 +27,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 		return chunk;
 	}
 
+	boolean complete() {
+		return !push;
+	}
+
 	public void println(Object o) throws IOException {
 		write((o.toString() + EOL).getBytes("UTF-8"));
 	}
@@ -33,19 +38,19 @@ public abstract class Output extends OutputStream implements Event.Block {
 	public void println(long l) throws IOException {
 		write((String.valueOf(l) + EOL).getBytes("UTF-8"));
 	}
-	
+
 	public void println(boolean b) throws IOException {
 		write((String.valueOf(b) + EOL).getBytes("UTF-8"));
 	}
-	
+
 	public void print(Object o) throws IOException {
 		write(o.toString().getBytes("UTF-8"));
 	}
-	
+
 	public void print(long l) throws IOException {
 		write(String.valueOf(l).getBytes("UTF-8"));
 	}
-	
+
 	public void print(boolean b) throws IOException {
 		write(String.valueOf(b).getBytes("UTF-8"));
 	}
@@ -60,8 +65,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
+
 		init = true;
-		
+
 		if (chunk) {
 			/*
 			 * TODO: What am I doing wrong?
@@ -128,7 +134,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	void headers(int length) throws IOException {
 		cache = false;
 
-		reply.event().log(reply.code(), Event.VERBOSE);
+		reply.event().log("code " + reply.code(), Event.VERBOSE);
 
 		wrote((reply.event().query().version() + " " + reply.code() + EOL)
 				.getBytes());
@@ -163,7 +169,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			wrote((cookie + EOL).getBytes());
 
 			reply.event().session().set(true);
-			reply.event().log(cookie, Event.DEBUG);
+			reply.event().log("cookie " + cookie, Event.DEBUG);
 		}
 
 		if (reply.event().close()) {
@@ -186,7 +192,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		wrote(EOL.getBytes());
-		//flush();
+		// flush();
 		length = 0;
 	}
 
@@ -214,13 +220,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					off += remaining;
 					len -= remaining;
-					
-					//reply.event().log("wrote off " + off + " len " + len + " remaining " + remaining, Event.DEBUG);
-					
-					/* oh, nasty little bugger, added this when a page 
-					 * with exact multiple of IO buffer length was sent 
-					 * and the trailing empty chunked line blocked the 
-					 * server at 99% CPU!
+
+					// reply.event().log("wrote off " + off + " len " + len + "
+					// remaining " + remaining, Event.DEBUG);
+
+					/*
+					 * oh, nasty little bugger, added this when a page with
+					 * exact multiple of IO buffer length was sent and the
+					 * trailing empty chunked line blocked the server at 99%
+					 * CPU!
 					 */
 					remaining = out.remaining();
 				}
@@ -246,7 +254,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 				int sent = fill(debug);
 
 				if (debug) {
-					reply.event().log("sent " + sent + " remaining " + out.remaining(), Event.DEBUG);
+					reply.event().log(
+							"sent " + sent + " remaining " + out.remaining(),
+							Event.DEBUG);
 				}
 
 				if (sent == 0) {
@@ -291,6 +301,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 		length += sent;
 		return sent;
 	}
+	
+	/**
+	 * Flush the terminating empty chunk of a asynchronous stream push. An
+	 * event becomes an asynchronous stream push if a request is not written
+	 * any data to in the first {@link Service#filter(Event)} call.
+	 * 
+	 * @throws IOException
+	 */
+	public abstract void finish() throws IOException;
 
 	/*
 	 * Borrowed from sun.net.httpserver.ChunkedOutputStream.java
@@ -298,7 +317,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 	static class Chunked extends Output {
 		public static int OFFSET = 6;
 		private int cursor = OFFSET, count = 0;
-		//private byte[] chunk;
+
+		// private byte[] chunk;
 
 		Chunked(Reply reply) throws IOException {
 			super(reply);
@@ -322,7 +342,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				wrote(b, off, len);
 				return;
 			}
-			
+
 			byte[] chunk = reply.event().worker().chunk();
 			int remain = size - count;
 
@@ -374,6 +394,14 @@ public abstract class Output extends OutputStream implements Event.Block {
 			this.cursor = OFFSET;
 		}
 
+		public void finish() throws IOException {
+			if (complete()) {
+				throw new IOException("Reply already complete.");
+			}
+
+			push = false;
+		}
+
 		public void flush() throws IOException {
 			if (chunk() && init) {
 				if (reply.code().startsWith("302")
@@ -384,13 +412,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 						write();
 					}
 
-					write();
+					if (complete()) {
+						write();
+					}
 
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
-			}
-			else {
-				reply.event().log("nothing to flush? " + count, Event.DEBUG);
+			} else {
+				reply.event().log("asynchronous push " + count, Event.DEBUG);
+				push = true;
 			}
 
 			super.flush();
