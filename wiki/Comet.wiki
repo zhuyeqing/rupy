@@ -3,4 +3,4 @@
 
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
-Download the [http://rupy.googlecode.com/files/comet-0.1.zip comet] application and extract it in the same folder as the rupy-0.2.3 /http folder, then start the rupy server with the comet/comet.bat OR comet/comet.sh and run ant in the comet folder. Last, but not least, browse to http://localhost:8000/comet.html and chat away!
+Download the [http://rupy.googlecode.com/files/comet-0.1.zip comet] chat demo application and extract it in the same folder as the rupy-0.2.3 /http folder, then start the rupy server with the comet/comet.bat OR comet/comet.sh and run ant in the comet folder. Last, but not least, browse to http://localhost:8000/comet.html and chat away!
