@@ -1,6 +1,6 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
-_If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, and run the *ant deploy* task!_
+If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, extract it in the same folder as the rupy-0.2.3 /http folder and run the _ant deploy_task!
 
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
@@ -23,5 +23,3 @@ Compile the Hello class above and put it in a jar file (hello.jar in the example
 </target>
 }}}
 Now try browsing to http://localhost:8000.
-
-_Static content has to be placed under a service identifier path deployed in the same jar for it to become accessible, for example a jar containing /res/icon.gif will only be able to serve the image if there is a service with "/" or "/res" as path in the jar. This limitation exists so that services (except "/" which obviously can overwrite anything) won't be able to overwrite each others content._
