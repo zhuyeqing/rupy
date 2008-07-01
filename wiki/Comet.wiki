@@ -4,5 +4,5 @@
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
  If you just wan't to check out our comet chat demo application in action go [http://group.rupy.se/talk.html here].
-
+----
 Download the [http://rupy.googlecode.com/files/talk-0.1.zip talk] application together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them to the same folder. Go to the talk/ folder and start rupy with either the _talk.bat_ or _talk.sh_ script depending on your OS. Then run _ant_ in that same talk/ folder, this should build and deploy the talk.jar application to your rupy server. Lastly, browse to http://localhost:8000/talk.html and chat in real-time over HTTP!
