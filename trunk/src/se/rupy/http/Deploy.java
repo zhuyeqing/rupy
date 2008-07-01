@@ -84,7 +84,6 @@ public class Deploy extends Service {
 			JarEntry entry = null;
 
 			Vector classes = new Vector();
-			Vector content = new Vector();
 
 			while ((entry = in.getNextJarEntry()) != null) {
 				if (entry.getName().endsWith(".class")) {
@@ -95,7 +94,7 @@ public class Deploy extends Service {
 					String name = name(entry.getName());
 					classes.add(new Small(name, data));
 				} else if (!entry.isDirectory()) {
-					content.add(new Big("/" + entry.getName(), in, date));
+					content.put("/" + entry.getName(), new Big("/" + entry.getName(), in, date));
 				}
 			}
 
@@ -113,32 +112,6 @@ public class Deploy extends Service {
 					length--;
 					if (length < 0) {
 						throw e;
-					}
-				}
-			}
-
-			Stream stream = null;
-			Iterator it = service.iterator();
-
-			while (it.hasNext()) {
-				Service service = (Service) it.next();
-
-				StringTokenizer paths = new StringTokenizer(service.path(),
-						":");
-
-				while (paths.hasMoreTokens()) {
-					String path = paths.nextToken();
-
-					Enumeration en = content.elements();
-
-					while (en.hasMoreElements()) {
-						stream = (Stream) en.nextElement();
-
-						// so that deploys can't overwrite each others
-						// content
-						if (stream.name().startsWith(path)) {
-							this.content.put(stream.name(), stream);
-						}
 					}
 				}
 			}

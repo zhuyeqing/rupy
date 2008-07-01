@@ -81,5 +81,9 @@ VERSION:
 
       - Refactored the deployment of archives completely.
       - Fixed a couple of bugs with the query parameters.
+      
+      0.2.3
+      
+      - Added and tested Comet support.
 
 have fun!
