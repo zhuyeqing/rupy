@@ -3,4 +3,4 @@
 
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
-Download the [http://rupy.googlecode.com/files/talk-0.1.zip talk] comet chat demo application and extract it in the same folder as the rupy-0.2.3.zip /http folder, then start the rupy server with the /talk/talk.bat OR /talk/talk.sh and run _ant_ in the /talk folder. Lastly, browse to http://localhost:8000/comet.html and chat in real-time over HTTP!
+Download the [http://rupy.googlecode.com/files/talk-0.1.zip talk] comet chat demo application together with the latest rupy-0.2.3.zip and extract it in the same folder as the rupy-0.2.3.zip, then start the rupy server with the /talk/talk.bat OR /talk/talk.sh and run _ant_ in the /talk folder. Lastly, browse to http://localhost:8000/comet.html and chat in real-time over HTTP!
