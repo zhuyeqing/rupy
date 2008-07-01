@@ -1,8 +1,8 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
 
- If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them to the same folder. Start rupy with /http/run.bat or /http/run.sh and run the _ant deploy_ task in the /page folder!
-
+ If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant deploy_ task, this should build and deploy a test.jar application to your rupy server. Now try browsing to http://localhost:8000!
+----
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
 import se.rupy.http.*;
@@ -23,4 +23,3 @@ Compile the Hello class above and put it in a jar file (hello.jar in the example
 	</java>
 </target>
 }}}
-Now try browsing to http://localhost:8000.
