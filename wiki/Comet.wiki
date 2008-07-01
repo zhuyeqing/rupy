@@ -3,6 +3,6 @@
 
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
-If you just wan't to check out the comet chat in action go [http://group.rupy.se/talk.html here].
+If you just wan't to check out our comet chat demo application in action go [http://group.rupy.se/talk.html here].
 
 Download the [http://rupy.googlecode.com/files/talk-0.1.zip talk] comet chat demo application together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them in the same folder. Start rupy with the /talk/talk.bat OR /talk/talk.sh and run _ant_ in the /talk folder. Lastly, browse to http://localhost:8000/comet.html and chat in real-time over HTTP!
