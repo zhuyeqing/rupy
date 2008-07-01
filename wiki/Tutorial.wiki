@@ -1,6 +1,7 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
-If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them in the same folder. Start rupy with /http/run.bat or /http/run.sh and run the _ant deploy_ task in the /page folder!
+
+ If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.2.3.zip rupy] and extract them in the same folder. Start rupy with /http/run.bat or /http/run.sh and run the _ant deploy_ task in the /page folder!
 
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
