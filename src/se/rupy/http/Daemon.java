@@ -193,7 +193,7 @@ public class Daemon implements Runnable {
 				Deploy.Archive archive = (Deploy.Archive) it.next();
 				Deploy.Stream stream = (Deploy.Stream) archive.content().get(
 						path);
-
+				
 				if (stream != null) {
 					return stream;
 				}

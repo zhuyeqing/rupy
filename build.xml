@@ -2,8 +2,15 @@
 <project basedir="." default="test" name="http">
 
 	<property name="name" value="http"/>
-	<property name="lib" value="lib/activation.jar"/>
 
+	<path id="lib">
+		<fileset dir="lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<property name="lib" refid="lib"/>
+	
 	<target name="check">
 		<uptodate property="required" targetfile="bin/${name}.jar">
 			<srcfiles dir="src" includes="**/*.java"/>
@@ -22,7 +29,7 @@
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
 				<attribute name="Main-Class" value="se.rupy.http.Daemon"/>
-				<attribute name="Class-Path" value="../${lib}"/>
+				<attribute name="Class-Path" value="../lib/activation.jar"/>
 			</manifest>
 			<fileset dir="tmp/jar"/>
 		</jar>
