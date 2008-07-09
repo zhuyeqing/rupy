@@ -5,7 +5,7 @@ _"Size matters, and less is more!"_
 
 *Modularity* 
 
- Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego.
+ Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the interfaces (See [http://en.wikipedia.org/wiki/Service-oriented_architecture SOA]).
 
 *Creativity*
 
