@@ -1,0 +1,39 @@
+#summary Why yet another Java HTTP server?
+
+_"Size matters, and less is more!"_
+
+*Modularity* 
+
+ Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the interfaces (See [http://en.wikipedia.org/wiki/Service-oriented_architecture SOA]).
+
+*Creativity*
+
+ You want to write dynamic HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
+
+_In general I recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you might enjoy your work more when you actually learn something worthwhile, and at the same time you can solve problems at their origin instead of working around them!_
+
+*Simplicity*
+
+ This is what Comet and REST share, after all HTTP is just TCP and web-services being over-engineered is an understatement. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+
+_Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; I encourage you to create a toolbox of small simple modular solutions to big complicated problems and delegate responsability and ownership of these amongst your team!_
+
+*Agility*
+
+ With rupy you can hot-replace a major refactoring, if you serialize your session data (see [Deployment]), without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
+
+*Speed and Scalability*
+
+ Why not have both, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
+
+_If you believe that "being prepared to be wrong" is an integral part of creativity, how can you be creative, if it takes five minues to find out if you where wrong? If you are an experimental developer like me, you will appreciate the compile-archive-deploy roundtrip of a couple of seconds. I find that my mind often strays away from the task at hand if it takes more than that._
+
+*Design*
+
+ At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
+
+  * No clear separation between the protocol concerns and the application concerns. 
+  * Unable to take full advantage of the non-blocking NIO due to blocking IO assumptions. 
+  * Full Servlet Web containers are overkill for many applications. 
+
+ Source: http://www.restlet.org/about/introduction
