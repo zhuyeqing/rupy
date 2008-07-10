@@ -1,7 +1,7 @@
 #summary Integrate rupy with your existing server.
 #labels Phase-Deploy
 
-If you wan't to use rupy, but you already have something running on port 80 and you don't have an expensive firewall/router.
+If you wan't to use rupy, but you already have something running on port 80 without having to invest in another server or an expensive firewall/router.
 
 It's simple, virtual host proxy the requests through your current HTTP server, ie. redirect the requests to a rupy instance running on another port.
 
