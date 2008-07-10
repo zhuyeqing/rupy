@@ -9,7 +9,7 @@ The only drawback of this is that you won't profit from the concurrency scalabil
 
 Below is an example Apache 2.2 vhost.conf.
 
-This is particullarily useful if you need HTTPS!
+This is particularly useful if you need HTTPS!
 
 {{{
 NameVirtualHost *:80
