@@ -1,7 +1,7 @@
 #summary Integrate Rupy with your existing server.
 #labels Phase-Deploy
 
-If you wan't to use Rupy, but your boss is scared and wants to stick with your current HTTP server, you will need to proxy the requests through the current HTTP server and redirect them to a rupy instance running on another port. Below is an example Apache 2.2 vhost.conf example:
+If you wan't to use Rupy, but your boss is scared and wants to stick with your current HTTP server, you will need to proxy the requests through the current HTTP server and redirect them to a rupy instance running on another port. Below is an example Apache 2.2 vhost.conf:
 
 {{{
 NameVirtualHost *:80
