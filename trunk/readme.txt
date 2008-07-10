@@ -84,6 +84,15 @@ VERSION:
       
       0.2.3
       
-      - Added and tested Comet support.
+      - Added streaming asynchronous push (Comet) support 
+        and tested long-poll with a chat demo.
+
+      0.2.4
+
+      - Removed activation.jar dependency, since the only 
+        thing I used it for was mime content-type lookup, 
+        you will now find the mime types in the mime.txt 
+        file. (reason: firefox + doctype + css + content-
+        type)
 
 have fun!
