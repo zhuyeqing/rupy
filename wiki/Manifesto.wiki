@@ -14,7 +14,7 @@ _In general we recommend that you be creative about how to solve your technical 
 
 *Simplicity*
 
- This is what Comet and REST share alike; after all, "HTTP is just TCP" and "web-services in practice are overengineered integrations". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+ This is what Comet and REST share alike; after all, "HTTP is just TCP" and "web-services are overengineered integrations in practice". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
 _Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; We encourage you to create a toolbox of small simple standalone solutions to big complicated problems and delegate responsability and ownership of these amongst your team!_
 
