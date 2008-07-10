@@ -7,7 +7,7 @@ import java.text.*;
 import java.util.*;
 
 import java.nio.channels.*;
-import javax.activation.*;
+//import javax.activation.*;
 
 /**
  * Asynchronous HTTP request/response, this virtually represents a client
@@ -28,11 +28,11 @@ public class Event extends Throwable implements Chain.Link {
 	private static char[] BASE_24 = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K',
 			'M', 'P', 'Q', 'R', 'T', 'V', 'W', 'X', 'Y', '2', '3', '4', '6',
 			'7', '8', '9' };
-	private static MimetypesFileTypeMap MIME;
 	static DateFormat DATE;
+	static Mime MIME;
 
 	static {
-		MIME = new MimetypesFileTypeMap();
+		MIME = new Mime();
 		DATE = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 		DATE.setTimeZone(TimeZone.getTimeZone("GMT"));
 		READ = SelectionKey.OP_READ;
@@ -231,8 +231,8 @@ public class Event extends Throwable implements Chain.Link {
 		if (stream == null)
 			return false;
 
-		String type = MIME.getContentType(query.path());
-
+		String type = MIME.content(query.path(), "application/octet-stream");
+		
 		reply.type(type);
 		reply.modified(stream.date());
 
@@ -434,5 +434,26 @@ public class Event extends Throwable implements Chain.Link {
 
 	void push(boolean push) {
 		this.push = push;
+	}
+	
+	static class Mime extends Properties {
+		public Mime() {
+			try {
+				load(Mime.class.getResourceAsStream("/mime.txt"));
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String content(String path, String fail) {
+			int index = path.lastIndexOf('.') + 1;
+			
+			if(index > 0) {
+				return getProperty(path.substring(index), fail);
+			}
+			
+			return fail;
+		}
 	}
 }

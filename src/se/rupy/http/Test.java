@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 class Test implements Runnable {
-	static String original = "lib/activation.jar";
+	static String original = "bin/http.jar";
 	static String copy = "copy.jar";
 	static boolean done;
 
