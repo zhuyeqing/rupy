@@ -1,5 +1,7 @@
-#summary HTTP reply in real-time.
+#summary HTTP in real-time.
 #labels Phase-Implementation,Featured
+
+What if browsing was not a lonely experience? The real-time social web begins with Comet! We predict that in a few years time _every_ site on the internet will have a chat that connects the users to share their common web experience in real-time over HTTP!
 
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
