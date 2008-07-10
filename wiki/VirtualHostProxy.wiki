@@ -3,7 +3,7 @@
 
 How can you use rupy, if you already have something running on port 80, without having to invest in another server or an expensive firewall/router.
 
-It's simple, virtual host proxy the requests through your current HTTP server, ie. redirect the requests to a rupy instance running on another port.
+It's simple, virtual-host-proxy the requests through your current HTTP server, ie. redirect the requests to a rupy instance running on another port.
 
 Below is an example Apache 2.2 vhost.conf.
 
