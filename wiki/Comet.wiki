@@ -3,6 +3,8 @@
 
 What if browsing was not a lonely experience? The real-time social web begins with Comet! We predict that in a few years time _every_ site on the internet will have a Comet application that connects it's users to share their common web experience in real-time over HTTP!
 
+Rupy enables you to connect 10000+ clients with one server, this number can scale to 30000+ depending on your application.
+
 In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/wiki/Comet_%28programming%29 Comet] for more information. 
 
  If you just wan't to check out our comet chat demo application in action go [http://group.rupy.se/talk.html here].
