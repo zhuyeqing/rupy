@@ -365,17 +365,17 @@ public class Event extends Throwable implements Chain.Link {
 		session.add(this);
 		session.key(key);
 
-		try {
-			service.session(session, Service.CREATE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		if (session.key() == null) {
 			do {
 				key = random(daemon.cookie);
 			} while (daemon.session().get(key) != null);
 			session.key(key);
+		}
+		
+		try {
+			service.session(session, Service.CREATE);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		synchronized (daemon.session()) {
