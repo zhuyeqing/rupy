@@ -2,7 +2,7 @@
 #labels Phase-Implementation,Featured
 
 
-_First [http://rupy.se try] the chat, it's the little black box in the bottom right corner!_
+_First, [http://rupy.se try] the chat, it's the little black box in the bottom right corner!_
 
 What if browsing wasn't a lonely experience? The real-time social web begins with Comet! We predict that in a few years time _every_ site on the internet will have a Comet application that connects it's users to share their common web experience in real-time over HTTP!
 
