@@ -2,7 +2,7 @@
 #labels Phase-Implementation,Featured
 
 
-_If you just wan't to check out our comet chat demo application in action go [http://group.rupy.se/talk.html here]._
+_First [http://rupy.se try] our comet chat!_
 
 What if browsing wasn't a lonely experience? The real-time social web begins with Comet! We predict that in a few years time _every_ site on the internet will have a Comet application that connects it's users to share their common web experience in real-time over HTTP!
 
