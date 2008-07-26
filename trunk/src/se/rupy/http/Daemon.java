@@ -402,16 +402,15 @@ public class Daemon implements Runnable {
 						Iterator it = session.values().iterator();
 
 						while (it.hasNext()) {
-							Session s = (Session) it.next();
+							Session se = (Session) it.next();
 
-							if (System.currentTimeMillis() - s.date() > timeout) {
-								s.remove();
+							if (System.currentTimeMillis() - se.date() > timeout) {
+								it.remove();
+								se.remove();
 
 								if (debug)
 									System.out.println("session timeout "
-											+ s.key());
-
-								it.remove();
+											+ se.key());
 							}
 						}
 					}
