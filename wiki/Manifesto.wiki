@@ -6,17 +6,13 @@ _"Size matters, and less is more!"_
 
  Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces.
 
-*Creativity*
+*Creativity and Simplicity*
 
  You want to serve active HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
 
+ Simplicity is what Comet, JSON, REST and even JSP share alike; after all, "HTTP is TCP", "JSON is javascript", "web-services [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ don't] work" and "JSP is Java". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+
 _In general we recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you might enjoy your work more when you actually learn something worthwhile, and at the same time you can solve problems at their origin instead of working around them!_
-
-*Simplicity*
-
- This is what Comet, JSON, REST and even JSP share alike; after all, "HTTP is TCP", "JSON is javascript", "web-services [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ don't] work" and "JSP is Java". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
-
-_Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; We encourage you to create a toolbox of small simple standalone solutions to big complicated problems and delegate responsability and ownership of these amongst your team!_
 
 *Agility*
 
