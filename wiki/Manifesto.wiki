@@ -20,7 +20,7 @@ _In general we recommend that you be creative about how to solve your technical 
 
 *Creativity and Speed*
 
- Speed without scalability is worth nothing, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
+ Speed without scalability is worth nothing. Fortunately, rupy's compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
  But creativity without speed is a waste of time, because to [http://www.ted.com/index.php/talks/view/id/66 create] you need to experiment, and the faster you get results, the faster your creativity becomes an original idea that has value!
 
