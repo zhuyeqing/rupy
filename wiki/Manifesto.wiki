@@ -18,15 +18,17 @@ _We are talking about vertical micro distribution here, where your application i
 
 _In general we recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense both because you will enjoy your work more when you create; because you actually learn something worthwhile in the process, and at the same time you can solve problems at their origin instead of working around them!_
 
+*Creativity and Speed*
+
+ Speed without scalability is worth nothing, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
+
+ But creativity without speed doesen't exist, because to [http://www.ted.com/index.php/talks/view/id/66 create] you need to experiment, and the faster you experiment, the faster your creativity becomes an original idea that has value!
+
+_If you believe that "being prepared to be wrong" is an integral part of creativity; how can you be creative, if it takes five minues to find out if you where wrong every time you try something out? If you are an experimental developer like me, you will appreciate the compile-archive-deploy roundtrip of a couple of seconds. Also I find that my mind often strays away from the task at hand if it takes more than that. :d_
+
 *Agility*
 
  With rupy you can hot-replace a major refactoring, if you serialize your session data (see [Deployment]), without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
-
-*Speed and Scalability*
-
- Why not have both, the compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
-
-_If you believe that "being prepared to be wrong" is an integral part of creativity; how can you be creative, if it takes five minues to find out if you where wrong every time you try something out? If you are an experimental developer like me, you will appreciate the compile-archive-deploy roundtrip of a couple of seconds. Also I find that my mind often strays away from the task at hand if it takes more than that. :d_
 
 *Design*
 
