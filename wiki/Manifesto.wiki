@@ -10,7 +10,7 @@ _We are talking about vertical micro distribution here, where your application i
 
 *Creativity and Simplicity*
 
- You want to serve active HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip generator], hope you like it!
+ You want to serve active HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip HTML to Service Generator], hope you like it!
 
  Simplicity is what JSP, Comet, JSON and REST share alike; after all, JSP is Java, HTTP is TCP, JSON is javascript and web-services just [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ don't] work. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
