@@ -10,7 +10,7 @@ _We are talking about vertical micro distribution here, where your application i
 
 *Creativity and Simplicity*
 
- You want to serve active HTML? We figured that generating Java from HTML and precompiling before deployment would be simpler and faster than server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip JHTML] processor, which transforms a HTML page with plain java in it, to a Service. Hope you like it!
+ You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler and faster than traditional server-side JSP compiling; so we built a [http://rupy.googlecode.com/files/page-0.2.zip JHTML] processor, which transforms a HTML page with plain java in it, to a Service. Hope you like it!
 
  Simplicity is what JHTML, Comet, JSON and REST share alike. After all; JHTML is Java, HTTP is TCP, JSON is javascript and web-services are [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ overengineered].
 
