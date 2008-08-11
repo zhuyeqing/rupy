@@ -14,7 +14,7 @@ _In general we recommend that you be creative about how to solve your technical 
 
 *Simplicity*
 
- This is what Comet, JSON and REST share alike; after all, "HTTP is just TCP", "JSON is just javascript" and "web-services try to fix something that allready works by [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ overengineering]". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+ This is what Comet, JSON, REST and even JSP share alike; after all, "HTTP is just TCP", "JSON is just javascript", "web-services try to fix something that allready works by [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ overengineering]" and "JSP is just Java". Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
 _Again, instead of using off the shelf products that solve more than you need and in an often overly complicated way; We encourage you to create a toolbox of small simple standalone solutions to big complicated problems and delegate responsability and ownership of these amongst your team!_
 
