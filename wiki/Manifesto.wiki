@@ -30,7 +30,7 @@ _If you believe that "being prepared to be wrong" is an integral part of creativ
 
 *Agility*
 
- With rupy you can hot-replace a major refactoring, if you serialize your session data (see [Deployment]), without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
+ With rupy you can hot-replace a major refactoring, without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. If you serialize your session data (see [Deployment]), let your users do the QA!
 
 *Design*
 
