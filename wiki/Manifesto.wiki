@@ -1,10 +1,8 @@
 #summary Why yet another Java HTTP server?
 
-_"Size matters, and less is more!"_
-
 *Creativity*
 
- Idears give meaning! This is rupy's founding principle, not so much because rupy is a creative application, but because it allows YOU to be creative, here's how:
+ _"Idears give meaning."_ This is rupy's founding principle, not so much because rupy is a creative application, but because it allows YOU to be creative, here's how:
 
 *Modularity* 
 
