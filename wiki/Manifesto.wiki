@@ -10,7 +10,7 @@ _"Size matters, and less is more!"_
 
  Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces.
 
-_We are talking about vertical micro distribution here, where your application is a web of independent interconnected services that don't necessarily run on the same technology. While this might sound as a maintenance nightmare to the IT staff, it is actually quite the opposite, you will not need any IT staff! But what you will need is responsible developers! (TODO: Rant about how coorporate management treats developers as cogs!)_
+_We are talking about vertical micro distribution here, where your application is a web of independent interconnected services that don't necessarily run on the same technology. While this might sound as a maintenance nightmare to the IT staff, it is actually quite the opposite, you will not need any IT staff! But what you will need is responsible developers! If you want your developers to be replacable, you should probably outsource what your developers are developing in the first place!_
 
 *Simplicity*
 
