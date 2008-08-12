@@ -2,9 +2,9 @@
 
 *Creativity*
 
- _"Idears that give meaning."_ Creativity is the only thing that matters, because it is the only thing that moves the human race forward. In all the things that fueled rupy's creation, creativity is the underlying motivation.
+ _"Idears that give meaning."_ Creativity matters and moves the human race forward. With rupy I wanted to remove all obstacles for innovation.
 
-*Modularity* 
+*Modularity*
 
  Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces.
 
