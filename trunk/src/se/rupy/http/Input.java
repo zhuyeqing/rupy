@@ -102,7 +102,12 @@ public abstract class Input extends InputStream implements Event.Block {
 		return available;
 	}
 
-	String line() throws IOException {
+	/**
+	 * Reads a \r\n terminated line of text from the input.
+	 * @return
+	 * @throws IOException
+	 */
+	public String line() throws IOException {
 		StringBuffer buffer = new StringBuffer("");
 
 		while (true) {
