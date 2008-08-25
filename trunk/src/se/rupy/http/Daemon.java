@@ -186,6 +186,15 @@ public class Daemon implements Runnable {
 	}
 
 	Deploy.Stream content(String path) {
+		//System.out.println(System.getProperty("user.dir") + File.separator + "app" + File.separator + "content" + path);
+		
+		File file = new File(System.getProperty("user.dir") + File.separator + "app" + File.separator + "content" + path);
+
+		if(file.exists() && !file.isDirectory()) {
+			return new Deploy.Big(file);
+		}
+		
+		/*
 		synchronized (this.archive) {
 			Iterator it = this.archive.values().iterator();
 
@@ -199,7 +208,8 @@ public class Daemon implements Runnable {
 				}
 			}
 		}
-
+		*/
+		
 		return null;
 	}
 
