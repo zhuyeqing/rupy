@@ -2,6 +2,7 @@
 <project basedir="." default="test" name="http">
 
 	<property name="name" value="http"/>
+	<property name="required" value="false"/>
 	
 	<target name="check">
 		<uptodate property="required" targetfile="bin/${name}.jar">

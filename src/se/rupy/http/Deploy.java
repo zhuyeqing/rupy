@@ -173,12 +173,16 @@ public class Deploy extends Service {
 			file = new File(folder + name);
 			file.createNewFile();
 
-			pipe(in, new FileOutputStream(file), 10240);
+			pipe(in, new FileOutputStream(file));
 
 			this.name = name;
 			this.date = date - date % 1000;
 		}
 
+		public Big(File file) {
+			this.file = file;
+		}
+		
 		public String name() {
 			return name;
 		}
@@ -231,7 +235,7 @@ public class Deploy extends Service {
 		public long date() {
 			return date;
 		}
-
+		
 		byte[] data() {
 			return data;
 		}
