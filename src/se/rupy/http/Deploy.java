@@ -132,7 +132,7 @@ public class Deploy extends Service {
 			}
 		}
 
-		String name(String name) {
+		static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
 			return name;
@@ -180,7 +180,10 @@ public class Deploy extends Service {
 		}
 
 		public Big(File file) {
+			long date = file.lastModified();
+			this.name = file.getName();
 			this.file = file;
+			this.date = date - date % 1000;
 		}
 		
 		public String name() {
