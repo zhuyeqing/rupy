@@ -32,23 +32,25 @@ public class Daemon implements Runnable {
 	 * @param pass
 	 *            the pass used to deploy services via HTTP POST or null/"" to
 	 *            disable remote hot-deploy
-	 * @param port
+	 * @param port (8000)
 	 *            which TCP port
-	 * @param threads
+	 * @param threads (5)
 	 *            how many worker threads, the daemon also starts one selector
-	 *            thread.
-	 * @param timeout
+	 *            and one heartbeat thread.
+	 * @param timeout (5 minutes)
 	 *            session timeout in seconds or 0 to disable sessions
-	 * @param cookie
+	 * @param cookie (4 characters)
 	 *            session key length; default and minimum is 4, > 10 can be
 	 *            considered secure
-	 * @param delay
+	 * @param delay (5 seconds)
 	 *            time in seconds before started event gets dropped due to
-	 *            inactivity.
-	 * @param size
+	 *            inactivity. Increase this if your users will download 
+	 *            content with a 'open/save/cancel' + save location dialog, 
+	 *            since this will timeout otherwise.
+	 * @param size (1024 bytes)
 	 *            IO buffer size, should be proportional to the data sizes
-	 *            received/sent by the server currently this is input/output
-	 *            buffer sizes, chunk length and max header size! :P
+	 *            received/sent by the server currently this is input/output-
+	 *            buffer, chunk-buffer, post-body-max and header-max lengths! :P
 	 * @param verbose
 	 */
 	public Daemon(Properties properties) {

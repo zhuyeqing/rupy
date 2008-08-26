@@ -329,9 +329,12 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect(Exception e) {
 		try {
+			if (key != null) {
+				key.cancel();
+			}
+			
 			if (channel != null) {
 				channel.close();
-				channel = null;
 			}
 
 			if (session != null) {

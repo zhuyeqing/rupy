@@ -94,5 +94,12 @@ VERSION:
         you will now find the mime types in the mime.txt 
         file. (reason: firefox + doctype + css + content-
         type)
+        
+      0.2.5
+      
+      - Now content is dynamically read from disk, to allow 
+        dynamic file upload.
+      - Fixed the server throttling the CPU at 99% with 
+        Java 1.6.
 
 have fun!
