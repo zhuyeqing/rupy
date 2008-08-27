@@ -335,6 +335,7 @@ public class Event extends Throwable implements Chain.Link {
 			
 			if (channel != null) {
 				channel.close();
+				channel = null;
 			}
 
 			if (session != null) {
