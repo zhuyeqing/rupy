@@ -394,6 +394,17 @@ public class Daemon implements Runnable {
 	}
 
 	synchronized Worker employ(Event event) {
+		if(queue.size() > 0) {
+			synchronized (this.queue) {
+				queue.add(event);
+			}
+			
+			if (debug)
+				System.out.println("queue " + queue);
+			
+			return null;
+		}
+		
 		workers.reset();
 		Worker worker = (Worker) workers.next();
 
