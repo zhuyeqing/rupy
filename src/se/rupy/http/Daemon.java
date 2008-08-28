@@ -374,7 +374,7 @@ public class Daemon implements Runnable {
 							}
 
 							if (worker == null) {
-								worker = employ(event);
+								employ(event);
 							} else {
 								worker.wakeup();
 							}
@@ -393,55 +393,44 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	synchronized Worker employ(Event event) {
+	void queue(Event event) {
+		synchronized (this.queue) {
+			queue.add(event);
+		}
+		
+		if (debug)
+			System.out.println("queue " + queue.size());
+	}
+	
+	synchronized void employ(Event event) {
 		if(queue.size() > 0) {
-			synchronized (this.queue) {
-				queue.add(event);
-			}
-			
-			if (debug)
-				System.out.println("queue " + queue);
-			
-			return null;
+			queue(event);
+			return;
 		}
 		
 		workers.reset();
 		Worker worker = (Worker) workers.next();
 
 		if (worker == null) {
-			synchronized (this.queue) {
-				queue.add(event);
-			}
-
-			if (debug)
-				System.out.println("no worker found " + queue);
-
-			return null;
+			queue(event);
+			return;
 		}
 
 		while (worker.busy()) {
 			worker = (Worker) workers.next();
 
 			if (worker == null) {
-				synchronized (this.queue) {
-					queue.add(event);
-				}
-
-				if (debug)
-					System.out.println("no worker found " + queue);
-
-				return null;
+				queue(event);
+				return;
 			}
 		}
 
 		if (debug)
-			System.out.println("worker " + worker.index() + " hired " + queue);
+			System.out.println("worker " + worker.index() + " hired. (" + queue.size() + ")");
 
 		event.worker(worker);
 		worker.event(event);
 		worker.wakeup();
-
-		return worker;
 	}
 
 	class Filter implements FilenameFilter {
