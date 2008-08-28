@@ -133,12 +133,23 @@ public class Deploy extends Service {
 						small.data.length);
 			}
 
-			Class service = small.clazz.getSuperclass();
-
-			if (service != null
-					&& service.getCanonicalName()
-					.equals("se.rupy.http.Service")) {
-				this.service.add((Service) small.clazz.newInstance());
+			Class clazz = small.clazz.getSuperclass();
+			boolean service = false;
+			
+			while (clazz != null) {
+				if (clazz.getCanonicalName().equals("se.rupy.http.Service")) {
+					service = true;
+				}
+				clazz = clazz.getSuperclass();
+			}
+			
+			if(service) {
+				try {
+					this.service.add((Service) small.clazz.newInstance());
+				}
+				catch(InstantiationException e) {
+					// abstract superclass ...
+				}
 			}
 		}
 

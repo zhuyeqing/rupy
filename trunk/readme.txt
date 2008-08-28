@@ -101,5 +101,8 @@ VERSION:
         dynamic file upload.
       - Fixed the server throttling the CPU at 99% with 
         Java 1.6.
+      - Added so you can abstract/child extend Service.
+      - Added host management, so you can deploy multiple 
+        domains on one rupy instance.
 
 have fun!
