@@ -15,7 +15,7 @@ import java.util.jar.*;
  * @author marc
  */
 public class Deploy extends Service {
-	private static String path, pass;
+	public static String path, pass;
 
 	public Deploy(String path, String pass) {
 		Deploy.path = path;
@@ -67,19 +67,28 @@ public class Deploy extends Service {
 
 	static class Archive extends ClassLoader {
 		private HashSet service;
-		private HashMap content;
+		//private HashMap content;
 		private HashMap chain;
 		private String name;
+		private String host;
 		private long date;
 
 		Archive(Daemon daemon, File file) throws Exception {
 			service = new HashSet();
-			content = new HashMap();
+			//content = new HashMap();
 			chain = new HashMap();
 			name = file.getName();
 			date = file.lastModified();
 
 			JarInputStream in = new JarInput(new FileInputStream(file));
+			Attributes attr = in.getManifest().getMainAttributes();
+			
+			host = (String) attr.get("host");
+			
+			if(host == null) {
+				host = "content";
+			}
+			
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			JarEntry entry = null;
 
@@ -94,7 +103,8 @@ public class Deploy extends Service {
 					String name = name(entry.getName());
 					classes.add(new Small(name, data));
 				} else if (!entry.isDirectory()) {
-					content.put("/" + entry.getName(), new Big("/" + entry.getName(), in, date));
+					Big.write(host, "/" + entry.getName(), in);
+					//content.put("/" + entry.getName(), new Big(host, "/" + entry.getName(), in, date));
 				}
 			}
 
@@ -142,6 +152,10 @@ public class Deploy extends Service {
 			return name;
 		}
 
+		public String host() {
+			return host;
+		}
+		
 		public long date() {
 			return date;
 		}
@@ -149,11 +163,11 @@ public class Deploy extends Service {
 		public HashMap chain() {
 			return chain;
 		}
-
+/*
 		public HashMap content() {
 			return content;
 		}
-
+*/
 		public HashSet service() {
 			return service;
 		}
@@ -164,16 +178,8 @@ public class Deploy extends Service {
 		private String name;
 		private long date;
 
-		public Big(String name, InputStream in, long date) throws IOException {
-			String path = name.substring(0, name.lastIndexOf("/"));
-			String folder = Deploy.path + "content";
-
-			new File(folder + path).mkdirs();
-
-			file = new File(folder + name);
-			file.createNewFile();
-
-			pipe(in, new FileOutputStream(file));
+		public Big(String host, String name, InputStream in, long date) throws IOException {
+			file = write(host, name, in);
 
 			this.name = name;
 			this.date = date - date % 1000;
@@ -184,6 +190,20 @@ public class Deploy extends Service {
 			this.name = file.getName();
 			this.file = file;
 			this.date = date - date % 1000;
+		}
+		
+		static File write(String host, String name, InputStream in) throws IOException {
+			String path = name.substring(0, name.lastIndexOf("/"));
+			String root = Deploy.path + host;
+
+			new File(root + path).mkdirs();
+
+			File file = new File(root + name);
+			file.createNewFile();
+
+			pipe(in, new FileOutputStream(file));
+			
+			return file;
 		}
 		
 		public String name() {

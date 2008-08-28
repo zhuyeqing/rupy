@@ -47,11 +47,16 @@ public abstract class Service implements Chain.Link {
 	 * the login page for example:
 	 * 
 	 * <pre>
-	 * public void filter(Event event) throw Event {
-	 *     event.reply().header(&quot;Location&quot;, &quot;/login&quot;);
-	 *     event.reply().code(&quot;302 Found&quot;);
-	 *     throw event; // stop the chain
-	 * }
+	 * event.daemon().get("/login").filter(event);
+	 * throw event; // stop the chain
+	 * </pre>
+	 * 
+	 * or
+	 * 
+	 * <pre>
+	 * event.reply().header(&quot;Location&quot;, &quot;/login&quot;);
+	 * event.reply().code(&quot;302 Found&quot;);
+	 * throw event; // stop the chain
 	 * </pre>
 	 * 
 	 * @return the path (URI) to the service(s).
@@ -64,7 +69,7 @@ public abstract class Service implements Chain.Link {
 	 * 
 	 * @throws Exception
 	 */
-	public void init() throws Exception {
+	public void create() throws Exception {
 	}
 
 	/**
@@ -73,7 +78,7 @@ public abstract class Service implements Chain.Link {
 	 * 
 	 * @throws Exception
 	 */
-	public void done() throws Exception {
+	public void destroy() throws Exception {
 	}
 
 	/**

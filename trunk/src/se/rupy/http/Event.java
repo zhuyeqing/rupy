@@ -226,7 +226,7 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	boolean content() throws IOException {
-		Deploy.Stream stream = daemon.content(query.path());
+		Deploy.Stream stream = daemon.content(query);
 
 		if (stream == null)
 			return false;
@@ -247,7 +247,7 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	boolean service() throws IOException {
-		Chain chain = daemon.get(query.path());
+		Chain chain = daemon.chain(query);
 
 		if (chain == null)
 			return false;
@@ -329,15 +329,15 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect(Exception e) {
 		try {
-			if (key != null) {
-				key.cancel();
-			}
-			
 			if (channel != null) {
 				channel.close();
 				channel = null;
 			}
 
+			if (key != null) {
+				key.cancel();
+			}
+			
 			if (session != null) {
 				session.remove(this);
 			}
