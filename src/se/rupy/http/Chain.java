@@ -62,4 +62,31 @@ public class Chain extends LinkedList {
 	public interface Link {
 		public int index();
 	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		Iterator it = iterator();
+
+		buffer.append('[');
+		
+		while(it.hasNext()) {
+			Object object = it.next();
+			String name = object.getClass().getName();
+			
+			if(name.equals("se.rupy.http.Event")) {
+				buffer.append(object);
+			}
+			else {
+				buffer.append(name);
+			}
+			
+			if(it.hasNext()) {
+				buffer.append(", ");
+			}
+		}
+		
+		buffer.append(']');
+		
+		return buffer.toString();
+	}
 }

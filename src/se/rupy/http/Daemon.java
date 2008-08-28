@@ -16,7 +16,7 @@ import java.nio.channels.*;
 
 public class Daemon implements Runnable {
 	public Properties properties;
-	public boolean verbose, debug;
+	public boolean verbose, debug, host;
 
 	int threads, timeout, cookie, delay, size, port;
 
@@ -29,6 +29,10 @@ public class Daemon implements Runnable {
 	 * Use this to start the daemon from your application. The parameters below
 	 * should be in the properties argument.
 	 * 
+	 * @param host (false)
+	 *            if you want to host multiple domains on one rupy server you need
+	 *            to enable hosts, and add host attributes to your deploy jar 
+	 *            manifest files.
 	 * @param pass
 	 *            the pass used to deploy services via HTTP POST or null/"" to
 	 *            disable remote hot-deploy
@@ -66,6 +70,8 @@ public class Daemon implements Runnable {
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
 		.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(
+		"true");
+		host = properties.getProperty("host", "false").toLowerCase().equals(
 		"true");
 
 		if (!verbose) {
@@ -113,7 +119,7 @@ public class Daemon implements Runnable {
 				Service service = (Service) it.next();
 
 				try {
-					service.done();
+					service.destroy();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -157,16 +163,26 @@ public class Daemon implements Runnable {
 			}
 
 			if (verbose)
-				System.out.println("init " + path + " " + chain);
+				System.out.println(path + padding(path) + chain);
 
 			try {
-				service.init();
+				service.create();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+	String padding(String path) {
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i = 0; i < 10 - path.length(); i++) {
+			buffer.append(' ');
+		}
+		
+		return buffer.toString();
+	}
+	
 	void verify(Deploy.Archive archive) throws Exception {
 		Iterator it = archive.chain().keySet().iterator();
 
@@ -187,10 +203,21 @@ public class Daemon implements Runnable {
 		}
 	}
 
+	Deploy.Stream content(Query query) {
+		if(host) {
+			return content(query.header("host"), query.path());
+		}
+		else {
+			return content(query.path());
+		}
+	}
+	
 	Deploy.Stream content(String path) {
-		//System.out.println(System.getProperty("user.dir") + File.separator + "app" + File.separator + "content" + path);
+		return content("content", path);
+	}
 		
-		File file = new File(System.getProperty("user.dir") + File.separator + "app" + File.separator + "content" + path);
+	Deploy.Stream content(String host, String path) {
+		File file = new File("app" + File.separator + host + File.separator + path);
 
 		if(file.exists() && !file.isDirectory()) {
 			return new Deploy.Big(file);
@@ -215,7 +242,20 @@ public class Daemon implements Runnable {
 		return null;
 	}
 
-	public Chain get(String path) {
+	Chain chain(Query query) {
+		if(host) {
+			return chain(query.header("host"), query.path());
+		}
+		else {
+			return chain(query.path());
+		}
+	}
+	
+	public Chain chain(String path) {
+		return chain("content", path);
+	}
+	
+	public Chain chain(String host, String path) {
 		synchronized (this.service) {
 			Chain chain = (Chain) this.service.get(path);
 
@@ -229,10 +269,13 @@ public class Daemon implements Runnable {
 
 			while (it.hasNext()) {
 				Deploy.Archive archive = (Deploy.Archive) it.next();
-				Chain chain = (Chain) archive.chain().get(path);
+				
+				if (archive.host().equals(host)) {
+					Chain chain = (Chain) archive.chain().get(path);
 
-				if (chain != null) {
-					return chain;
+					if (chain != null) {
+						return chain;
+					}
 				}
 			}
 		}
@@ -280,9 +323,9 @@ public class Daemon implements Runnable {
 						+ "- debug      \t" + debug);
 
 			if (pass != null && pass.length() > 0) {
-				add(new Deploy("app/", pass));
+				add(new Deploy("app" + File.separator, pass));
 
-				File[] app = new File("app/").listFiles(new Filter());
+				File[] app = new File(Deploy.path).listFiles(new Filter());
 
 				if (app != null) {
 					for (int i = 0; i < app.length; i++) {
