@@ -202,6 +202,10 @@ public class Query extends Hash {
 		headers.put(name, value);
 	}
 
+	public HashMap header() {
+		return headers;
+	}
+	
 	public Input input() {
 		return input;
 	}

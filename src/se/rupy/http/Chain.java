@@ -77,6 +77,14 @@ public class Chain extends LinkedList {
 				buffer.append(object);
 			}
 			else {
+				int dollar = name.lastIndexOf('$');
+				int dot = name.lastIndexOf('.');
+				if(dollar > 0) {
+					name = name.substring(dollar + 1);
+				}
+				else if(dot > 0) {
+					name = name.substring(dot + 1);
+				}				
 				buffer.append(name);
 			}
 			
