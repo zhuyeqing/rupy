@@ -335,7 +335,9 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			if (key != null) {
+				Selector selector = key.selector();
 				key.cancel();
+				selector.wakeup();
 			}
 			
 			if (session != null) {
