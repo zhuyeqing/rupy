@@ -32,6 +32,8 @@ _If you believe that "being prepared to be wrong" is an integral part of creativ
 
  With rupy you can [Deployment hot-replace] a major refactoring, without _any_ kind of interruption for your end users and _directly_ from your development station to the live environment. Let your users do the QA!
 
+_This is particularily useful if you have a 'dev' environment against which you must work to test some external integration, just create two build targets, local and remote.
+
 *Design*
 
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
