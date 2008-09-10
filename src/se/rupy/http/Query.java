@@ -126,7 +126,14 @@ public class Query extends Hash {
 		parse(input.event().daemon().size);
 	}
 
-	void parse(int size) throws Exception {
+	/**
+	 * Parse the parameters from GET or POST. This method will only parse once
+	 * per query and cache the result so don't be afraid of calling this method.
+	 * 
+	 * @param size Maximum amount of bytes.
+	 * @throws Exception
+	 */
+	public void parse(int size) throws Exception {
 		if (parsed) {
 			return;
 		} else {
