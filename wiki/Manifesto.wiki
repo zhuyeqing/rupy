@@ -18,9 +18,9 @@ _We are talking about vertical micro distribution here, where your application i
 
  Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
-_In general we recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense, because you will enjoy your work more when you actually learn something worthwhile and in the process you can solve problems at their origin instead of working around them!_
-
 _In general when you simplify things you must be prepared to reformulate the problem, not only search the answer to the question you where asked._
+
+_We recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense, because you will enjoy your work more when you actually learn something worthwhile and in the process you can solve problems at their origin instead of working around them!_
 
 *Speed*
 
