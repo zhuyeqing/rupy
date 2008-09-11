@@ -20,6 +20,8 @@ _We are talking about vertical micro distribution here, where your application i
 
 _In general we recommend that you be creative about how to solve your technical challenges without the use of multi-purpose high-level tools. It really makes sense, because you will enjoy your work more when you actually learn something worthwhile and in the process you can solve problems at their origin instead of working around them!_
 
+_In general when you simplify things you must be prepared to reformulate the problem, not only search the answer to the question you where asked._
+
 *Speed*
 
  Scalability often slows things down. Fortunately, rupy's compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
