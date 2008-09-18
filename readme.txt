@@ -10,7 +10,7 @@ INTRODUCTION:
 
 RUN:
 
-    You need java 1.4 or later installed and 
+    You need java 1.4 or 1.5 installed and 
     added to the path and JAVA_HOME set to run 
     the server.
 
@@ -99,10 +99,13 @@ VERSION:
       
       - Now content is dynamically read from disk, to allow 
         dynamic file upload.
-      - Fixed the server throttling the CPU at 99% with 
-        Java 1.6.
-      - Added so you can abstract/child extend Service.
+      - Added so you can deploy an abstract Service.
       - Added host management, so you can deploy multiple 
-        domains on one rupy instance.
-
+        domains on one rupy instance. Not tested though.
+      - Discovered the server eventually throttles the CPU to 
+        99% with Java 1.6 new NIO implementation. I think the 
+        bug is in EPollArrayWrapper, unfortunately I don't have 
+        time to debug Sun's native code, so stick with Java 1.5 
+        for now.
+        
 have fun!
