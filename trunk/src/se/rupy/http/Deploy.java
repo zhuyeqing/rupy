@@ -109,6 +109,7 @@ public class Deploy extends Service {
 			}
 
 			int length = classes.size();
+			String missing = "";
 			Small small = null;
 
 			while (classes.size() > 0) {
@@ -118,6 +119,10 @@ public class Deploy extends Service {
 					instantiate(small);
 				} catch (NoClassDefFoundError e) {
 					// the superclass has still not been loaded yet
+					if(!missing.equals(e.getMessage())) {
+						missing = e.getMessage();
+						length = classes.size();
+					}
 					classes.addElement(small);
 					length--;
 					if (length < 0) {
