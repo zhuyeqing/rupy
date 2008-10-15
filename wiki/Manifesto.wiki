@@ -2,7 +2,7 @@
 
 *Creativity*
 
- With rupy I wanted to remove all obstacles for innovation. All the points below are means for you to create!
+ With rupy I wanted to remove all obstacles and annoyances programmers experience when developing web applications with other J2EE compliant systems. With rupy the compile-bundle-deploy roundtrip is a couple of seconds which increases productivity by removing distractions.
 
 *Modularity*
 
