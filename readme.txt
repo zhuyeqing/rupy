@@ -108,4 +108,8 @@ VERSION:
         time to debug Sun's native code, so stick with Java 1.5 
         for now.
         
+    0.3 Gamma
+      
+    - Fixed dynamic class loading of complex hierarchies.
+        
 have fun!

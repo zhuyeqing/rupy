@@ -140,7 +140,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
 				.getBytes());
-		wrote(("Server: Rupy/0.2.5 (Beta)" + EOL).getBytes());
+		wrote(("Server: Rupy/0.3" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 
 		if (length > -1) {
