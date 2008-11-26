@@ -115,6 +115,6 @@ VERSION:
       0.3.1
       
       - Removed chunking of fixed length responses.
-      - Fixed large files worker/selector deadlock.
+      - Fixed large file worker/selector deadlock.
       
 have fun!
