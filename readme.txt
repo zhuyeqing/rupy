@@ -112,4 +112,9 @@ VERSION:
       
     - Fixed dynamic class loading of complex hierarchies.
         
+      0.3.1
+      
+      - Removed chunking of fixed length responses.
+      - Fixed large files worker/selector deadlock.
+      
 have fun!

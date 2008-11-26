@@ -16,7 +16,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private boolean chunk, cache;
 	protected int length, size;
 	protected Reply reply;
-	protected boolean init, push;
+	protected boolean init, push, fixed;
 
 	Output(Reply reply) throws IOException {
 		this.reply = reply;
@@ -55,20 +55,24 @@ public abstract class Output extends OutputStream implements Event.Block {
 		write(String.valueOf(b).getBytes("UTF-8"));
 	}
 
-	void init() throws IOException {
+	void init(long length) throws IOException {
 		if (init) {
 			reply.event().log("already inited", Event.DEBUG);
 			return;
 		} else
-			reply.event().log("init " + reply.event().query().version(),
+			reply.event().log("init " + reply.event().query().version() + " " + length,
 					Event.DEBUG);
 
+		fixed = false;
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
 
 		init = true;
 
-		if (chunk) {
+		if(length > 0) {
+			headers(length);
+			fixed = true;
+		} else if (chunk) {
 			/*
 			 * TODO: What am I doing wrong?
 			 * 
@@ -131,7 +135,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		init = false;
 	}
 
-	void headers(int length) throws IOException {
+	void headers(long length) throws IOException {
 		cache = false;
 
 		reply.event().log("code " + reply.code(), Event.VERBOSE);
@@ -140,7 +144,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
 				.getBytes());
-		wrote(("Server: Rupy/0.3" + EOL).getBytes());
+		wrote(("Server: Rupy/0.3.1" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 
 		if (length > -1) {
@@ -338,7 +342,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void write(byte[] b, int off, int len) throws IOException {
-			if (!chunk()) {
+			if (!chunk() || fixed) {
 				wrote(b, off, len);
 				return;
 			}
@@ -418,7 +422,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
-			} else {
+			} else if(!fixed) {
 				reply.event().log("asynchronous push " + count, Event.DEBUG);
 				push = true;
 			}
