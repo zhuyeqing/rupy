@@ -16,6 +16,7 @@ public class Worker implements Runnable, Chain.Link {
 	private Thread thread;
 	private Event event;
 	private int index;
+	private boolean awake;
 
 	Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
@@ -45,9 +46,14 @@ public class Worker implements Runnable, Chain.Link {
 	}
 	
 	void wakeup() {
+		if(event != null)
+			event.log("wakeup", Event.DEBUG);
+		
 		synchronized (thread) {
 			thread.notify();
 		}
+		
+		awake = true;
 	}
 
 	void snooze() {
@@ -55,16 +61,27 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	void snooze(long delay) {
+		if(event != null)
+			event.log("snooze", Event.DEBUG);
+		
 		synchronized (thread) {
 			try {
 				if (delay > 0) {
+					if(awake) {
+						awake = false;
+						return;
+					}
+					
 					thread.wait(delay);
 				} else {
 					thread.wait();
 				}
 			} catch (InterruptedException e) {
+				event.disconnect(e);
 			}
 		}
+		
+		awake = false;
 	}
 
 	void event(Event event) {

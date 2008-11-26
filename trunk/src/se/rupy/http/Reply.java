@@ -78,7 +78,7 @@ public class Reply {
 	public void code(String code) throws IOException {
 		event.log("code", Event.DEBUG);
 		this.code = code;
-		output.init();
+		output.init(0);
 	}
 
 	public String type() {
@@ -105,6 +105,10 @@ public class Reply {
 		this.modified = modified;
 	}
 
+	public Output output() throws IOException {
+		return output(0);
+	}
+	
 	/**
 	 * Important: call {@link #header(String, String)} and {@link #code(String)}
 	 * first, in that order, this method is the point of no return for delivery
@@ -113,12 +117,13 @@ public class Reply {
 	 * HTTP/1.0, the headers will be prepended automatically after the
 	 * {@link Service#filter(Event)} method returns.
 	 * 
+	 * @param length if you want to write fixed length data
 	 * @return the output stream.
 	 * @throws IOException
 	 */
-	public Output output() throws IOException {
-		event.log("output", Event.DEBUG);
-		output.init();
+	public Output output(long length) throws IOException {
+		event.log("output " + length, Event.DEBUG);
+		output.init(length);
 		return output;
 	}
 

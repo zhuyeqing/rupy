@@ -7,7 +7,6 @@ import java.text.*;
 import java.util.*;
 
 import java.nio.channels.*;
-//import javax.activation.*;
 
 /**
  * Asynchronous HTTP request/response, this virtually represents a client
@@ -237,7 +236,7 @@ public class Event extends Throwable implements Chain.Link {
 		reply.modified(stream.date());
 
 		if (query.modified() == 0 || query.modified() < reply.modified()) {
-			Deploy.pipe(stream.input(), reply.output());
+			Deploy.pipe(stream.input(), reply.output(stream.length()));
 			log("content " + type, VERBOSE);
 		} else {
 			reply.code("304 Not Modified");
