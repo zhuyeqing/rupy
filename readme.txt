@@ -10,7 +10,7 @@ INTRODUCTION:
 
 RUN:
 
-    You need java 1.4 or 1.5 installed and 
+    You need java 1.4 or later installed and 
     added to the path and JAVA_HOME set to run 
     the server.
 
@@ -102,11 +102,6 @@ VERSION:
       - Added so you can deploy an abstract Service.
       - Added host management, so you can deploy multiple 
         domains on one rupy instance. Not tested though.
-      - Discovered the server eventually throttles the CPU to 
-        99% with Java 1.6 new NIO implementation. I think the 
-        bug is in EPollArrayWrapper, unfortunately I don't have 
-        time to debug Sun's native code, so stick with Java 1.5 
-        for now.
         
     0.3 Gamma
       
