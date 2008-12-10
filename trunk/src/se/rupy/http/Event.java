@@ -295,7 +295,7 @@ public class Event extends Throwable implements Chain.Link {
 		interest(interest);
 
 		try {
-			if (channel != null)
+			if (channel.isOpen())
 				register();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -330,13 +330,10 @@ public class Event extends Throwable implements Chain.Link {
 		try {
 			if (channel != null) {
 				channel.close();
-				channel = null;
 			}
 
 			if (key != null) {
-				Selector selector = key.selector();
 				key.cancel();
-				selector.wakeup();
 			}
 			
 			if (session != null) {
