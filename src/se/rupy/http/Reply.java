@@ -105,6 +105,11 @@ public class Reply {
 		this.modified = modified;
 	}
 
+	/**
+	 * Calls {@link #output(0)}.
+	 * @return the output stream.
+	 * @throws IOException
+	 */
 	public Output output() throws IOException {
 		return output(0);
 	}
