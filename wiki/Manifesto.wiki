@@ -18,7 +18,7 @@
 
  Scalability often slows things down. Fortunately, rupy's compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
- While uptime is a requirement, ideas can't grow without development speed; because to create you need to experiment and the faster you get results, the faster your idears might have value!
+ While uptime is a requirement, ideas can't grow without development speed; because to create you need to experiment and the faster you get results, the faster your ideas might have value!
 
 *Agility*
 
