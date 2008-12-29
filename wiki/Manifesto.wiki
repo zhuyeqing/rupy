@@ -36,4 +36,4 @@
 
 *Modularity*
 
- Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your appliction over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces.
+ Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your application over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces.
