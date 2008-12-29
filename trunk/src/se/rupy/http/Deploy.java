@@ -8,10 +8,7 @@ import java.util.jar.*;
 /**
  * Hot-deploys an application containing one or many service filters from disk
  * with simplistic dynamic class loading, eventually after receiving it through
- * a HTTP POST. Observe that content resources need to have a matching service
- * path in order to deploy, otherwise deployments could overwrite each others
- * content.
- * 
+ * a HTTP POST.
  * @author marc
  */
 public class Deploy extends Service {
