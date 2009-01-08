@@ -123,7 +123,7 @@ public class Hash extends HashMap {
 		return value;
 	}
 	
-	public void put(String key,long value) {
+	public void put(String key, long value) {
 		super.put(key, new Long(value));
 	}
 	

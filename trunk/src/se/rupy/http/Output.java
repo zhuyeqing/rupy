@@ -16,7 +16,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private boolean chunk, cache;
 	protected int length, size;
 	protected Reply reply;
-	protected boolean init, push, fixed;
+	protected boolean init, push, fixed, done;
 
 	Output(Reply reply) throws IOException {
 		this.reply = reply;
@@ -28,7 +28,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	boolean complete() {
-		return !push;
+		return !push && done;
 	}
 
 	public void println(Object o) throws IOException {
@@ -64,6 +64,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 					Event.DEBUG);
 
 		fixed = false;
+		done = false;
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
 
@@ -123,6 +124,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			}
 		}
 
+		done = true;
 		flush();
 
 		if (length > 0) {
@@ -144,7 +146,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
 				.getBytes());
-		wrote(("Server: Rupy/0.3.1" + EOL).getBytes());
+		wrote(("Server: Rupy/0.3.2" + EOL).getBytes());
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 
 		if (length > -1) {
