@@ -112,4 +112,9 @@ VERSION:
       - Removed chunking of fixed length responses.
       - Fixed large file worker/selector deadlock.
       
+      0.3.2
+      
+      - Fixed chunked streaming Output.flush() to not write 
+        trailing zero length chunk before end of reply.
+      
 have fun!
