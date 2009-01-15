@@ -26,7 +26,11 @@ public class Hash extends HashMap {
 		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if(value instanceof String) {
-			return Long.parseLong((String) value);
+			String text = (String) value;
+			if(text.length() == 0) {
+				return fail;
+			}
+			return Long.parseLong(text);
 		}
 
 		throw new ClassCastException();
@@ -48,7 +52,11 @@ public class Hash extends HashMap {
 		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
-			return Integer.parseInt((String) value);
+			String text = (String) value;
+			if(text.length() == 0) {
+				return fail;
+			}
+			return Integer.parseInt(text);
 		}
 
 		throw new ClassCastException();
@@ -68,7 +76,11 @@ public class Hash extends HashMap {
 		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
-			return Short.parseShort((String) value);
+			String text = (String) value;
+			if(text.length() == 0) {
+				return fail;
+			}
+			return Short.parseShort(text);
 		}
 
 		throw new ClassCastException();
@@ -86,7 +98,11 @@ public class Hash extends HashMap {
 		} else if (value instanceof Byte) {
 			return ((Byte) value).byteValue();
 		} else if (value instanceof String) {
-			return Byte.parseByte((String) value);
+			String text = (String) value;
+			if(text.length() == 0) {
+				return fail;
+			}
+			return Byte.parseByte(text);
 		}
 
 		throw new ClassCastException();
