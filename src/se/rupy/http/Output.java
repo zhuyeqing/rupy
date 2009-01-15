@@ -71,8 +71,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 		init = true;
 
 		if(length > 0) {
-			headers(length);
 			fixed = true;
+			headers(length);
 		} else if (chunk) {
 			/*
 			 * TODO: What am I doing wrong?
@@ -160,6 +160,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 					+ reply.event().DATE.format(new Date(reply.modified())) + EOL)
 					.getBytes());
 		}
+		
+		if (fixed) {
+			wrote(("Expires: "
+					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) + EOL)
+					.getBytes());
+		}
 
 		if (reply.event().session() != null && !reply.event().session().set()) {
 			Session session = reply.event().session();
@@ -175,7 +181,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			wrote((cookie + EOL).getBytes());
 
 			reply.event().session().set(true);
-			reply.event().log("cookie " + cookie, Event.DEBUG);
+			reply.event().log("cookie " + cookie, Event.VERBOSE);
 		}
 
 		if (reply.event().close()) {
