@@ -1,7 +1,7 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
 
- If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.1.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.3.1.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant deploy_ task, this should build and deploy a test.jar application to your rupy server. Now try browsing to http://localhost:8000.
+ If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.2.1.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.3.2.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant deploy_ task, this should build and deploy a test.jar application to your rupy server. Now try browsing to http://localhost:8000.
 ----
  We have started the development of [http://sprout.googlecode.com sprout], a simple CMS; based on top of rupy and [http://memory.googlecode.com memory]. If you want a real-world example of rupy in action try this out!
 ----
