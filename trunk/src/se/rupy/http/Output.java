@@ -337,6 +337,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void write(int b) throws IOException {
+			if (!chunk() || fixed) {
+				wrote(b);
+				return;
+			}
+			
 			reply.event().worker().chunk()[cursor++] = (byte) b;
 			count++;
 
@@ -430,7 +435,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
-			} else if(!fixed) {
+			} else if (!fixed) {
 				reply.event().log("asynchronous push " + count, Event.DEBUG);
 				push = true;
 			}
