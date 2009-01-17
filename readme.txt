@@ -103,10 +103,10 @@ VERSION:
       - Added host management, so you can deploy multiple 
         domains on one rupy instance. Not tested though.
         
-    0.3 Gamma
+    0.3 Stable
       
     - Fixed dynamic class loading of complex hierarchies.
-        
+      
       0.3.1
       
       - Removed chunking of fixed length responses.
@@ -116,5 +116,11 @@ VERSION:
       
       - Fixed chunked streaming Output.flush() to not write 
         trailing zero length chunk before end of reply.
+      
+      0.3.3
+      
+      - Added Expires header.
+      - Added Event.hold() method, to allow asynchronous 
+      streaming on the first request.
       
 have fun!

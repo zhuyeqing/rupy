@@ -438,6 +438,18 @@ public class Event extends Throwable implements Chain.Link {
 		this.push = push;
 	}
 	
+	/**
+	 * Keeps the chunked reply open for asynchronous writes. If you are 
+	 * streaming data and you need to send something upon the first request 
+	 * you have to call this in order to avoid that the trailing zero length 
+	 * chunk is sent to complete the response.
+	 * @throws IOException
+	 */
+	public void hold() throws IOException {
+		output().push = true;
+		this.push = true;
+	}
+	
 	static class Mime extends Properties {
 		public Mime() {
 			try {
