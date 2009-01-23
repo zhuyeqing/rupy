@@ -328,7 +328,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	void disconnect(Exception e) {
 		try {
-			if (channel != null) {
+			if (channel != null && channel.isOpen()) {
 				channel.close();
 			}
 
