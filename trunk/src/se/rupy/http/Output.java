@@ -162,8 +162,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 		
 		if (fixed) {
+			wrote(("Cache-Control: max-age=3600, must-revalidate" + EOL)
+					.getBytes());
 			wrote(("Expires: "
-					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) + EOL)
+					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 365))) + EOL)
 					.getBytes());
 		}
 
@@ -337,11 +339,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void write(int b) throws IOException {
+			/*
 			if (!chunk() || fixed) {
 				wrote(b);
 				return;
 			}
-			
+			*/
 			reply.event().worker().chunk()[cursor++] = (byte) b;
 			count++;
 
