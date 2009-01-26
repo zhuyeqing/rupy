@@ -79,9 +79,9 @@ public class Worker implements Runnable, Chain.Link {
 			} catch (InterruptedException e) {
 				event.disconnect(e);
 			}
+			
+			awake = false;
 		}
-		
-		awake = false;
 	}
 
 	void event(Event event) {
