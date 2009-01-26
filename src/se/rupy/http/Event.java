@@ -309,14 +309,16 @@ public class Event extends Throwable implements Chain.Link {
 
 		while (System.currentTimeMillis() < max) {
 			int available = block.fill(true);
-
+			
 			if (available > 0) {
 				long delay = daemon.delay - (max - System.currentTimeMillis());
-				log("delay " + delay, VERBOSE);
+				log("delay " + delay + " " + available, VERBOSE);
 				return available;
 			}
-
-			worker.snooze(daemon.delay);
+			
+			worker.snooze(10);
+			
+			key.selector().wakeup();
 		}
 
 		throw new Exception("IO timeout.");

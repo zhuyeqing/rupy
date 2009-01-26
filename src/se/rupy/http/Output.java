@@ -124,7 +124,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			}
 		}
 
-		done = true;
+		done = true;		
 		flush();
 
 		if (length > 0) {
@@ -161,11 +161,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 					.getBytes());
 		}
 		
-		if (fixed) {
+		if (fixed && reply.event().daemon().properties.getProperty("live") != null) {
 			wrote(("Cache-Control: max-age=3600, must-revalidate" + EOL)
 					.getBytes());
 			wrote(("Expires: "
-					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 365))) + EOL)
+					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + ((long) 1000 * 60 * 60 * 24 * 365))) + EOL)
 					.getBytes());
 		}
 
@@ -427,7 +427,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				if (reply.code().startsWith("302")
 						|| reply.code().startsWith("304")) {
 					reply.event().log("length " + length, Event.DEBUG);
-				} else {
+				} else if (!fixed) {
 					if (count > 0) {
 						write();
 					}
