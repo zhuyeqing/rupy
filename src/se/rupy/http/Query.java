@@ -2,7 +2,6 @@ package se.rupy.http;
 
 import java.io.*;
 import java.net.*;
-import java.nio.*;
 import java.text.*;
 import java.util.*;
 
