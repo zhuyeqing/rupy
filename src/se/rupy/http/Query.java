@@ -92,11 +92,12 @@ public class Query extends Hash {
 
 		String since = header("if-modified-since");
 
-		if (since != null) {
+		if (since != null && since.length() > 0) {
 			try {
 				modified = input.event().DATE.parse(since).getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
+				modified = 0;
 			}
 		}
 

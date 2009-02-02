@@ -343,6 +343,7 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			log("disconnect " + e);
+			//e.printStackTrace();
 		} catch (Exception de) {
 			de.printStackTrace();
 		}
