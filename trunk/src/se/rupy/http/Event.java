@@ -343,7 +343,8 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			log("disconnect " + e);
-			//e.printStackTrace();
+
+			worker.snooze(10); // to avoid deadlock when proxy closes socket
 		} catch (Exception de) {
 			de.printStackTrace();
 		}

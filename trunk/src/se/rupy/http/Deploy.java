@@ -115,7 +115,7 @@ public class Deploy extends Service {
 					classes.removeElement(small);
 					instantiate(small);
 				} catch (NoClassDefFoundError e) {
-					// the superclass has still not been loaded yet
+					// the superclass has not been loaded yet
 					if(!missing.equals(e.getMessage())) {
 						missing = e.getMessage();
 						length = classes.size();
@@ -214,7 +214,12 @@ public class Deploy extends Service {
 			File file = new File(root + name);
 			file.createNewFile();
 
-			pipe(in, new FileOutputStream(file));
+			OutputStream out = new FileOutputStream(file);
+			
+			pipe(in, out);
+			
+			out.flush();
+			out.close();
 			
 			return file;
 		}
