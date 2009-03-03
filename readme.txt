@@ -122,5 +122,7 @@ VERSION:
       - Added Expires header.
       - Added Event.hold() method, to allow asynchronous 
       streaming on the first request.
+      - Fixed deadlock when proxy closes socket.
+      - URLDecoding the URI.
       
 have fun!

@@ -134,7 +134,7 @@ public class Reply {
 
 	/**
 	 * To send data asynchronously, call this and the event will be re-filtered.
-	 * Just make sure you didn't already flush the reply and that are ready to
+	 * Just make sure you didn't already flush the reply and that you are ready to
 	 * catch the event when it recycles!
 	 * 
 	 * @throws IOException

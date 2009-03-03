@@ -41,7 +41,7 @@ public class Query extends Hash {
 			throw new IOException("Unsupported method.");
 		}
 
-		String get = http.nextToken();
+		String get = decoder.decode(http.nextToken(), "UTF-8");
 		int index = get.indexOf('?');
 
 		if (index > 0) {
