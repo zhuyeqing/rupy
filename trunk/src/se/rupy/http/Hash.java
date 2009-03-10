@@ -139,6 +139,16 @@ public class Hash extends HashMap {
 		return value;
 	}
 	
+	public String string(String key, String fail) {
+		String value = (String) super.get(key);
+
+		if (value == null) {
+			return fail;
+		}
+
+		return value;
+	}
+	
 	public void put(String key, long value) {
 		super.put(key, new Long(value));
 	}
