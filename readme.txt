@@ -125,4 +125,8 @@ VERSION:
       - Fixed deadlock when proxy closes socket.
       - URLDecoding the URI.
       
+      0.3.4
+      
+      - Fixed dynamic class loading of complex hierarchies.
+      
 have fun!

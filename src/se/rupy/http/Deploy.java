@@ -121,7 +121,7 @@ public class Deploy extends Service {
 						length = classes.size();
 					}
 					classes.addElement(small);
-					length--;
+					length--;					
 					if (length < 0) {
 						throw e;
 					}
@@ -133,6 +133,9 @@ public class Deploy extends Service {
 			if (small.clazz == null) {
 				small.clazz = defineClass(small.name, small.data, 0,
 						small.data.length);
+			}
+			else {
+				return;
 			}
 
 			Class clazz = small.clazz.getSuperclass();
