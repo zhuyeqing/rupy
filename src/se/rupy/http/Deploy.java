@@ -134,16 +134,19 @@ public class Deploy extends Service {
 				small.clazz = defineClass(small.name, small.data, 0,
 						small.data.length);
 			}
-			else {
-				return;
-			}
 
 			Class clazz = small.clazz.getSuperclass();
 			boolean service = false;
 			
 			while (clazz != null) {
-				if (clazz.getCanonicalName().equals("se.rupy.http.Service")) {
-					service = true;
+				try {
+					if (clazz.getCanonicalName().equals("se.rupy.http.Service")) {
+						service = true;
+					}
+				}
+				catch (NoClassDefFoundError e) {
+					System.out.println(small.name);
+					e.printStackTrace();
 				}
 				clazz = clazz.getSuperclass();
 			}
