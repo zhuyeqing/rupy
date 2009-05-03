@@ -113,7 +113,7 @@ public class Deploy extends Service {
 				try {
 					small = (Small) classes.elementAt(0);
 					classes.removeElement(small);
-					instantiate(small);
+					instantiate(small, daemon);
 				} catch (NoClassDefFoundError e) {
 					// the superclass has not been loaded yet
 					if(!missing.equals(e.getMessage())) {
@@ -129,7 +129,7 @@ public class Deploy extends Service {
 			}
 		}
 
-		void instantiate(Small small) throws Exception {
+		void instantiate(Small small, Daemon daemon) throws Exception {
 			if (small.clazz == null) {
 				small.clazz = defineClass(small.name, small.data, 0,
 						small.data.length);
@@ -145,8 +145,9 @@ public class Deploy extends Service {
 					}
 				}
 				catch (NoClassDefFoundError e) {
-					System.out.println(small.name);
-					e.printStackTrace();
+					if(daemon.verbose) {
+						System.out.println(small.name + " superclass not found!");
+					}
 				}
 				clazz = clazz.getSuperclass();
 			}
@@ -156,8 +157,14 @@ public class Deploy extends Service {
 					this.service.add((Service) small.clazz.newInstance());
 				}
 				catch(InstantiationException e) {
-					// abstract superclass ...
+					if(daemon.verbose) {
+						System.out.println(small.name + " couldn't be instantiated!");
+					}
 				}
+			}
+			
+			if(daemon.debug) {
+				System.out.println(small.name + (service ? "*" : ""));
 			}
 		}
 
