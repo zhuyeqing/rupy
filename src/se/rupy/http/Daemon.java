@@ -55,6 +55,8 @@ public class Daemon implements Runnable {
 	 *            IO buffer size, should be proportional to the data sizes
 	 *            received/sent by the server currently this is input/output-
 	 *            buffer, chunk-buffer, post-body-max and header-max lengths! :P
+	 * @param live (false)
+	 *            Uses expires header to cache static files.
 	 * @param verbose
 	 */
 	public Daemon(Properties properties) {
@@ -320,7 +322,9 @@ public class Daemon implements Runnable {
 						+ "- IO timeout \t" + delay / 1000 + " second"
 						+ (delay / 1000 > 1 ? "s" : "") + "\n"
 						+ "- IO buffer  \t" + size + " bytes\n"
-						+ "- debug      \t" + debug);
+						+ "- debug      \t" + debug + "\n"
+						+ "- live       \t" + properties.getProperty("live", "false").toLowerCase()
+						.equals("true"));
 
 			if (pass != null && pass.length() > 0) {
 				add(new Deploy("app" + File.separator, pass));
