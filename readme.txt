@@ -128,5 +128,6 @@ VERSION:
       0.3.4
       
       - Fixed dynamic class loading of complex hierarchies.
+      - Use the -live flag to enable expire cache.
       
 have fun!
