@@ -57,7 +57,12 @@ public class Daemon implements Runnable {
 	 *            buffer, chunk-buffer, post-body-max and header-max lengths! :P
 	 * @param live (false)
 	 *            Uses expires header to cache static files.
-	 * @param verbose
+	 * @param verbose (false)
+	 *            To System.out information about these startup parameters, 
+	 *            high-level info for each request and deployed services overview.
+	 * @param debug (false)
+	 *            To System.out low-level NIO logs for each request and class 
+	 *            loading info.
 	 */
 	public Daemon(Properties properties) {
 		this.properties = properties;
