@@ -29,40 +29,40 @@ public class Daemon implements Runnable {
 	 * Use this to start the daemon from your application. The parameters below
 	 * should be in the properties argument.
 	 * 
-	 * @param host (false)
-	 *            if you want to host multiple domains on one rupy server you need
+	 * @param <br><b>host</b> (false)
+	 *            <i>if you want to host multiple domains on one rupy server you need
 	 *            to enable hosts, and add host attributes to your deploy jar 
-	 *            manifest files.
-	 * @param pass
-	 *            the pass used to deploy services via HTTP POST or null/"" to
-	 *            disable remote hot-deploy
-	 * @param port (8000)
-	 *            which TCP port
-	 * @param threads (5)
-	 *            how many worker threads, the daemon also starts one selector
-	 *            and one heartbeat thread.
-	 * @param timeout (5 minutes)
-	 *            session timeout in seconds or 0 to disable sessions
-	 * @param cookie (4 characters)
-	 *            session key length; default and minimum is 4, > 10 can be
-	 *            considered secure
-	 * @param delay (5 seconds)
-	 *            time in seconds before started event gets dropped due to
+	 *            manifest files.</i><br><br>
+	 * @param <b>pass</b>
+	 *            <i>the pass used to deploy services via HTTP POST or null/"" to
+	 *            disable remote hot-deploy</i><br><br>
+	 * @param <b>port</b> (8000)
+	 *            <i>which TCP port</i><br><br>
+	 * @param <b>threads</b> (5)
+	 *            <i>how many worker threads, the daemon also starts one selector
+	 *            and one heartbeat thread.</i><br><br>
+	 * @param <b>timeout</b> (5 minutes)
+	 *            <i>session timeout in seconds or 0 to disable sessions</i><br><br>
+	 * @param <b>cookie</b> (4 characters)
+	 *            <i>session key length; default and minimum is 4, > 10 can be
+	 *            considered secure</i><br><br>
+	 * @param <b>delay</b> (5 seconds)
+	 *            <i>time in seconds before started event gets dropped due to
 	 *            inactivity. Increase this if your users will download 
 	 *            content with a 'open/save/cancel' + save location dialog, 
-	 *            since this will timeout otherwise.
-	 * @param size (1024 bytes)
-	 *            IO buffer size, should be proportional to the data sizes
+	 *            since this will timeout otherwise.</i><br><br>
+	 * @param <b>size</b> (1024 bytes)
+	 *            <i>IO buffer size, should be proportional to the data sizes
 	 *            received/sent by the server currently this is input/output-
-	 *            buffer, chunk-buffer, post-body-max and header-max lengths! :P
-	 * @param live (false)
-	 *            Uses expires header to cache static files.
-	 * @param verbose (false)
-	 *            To System.out information about these startup parameters, 
-	 *            high-level info for each request and deployed services overview.
-	 * @param debug (false)
-	 *            To System.out low-level NIO logs for each request and class 
-	 *            loading info.
+	 *            buffer, chunk-buffer, post-body-max and header-max lengths! :P</i><br><br>
+	 * @param <b>live</b> (false)
+	 *            <i>uses expires header to cache static files.</i><br><br>
+	 * @param <b>verbose</b> (false)
+	 *            <i>to System.out information about these startup parameters, 
+	 *            high-level info for each request and deployed services overview.</i><br><br>
+	 * @param <b>debug</b> (false)
+	 *            <i>to System.out low-level NIO logs for each request and class 
+	 *            loading info.</i><br><br>
 	 */
 	public Daemon(Properties properties) {
 		this.properties = properties;
