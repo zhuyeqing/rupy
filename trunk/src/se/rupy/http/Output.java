@@ -11,6 +11,11 @@ import java.util.*;
  */
 public abstract class Output extends OutputStream implements Event.Block {
 	private final static String EOL = "\r\n";
+	private final static byte[] server = ("Server: Rupy/0.3.4" + EOL).getBytes();
+	private final static byte[] close = ("Connection: Close" + EOL).getBytes();
+	private final static byte[] alive = ("Connection: Keep-Alive" + EOL).getBytes();
+	private final static byte[] chunked = ("Transfer-Encoding: Chunked" + EOL).getBytes();
+	
 	private ByteArrayOutputStream array;
 	private byte[] one = new byte[1];
 	private boolean chunk, cache;
@@ -146,13 +151,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 				.getBytes());
 		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
 				.getBytes());
-		wrote(("Server: Rupy/0.3.4" + EOL).getBytes());
+		wrote(server);
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
 
 		if (length > -1) {
 			wrote(("Content-Length: " + length + EOL).getBytes());
 		} else {
-			wrote(("Transfer-Encoding: Chunked" + EOL).getBytes());
+			wrote(chunked);
 		}
 
 		if (reply.modified() > 0) {
@@ -187,9 +192,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		if (reply.event().close()) {
-			wrote(("Connection: Close" + EOL).getBytes());
+			wrote(close);
 		} else {
-			wrote(("Connection: Keep-Alive" + EOL).getBytes());
+			wrote(alive);
 		}
 
 		HashMap headers = reply.headers();
