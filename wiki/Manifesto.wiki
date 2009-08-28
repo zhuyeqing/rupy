@@ -2,7 +2,7 @@
 
 *IBA*
 
-Rupy follows the "Implementation before Architecture" as opposed to "Architecture before Implementation" design pattern. This resolves some practical issues in this case; for example what was specified (one thread per request) and what wasn't (hot-deployment of servlets).
+ Rupy follows the "Implementation before Architecture" as opposed to "Architecture before Implementation" design pattern. This resolves some practical issues in this case; for example what was specified (one thread per request) and what wasn't (hot-deployment of servlets).
 
  _You *won't* need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
 
