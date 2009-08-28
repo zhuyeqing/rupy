@@ -1,11 +1,5 @@
 #summary Why yet another Java HTTP server?
 
-*IBA*
-
- Rupy follows the "Implementation before Architecture" as opposed to "Architecture before Implementation" design pattern. This resolves some practical issues; for example, what was specified (one thread per request) and what wasn't (hot-deployment of servlets).
-
- _You *won't* need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
-
 *Creativity*
 
  With rupy I wanted to remove all obstacles and annoyances programmers experience when developing web applications with other Java HTTP servers. With rupy the compile-bundle-hotdeploy roundtrip is a couple of seconds which increases productivity and allows for a more creative "experimental" style of development.
@@ -21,6 +15,8 @@
  Scalability often slows things down. Fortunately, rupy's compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
 
  While uptime is a requirement, ideas can't grow without development speed; because to create you need to experiment and the faster you get results, the faster your ideas might have value!
+
+ _You *won't* need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
 
 *Agility*
 
