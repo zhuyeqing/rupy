@@ -2,7 +2,7 @@
 
 *Creativity*
 
- With rupy I wanted to remove all obstacles and annoyances programmers experience when developing web applications with other Java HTTP servers. With rupy the compile-bundle-hotdeploy roundtrip is a couple of seconds which increases productivity and allows for a more creative "experimental" style of development. For example you won't need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss.
+ With rupy I wanted to remove all obstacles and annoyances programmers experience when developing web applications with other Java HTTP servers. With rupy the compile-bundle-hotdeploy roundtrip is a couple of seconds which increases productivity and allows for a more creative "experimental" style of development. _For example you won't need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
 
 *Simplicity*
 
