@@ -3,13 +3,13 @@
 *Creativity*
 
  With rupy I wanted to remove all obstacles and annoyances programmers experience when developing web applications with other Java HTTP servers. With rupy the compile-bundle-hotdeploy roundtrip is a couple of seconds which increases productivity and allows for a more creative "experimental" style of development.
-_For example you won't need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
+ _For example you won't need to restart Rupy every time you edit a Service (the equivalent of Servlets) like you would have to with Jetty, Tomcat or JBoss._
 
 *Simplicity*
 
  Simplicity is what Comet, JSON and REST share alike. After all; HTTP is TCP, JSON is javascript and web-services are [http://wanderingbarque.com/nonintersecting/2006/11/15/the-s-stands-for-simple/ overengineered]. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
-_You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.2.1.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
+ _You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.2.1.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
 
 *Speed*
 
