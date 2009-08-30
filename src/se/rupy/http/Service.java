@@ -65,7 +65,10 @@ public abstract class Service implements Chain.Link {
 
 	/**
 	 * Initiate service dependencies. This is called when you hot-deploy the
-	 * application / start the server.
+	 * application / start the server. Important: This will be called for every 
+	 * chain instance of the service. So if you have multiple paths this will be 
+	 * called once for every path. Use static lock if you use this to start some 
+	 * singleton thread.
 	 * 
 	 * @throws Exception
 	 */
