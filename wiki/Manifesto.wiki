@@ -16,7 +16,7 @@
 
  While uptime is a requirement, ideas can't grow without development speed; because to create you need to experiment and the faster you get results, the faster your ideas might have value!
 
- _You won't need to restart Rupy every time you edit a Service (the equivalent of Servlets), there's no servlet context to be reloaded and your session state will be kept out of the box without "out of memory" issues. Which is specially welcomed when you design dynamic GUIs with Ajax and JSON._
+ _You won't need to restart Rupy every time you edit a Service (the equivalent of Servlets), there's no servlet context to be reloaded and your session state will be kept out of the box; without "out of memory" issues. This is specially welcomed when you design dynamic GUIs with Ajax and JSON._
 
 *Agility*
 
