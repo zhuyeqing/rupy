@@ -6,7 +6,7 @@
 
 *Simplicity*
 
- Simplicity is what Rupy, Comet and JSON share alike. After all; HTTP is TCP, JSON is JavaScript and Rupy is Java. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
+ Simplicity is what Rupy, Comet and JSON share alike. After all; Comet says HTTP is TCP, JSON is just JavaScript and Rupy is plain Java. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
 
  _You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.2.1.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
 
