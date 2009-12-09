@@ -106,25 +106,4 @@ public abstract class Service implements Chain.Link {
 	 * @throws Exception
 	 */
 	public abstract void filter(Event event) throws Event, Exception;
-
-	/**
-	 * This method is just a convention, if you use internal redirection. The
-	 * filter method should place all it's code into this method so that other
-	 * services can execute the service remotely without having to redirect the
-	 * client externally with a 302.
-	 * 
-	 * <pre>
-	 * public void filter(Event event) throw Event {
-	 *     act(event);
-	 * }
-	 * </pre>
-	 * 
-	 * @param event
-	 * @throws Event
-	 *             if you want to break the filter chain and disconnect the
-	 *             client
-	 * @throws Exception
-	 */
-	public static void act(Event event) throws Event, Exception {
-	}
 }
