@@ -129,5 +129,6 @@ VERSION:
       
       - Fixed dynamic class loading of complex hierarchies.
       - Use the -live flag to enable expire cache.
+      - Added null service so you can filter all 404 queries.
       
 have fun!

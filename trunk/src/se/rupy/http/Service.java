@@ -38,7 +38,8 @@ public abstract class Service implements Chain.Link {
 	}
 
 	/**
-	 * The identifier that should trigger this service. For example "/admin".
+	 * The identifier that should trigger this service. Or return null 
+	 * if you want to filter all 404 queries. For example "/admin".
 	 * You can specify a service that should filter multiple identifiers by
 	 * separating them with a ':' character. For example: if you want to
 	 * identify a user before multiple services, return "/update:/query" here
@@ -96,14 +97,4 @@ public abstract class Service implements Chain.Link {
 	 */
 	public void session(Session session, int type) throws Exception {
 	}
-
-	/**
-	 * The service method, equivalent of HttpServlet.service().
-	 * 
-	 * @param event
-	 * @throws Event
-	 *             if you want to break the filter chain
-	 * @throws Exception
-	 */
-	public abstract void filter(Event event) throws Event, Exception;
 }
