@@ -248,8 +248,12 @@ public class Event extends Throwable implements Chain.Link {
 	boolean service() throws IOException {
 		Chain chain = daemon.chain(query);
 
-		if (chain == null)
-			return false;
+		if (chain == null) {
+			chain = daemon.chain("null");
+		
+			if(chain == null)
+				return false;
+		}
 
 		try {
 			chain.filter(this);

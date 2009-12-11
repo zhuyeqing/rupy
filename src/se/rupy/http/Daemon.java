@@ -148,10 +148,16 @@ public class Daemon implements Runnable {
 	}
 
 	void add(HashMap map, Service service) throws Exception {
-		StringTokenizer paths = new StringTokenizer(service.path(), ":");
+		String path = service.path();
+		
+		if(path == null) {
+			path = "null";
+		}
+		
+		StringTokenizer paths = new StringTokenizer(path, ":");
 
 		while (paths.hasMoreTokens()) {
-			String path = paths.nextToken();
+			path = paths.nextToken();
 			Chain chain = (Chain) map.get(path);
 
 			if (chain == null) {
