@@ -97,4 +97,14 @@ public abstract class Service implements Chain.Link {
 	 */
 	public void session(Session session, int type) throws Exception {
 	}
+
+	/**
+	 * The service method, equivalent of HttpServlet.service().
+	 * 
+	 * @param event
+	 * @throws Event
+	 *             if you want to break the filter chain
+	 * @throws Exception
+	 */
+	public abstract void filter(Event event) throws Event, Exception;
 }
