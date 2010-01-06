@@ -134,4 +134,8 @@ public class Session extends Hash {
 	void touch() {
 		date = System.currentTimeMillis();
 	}
+	
+	public String toString() {
+		return key;
+	}
 }

@@ -25,8 +25,8 @@ public class Event extends Throwable implements Chain.Link {
 	static int DEBUG = 1 << 1;
 
 	private static char[] BASE_24 = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K',
-			'M', 'P', 'Q', 'R', 'T', 'V', 'W', 'X', 'Y', '2', '3', '4', '6',
-			'7', '8', '9' };
+		'M', 'P', 'Q', 'R', 'T', 'V', 'W', 'X', 'Y', '2', '3', '4', '6',
+		'7', '8', '9' };
 	static DateFormat DATE;
 	static Mime MIME;
 
@@ -91,9 +91,9 @@ public class Event extends Throwable implements Chain.Link {
 		return session;
 	}
 
-	void session(Session session) {
-		this.session = session;
-	}
+	//void session(Session session) {
+	//	this.session = session;
+	//}
 
 	public String remote() {
 		return remote;
@@ -215,7 +215,7 @@ public class Event extends Throwable implements Chain.Link {
 
 		if (remote == null) {
 			InetSocketAddress address = (InetSocketAddress) channel.socket()
-					.getRemoteSocketAddress();
+			.getRemoteSocketAddress();
 			remote = address.getAddress().getHostAddress();
 		}
 
@@ -231,7 +231,7 @@ public class Event extends Throwable implements Chain.Link {
 			return false;
 
 		String type = MIME.content(query.path(), "application/octet-stream");
-		
+
 		reply.type(type);
 		reply.modified(stream.date());
 
@@ -250,7 +250,7 @@ public class Event extends Throwable implements Chain.Link {
 
 		if (chain == null) {
 			chain = daemon.chain("null");
-		
+
 			if(chain == null)
 				return false;
 		}
@@ -313,15 +313,15 @@ public class Event extends Throwable implements Chain.Link {
 
 		while (System.currentTimeMillis() < max) {
 			int available = block.fill(true);
-			
+
 			if (available > 0) {
 				long delay = daemon.delay - (max - System.currentTimeMillis());
 				log("delay " + delay + " " + available, VERBOSE);
 				return available;
 			}
-			
+
 			worker.snooze(10);
-			
+
 			key.selector().wakeup();
 		}
 
@@ -341,7 +341,7 @@ public class Event extends Throwable implements Chain.Link {
 			if (key != null) {
 				key.cancel();
 			}
-			
+
 			if (session != null) {
 				session.remove(this);
 			}
@@ -356,7 +356,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	final void session(Service service) {
 		String key = cookie(query.header("cookie"), "key");
-		
+
 		if (key != null) {
 			session = (Session) daemon.session().get(key);
 
@@ -370,27 +370,29 @@ public class Event extends Throwable implements Chain.Link {
 			}
 		}
 
-		session = new Session(daemon);
-		session.add(service);
-		session.add(this);
-		session.key(key);
-
-		if (session.key() == null) {
-			do {
-				key = random(daemon.cookie);
-			} while (daemon.session().get(key) != null);
+		if(service.index() == 0) {
+			session = new Session(daemon);
+			session.add(service);
+			session.add(this);
 			session.key(key);
+
+			if (session.key() == null) {
+				do {
+					key = random(daemon.cookie);
+				} while (daemon.session().get(key) != null);
+				session.key(key);
+			}
+
+			synchronized (daemon.session()) {
+				log("new key " + session.key(), VERBOSE);
+				daemon.session().put(session.key(), session);
+			}
 		}
-		
+
 		try {
 			service.session(session, Service.CREATE);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		synchronized (daemon.session()) {
-			log("new key " + session.key(), VERBOSE);
-			daemon.session().put(session.key(), session);
 		}
 	}
 
@@ -445,7 +447,7 @@ public class Event extends Throwable implements Chain.Link {
 	void push(boolean push) {
 		this.push = push;
 	}
-	
+
 	/**
 	 * Keeps the chunked reply open for asynchronous writes. If you are 
 	 * streaming data and you need to send something upon the first request 
@@ -457,7 +459,7 @@ public class Event extends Throwable implements Chain.Link {
 		output().push = true;
 		this.push = true;
 	}
-	
+
 	static class Mime extends Properties {
 		public Mime() {
 			try {
@@ -467,14 +469,14 @@ public class Event extends Throwable implements Chain.Link {
 				e.printStackTrace();
 			}
 		}
-		
+
 		String content(String path, String fail) {
 			int index = path.lastIndexOf('.') + 1;
-			
+
 			if(index > 0) {
 				return getProperty(path.substring(index), fail);
 			}
-			
+
 			return fail;
 		}
 	}

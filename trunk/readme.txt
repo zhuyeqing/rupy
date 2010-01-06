@@ -127,8 +127,9 @@ VERSION:
       
       0.3.4
       
-      - Fixed dynamic class loading of complex hierarchies.
+      - Fixed dynamic class loading of large hierarchies.
       - Use the -live flag to enable expire cache.
       - Added null service so you can filter all 404 queries.
+      - Fixed first event session glitch.
       
 have fun!
