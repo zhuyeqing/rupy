@@ -140,9 +140,10 @@ public class Reply {
 	 * @throws IOException
 	 */
 	public void wakeup() throws IOException {
-		if (output.complete()) {
-			throw new IOException("Reply already complete.");
-		}
+		// TODO: Dunno what this is all about. Think I need another state boolean in Output...
+		//if (output.complete()) {
+			//throw new IOException("Reply already complete. (wakeup)");
+		//}
 
 		if (event.worker() != null) {
 			throw new IOException("Reply still processing.");

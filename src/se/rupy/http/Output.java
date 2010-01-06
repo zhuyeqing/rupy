@@ -33,7 +33,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	boolean complete() {
-		return !push && done;
+		return !push; // !push && done; // TODO: Need an async state variable
 	}
 
 	public void println(Object o) throws IOException {
@@ -421,7 +421,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		public void finish() throws IOException {
 			if (complete()) {
-				throw new IOException("Reply already complete.");
+				throw new IOException("Reply already complete. (finish)");
 			}
 
 			push = false;

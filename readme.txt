@@ -130,6 +130,7 @@ VERSION:
       - Fixed dynamic class loading of large hierarchies.
       - Use the -live flag to enable expire cache.
       - Added null service so you can filter all 404 queries.
-      - Fixed first event session glitch.
+      - Fixed first event in a chain session glitch.
+      - Patched async complete state by removing it, will look at this later.
       
 have fun!
