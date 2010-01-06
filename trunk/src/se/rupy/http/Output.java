@@ -33,7 +33,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	boolean complete() {
-		return !push; // !push && done; // TODO: Need an async state variable
+		return !push && done; // TODO: Need an async state variable
 	}
 
 	public void println(Object o) throws IOException {
