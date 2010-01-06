@@ -131,6 +131,6 @@ VERSION:
       - Use the -live flag to enable expire cache.
       - Added null service so you can filter all 404 queries.
       - Fixed first event in a chain session glitch.
-      - Patched async complete state by removing it, will look at this later.
+      - Looking at async stuff, it's buggy!
       
 have fun!
