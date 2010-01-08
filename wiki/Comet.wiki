@@ -1,7 +1,7 @@
 #summary HTTP in real-time.
 #labels Phase-Implementation,Featured
 
-_First, [http://tentacle.rupy.se try] the chat, it's the little black box in the bottom right corner!_
+_First, [http://rupy.se try] the chat, it's the little black box in the bottom right corner!_
 
 Comet is all about corporate firewalls, because you want to reach everyone, everywhere, you need to use HTTP on port 80. Now you can push data over HTTP on port 80 in real-time.
 
