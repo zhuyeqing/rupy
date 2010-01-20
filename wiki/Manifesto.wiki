@@ -6,15 +6,9 @@
 
 *Simplicity*
 
- Simplicity is what Rupy, Comet and JSON share alike. After all; Comet says HTTP is TCP, JSON is just JavaScript and Rupy is plain Java. Rupy is so simple you should be able to understand the codebase enough to comfortably modify it during a coffee-break. Superposing of desired features should be hesitationless.
-
  _You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.2.1.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
 
 *Speed*
-
- Scalability often slows things down. Fortunately, rupy's compact codebase inherently provides high speed, which still gracefully degrades thanks to non-blocking asynchronous IO and an event queue to avoid selector trashing.
-
- While uptime is a requirement, ideas can't grow without development speed; because to create you need to experiment and the faster you get results, the faster your ideas might have value!
 
  _You won't need to restart Rupy every time you edit a Service (the equivalent of Servlets), there's no servlet context to be reloaded and your session state will be kept out of the box; without "out of memory" issues. This is specially welcomed when you design dynamic GUIs with Ajax and JSON._
 
