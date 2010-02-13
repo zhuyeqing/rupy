@@ -209,6 +209,15 @@ public class Query extends Hash {
 		headers.put(name, value);
 	}
 
+	/**
+	 * Returns the parameters of the request. For GET you can just call 
+	 * this but for POST you need to call {@link #parse()} first.
+	 * @return the parameter string without the '?' if present else null.
+	 */
+	public String parameters() {
+		return parameters;
+	}
+	
 	public HashMap header() {
 		return headers;
 	}
