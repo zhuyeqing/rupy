@@ -5,9 +5,10 @@ import java.nio.*;
 import java.util.*;
 
 /**
- * HTTP response. Inherently non-blocking asynchronous; even if you don't write
- * any output, the worker will still be released immediately. The order of
- * execution is {@link #header(String, String)}, {@link #code(String)} and
+ * HTTP response. Non-blocking asynchronous; if you don't change the code or write output, 
+ * the reply will not be sent at the end of the filter method and the client will wait 
+ * for a response indefinitely, until a network timeout or a reply wakeup sends a response.
+ * The order of execution is {@link #header(String, String)}, {@link #code(String)} and
  * finally {@link #output()}. If you call the {@link #code(String)} or
  * {@link #output()} method, the reply will flush output, so then you won't be
  * able to do an asynchronous reply. To wakeup a dormant asynchronous event use
