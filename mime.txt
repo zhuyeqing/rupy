@@ -11,7 +11,7 @@ jpeg  image/jpeg
 png   image/png
 tiff  image/tiff
 css   text/css
-html  text/html
+html  text/html; charset=UTF-8
 txt   text/plain
 xml   text/xml
 avi   video/avi
