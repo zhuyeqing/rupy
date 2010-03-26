@@ -132,6 +132,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		flush();
 
+		/*
+		 * Added this to fix the push bug that adding the 
+		 * fixed flag caused. If you look in the flush method 
+		 * at the bottom of this file you will see why this is needed.
+		 * TODO: Add test unit for fixed length!
+		 */
 		fixed = false;
 		
 		if (length > 0) {
