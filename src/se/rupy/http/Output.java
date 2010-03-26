@@ -68,7 +68,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 			reply.event().log("init " + reply.event().query().version() + " " + length,
 					Event.DEBUG);
 
-		fixed = false;
 		done = false;
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
@@ -129,17 +128,20 @@ public abstract class Output extends OutputStream implements Event.Block {
 			}
 		}
 
-		done = true;		
+		done = true;
+
 		flush();
 
+		fixed = false;
+		
 		if (length > 0) {
 			reply.event().log("reply " + length, Event.VERBOSE);
 		}
 
 		reply.event().interest(Event.READ);
 
-		length = 0;
 		init = false;
+		length = 0;
 	}
 
 	void headers(long length) throws IOException {
@@ -439,13 +441,18 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					if (complete()) {
 						write();
+						//System.out.println(reply.event().index() + " FLUSH " + chunk() + " " + init);
 					}
 
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			} else if (!fixed) {
 				reply.event().log("asynchronous push " + count, Event.DEBUG);
+				//System.out.println(reply.event().index() + " PUSH " + chunk() + " " + init);
 				push = true;
+			}
+			else {
+				//System.out.println(reply.event().index() + " WTF " + chunk() + " " + init);
 			}
 
 			super.flush();
