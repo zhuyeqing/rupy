@@ -141,6 +141,7 @@ public class Reply {
 	 * @throws IOException
 	 */
 	public void wakeup() throws IOException {
+		//System.out.println(event.index() + " WAKEUP " + output.push + " " + output.done);
 		// TODO
 		if (output.complete()) {
 			throw new IOException("Reply already complete. (wakeup)");

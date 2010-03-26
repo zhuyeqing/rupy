@@ -132,5 +132,15 @@ VERSION:
       - Added null service so you can filter all 404 queries.
       - Fixed first event in a chain session glitch.
       - Looking at async stuff, it's buggy!
+      - FIXED IMPORTANT BUG IN REALTIME STUFF:
+        The fixed length for images and stuff introduced a 
+        serious bug to the real time push stuff: namely the 
+        fixed flag was never reset and the flush did not set 
+        the push flag!!
+        FYI: Observe that fixed length dynamic responses still 
+        is untested and is known to be buggy, which BTW doesn't 
+        matter since nobody has HTTP/1.0 clients anyhow, and the 
+        whole point with rupy is chunked which is HTTP/1.1, 
+        just a heads up!
       
 have fun!
