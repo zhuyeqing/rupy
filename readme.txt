@@ -130,8 +130,6 @@ VERSION:
       - Fixed dynamic class loading of large hierarchies.
       - Use the -live flag to enable expire cache.
       - Added null service so you can filter all 404 queries.
-      - Fixed first event in a chain session glitch.
-      - Looking at async stuff, it's buggy!
       - Fixed push, so now the chat should work properly!
       
 have fun!
