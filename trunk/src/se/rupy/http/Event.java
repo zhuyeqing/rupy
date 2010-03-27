@@ -52,7 +52,7 @@ public class Event extends Throwable implements Chain.Link {
 	private String remote;
 	private boolean close, push;
 
-	Event(Daemon daemon, SelectionKey key, int index) throws IOException {
+	protected Event(Daemon daemon, SelectionKey key, int index) throws IOException {
 		channel = ((ServerSocketChannel) key.channel()).accept();
 		channel.configureBlocking(false);
 
@@ -67,11 +67,11 @@ public class Event extends Throwable implements Chain.Link {
 		key.selector().wakeup();
 	}
 
-	int interest() {
+	protected int interest() {
 		return interest;
 	}
 
-	void interest(int interest) {
+	protected void interest(int interest) {
 		this.interest = interest;
 	}
 
@@ -111,30 +111,30 @@ public class Event extends Throwable implements Chain.Link {
 		return index;
 	}
 
-	void close(boolean close) {
+	protected void close(boolean close) {
 		this.close = close;
 	}
 
-	void worker(Worker worker) {
+	protected void worker(Worker worker) {
 		this.worker = worker;
 		register(READ);
 	}
 
-	SocketChannel channel() {
+	protected SocketChannel channel() {
 		return channel;
 	}
 
-	void log(Object o) {
+	protected void log(Object o) {
 		log(o, Event.DEBUG);
 	}
 
-	void log(Object o, int level) {
+	protected void log(Object o, int level) {
 		if (o instanceof Exception && daemon.debug) {
-			System.out.print("[" + (worker == null ? "*" : "" + worker.index())
+			daemon.out.print("[" + (worker == null ? "*" : "" + worker.index())
 					+ "-" + index + "] ");
-			((Exception) o).printStackTrace();
+			((Exception) o).printStackTrace(daemon.out);
 		} else if (daemon.debug || daemon.verbose && level == Event.VERBOSE)
-			System.out.println("["
+			daemon.out.println("["
 					+ (worker == null ? "*" : "" + worker.index()) + "-"
 					+ index + "] " + o);
 	}
@@ -196,7 +196,7 @@ public class Event extends Throwable implements Chain.Link {
 		return reply.output();
 	}
 
-	void read() throws IOException {
+	protected void read() throws IOException {
 		query.headers();
 		remote = address();
 
@@ -210,7 +210,7 @@ public class Event extends Throwable implements Chain.Link {
 		query.done();
 	}
 
-	String address() {
+	protected String address() {
 		String remote = query.header("x-forwarded-for");
 
 		if (remote == null) {
@@ -224,7 +224,7 @@ public class Event extends Throwable implements Chain.Link {
 		return remote;
 	}
 
-	boolean content() throws IOException {
+	protected boolean content() throws IOException {
 		Deploy.Stream stream = daemon.content(query);
 
 		if (stream == null)
@@ -245,7 +245,7 @@ public class Event extends Throwable implements Chain.Link {
 		return true;
 	}
 
-	boolean service() throws IOException {
+	protected boolean service() throws IOException {
 		Chain chain = daemon.chain(query);
 
 		if (chain == null) {
@@ -275,13 +275,13 @@ public class Event extends Throwable implements Chain.Link {
 		return true;
 	}
 
-	void write() throws IOException {
+	protected void write() throws IOException {
 		service();
 		reply.done();
 		query.done();
 	}
 
-	void register() throws IOException {
+	protected void register() throws IOException {
 		if (interest != key.interestOps()) {
 			log((interest == READ ? "read" : "write") + " prereg " + interest
 					+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
@@ -295,7 +295,7 @@ public class Event extends Throwable implements Chain.Link {
 		log((interest == READ ? "read" : "write") + " wakeup", DEBUG);
 	}
 
-	void register(int interest) {
+	protected void register(int interest) {
 		interest(interest);
 
 		try {
@@ -306,7 +306,7 @@ public class Event extends Throwable implements Chain.Link {
 		}
 	}
 
-	int block(Block block) throws Exception {
+	protected int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
 
 		register();
@@ -332,7 +332,7 @@ public class Event extends Throwable implements Chain.Link {
 		public int fill(boolean debug) throws IOException;
 	}
 
-	void disconnect(Exception e) {
+	protected void disconnect(Exception e) {
 		try {
 			if (channel != null) { // && channel.isOpen()) {
 				channel.close();
@@ -350,11 +350,11 @@ public class Event extends Throwable implements Chain.Link {
 
 			worker.snooze(10); // to avoid deadlock when proxy closes socket
 		} catch (Exception de) {
-			de.printStackTrace();
+			de.printStackTrace(daemon.out);
 		}
 	}
 
-	final void session(Service service) {
+	protected final void session(Service service) {
 		String key = cookie(query.header("cookie"), "key");
 
 		if (key != null) {
@@ -392,7 +392,7 @@ public class Event extends Throwable implements Chain.Link {
 		try {
 			service.session(session, Service.CREATE);
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(daemon.out);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class Event extends Throwable implements Chain.Link {
 		return push;
 	}
 
-	void push(boolean push) {
+	protected void push(boolean push) {
 		this.push = push;
 	}
 

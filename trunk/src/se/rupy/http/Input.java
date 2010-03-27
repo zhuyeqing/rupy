@@ -13,18 +13,18 @@ public abstract class Input extends InputStream implements Event.Block {
 	private int available, length;
 	private Event event;
 
-	Input(Event event) throws IOException {
+	protected Input(Event event) throws IOException {
 		this.event = event;
 	}
 
-	void init() {
+	protected void init() {
 		chunk = event.query().length() > -1 ? false : true;
 		event.log("header " + length, Event.VERBOSE);
 		length = 0;
 		init = true;
 	}
 
-	void end() {
+	protected void end() {
 		if (length > 0)
 			event.log("query " + length, Event.VERBOSE);
 
@@ -32,26 +32,26 @@ public abstract class Input extends InputStream implements Event.Block {
 		init = false;
 	}
 
-	Event event() {
+	protected Event event() {
 		return event;
 	}
 
-	boolean chunk() {
+	protected boolean chunk() {
 		return chunk;
 	}
 
-	int real() throws IOException {
+	protected int real() throws IOException {
 		if (real(one, 0, 1) > 0) {
 			return one[0] & 0xFF;
 		}
 		return -1;
 	}
 
-	int real(byte[] b) throws IOException {
+	protected int real(byte[] b) throws IOException {
 		return real(b, 0, b.length);
 	}
 
-	int real(byte[] b, int off, int len) throws IOException {
+	protected int real(byte[] b, int off, int len) throws IOException {
 		try {
 			available = fill(false);
 
@@ -136,7 +136,7 @@ public abstract class Input extends InputStream implements Event.Block {
 		private byte[] one = new byte[1];
 		private int length;
 
-		Chunked(Event event) throws IOException {
+		protected Chunked(Event event) throws IOException {
 			super(event);
 		}
 

@@ -24,13 +24,13 @@ public class Reply {
 	private long modified;
 	private String code;
 
-	Reply(Event event) throws IOException {
+	protected Reply(Event event) throws IOException {
 		this.event = event;
 		output = new Output.Chunked(this);
 		reset();
 	}
 
-	void done() throws IOException {
+	protected void done() throws IOException {
 		event.log("done", Event.DEBUG);
 
 		output.end();
@@ -42,17 +42,17 @@ public class Reply {
 		reset();
 	}
 
-	void reset() {
+	protected void reset() {
 		modified = 0;
 		type = "text/html; charset=UTF-8";
 		code = "200 OK";
 	}
 
-	Event event() {
+	protected Event event() {
 		return event;
 	}
 
-	HashMap headers() {
+	protected HashMap headers() {
 		return headers;
 	}
 
@@ -98,11 +98,11 @@ public class Reply {
 		headers.put(name, value);
 	}
 
-	long modified() {
+	protected long modified() {
 		return modified;
 	}
 
-	void modified(long modified) {
+	protected void modified(long modified) {
 		this.modified = modified;
 	}
 
@@ -141,8 +141,6 @@ public class Reply {
 	 * @throws IOException
 	 */
 	public void wakeup() throws IOException {
-		//System.out.println(event.index() + " WAKEUP " + output.push + " " + output.done);
-		// TODO
 		if (output.complete()) {
 			throw new IOException("Reply already complete. (wakeup)");
 		}

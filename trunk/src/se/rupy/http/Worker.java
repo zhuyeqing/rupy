@@ -16,7 +16,7 @@ public class Worker implements Runnable, Chain.Link {
 	private Thread thread;
 	private Event event;
 	private int index;
-	private boolean awake;
+	private boolean awake, alive;
 
 	Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
@@ -25,6 +25,8 @@ public class Worker implements Runnable, Chain.Link {
 		in = ByteBuffer.allocateDirect(daemon.size);
 		out = ByteBuffer.allocateDirect(daemon.size);
 
+		alive = true;
+		
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -95,9 +97,17 @@ public class Worker implements Runnable, Chain.Link {
 	public int index() {
 		return index;
 	}
+	
+	public void stop() {
+		synchronized (thread) {
+			thread.notify();
+		}
+		
+		alive = false;
+	}
 
 	public void run() {
-		while (true) {
+		while (alive) {
 			try {
 				if (event != null) {
 					if (event.push()) {

@@ -16,14 +16,16 @@ import java.nio.channels.*;
 
 public class Daemon implements Runnable {
 	public Properties properties;
-	public boolean verbose, debug, host;
+	public boolean verbose, debug, host, alive;
 
 	int threads, timeout, cookie, delay, size, port;
 
 	private HashMap archive, service, session;
 	private Chain workers, queue;
+	private Heart heart;
 	private Selector selector;
 	private String pass;
+	protected PrintStream out;
 
 	/**
 	 * Use this to start the daemon from your application. The parameters below
@@ -91,9 +93,20 @@ public class Daemon implements Runnable {
 
 		workers = new Chain();
 		queue = new Chain();
-
+		
 		try {
-			new Heart();
+			out = new PrintStream(System.out, true, "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Stars the selector, heartbeat and worker threads.
+	 */
+	public void start() {
+		try {
+			heart = new Heart();
 
 			int threads = Integer.parseInt(properties.getProperty("threads",
 			"5"));
@@ -102,21 +115,44 @@ public class Daemon implements Runnable {
 				workers.add(new Worker(this, i));
 			}
 
-			new Thread(this).start();
+			alive = true;
+			
+			Thread thread = new Thread(this);
+			thread.setName("Rupy [" + port + "]");
+			thread.setDaemon(true);
+			thread.start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(out);
 		}
 	}
-
-	HashMap session() {
+	
+	/**
+	 * Stops the selector, heartbeat and worker threads.
+	 */
+	public void stop() {
+		Iterator it = workers.iterator();
+		
+		while(it.hasNext()) {
+			Worker worker = (Worker) it.next();
+			worker.stop();
+		}
+		
+		workers.clear();
+		alive = false;
+		heart.stop();
+		
+		selector.wakeup();
+	}
+	
+	protected HashMap session() {
 		return session;
 	}
 
-	Selector selector() {
+	protected Selector selector() {
 		return selector;
 	}
 
-	void chain(Deploy.Archive archive) throws Exception {
+	protected void chain(Deploy.Archive archive) throws Exception {
 		Deploy.Archive old = (Deploy.Archive) this.archive.get(archive.name());
 
 		if (old != null) {
@@ -128,7 +164,7 @@ public class Daemon implements Runnable {
 				try {
 					service.destroy();
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(out);
 				}
 			}
 		}
@@ -147,7 +183,7 @@ public class Daemon implements Runnable {
 		add(this.service, service);
 	}
 
-	void add(HashMap map, Service service) throws Exception {
+	protected void add(HashMap map, Service service) throws Exception {
 		String path = service.path();
 		
 		if(path == null) {
@@ -176,17 +212,17 @@ public class Daemon implements Runnable {
 			}
 
 			if (verbose)
-				System.out.println(path + padding(path) + chain);
+				out.println(path + padding(path) + chain);
 
 			try {
 				service.create();
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(out);
 			}
 		}
 	}
 
-	String padding(String path) {
+	protected String padding(String path) {
 		StringBuffer buffer = new StringBuffer();
 		
 		for(int i = 0; i < 10 - path.length(); i++) {
@@ -196,7 +232,7 @@ public class Daemon implements Runnable {
 		return buffer.toString();
 	}
 	
-	void verify(Deploy.Archive archive) throws Exception {
+	protected void verify(Deploy.Archive archive) throws Exception {
 		Iterator it = archive.chain().keySet().iterator();
 
 		while (it.hasNext()) {
@@ -216,7 +252,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	Deploy.Stream content(Query query) {
+	protected Deploy.Stream content(Query query) {
 		if(host) {
 			return content(query.header("host"), query.path());
 		}
@@ -225,37 +261,21 @@ public class Daemon implements Runnable {
 		}
 	}
 	
-	Deploy.Stream content(String path) {
+	protected Deploy.Stream content(String path) {
 		return content("content", path);
 	}
 		
-	Deploy.Stream content(String host, String path) {
+	protected Deploy.Stream content(String host, String path) {
 		File file = new File("app" + File.separator + host + File.separator + path);
 
 		if(file.exists() && !file.isDirectory()) {
 			return new Deploy.Big(file);
 		}
 		
-		/*
-		synchronized (this.archive) {
-			Iterator it = this.archive.values().iterator();
-
-			while (it.hasNext()) {
-				Deploy.Archive archive = (Deploy.Archive) it.next();
-				Deploy.Stream stream = (Deploy.Stream) archive.content().get(
-						path);
-				
-				if (stream != null) {
-					return stream;
-				}
-			}
-		}
-		*/
-		
 		return null;
 	}
 
-	Chain chain(Query query) {
+	protected Chain chain(Query query) {
 		if(host) {
 			return chain(query.header("host"), query.path());
 		}
@@ -296,11 +316,11 @@ public class Daemon implements Runnable {
 		return null;
 	}
 
-	synchronized Event next(Worker worker) {
+	protected synchronized Event next(Worker worker) {
 		synchronized (this.queue) {
 			if (queue.size() > 0) {
 				if (debug)
-					System.out.println("worker " + worker.index()
+					out.println("worker " + worker.index()
 							+ " found work " + queue);
 
 				return (Event) queue.remove(0);
@@ -311,10 +331,11 @@ public class Daemon implements Runnable {
 
 	public void run() {
 		String pass = properties.getProperty("pass", "");
-
+		ServerSocketChannel server = null;
+		
 		try {
 			selector = Selector.open();
-			ServerSocketChannel server = ServerSocketChannel.open();
+			server = ServerSocketChannel.open();
 			server.socket().bind(new InetSocketAddress(port));
 			server.configureBlocking(false);
 			server.register(selector, SelectionKey.OP_ACCEPT);
@@ -323,7 +344,7 @@ public class Daemon implements Runnable {
 			decimal.applyPattern("#.##");
 
 			if (verbose)
-				System.out.println("daemon started\n" + "- pass       \t"
+				out.println("daemon started\n" + "- pass       \t"
 						+ pass + "\n" + "- port       \t" + port + "\n"
 						+ "- worker(s)  \t" + threads + " thread"
 						+ (threads > 1 ? "s" : "") + "\n" + "- session    \t"
@@ -353,7 +374,7 @@ public class Daemon implements Runnable {
 			"true"))
 				test();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(out);
 			System.exit(1);
 		}
 
@@ -361,7 +382,7 @@ public class Daemon implements Runnable {
 		Event event = null;
 		SelectionKey key = null;
 
-		while (true) {
+		while (alive) {
 			try {
 				selector.select();
 				Iterator it = selector.selectedKeys().iterator();
@@ -406,18 +427,29 @@ public class Daemon implements Runnable {
 				event.disconnect(e);
 			}
 		}
+		
+		try {
+			if(selector != null) {
+				selector.close();
+			}
+			if(server != null) {
+				server.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace(out);
+		}
 	}
 
-	void queue(Event event) {
+	protected void queue(Event event) {
 		synchronized (this.queue) {
 			queue.add(event);
 		}
 		
 		if (debug)
-			System.out.println("queue " + queue.size());
+			out.println("queue " + queue.size());
 	}
 	
-	synchronized void employ(Event event) {
+	protected synchronized void employ(Event event) {
 		if(queue.size() > 0) {
 			queue(event);
 			return;
@@ -441,7 +473,7 @@ public class Daemon implements Runnable {
 		}
 
 		if (debug)
-			System.out.println("worker " + worker.index() + " hired. (" + queue.size() + ")");
+			out.println("worker " + worker.index() + " hired. (" + queue.size() + ")");
 
 		event.worker(worker);
 		worker.event(event);
@@ -457,14 +489,33 @@ public class Daemon implements Runnable {
 			return false;
 		}
 	}
-
+	
+	public void log(PrintStream out) {
+		if(out != null) {
+			this.out = out;
+		}
+	}
+	
+	protected void log(Object o) {
+		if(out != null) {
+			out.println(o);
+		}
+	}
+	
 	class Heart implements Runnable {
+		boolean alive;
+		
 		Heart() {
+			alive = true;
 			new Thread(this).start();
 		}
 
+		protected void stop() {
+			alive = false;
+		}
+		
 		public void run() {
-			while (true) {
+			while (alive) {
 				try {
 					Thread.sleep(1000);
 
@@ -479,13 +530,13 @@ public class Daemon implements Runnable {
 								se.remove();
 
 								if (debug)
-									System.out.println("session timeout "
+									out.println("session timeout "
 											+ se.key());
 							}
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(out);
 				}
 			}
 		}
@@ -520,7 +571,7 @@ public class Daemon implements Runnable {
 			return;
 		}
 
-		new Daemon(properties);
+		new Daemon(properties).start();
 	}
 
 	/*
