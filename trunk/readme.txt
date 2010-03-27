@@ -132,4 +132,8 @@ VERSION:
       - Added null service so you can filter all 404 queries.
       - Fixed push, so now the chat should work properly!
       
+      0.3.5
+      
+      - Now you can only deploy from localhost with password 'secret'.
+      
 have fun!

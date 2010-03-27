@@ -38,6 +38,11 @@ public class Deploy extends Service {
 		} else if (!Deploy.pass.equals(pass)) {
 			throw new Failure("Pass verification failed. (" + pass + ")");
 		}
+		else if(Deploy.pass == "secret" && event.remote() != "127.0.0.1") {
+			throw new Failure("'secret' pass can only deploy from 127.0.0.1. (" + event.remote() + ")");
+		}
+		
+		System.out.println(pass + " " + event.remote());
 
 		File file = new File(path + name);
 		OutputStream out = new FileOutputStream(file);
