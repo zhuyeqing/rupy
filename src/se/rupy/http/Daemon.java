@@ -60,10 +60,10 @@ public class Daemon implements Runnable {
 	 * @param <b>live</b> (false)
 	 *            <i>uses expires header to cache static files.</i><br><br>
 	 * @param <b>verbose</b> (false)
-	 *            <i>to System.out information about these startup parameters, 
+	 *            <i>to log information about these startup parameters, 
 	 *            high-level info for each request and deployed services overview.</i><br><br>
 	 * @param <b>debug</b> (false)
-	 *            <i>to System.out low-level NIO logs for each request and class 
+	 *            <i>to log low-level NIO info for each request and class 
 	 *            loading info.</i><br><br>
 	 */
 	public Daemon(Properties properties) {
@@ -490,6 +490,10 @@ public class Daemon implements Runnable {
 		}
 	}
 	
+	/**
+	 * Set custom log.
+	 * @param out
+	 */
 	public void log(PrintStream out) {
 		if(out != null) {
 			this.out = out;
