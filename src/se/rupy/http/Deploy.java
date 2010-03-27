@@ -41,8 +41,6 @@ public class Deploy extends Service {
 		else if(Deploy.pass == "secret" && event.remote() != "127.0.0.1") {
 			throw new Failure("'secret' pass can only deploy from 127.0.0.1. (" + event.remote() + ")");
 		}
-		
-		System.out.println(pass + " " + event.remote());
 
 		File file = new File(path + name);
 		OutputStream out = new FileOutputStream(file);
@@ -151,7 +149,7 @@ public class Deploy extends Service {
 				}
 				catch (NoClassDefFoundError e) {
 					if(daemon.verbose) {
-						System.out.println(small.name + " superclass not found!");
+						daemon.out.println(small.name + " superclass not found!");
 					}
 				}
 				clazz = clazz.getSuperclass();
@@ -163,13 +161,13 @@ public class Deploy extends Service {
 				}
 				catch(InstantiationException e) {
 					if(daemon.verbose) {
-						System.out.println(small.name + " couldn't be instantiated!");
+						daemon.out.println(small.name + " couldn't be instantiated!");
 					}
 				}
 			}
 			
 			if(daemon.debug) {
-				System.out.println(small.name + (service ? "*" : ""));
+				daemon.out.println(small.name + (service ? "*" : ""));
 			}
 		}
 

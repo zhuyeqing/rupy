@@ -447,18 +447,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					if (complete()) {
 						write();
-						//System.out.println(reply.event().index() + " FLUSH " + chunk() + " " + init);
 					}
 
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			} else if (!fixed) {
 				reply.event().log("asynchronous push " + count, Event.DEBUG);
-				//System.out.println(reply.event().index() + " PUSH " + chunk() + " " + init);
 				push = true;
-			}
-			else {
-				//System.out.println(reply.event().index() + " WTF " + chunk() + " " + init);
 			}
 
 			super.flush();

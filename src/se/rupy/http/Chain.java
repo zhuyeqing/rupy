@@ -9,7 +9,7 @@ public class Chain extends LinkedList {
 	 * Dynamic size list with positional integrity. If anyone has a better
 	 * solution to this please tell me!
 	 */
-	Link put(Link link) {
+	protected Link put(Link link) {
 		for(int i = 0; i < size(); i++) {
 			Link tmp = (Link) super.get(i);
 			
@@ -39,18 +39,18 @@ public class Chain extends LinkedList {
 		}
 	}
 
-	void exit(Session session, int type) throws Exception {
+	protected void exit(Session session, int type) throws Exception {
 		for (int i = 0; i < size(); i++) {
 			Service service = (Service) get(i);
 			service.session(session, type);
 		}
 	}
 
-	void reset() {
+	protected void reset() {
 		next = 0;
 	}
 
-	Link next() {
+	protected Link next() {
 		if (next >= size()) {
 			next = 0;
 			return null;

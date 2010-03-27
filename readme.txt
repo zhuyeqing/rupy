@@ -135,5 +135,7 @@ VERSION:
       0.3.5
       
       - Now you can only deploy from localhost with password 'secret'.
+      - Added start and stop methods to Daemon.
+      - Added ability to log to custom PrintStream.
       
 have fun!

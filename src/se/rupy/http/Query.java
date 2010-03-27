@@ -20,12 +20,12 @@ public class Query extends Hash {
 	private long modified;
 	private boolean done, parsed;
 
-	Query(Event event) throws IOException {
+	protected Query(Event event) throws IOException {
 		headers = new HashMap();
 		input = new Input.Chunked(event);
 	}
 
-	void headers() throws IOException {
+	protected void headers() throws IOException {
 		headers.clear();
 
 		String line = input.line();
@@ -166,7 +166,7 @@ public class Query extends Hash {
 		}
 	}
 
-	void done() throws IOException {
+	protected void done() throws IOException {
 		input.end();
 		modified = 0;
 	}
@@ -205,7 +205,7 @@ public class Query extends Hash {
 		return (String) headers.get(name.toLowerCase());
 	}
 	
-	void header(String name, String value) {
+	protected void header(String name, String value) {
 		headers.put(name, value);
 	}
 

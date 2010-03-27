@@ -11,26 +11,26 @@ import java.io.IOException;
  * @author marc
  */
 public class Failure extends IOException {
-	Failure(String message) {
+	protected Failure(String message) {
 		super(message);
 	}
 
-	Failure(Helper helper) {
+	protected Failure(Helper helper) {
 		super(helper.getRoot().getMessage());
 	}
 
-	static void chain(Throwable t) throws Failure {
+	protected static void chain(Throwable t) throws Failure {
 		throw (Failure) new Failure(new Failure.Helper(t)).initCause(t);
 	}
 
-	static void chain(String message, Throwable t) throws Failure {
+	protected static void chain(String message, Throwable t) throws Failure {
 		throw (Failure) new Failure(message).initCause(t);
 	}
 
 	static class Helper {
 		Throwable root;
 
-		public Helper(Throwable t) {
+		protected  Helper(Throwable t) {
 			while (t.getCause() != null) {
 				t = t.getCause();
 			}
@@ -38,7 +38,7 @@ public class Failure extends IOException {
 			root = t;
 		}
 
-		public Throwable getRoot() {
+		protected  Throwable getRoot() {
 			return root;
 		}
 	}

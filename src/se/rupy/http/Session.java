@@ -17,7 +17,7 @@ public class Session extends Hash {
 	private String key, domain;
 	private long date, expires;
 
-	Session(Daemon daemon) {
+	protected Session(Daemon daemon) {
 		this.daemon = daemon;
 
 		service = new Chain();
@@ -26,13 +26,13 @@ public class Session extends Hash {
 		touch();
 	}
 
-	void add(Service service) {
+	protected void add(Service service) {
 		if (!this.service.contains(service)) {
 			this.service.add(service);
 		}
 	}
 
-	void add(Event event) {
+	protected void add(Event event) {
 		if (!this.event.contains(event)) {
 			this.event.add(event);
 		}
@@ -42,11 +42,11 @@ public class Session extends Hash {
 		return event;
 	}
 	
-	void remove() throws Exception {
+	protected void remove() throws Exception {
 		remove(null);
 	}
 
-	boolean remove(Event event) throws Exception {
+	protected boolean remove(Event event) throws Exception {
 		if (event == null) {
 			this.event.clear();
 			service.exit(this, Service.TIMEOUT);
@@ -82,11 +82,11 @@ public class Session extends Hash {
 		this.set = set;
 	}
 
-	long expires() {
+	protected long expires() {
 		return expires;
 	}
 
-	void expires(long expires) {
+	protected void expires(long expires) {
 		this.expires = expires;
 	}
 
@@ -94,7 +94,7 @@ public class Session extends Hash {
 		return key;
 	}
 
-	void key(String key) {
+	protected void key(String key) {
 		this.key = key;
 		set = false;
 	}
@@ -131,7 +131,7 @@ public class Session extends Hash {
 		return date;
 	}
 
-	void touch() {
+	protected void touch() {
 		date = System.currentTimeMillis();
 	}
 	
