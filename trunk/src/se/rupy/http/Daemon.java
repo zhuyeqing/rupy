@@ -102,7 +102,7 @@ public class Daemon implements Runnable {
 	}
 
 	/**
-	 * Stars the selector, heartbeat and worker threads.
+	 * Starts the selector, heartbeat and worker threads.
 	 */
 	public void start() {
 		try {

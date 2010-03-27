@@ -43,7 +43,7 @@
 	</target>
 
 	<target name="doc">
-		<javadoc sourcepath="src" destdir="doc" stylesheetfile="sheet.css"/>
+		<javadoc access="public" sourcepath="src" destdir="doc" stylesheetfile="sheet.css"/>
 	</target>
 		
 </project>
