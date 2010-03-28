@@ -11,7 +11,7 @@ In web-browser context also known as 'Ajax Push', see [http://en.wikipedia.org/w
 
 ----
 
-Download the [http://rupy.googlecode.com/files/talk-0.2e.zip talk] application together with the latest [http://rupy.googlecode.com/files/rupy-0.3.4.zip rupy] and extract them to the same folder. Go to the talk/ folder and start rupy with either the _talk.bat_ or _talk.sh_ script depending on your OS. Then run _ant_ in that same talk/ folder, this should build and deploy the talk.jar application to your rupy server. Lastly, browse to http://localhost:8000/talk.html and chat in real-time over HTTP!
+Download the [http://rupy.googlecode.com/files/talk-0.2e.zip talk] application together with the latest [http://rupy.googlecode.com/files/rupy-0.3.5.zip rupy] and extract them to the same folder. Go to the talk/ folder and start rupy with either the _talk.bat_ or _talk.sh_ script depending on your OS. Then run _ant_ in that same talk/ folder, this should build and deploy the talk.jar application to your rupy server. Lastly, browse to http://localhost:8000/talk.html and chat in real-time over HTTP!
 
 If you want to use rupy talk with apache enable mod_proxy and add something along these lines:
 {{{
