@@ -37,8 +37,7 @@ public class Deploy extends Service {
 			throw new Failure("Pass header missing.");
 		} else if (!Deploy.pass.equals(pass)) {
 			throw new Failure("Pass verification failed. (" + pass + ")");
-		}
-		else if(Deploy.pass == "secret" && event.remote() != "127.0.0.1") {
+		} else if(Deploy.pass.equals("secret") && !event.remote().equals("127.0.0.1")) {
 			throw new Failure("'secret' pass can only deploy from 127.0.0.1. (" + event.remote() + ")");
 		}
 
