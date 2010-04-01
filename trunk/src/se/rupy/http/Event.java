@@ -465,7 +465,7 @@ public class Event extends Throwable implements Chain.Link {
 			try {
 				load(Mime.class.getResourceAsStream("/mime.txt"));
 			}
-			catch(IOException e) {
+			catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
