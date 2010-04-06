@@ -168,4 +168,11 @@ public class Hash extends HashMap {
 	public void put(String key, boolean value) {
 		super.put(key, new Boolean(value));
 	}
+	
+	/**
+	 * @return HashMap.toString()
+	 */
+	public String contents() {
+		return super.toString();
+	}
 }

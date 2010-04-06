@@ -179,6 +179,19 @@ public class Daemon implements Runnable {
 		this.archive.put(archive.name(), archive);
 	}
 
+	/**
+	 * Is the archive deployed?
+	 * @param name With or without '.jar' suffix.
+	 * @return
+	 */
+	public boolean deployed(String name) {
+		if(!name.endsWith(".jar")) {
+			name += ".jar";
+		}
+		
+		return archive.containsKey(name);
+	}
+	
 	public void add(Service service) throws Exception {
 		add(this.service, service);
 	}
