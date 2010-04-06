@@ -138,4 +138,9 @@ VERSION:
       - Added start and stop methods to Daemon.
       - Added ability to log to custom PrintStream.
       
+      0.3.6
+      
+      - Added XSS comet cookie query parameter fail-over because IE doesen't 
+        allow <script> to set a cookie!
+      
 have fun!

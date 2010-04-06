@@ -354,8 +354,18 @@ public class Event extends Throwable implements Chain.Link {
 		}
 	}
 
-	protected final void session(Service service) {
+	protected final void session(Service service) throws Exception {
 		String key = cookie(query.header("cookie"), "key");
+
+		if(key == null && query.method() == Query.GET) {
+			/*
+			 * XSS comet cookie: this means GETs are parsed!
+			 */
+			query.parse();
+			String cookie = query.string("cookie");
+			key = cookie.length() > 0 ? cookie : null;
+			
+		}
 
 		if (key != null) {
 			session = (Session) daemon.session().get(key);
