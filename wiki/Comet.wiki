@@ -1,7 +1,7 @@
 #summary HTTP in real-time.
 #labels Phase-Implementation,Featured
 
-_First, try the [http://rupy.se XHR] and/or [http://tentacle.rupy.se XSS] chats, it's the little black boxes in the bottom right corners!_
+_First, try the [http://rupy.se XHR] and/or [http://tentacle.rupy.se XSS] chat demos, it's the little black boxes in the bottom right corners!_
 
 With XSS long-poll you can add the chat widget to any page, notwithstanding of platform and domain, without serverside modifications. In a few rows of html, some images, one css file and one js file; you're truly minutes away from having your own industrial strength Comet Chat!
 
