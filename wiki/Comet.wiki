@@ -1,7 +1,9 @@
 #summary HTTP in real-time.
 #labels Phase-Implementation,Featured
 
-_First, [http://tentacle.rupy.se try] the chat, it's the little black box in the bottom right corner!_
+_First, try the [http://rupy.se XHR] and/or [http://tentacle.rupy.se XSS] chats, it's the little black boxes in the bottom right corners!_
+
+With XSS long-poll you can add the chat widget to any page, notwithstanding of platform and domain, without serverside modifications. In a few rows of html, some images, one css file and one js file; you're truly minutes away from having your own industrial strength Comet Chat!
 
 Comet is all about corporate firewalls, because you want to reach everyone, everywhere, you need to use HTTP on port 80. Now you can push data over HTTP on port 80 in real-time.
 
