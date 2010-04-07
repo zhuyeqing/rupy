@@ -7,9 +7,8 @@ If you want to chat between XSS and XHR chats make sure you use 2 different brow
 
 Type _/list_ for channel listing and _/room `<name>`_ to create a room.
 
-XHR: XMLHttpRequest
-
-XSS: Cross-site scripting
+|| XHR || XMLHttpRequest ||
+|| XSS || Cross-site scripting ||
 
 ----
 
