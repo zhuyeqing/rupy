@@ -3,7 +3,7 @@
 
 _First, try the [http://rupy.se XHR] and/or [http://tentacle.rupy.se XSS] chat demos, it's the little black boxes in the bottom right corners!_
 
-If you want to chat between XSS and XHR chats make sure you join the same channel, XSS starts in the tentacle channel and XHR starts in the lobby channel. Either join tentacle with the XHR client (_/join tentacle_) or exit the tentacle channel with the XSS chat (_/exit_).
+If you want to chat between XSS and XHR chats make sure you join the same channel, XSS starts in the _tentacle_ channel and XHR starts in the _lobby_ channel. Either join tentacle with the XHR client (_/join tentacle_) or exit the tentacle channel with the XSS chat (_/exit_).
 
 Type _/help_ for more commands.
 
