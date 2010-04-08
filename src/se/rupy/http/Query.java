@@ -41,15 +41,15 @@ public class Query extends Hash {
 			throw new IOException("Unsupported method.");
 		}
 
-		String get = decoder.decode(http.nextToken(), "UTF-8");
+		String get = http.nextToken();
 		int index = get.indexOf('?');
 
 		if (index > 0) {
-			path = get.substring(0, index);
+			path = decoder.decode(get.substring(0, index), "UTF-8");
 			parameters = get.substring(index + 1);
 			parsed = false;
 		} else {
-			path = get;
+			path = decoder.decode(get, "UTF-8");
 			parameters = null;
 		}
 
@@ -212,7 +212,9 @@ public class Query extends Hash {
 	/**
 	 * Returns the parameters of the request. For GET you can just call 
 	 * this but for POST you need to call {@link #parse()} first.
-	 * @return the parameter string without the '?' if present else null.
+	 * Important: this String is not decoded, because you want to be able 
+	 * to parse parameters with equal signs in them.
+	 * @return the non decoded parameter string without the '?' if present else null.
 	 */
 	public String parameters() {
 		return parameters;

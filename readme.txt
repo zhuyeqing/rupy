@@ -134,13 +134,19 @@ VERSION:
       
       0.3.5
       
-      - Now you can only deploy from localhost with password 'secret'.
+      - Now you can only deploy from localhost with password 
+        'secret'.
       - Added start and stop methods to Daemon.
       - Added ability to log to custom PrintStream.
       
       0.3.6
       
-      - Added XSS comet cookie query parameter fail-over because IE doesen't 
-        allow <script> to set a cookie!
+      - Added XSS comet cookie query parameter fail-over 
+        because IE doesen't allow <script> to set a cookie!
+        
+      0.3.7
+      
+      - Fixed URLDecoding the path and not the parameter 
+        part of the URI.
       
 have fun!
