@@ -14,7 +14,7 @@ Type _/list_ for channel listing and _/room `<name>`_ to create a room (you can 
 
 With XSS long-poll you can add the chat widget to any page, notwithstanding of platform and domain, without serverside modifications. In a few rows of html, some images, one css and js file; you're truly minutes away from having your own industrial strength, real-time, comet chat; accessible from behind the thickest of firewalls.
 
-Try it now: [http://rupy.googlecode.com/files/talk-client-0.2.zip Download]!
+Try it now: [http://rupy.googlecode.com/files/talk-client-0.5.zip Download]!
 
 ----
 
