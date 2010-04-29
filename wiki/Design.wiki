@@ -2,7 +2,7 @@
 
 *Thread Model*
 
-Rupy has one selector thread that feeds many worker threads. This model is simple but hard to synchronize, fortunately thats been done for you! Rupy also spawns one heartbeat thread for session timeout's.
+Rupy has one selector thread that feeds many worker threads. This model is simple but hard to synchronize, fortunately thats been done for you!
 
 *API*
 
