@@ -1,0 +1,9 @@
+#summary How it works.
+
+*Thread Model*
+
+Rupy has one selector thread that feeds many worker threads. This model is simple but hard to synchronize, fortunately thats been done for you! Rupy also spawns one heartbeat thread for session timeout's.
+
+*API*
+
+The API is designed to be as small as possible, and therefore you have to handle the asynchronous events being recycled. While other Comet API's provide you with special methods for asynchronous callbacks, we rely on the Event.push() method to tell us wether an event is "real" or "recycled".
