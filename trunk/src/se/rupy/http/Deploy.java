@@ -118,15 +118,9 @@ public class Deploy extends Service {
 			for(int i = 0; i < classes.size(); i++) {
 				small = (Small) classes.get(i);
 				if(small.name.equals(name)) {
-					String n = small.name;
-
-					if(n.startsWith("WEB-INF.classes")) {
-						n = n.substring(16);
-					}
-					
-					small.clazz = defineClass(n, small.data, 0,
+					small.clazz = defineClass(small.name, small.data, 0,
 							small.data.length);
-					
+					resolveClass(small.clazz);
 					return small.clazz;
 				}
 			}
@@ -136,15 +130,8 @@ public class Deploy extends Service {
 		
 		private void instantiate(Small small, Daemon daemon) throws Exception {
 			if (small.clazz == null) {
-				String name = small.name;
-
-				if(name.startsWith("WEB-INF.classes")) {
-					name = name.substring(16);
-				}
-
-				small.clazz = defineClass(name, small.data, 0,
+				small.clazz = defineClass(small.name, small.data, 0,
 					small.data.length);
-			
 				resolveClass(small.clazz);
 			}
 
@@ -177,6 +164,11 @@ public class Deploy extends Service {
 		static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
+			
+			if(name.startsWith("WEB-INF.classes")) {
+				name = name.substring(16);
+			}
+			
 			return name;
 		}
 
