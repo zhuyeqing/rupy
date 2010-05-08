@@ -192,6 +192,18 @@ public class Daemon implements Runnable {
 		return archive.containsKey(name);
 	}
 	
+	/**
+	 * Get archive.
+	 * @return
+	 */
+	public Deploy.Archive archive(String name) {
+		if(!name.endsWith(".jar")) {
+			name += ".jar";
+		}
+		
+		return (Deploy.Archive) this.archive.get(name);
+	}
+	
 	public void add(Service service) throws Exception {
 		add(this.service, service);
 	}

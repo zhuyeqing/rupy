@@ -148,5 +148,10 @@ VERSION:
       
       - Fixed URLDecoding the path and not the parameter 
         part of the URI.
+        
+      0.3.8 GWT Compatible
+      
+      - Fixed classloading of war format.
+      - Added ability to fetch current classloader.
       
 have fun!
