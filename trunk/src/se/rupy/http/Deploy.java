@@ -124,7 +124,6 @@ public class Deploy extends Service {
 					return small.clazz;
 				}
 			}
-			
 			throw new ClassNotFoundException();
 		}
 		
