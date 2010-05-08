@@ -117,10 +117,7 @@ public class Daemon implements Runnable {
 
 			alive = true;
 			
-			Thread thread = new Thread(this);
-			thread.setName("Rupy [" + port + "]");
-			thread.setDaemon(true);
-			thread.start();
+			new Thread(this).start();
 		} catch (Exception e) {
 			e.printStackTrace(out);
 		}
