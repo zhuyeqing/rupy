@@ -28,11 +28,11 @@ public class Deploy extends Service {
 	public void filter(Event event) throws Event, Exception {
 		String name = event.query().header("file");
 		String pass = event.query().header("pass");
-
+		
 		if (name == null) {
 			throw new Failure("File header missing.");
 		}
-
+		
 		if (pass == null) {
 			throw new Failure("Pass header missing.");
 		} else if (!Deploy.pass.equals(pass)) {
@@ -40,19 +40,17 @@ public class Deploy extends Service {
 		} else if(Deploy.pass.equals("secret") && !event.remote().equals("127.0.0.1")) {
 			throw new Failure("'secret' pass can only deploy from 127.0.0.1. (" + event.remote() + ")");
 		}
-
+		
 		File file = new File(path + name);
 		OutputStream out = new FileOutputStream(file);
 		InputStream in = event.query().input();
 
-		pipe(in, out, 10240);
+		pipe(in, out, 1024);
 
 		out.flush();
 		out.close();
-
-		String deploy = deploy(event.daemon(), file);
-
-		event.reply().output().print("Application '" + deploy + "' deployed.");
+		
+		event.reply().output().print("Application '" + deploy(event.daemon(), file) + "' deployed.");
 	}
 
 	public static String deploy(Daemon daemon, File file) throws Exception {
@@ -60,13 +58,12 @@ public class Deploy extends Service {
 
 		daemon.chain(archive);
 		daemon.verify(archive);
-
+		
 		return archive.name();
 	}
 
 	static class Archive extends ClassLoader {
 		private HashSet service;
-		//private HashMap content;
 		private HashMap chain;
 		private String name;
 		private String host;
@@ -74,7 +71,6 @@ public class Deploy extends Service {
 
 		Archive(Daemon daemon, File file) throws Exception {
 			service = new HashSet();
-			//content = new HashMap();
 			chain = new HashMap();
 			name = file.getName();
 			date = file.lastModified();
@@ -103,7 +99,6 @@ public class Deploy extends Service {
 					classes.add(new Small(name, data));
 				} else if (!entry.isDirectory()) {
 					Big.write(host, "/" + entry.getName(), in);
-					//content.put("/" + entry.getName(), new Big(host, "/" + entry.getName(), in, date));
 				}
 			}
 
@@ -116,25 +111,32 @@ public class Deploy extends Service {
 					small = (Small) classes.elementAt(0);
 					classes.removeElement(small);
 					instantiate(small, daemon);
-				} catch (NoClassDefFoundError e) {
+				} catch (WaitForSuperException e) {
 					// the superclass has not been loaded yet
 					if(!missing.equals(e.getMessage())) {
 						missing = e.getMessage();
 						length = classes.size();
 					}
 					classes.addElement(small);
-					length--;					
+					length--;
 					if (length < 0) {
 						throw e;
 					}
+					e.printStackTrace();
 				}
 			}
 		}
 
 		void instantiate(Small small, Daemon daemon) throws Exception {
 			if (small.clazz == null) {
-				small.clazz = defineClass(small.name, small.data, 0,
-						small.data.length);
+				String name = small.name;
+				
+				if(name.startsWith("WEB-INF.classes")) {
+					name = name.substring(16);
+				}
+				
+				small.clazz = defineClass(name, small.data, 0,
+					small.data.length);
 			}
 
 			Class clazz = small.clazz.getSuperclass();
@@ -150,6 +152,7 @@ public class Deploy extends Service {
 					if(daemon.verbose) {
 						daemon.out.println(small.name + " superclass not found!");
 					}
+					throw new WaitForSuperException(e.getMessage());
 				}
 				clazz = clazz.getSuperclass();
 			}
@@ -170,6 +173,12 @@ public class Deploy extends Service {
 			}
 		}
 
+		public static class WaitForSuperException extends Exception {
+			WaitForSuperException(String message) {
+				super(message);
+			}
+		}
+		
 		static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
@@ -191,11 +200,7 @@ public class Deploy extends Service {
 		public HashMap chain() {
 			return chain;
 		}
-/*
-		public HashMap content() {
-			return content;
-		}
-*/
+		
 		public HashSet service() {
 			return service;
 		}
