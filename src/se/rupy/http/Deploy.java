@@ -28,11 +28,11 @@ public class Deploy extends Service {
 	public void filter(Event event) throws Event, Exception {
 		String name = event.query().header("file");
 		String pass = event.query().header("pass");
-		
+
 		if (name == null) {
 			throw new Failure("File header missing.");
 		}
-		
+
 		if (pass == null) {
 			throw new Failure("Pass header missing.");
 		} else if (!Deploy.pass.equals(pass)) {
@@ -40,7 +40,7 @@ public class Deploy extends Service {
 		} else if(Deploy.pass.equals("secret") && !event.remote().equals("127.0.0.1")) {
 			throw new Failure("'secret' pass can only deploy from 127.0.0.1. (" + event.remote() + ")");
 		}
-		
+
 		File file = new File(path + name);
 		OutputStream out = new FileOutputStream(file);
 		InputStream in = event.query().input();
@@ -49,7 +49,7 @@ public class Deploy extends Service {
 
 		out.flush();
 		out.close();
-		
+
 		event.reply().output().print("Application '" + deploy(event.daemon(), file) + "' deployed.");
 	}
 
@@ -58,7 +58,7 @@ public class Deploy extends Service {
 
 		daemon.chain(archive);
 		daemon.verify(archive);
-		
+
 		return archive.name();
 	}
 
@@ -69,6 +69,8 @@ public class Deploy extends Service {
 		private String host;
 		private long date;
 
+		Vector classes = new Vector();
+		
 		Archive(Daemon daemon, File file) throws Exception {
 			service = new HashSet();
 			chain = new HashMap();
@@ -77,17 +79,15 @@ public class Deploy extends Service {
 
 			JarInputStream in = new JarInput(new FileInputStream(file));
 			Attributes attr = in.getManifest().getMainAttributes();
-			
+
 			host = (String) attr.get("host");
-			
+
 			if(host == null) {
 				host = "content";
 			}
-			
+
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			JarEntry entry = null;
-
-			Vector classes = new Vector();
 
 			while ((entry = in.getNextJarEntry()) != null) {
 				if (entry.getName().endsWith(".class")) {
@@ -107,56 +107,57 @@ public class Deploy extends Service {
 			Small small = null;
 
 			while (classes.size() > 0) {
-				try {
-					small = (Small) classes.elementAt(0);
-					classes.removeElement(small);
-					instantiate(small, daemon);
-				} catch (WaitForSuperException e) {
-					// the superclass has not been loaded yet
-					if(!missing.equals(e.getMessage())) {
-						missing = e.getMessage();
-						length = classes.size();
-					}
-					classes.addElement(small);
-					length--;
-					if (length < 0) {
-						throw e;
-					}
-					e.printStackTrace();
-				}
+				small = (Small) classes.elementAt(0);
+				classes.removeElement(small);
+				instantiate(small, daemon);
 			}
 		}
 
-		void instantiate(Small small, Daemon daemon) throws Exception {
+		protected Class findClass(String name) throws ClassNotFoundException {
+			Small small = null;
+			for(int i = 0; i < classes.size(); i++) {
+				small = (Small) classes.get(i);
+				if(small.name.equals(name)) {
+					String n = small.name;
+
+					if(n.startsWith("WEB-INF.classes")) {
+						n = n.substring(16);
+					}
+					
+					small.clazz = defineClass(n, small.data, 0,
+							small.data.length);
+					
+					return small.clazz;
+				}
+			}
+			
+			throw new ClassNotFoundException();
+		}
+		
+		private void instantiate(Small small, Daemon daemon) throws Exception {
 			if (small.clazz == null) {
 				String name = small.name;
-				
+
 				if(name.startsWith("WEB-INF.classes")) {
 					name = name.substring(16);
 				}
-				
+
 				small.clazz = defineClass(name, small.data, 0,
 					small.data.length);
+			
+				resolveClass(small.clazz);
 			}
 
 			Class clazz = small.clazz.getSuperclass();
 			boolean service = false;
-			
+
 			while (clazz != null) {
-				try {
-					if (clazz.getCanonicalName().equals("se.rupy.http.Service")) {
-						service = true;
-					}
-				}
-				catch (NoClassDefFoundError e) {
-					if(daemon.verbose) {
-						daemon.out.println(small.name + " superclass not found!");
-					}
-					throw new WaitForSuperException(e.getMessage());
+				if (clazz.getCanonicalName().equals("se.rupy.http.Service")) {
+					service = true;
 				}
 				clazz = clazz.getSuperclass();
 			}
-			
+
 			if(service) {
 				try {
 					this.service.add((Service) small.clazz.newInstance());
@@ -167,18 +168,12 @@ public class Deploy extends Service {
 					}
 				}
 			}
-			
+
 			if(daemon.debug) {
 				daemon.out.println(small.name + (service ? "*" : ""));
 			}
 		}
 
-		public static class WaitForSuperException extends Exception {
-			WaitForSuperException(String message) {
-				super(message);
-			}
-		}
-		
 		static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
@@ -192,7 +187,7 @@ public class Deploy extends Service {
 		public String host() {
 			return host;
 		}
-		
+
 		public long date() {
 			return date;
 		}
@@ -200,7 +195,7 @@ public class Deploy extends Service {
 		public HashMap chain() {
 			return chain;
 		}
-		
+
 		public HashSet service() {
 			return service;
 		}
@@ -224,7 +219,7 @@ public class Deploy extends Service {
 			this.file = file;
 			this.date = date - date % 1000;
 		}
-		
+
 		static File write(String host, String name, InputStream in) throws IOException {
 			String path = name.substring(0, name.lastIndexOf("/"));
 			String root = Deploy.path + host;
@@ -235,15 +230,15 @@ public class Deploy extends Service {
 			file.createNewFile();
 
 			OutputStream out = new FileOutputStream(file);
-			
+
 			pipe(in, out);
-			
+
 			out.flush();
 			out.close();
-			
+
 			return file;
 		}
-		
+
 		public String name() {
 			return name;
 		}
@@ -296,9 +291,13 @@ public class Deploy extends Service {
 		public long date() {
 			return date;
 		}
-		
+
 		byte[] data() {
 			return data;
+		}
+		
+		public String toString() {
+			return name;
 		}
 	}
 
