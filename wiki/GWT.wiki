@@ -2,7 +2,7 @@
 
 *Decode, invoke and encode*
 
-Add the inner class below to GreetingServiceImpl in the generated GWT start app and deploy the war file as a jar (replace the REPLACE string in the code below with the name of your jar) to rupy, and everything will just magically work.
+Add the inner class below to GreetingServiceImpl in the generated GWT start app and deploy the war file as a jar (replace the *REPLACE* string in the code below with the name of your project/jar) to rupy, and everything will just magically work.
 
 You should develop using devmode because the compiler takes 30 sek to compile the GWT start app demo which is just plain wrong.
 
@@ -14,10 +14,10 @@ Let's keep on overengineering! ;)
 
 {{{
 public static class Bridge extends Service {
-	public String path() { return "/admin/greet"; }
+	public String path() { return "/*REPLACE*/greet"; }
 	public void filter(Event event) throws Event, Exception {
 		// Set classloader.
-		Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
+		Thread.currentThread().setContextClassLoader(event.daemon().archive("*REPLACE*"));
 
 		// Read.
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
