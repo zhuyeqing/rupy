@@ -2,7 +2,7 @@
 
 *Decode, invoke and encode*
 
-Add this inner class below to GreetingServiceImpl in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same name). Then deploy the war file as a jar to rupy, and everything will just magically work.
+Add this inner class below to GreetingServiceImpl in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Then deploy the war file as a jar to rupy, and everything will just magically work.
 
 You should develop using devmode because the compiler takes 30 sek to compile the GWT start app which is just plain wrong.
 
