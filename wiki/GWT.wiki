@@ -6,11 +6,7 @@ Add this inner class below to GreetingServiceImpl in the generated GWT start app
 
 NOTE: You should still develop using devmode because the compiler takes 30 sek to compile the smallest app which is just plain wrong.
 
-I would NEVER use GWT if it wasn't a requirement. Because sending HTML to the browser and innerHTML:ing it is easy to do if you know a little javascript.
-
-Also if you look at the contents of the _req_ and _res_ variables below you will see that google uses some proprietary encoding and even though I understand that it's so you can use JSON, I still think the whole idea of GWT is amiss!
-
-Let's keep on overengineering! ;)
+Also if you look at the contents of the _req_ and _res_ variables below you will see that google uses some proprietary encoding which doesn't make sense to me yet! Please help me out with some comments!
 
 {{{
 public static class Bridge extends Service {
