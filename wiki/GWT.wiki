@@ -4,7 +4,7 @@
 
 Add this inner class below to GreetingServiceImpl in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Then deploy the war file as a jar to rupy, and everything will just magically work.
 
-You should develop using devmode because the compiler takes 30 sek to compile the GWT start app which is just plain wrong.
+NOTE: You should still develop using devmode because the compiler takes 30 sek to compile the smallest app which is just plain wrong.
 
 I would NEVER use GWT if it wasn't a requirement. Because sending HTML to the browser and innerHTML:ing it is easy to do if you know a little javascript.
 
