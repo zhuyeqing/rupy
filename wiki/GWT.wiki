@@ -1,0 +1,24 @@
+#summary How to integrate with GWT.
+
+*Parsing and *
+
+{{{
+public static class Bridge extends Service {
+	public String path() { return "/admin/greet"; }
+	public void filter(Event event) throws Event, Exception {
+		// Set classloader.
+		Thread.currentThread().setContextClassLoader(event.daemon().archive("cabin"));
+
+		// Read.
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Deploy.pipe(event.input(), out);
+		String req = out.toString();
+
+		// Decode, invoke and encode.
+		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
+		String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
+
+		event.output().print(res); // Write.
+	}
+}
+}}}
