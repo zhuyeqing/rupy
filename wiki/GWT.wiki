@@ -6,7 +6,7 @@ Add this inner class below to GreetingServiceImpl in the generated GWT start app
 
 NOTE: You should still develop using devmode because the compiler takes 30 sek to compile the smallest app.
 
-Also if you look at the contents of the _req_ and _res_ variables below you will see that google uses some proprietary encoding which doesn't make sense to me yet! Please help me out with some comments!
+Also if you look at the contents of the _req_ and _res_ variables below you will see that google uses some proprietary encoding which doesn't make sense to me yet!
 
 {{{
 public static class Bridge extends Service {
