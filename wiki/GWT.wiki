@@ -1,6 +1,8 @@
 #summary How to integrate with GWT.
 
-*Parsing and *
+*Decode, invoke and encode*
+
+Add the inner class below to GreetingServiceImpl.java and deploy the war file as a jar to rupy, and everything will just magically work.
 
 {{{
 public static class Bridge extends Service {
