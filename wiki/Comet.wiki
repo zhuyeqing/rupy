@@ -4,9 +4,9 @@
 || XHR || XMLHttpRequest ||
 || XSS || Cross-site scripting ||
 
-_First, try either the [http://rupy.se XHR] *or*^1^ [http://tentacle.rupy.se XSS] chat demo, it's the little black box in the bottom right corner!_
+_First, try either the [http://rupy.se XHR] *or^1^* [http://tentacle.rupy.se XSS] chat demo, it's the little black box in the bottom right corner!_
 
-If you want to chat between XSS *and*^1^ XHR chats make sure you use _2 different browser applications_ (for example IE and Firefox) and join the same channel, XSS starts in the _tentacle_ channel and XHR starts in the _lobby_ channel. Either join _tentacle_ with the XHR client (_/join tentacle_) or exit _tentacle_ with the XSS chat (_/exit_).
+If you want to chat between XSS *and^1^* XHR chats make sure you use _2 different browser applications_ (for example IE and Firefox) and join the same channel, XSS starts in the _tentacle_ channel and XHR starts in the _lobby_ channel. Either join _tentacle_ with the XHR client (_/join tentacle_) or exit _tentacle_ with the XSS chat (_/exit_).
 
 Type _/list_ for channel listing and _/color `<rrggbb>`_ to change color.
 
