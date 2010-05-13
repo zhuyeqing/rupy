@@ -12,7 +12,7 @@ Type _/list_ for channel listing and _/color `<rrggbb>`_ to change color.
 
 ^1^ The session is reused for one browser context. Also see ^2^.
 
-^2^ The HTTP spec. only allows clients to connect maximum two sockets per domain; so the long-poll sockets will lock the browser if you try to chat between tabs.
+^2^ The HTTP spec. only allows clients to connect maximum two sockets per domain; so the long-poll requests will lock the browser if you try to chat between tabs.
 
 ----
 
