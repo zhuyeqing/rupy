@@ -35,8 +35,7 @@ public static class Bridge extends Service {
 			res = RPC.encodeResponseForSuccess(rpc.getMethod(), result);
 		}
 		catch(InvocationTargetException e) {
-			Throwable t = e.getCause();
-			res = RPC.encodeResponseForFailure(rpc.getMethod(), new SerializableException(t.getMessage()));
+			res = RPC.encodeResponseForFailure(rpc.getMethod(), new SerializableException(e.getCause().getMessage()));
 		}
 
 		event.output().print(res); // Write.
