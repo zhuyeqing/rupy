@@ -10,15 +10,11 @@ NOTE: You should still develop using devmode because the compiler takes 30 sec. 
 public static class Bridge extends Service {
 	public String path() { return "/REPLACE/greet"; }
 	public void filter(Event event) throws Event, Exception {
-		// Set classloader.
 		Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
-
-		// Read.
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Deploy.pipe(event.input(), out);
 		String req = out.toString();
 
-		// Decode, invoke and encode.
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
 		
 		//String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
@@ -33,7 +29,7 @@ public static class Bridge extends Service {
 			res = RPC.encodeResponseForFailure(rpc.getMethod(), new SerializableException(e.getCause().getMessage()));
 		}
 
-		event.output().print(res); // Write.
+		event.output().print(res);
 	}
 }
 }}}
