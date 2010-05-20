@@ -20,7 +20,20 @@ public static class Bridge extends Service {
 
 		// Decode, invoke and encode.
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
-		String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
+		
+		// GWT exception handling needs some help.
+		//String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
+
+		String res = null;
+
+		try {
+			Object result = rpc.getMethod().invoke(new GreetingServiceImpl(), rpc.getParameters());
+			res = RPC.encodeResponseForSuccess(rpc.getMethod(), result);
+		}
+		catch(InvocationTargetException e) {
+			Throwable t = e.getCause();
+			res = RPC.encodeResponseForFailure(rpc.getMethod(), new SerializableException(t.getMessage()));
+		}
 
 		event.output().print(res); // Write.
 	}
