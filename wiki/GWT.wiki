@@ -23,11 +23,6 @@ public static class Bridge extends Service {
 		
 		//String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
 
-		/*
-		 * GWT exception handling needs some help.
-		 * The workaround below is for pretty onFailure!
-		 */
-
 		String res = null;
 
 		try {
