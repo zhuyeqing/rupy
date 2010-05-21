@@ -64,7 +64,7 @@ public class Worker implements Runnable, Chain.Link {
 
 	void snooze(long delay) {
 		if(event != null)
-			event.log("snooze", Event.DEBUG);
+			event.log("snooze " + delay, Event.DEBUG);
 		
 		synchronized (thread) {
 			try {
