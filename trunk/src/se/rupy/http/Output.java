@@ -429,7 +429,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		public void finish() throws IOException {
 			if (complete()) {
-				throw new IOException("Reply already complete. (finish)");
+				throw new IOException("Reply already complete.");
 			}
 
 			push = false;

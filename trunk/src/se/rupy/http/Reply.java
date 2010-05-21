@@ -17,6 +17,23 @@ import java.util.*;
  * @author marc
  */
 public class Reply {
+	/**
+	 * The reply was successfully awakened.
+	 */
+	public static int OK = 0;
+	
+	/**
+	 * If the reply has been completed. This means the {@link Event} is no longer available 
+	 * for wakeup and should probably be removed from the list;
+	 */
+	public static int COMPLETE = 1;
+	
+	/**
+	 * If the reply is processing another request. You will then have to wait for the thread 
+	 * to complete.
+	 */
+	public static int PROCESSING = 2;
+	
 	private String type = "text/html; charset=UTF-8";
 	private HashMap headers;
 	private Output output;
@@ -138,18 +155,20 @@ public class Reply {
 	 * Just make sure you didn't already flush the reply and that you are ready to
 	 * catch the event when it recycles!
 	 * 
-	 * @throws IOException
+	 * @return The status of the wakeup call. {@link Reply#OK}, {@link Reply#COMPLETE} or {@link Reply#PROCESSING}
 	 */
-	public void wakeup() throws IOException {
+	public int wakeup() {
 		if (output.complete()) {
-			throw new IOException("Reply already complete. (wakeup)");
+			return COMPLETE;
 		}
 
 		if (event.worker() != null) {
-			throw new IOException("Reply still processing.");
+			return PROCESSING;
 		}
 		
 		event.push(true);
 		event.daemon().employ(event);
+		
+		return OK;
 	}
 }

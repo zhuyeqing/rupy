@@ -154,4 +154,10 @@ VERSION:
       - Fixed classloading of war format.
       - Added ability to fetch current classloader.
       
+      0.3.9
+      
+      - Changed Reply.wakeup() api from throwing exceptions to returning int's.
+      - Changed delay to milliseconds instead of seconds, because comet applications 
+        need very low delay ~50 ms.
+      
 have fun!
