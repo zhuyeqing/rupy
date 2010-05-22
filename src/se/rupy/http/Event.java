@@ -309,9 +309,11 @@ public class Event extends Throwable implements Chain.Link {
 	protected int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
 
-		register();
+		//register();
 
 		while (System.currentTimeMillis() < max) {
+			register();
+			
 			int available = block.fill(true);
 
 			if (available > 0) {
@@ -319,7 +321,7 @@ public class Event extends Throwable implements Chain.Link {
 				log("delay " + delay + " " + available, VERBOSE);
 				return available;
 			}
-
+			
 			worker.snooze(10);
 
 			key.selector().wakeup();

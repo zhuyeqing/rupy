@@ -28,14 +28,14 @@ public abstract class Output extends OutputStream implements Event.Block {
 		size = reply.event().daemon().size;
 	}
 
-	boolean chunk() {
+	protected boolean chunk() {
 		return chunk;
 	}
 
-	boolean complete() {
-		return !push && done; // TODO: Need an async state variable
+	protected boolean complete() {
+		return !push && done;
 	}
-
+	
 	public void println(Object o) throws IOException {
 		write((o.toString() + EOL).getBytes("UTF-8"));
 	}
@@ -60,7 +60,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		write(String.valueOf(b).getBytes("UTF-8"));
 	}
 
-	void init(long length) throws IOException {
+	protected void init(long length) throws IOException {
 		if (init) {
 			reply.event().log("already inited", Event.DEBUG);
 			return;
@@ -69,11 +69,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 					Event.DEBUG);
 
 		done = false;
+		
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
 
 		init = true;
-
+		
 		if(length > 0) {
 			fixed = true;
 			headers(length);
@@ -108,7 +109,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 	}
 
-	void end() throws IOException {
+	protected void end() throws IOException {
 		reply.event().log("end", Event.DEBUG);
 
 		if (!chunk) {
@@ -150,7 +151,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		length = 0;
 	}
 
-	void headers(long length) throws IOException {
+	protected void headers(long length) throws IOException {
 		cache = false;
 
 		reply.event().log("code " + reply.code(), Event.VERBOSE);
@@ -223,16 +224,16 @@ public abstract class Output extends OutputStream implements Event.Block {
 		length = 0;
 	}
 
-	void wrote(int b) throws IOException {
+	protected void wrote(int b) throws IOException {
 		one[0] = (byte) b;
 		wrote(one);
 	}
 
-	void wrote(byte[] b) throws IOException {
+	protected void wrote(byte[] b) throws IOException {
 		wrote(b, 0, b.length);
 	}
 
-	void wrote(byte[] b, int off, int len) throws IOException {
+	protected void wrote(byte[] b, int off, int len) throws IOException {
 		try {
 			if (cache) {
 				array.write(b, off, len);
@@ -271,7 +272,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 	}
 
-	void internal(boolean debug) throws Exception {
+	protected void internal(boolean debug) throws Exception {
 		ByteBuffer out = reply.event().worker().out();
 
 		if (out.remaining() < size) {
@@ -407,7 +408,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			}
 		}
 
-		void write() throws IOException {
+		protected void write() throws IOException {
 			byte[] chunk = reply.event().worker().chunk();
 			char[] header = Integer.toHexString(count).toCharArray();
 			int length = header.length, start = 4 - length, cursor;

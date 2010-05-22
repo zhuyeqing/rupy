@@ -157,7 +157,6 @@ VERSION:
       0.3.9
       
       - Changed Reply.wakeup() api from throwing exceptions to returning int's.
-      - Changed delay to milliseconds instead of seconds, because comet applications 
-        need very low delay ~50 ms.
+      - Moved register() into the block loop, so lag won't drop comet clients.
       
 have fun!
