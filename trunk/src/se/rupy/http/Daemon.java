@@ -52,9 +52,7 @@ public class Daemon implements Runnable {
 	 *            <i>time in milliseconds before started event gets dropped due to
 	 *            inactivity. Increase this if your users will download 
 	 *            content with a 'open/save/cancel' + save location dialog, 
-	 *            since this will timeout otherwise. And reduce this if you are 
-	 *            running a comet application, otherwise blocked responses will 
-	 *            make you drop the connection altogether, around 50 ms. should be ok.</i><br><br>
+	 *            since this will timeout otherwise.</i><br><br>
 	 * @param <b>size</b> (1024 bytes)
 	 *            <i>IO buffer size, should be proportional to the data sizes
 	 *            received/sent by the server currently this is input/output-
@@ -75,7 +73,7 @@ public class Daemon implements Runnable {
 		cookie = Integer.parseInt(properties.getProperty("cookie", "4"));
 		port = Integer.parseInt(properties.getProperty("port", "8000"));
 		timeout = Integer.parseInt(properties.getProperty("timeout", "300")) * 1000;
-		delay = Integer.parseInt(properties.getProperty("delay", "5000"));
+		delay = Integer.parseInt(properties.getProperty("delay", "5")) * 1000;
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
 
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
@@ -375,7 +373,7 @@ public class Daemon implements Runnable {
 						+ cookie + " characters\n" + "- timeout    \t"
 						+ decimal.format((double) timeout / 60000) + " minute"
 						+ (timeout / 60000 > 1 ? "s" : "") + "\n"
-						+ "- IO timeout \t" + delay + " ms."
+						+ "- IO timeout \t" + delay / 1000 + " seconds"
 						+ (delay / 1000 > 1 ? "s" : "") + "\n"
 						+ "- IO buffer  \t" + size + " bytes\n"
 						+ "- debug      \t" + debug + "\n"
