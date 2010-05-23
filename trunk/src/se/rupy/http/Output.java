@@ -32,7 +32,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 		return chunk;
 	}
 
-	protected boolean complete() {
+	/**
+	 * Used for comet applications to be able to prune 
+	 * disconnected clients.
+	 * @return If the push has been completed.
+	 */
+	public boolean complete() {
 		return !push && done;
 	}
 	

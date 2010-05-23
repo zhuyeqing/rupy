@@ -309,8 +309,6 @@ public class Event extends Throwable implements Chain.Link {
 	protected int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
 
-		//register();
-
 		while (System.currentTimeMillis() < max) {
 			register();
 			
