@@ -158,5 +158,6 @@ VERSION:
       
       - Changed Reply.wakeup() api from throwing exceptions to returning int's.
       - Moved register() into the block loop, so lag won't drop comet clients.
+      - Updated delay input to milliseconds, so laggy comet clients won't timeout.
       
 have fun!
