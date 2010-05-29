@@ -10,7 +10,7 @@ If you want to chat between XSS _*and^1^*_ XHR chats make sure you use _*two dif
 
 Type _/list_ for channel listing and _/color `<rrggbb>`_ to change color.
 
-*^1^* The session is reused for one browser type, so you need to use two different browser types (Internet Explorer, Firefox, Chrome or Safari). Also the HTTP spec. only allows clients to connect maximum two sockets per domain; so the long-poll requests will lock the browser if you try to chat between tabs.
+*^1^* The session is reused for one browser type, so you need to use two different browser types (Internet Explorer, Firefox, Chrome or Safari). Also the HTTP spec. only allows clients to connect maximum two sockets per domain; so the long-poll requests will lock the browser if you try to chat between XHR tabs in the same browser type.
 
 ----
 
