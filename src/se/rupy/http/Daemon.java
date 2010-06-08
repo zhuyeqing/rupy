@@ -203,6 +203,34 @@ public class Daemon implements Runnable {
 		return (Deploy.Archive) this.archive.get(name);
 	}
 	
+	/*
+	 * Listener
+	 * Cross Classloader communication interface. So that two deployable 
+	 * modules can send messages between each other to keep them modular.
+	 */
+	
+	private Listener listener;
+	
+	public Object say(Object message) throws Exception {
+		if(listener == null) {
+			return message;
+		}
+		
+		return listener.listen(message);
+	}
+	
+	public void listen(Listener listener) {
+		this.listener = listener;
+	}
+	
+	public interface Listener {
+		public Object listen(Object message) throws Exception;
+	}
+
+	/*
+	 * 
+	 */
+	
 	public void add(Service service) throws Exception {
 		add(this.service, service);
 	}
@@ -239,6 +267,7 @@ public class Daemon implements Runnable {
 				out.println(path + padding(path) + chain);
 
 			try {
+				service.create(this);
 				service.create();
 			} catch (Exception e) {
 				e.printStackTrace(out);
