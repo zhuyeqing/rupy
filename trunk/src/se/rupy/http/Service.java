@@ -20,7 +20,7 @@ public abstract class Service implements Chain.Link {
 	 * is specified when you start the daemon.
 	 */
 	public final static int TIMEOUT = 2;
-	
+
 	/**
 	 * The client actively disconnected it's last TCP socket. This will not work
 	 * correctly if the server is placed behind a proxy.
@@ -63,6 +63,14 @@ public abstract class Service implements Chain.Link {
 	 * @return the path (URI) to the service(s).
 	 */
 	public abstract String path();
+
+	/**
+	 * Same as {@link #create()}, but with the {@link Daemon} as argument, so you can setup yourself as a listener.
+	 * @param daemon
+	 * @throws Exception
+	 */
+	public void create(Daemon daemon) throws Exception {
+	}
 
 	/**
 	 * Initiate service dependencies. This is called when you hot-deploy the
