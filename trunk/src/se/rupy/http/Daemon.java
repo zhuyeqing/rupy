@@ -204,31 +204,43 @@ public class Daemon implements Runnable {
 	}
 	
 	/*
-	 * Listener
-	 * Cross Classloader communication interface. So that two deployable 
-	 * modules can send messages between each other to keep them modular.
+	 * Listener - Cross class-loader communication interface. So that a class 
+	 * deployed in one archive can send messages to a class deployed in another.
 	 */
 	
 	private Listener listener;
 	
-	public Object say(Object message) throws Exception {
+	/**
+	 * Send Object to listener. We recommend you only send bootclasspath loaded 
+	 * classes here otherwise hotdeploy will fail.
+	 * 
+	 * @param message
+	 * @return
+	 * @throws Exception
+	 */
+	public Object filter(Object message) throws Exception {
 		if(listener == null) {
 			return message;
 		}
 		
-		return listener.listen(message);
+		return listener.filter(message);
 	}
 	
+	/**
+	 * Register your listener here.
+	 * 
+	 * @param listener
+	 */
 	public void listen(Listener listener) {
 		this.listener = listener;
 	}
 	
 	public interface Listener {
-		public Object listen(Object message) throws Exception;
+		public Object filter(Object message) throws Exception;
 	}
 
 	/*
-	 * 
+	 * Listener
 	 */
 	
 	public void add(Service service) throws Exception {
