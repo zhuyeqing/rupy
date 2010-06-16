@@ -218,12 +218,12 @@ public class Daemon implements Runnable {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object filter(Object message) throws Exception {
+	public Object send(Object message) throws Exception {
 		if(listener == null) {
 			return message;
 		}
 		
-		return listener.filter(message);
+		return listener.receive(message);
 	}
 	
 	/**
@@ -231,12 +231,12 @@ public class Daemon implements Runnable {
 	 * 
 	 * @param listener
 	 */
-	public void listen(Listener listener) {
+	public void set(Listener listener) {
 		this.listener = listener;
 	}
 	
 	public interface Listener {
-		public Object filter(Object message) throws Exception;
+		public Object receive(Object message) throws Exception;
 	}
 
 	/*
