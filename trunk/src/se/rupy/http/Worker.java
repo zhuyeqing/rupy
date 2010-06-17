@@ -119,6 +119,8 @@ public class Worker implements Runnable, Chain.Link {
 				}
 			} catch (Exception e) {
 				event.disconnect(e);
+				out.clear();
+				in.clear();
 			} finally {
 				if (event != null) {
 					event.worker(null);

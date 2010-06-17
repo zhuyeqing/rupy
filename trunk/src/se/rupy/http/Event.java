@@ -359,7 +359,7 @@ public class Event extends Throwable implements Chain.Link {
 
 		if(key == null && query.method() == Query.GET) {
 			/*
-			 * XSS comet cookie: this means GETs are parsed!
+			 * XSS comet cookie: this means first GETs are parsed!
 			 */
 			query.parse();
 			String cookie = query.string("cookie");

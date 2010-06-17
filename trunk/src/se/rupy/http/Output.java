@@ -137,6 +137,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 		done = true;
 
 		flush();
+		
+		if (length > 0) {
+			reply.event().log("reply " + length, Event.VERBOSE);
+		}
+
+		reply.event().interest(Event.READ);
 
 		/*
 		 * Added this to fix the push bug that adding the 
@@ -145,13 +151,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 		 * TODO: Add test unit for fixed length!
 		 */
 		fixed = false;
-		
-		if (length > 0) {
-			reply.event().log("reply " + length, Event.VERBOSE);
-		}
-
-		reply.event().interest(Event.READ);
-
 		init = false;
 		length = 0;
 	}
