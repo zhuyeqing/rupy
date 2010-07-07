@@ -162,6 +162,10 @@ VERSION:
         drop comet clients.
       - Updated delay input to milliseconds, so laggy comet 
         clients won't timeout.
-      - Worker now cleans in/out buffers upon exception.
-      
+      - Worker now cleans in/out buffers upon exception, this 
+        solves the threads being locked if users cancels long 
+        requests halfway in.
+      - Added Listener so deployed jars can communicate across 
+        classloaders.
+        
 have fun!
