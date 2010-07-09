@@ -16,14 +16,11 @@ public static class Bridge extends Service {
 
 		Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
-		
-		//String res = RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
 
-		String res = null;
+		String res = null; // RPC.invokeAndEncodeResponse(new GreetingServiceImpl(), rpc.getMethod(), rpc.getParameters());
 
 		try {
-			Object result = rpc.getMethod().invoke(new GreetingServiceImpl(), rpc.getParameters());
-			res = RPC.encodeResponseForSuccess(rpc.getMethod(), result);
+			res = RPC.encodeResponseForSuccess(rpc.getMethod(), rpc.getMethod().invoke(new GreetingServiceImpl(), rpc.getParameters()));
 		}
 		catch(InvocationTargetException e) {
 			res = RPC.encodeResponseForFailure(rpc.getMethod(), new SerializableException(e.getCause().getMessage()));
