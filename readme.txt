@@ -169,5 +169,6 @@ VERSION:
         classloaders.
       - Added simple logging of synchronous requests with -log 
         flag to access.txt file.
+      - Disabled HTTP/1.0 because it's a waste of time.
         
 have fun!

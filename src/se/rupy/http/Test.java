@@ -97,6 +97,7 @@ class Test implements Runnable {
 					}
 				} catch (Exception e) {
 					System.out.println("IO Read failed.");
+					e.printStackTrace();
 				}
 				write(event.output());
 			} else if (path.equals("/async")) {

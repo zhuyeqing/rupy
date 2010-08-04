@@ -112,10 +112,10 @@ public class Daemon implements Runnable {
 
 	private void log() throws IOException {
 		log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
-		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS");
 	}
 	protected void log(Event event) throws IOException {
-		if(log != null) {
+		if(log != null && !event.output().push()) {
 			Calendar date = Calendar.getInstance();
 			StringBuilder b = new StringBuilder();
 			
