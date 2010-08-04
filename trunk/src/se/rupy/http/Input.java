@@ -111,7 +111,7 @@ public abstract class Input extends InputStream implements Event.Block {
 		StringBuffer buffer = new StringBuffer("");
 
 		while (true) {
-			if (buffer.length() > event.daemon().size) {
+			if (buffer.length() > 2048) { // Facebook... :P
 				throw new IOException("Line too long.");
 			}
 

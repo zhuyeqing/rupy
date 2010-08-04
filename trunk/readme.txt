@@ -167,5 +167,7 @@ VERSION:
         requests halfway in.
       - Added Listener so deployed jars can communicate across 
         classloaders.
+      - Added simple logging of synchronous requests with -log 
+        flag to access.txt file.
         
 have fun!

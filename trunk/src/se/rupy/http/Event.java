@@ -205,7 +205,9 @@ public class Event extends Throwable implements Chain.Link {
 			reply.output().print(
 					"<pre>'" + query.path() + "' was not found.</pre>");
 		}
-
+		
+		daemon.log(this);
+		
 		reply.done();
 		query.done();
 	}

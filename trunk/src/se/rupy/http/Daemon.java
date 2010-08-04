@@ -25,8 +25,9 @@ public class Daemon implements Runnable {
 	private Heart heart;
 	private Selector selector;
 	private String pass;
-	protected PrintStream out;
-
+	protected PrintStream out, log;
+	private static DateFormat DATE;
+	
 	/**
 	 * Use this to start the daemon from your application. The parameters below
 	 * should be in the properties argument.
@@ -67,6 +68,8 @@ public class Daemon implements Runnable {
 	 * @param <b>debug</b> (false)
 	 *            <i>to log low-level NIO info for each request and class 
 	 *            loading info.</i><br><br>
+	 * @param <b>log</b> (false)
+	 *            <i>simple log of each synchronous request in the access.txt file.</i><br><br>
 	 */
 	public Daemon(Properties properties) {
 		this.properties = properties;
@@ -98,11 +101,34 @@ public class Daemon implements Runnable {
 		
 		try {
 			out = new PrintStream(System.out, true, "UTF-8");
+			
+			if(properties.getProperty("log") != null) {
+				log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
+				DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	protected void log(Event event) throws IOException {
+		if(log != null) {
+			Calendar date = Calendar.getInstance();
+			StringBuilder b = new StringBuilder();
+			
+			b.append(DATE.format(date.getTime()));
+			b.append(' ');
+			b.append(event.remote());
+			b.append(' ');
+			b.append(event.query().path());
+			b.append(' ');
+			b.append(event.reply().code());
+			b.append(Output.EOL);
+			
+			log.write(b.toString().getBytes("UTF-8"));
+		}
+	}
+	
 	/**
 	 * Starts the selector, heartbeat and worker threads.
 	 */
