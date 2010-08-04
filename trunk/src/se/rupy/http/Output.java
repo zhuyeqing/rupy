@@ -16,9 +16,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private final static byte[] alive = ("Connection: Keep-Alive" + EOL).getBytes();
 	private final static byte[] chunked = ("Transfer-Encoding: Chunked" + EOL).getBytes();
 	
-	private ByteArrayOutputStream array;
+	//private ByteArrayOutputStream array;
 	private byte[] one = new byte[1];
-	private boolean chunk, cache;
+	private boolean chunk; //, cache;
 	protected int length, size;
 	protected Reply reply;
 	protected boolean init, push, fixed, done;
@@ -43,6 +43,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 	
 	public int length() {
 		return length;
+	}
+	
+	protected boolean push() {
+		return push;
 	}
 	
 	public void println(Object o) throws IOException {
@@ -110,17 +114,20 @@ public abstract class Output extends OutputStream implements Event.Block {
 				headers(-1);
 			}
 		} else {
+			throw new IOException("HTTP/1.1 support only.");
+			/*
 			cache = true;
 
 			if (array == null) {
 				array = new ByteArrayOutputStream();
 			}
+			*/
 		}
 	}
 
 	protected void end() throws IOException {
 		reply.event().log("end", Event.DEBUG);
-
+/*
 		if (!chunk) {
 			if (array != null && array.size() > 0) {
 				array.flush();
@@ -137,7 +144,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				headers(0);
 			}
 		}
-
+*/
 		done = true;
 
 		flush();
@@ -160,7 +167,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	protected void headers(long length) throws IOException {
-		cache = false;
+		//cache = false;
 
 		reply.event().log("code " + reply.code(), Event.VERBOSE);
 
@@ -228,7 +235,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		wrote(EOL.getBytes());
-		// flush();
+		flush();
 		length = 0;
 	}
 
@@ -243,9 +250,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	protected void wrote(byte[] b, int off, int len) throws IOException {
 		try {
-			if (cache) {
-				array.write(b, off, len);
-			} else {
+			//if (cache) {
+			//	array.write(b, off, len);
+			//} else {
 				ByteBuffer out = reply.event().worker().out();
 				int remaining = out.remaining();
 
@@ -272,7 +279,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				if (len > 0) {
 					out.put(b, off, len);
 				}
-			}
+			//}
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
