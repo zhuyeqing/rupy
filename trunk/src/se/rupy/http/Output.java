@@ -41,6 +41,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 		return !push && done;
 	}
 	
+	public int length() {
+		return length;
+	}
+	
 	public void println(Object o) throws IOException {
 		write((o.toString() + EOL).getBytes("UTF-8"));
 	}
