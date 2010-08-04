@@ -103,14 +103,17 @@ public class Daemon implements Runnable {
 			out = new PrintStream(System.out, true, "UTF-8");
 			
 			if(properties.getProperty("log") != null) {
-				log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
-				DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+				log();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void log() throws IOException {
+		log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
+		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+	}
 	protected void log(Event event) throws IOException {
 		if(log != null) {
 			Calendar date = Calendar.getInstance();
@@ -123,6 +126,8 @@ public class Daemon implements Runnable {
 			b.append(event.query().path());
 			b.append(' ');
 			b.append(event.reply().code());
+			b.append(' ');
+			b.append(event.reply().output().length());
 			b.append(Output.EOL);
 			
 			log.write(b.toString().getBytes("UTF-8"));
@@ -462,8 +467,10 @@ public class Daemon implements Runnable {
 			}
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
-			"true"))
+			"true")) {
+				log();
 				test();
+			}
 		} catch (Exception e) {
 			e.printStackTrace(out);
 			System.exit(1);
