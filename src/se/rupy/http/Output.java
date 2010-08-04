@@ -10,7 +10,7 @@ import java.util.*;
  * @author marc.larue
  */
 public abstract class Output extends OutputStream implements Event.Block {
-	private final static String EOL = "\r\n";
+	public final static String EOL = "\r\n";
 	private final static byte[] server = ("Server: Rupy/0.3.8" + EOL).getBytes();
 	private final static byte[] close = ("Connection: Close" + EOL).getBytes();
 	private final static byte[] alive = ("Connection: Keep-Alive" + EOL).getBytes();
