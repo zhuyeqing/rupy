@@ -41,6 +41,12 @@ APPLICATION REMOTE HOT DEPLOYMENT:
         </java>
     </target>
 
+LOGGING:
+
+    Just add -log to the start script and you will 
+    find access and error logs in a log folder that 
+    will be created in the execution path.
+
 VERSION:
 
     0.1 - Alpha
@@ -167,8 +173,8 @@ VERSION:
         requests halfway in.
       - Added Listener so deployed jars can communicate across 
         classloaders.
-      - Added simple logging of synchronous requests with -log 
-        flag to access.txt file.
-      - Disabled HTTP/1.0 because it's a waste of time.
+      - Added simple logging with -log flag to get access and 
+        error logs in a log folder created in the execution path..
+      - Added fixed length test and improved unit.
         
 have fun!

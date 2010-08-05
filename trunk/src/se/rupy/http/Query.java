@@ -40,7 +40,7 @@ public class Query extends Hash {
 		} else {
 			throw new IOException("Unsupported method.");
 		}
-
+		
 		String get = http.nextToken();
 		int index = get.indexOf('?');
 

@@ -77,6 +77,14 @@ public class Reply {
 		return code;
 	}
 
+	protected int length() {
+		return output.length();
+	}
+	
+	protected boolean push() {
+		return output.push();
+	}
+	
 	/**
 	 * Important: call {@link #header(String, String)} before you call this. If
 	 * you manually set a code, the reply will flush even if empty. So do not
