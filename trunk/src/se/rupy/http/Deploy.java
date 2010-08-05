@@ -301,6 +301,10 @@ public class Deploy extends Service {
 
 	static class Client {
 		InputStream send(URL url, File file, String pass) throws IOException {
+			return send(url, file, pass, true);
+		}
+		
+		InputStream send(URL url, File file, String pass, boolean chunk) throws IOException {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 
@@ -314,7 +318,10 @@ public class Deploy extends Service {
 					conn.addRequestProperty("Pass", pass);
 				}
 
-				conn.setChunkedStreamingMode(0);
+				if (chunk) {
+					conn.setChunkedStreamingMode(0);
+				}
+				
 				conn.setDoOutput(true);
 
 				out = conn.getOutputStream();

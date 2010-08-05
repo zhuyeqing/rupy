@@ -5,7 +5,9 @@ import java.net.*;
 
 class Test implements Runnable {
 	static String original = "bin/http.jar";
-	static String copy = "copy.jar";
+	static String chunk = "chunk.jar";
+	static String fixed = "fixed.jar";
+
 	static boolean done;
 
 	File file;
@@ -17,7 +19,7 @@ class Test implements Runnable {
 	}
 
 	void save(String name, InputStream in) throws IOException {
-		File file = new File(copy);
+		File file = new File(chunk);
 		OutputStream out = new FileOutputStream(file);
 		int read = 0;
 
@@ -28,7 +30,7 @@ class Test implements Runnable {
 			out.close();
 
 			if (file.length() == new File(original).length())
-				System.out.println(name + " successful.");
+				System.out.println(name + " successful. (" + read + ")");
 		} catch (Exception e) {
 			System.out.println(name + " failed. (" + read + ")");
 			e.printStackTrace();
@@ -38,14 +40,16 @@ class Test implements Runnable {
 	public void run() {
 		try {
 			URL url = new URL("http://" + host);
-			InputStream in = new Deploy.Client().send(url, file, null);
+			InputStream in = new Deploy.Client().send(url, file, null, !host.endsWith("/fixed"));
 
 			if (host.endsWith("/error")) {
 				System.out.println(Deploy.Client.toString(in));
-			} else if (host.endsWith("/io")) {
-				save("IO Write", in);
-			} else {
-				save("Asynchronous", in);
+			} else if (host.endsWith("/chunk")) {
+				save("Chunk", in);
+			} else if (host.endsWith("/fixed")) {
+				save("Fixed", in);
+			} else if (host.endsWith("/comet")) {
+				save("Comet", in);
 			}
 		} catch (ConnectException ce) {
 			System.out.println("Connection failed, is there a server on "
@@ -78,7 +82,8 @@ class Test implements Runnable {
 				}
 			} else if (type == Service.TIMEOUT) {
 				System.out.println("Timeout successful.");
-				new File(copy).delete();
+				new File(chunk).delete();
+				new File(fixed).delete();
 				System.exit(0);
 			} else {
 				/*
@@ -90,17 +95,30 @@ class Test implements Runnable {
 		}
 
 		public void filter(Event event) throws Event, Exception {
-			if (path.equals("/io")) {
+			if (path.equals("/chunk")) {
 				try {
-					if (read(event.input()) == new File(original).length()) {
-						System.out.println("IO Read successful.");
+					int read = read(event.input());
+					if (read == new File(original).length()) {
+						System.out.println("Chunk successful. (" + read + ")");
 					}
 				} catch (Exception e) {
-					System.out.println("IO Read failed.");
+					System.out.println("Chunk failed.");
 					e.printStackTrace();
 				}
 				write(event.output());
-			} else if (path.equals("/async")) {
+			} else if (path.equals("/fixed")) {
+				try {
+					int read = read(event.input());
+					if (read == new File(original).length()) {
+						System.out.println("Fixed successful. (" + read + ")");
+					}
+				} catch (Exception e) {
+					System.out.println("Fixed failed.");
+					e.printStackTrace();
+				}
+				
+				write(event.reply().output(new File(original).length()));
+			} else if (path.equals("/comet")) {
 				if (event.push()) {
 					write(event.output());
 					event.output().finish(); // important

@@ -27,7 +27,7 @@ public class Daemon implements Runnable {
 	private String pass;
 	protected PrintStream out, log;
 	private static DateFormat DATE;
-	
+
 	/**
 	 * Use this to start the daemon from your application. The parameters below
 	 * should be in the properties argument.
@@ -98,10 +98,10 @@ public class Daemon implements Runnable {
 
 		workers = new Chain();
 		queue = new Chain();
-		
+
 		try {
 			out = new PrintStream(System.out, true, "UTF-8");
-			
+
 			if(properties.getProperty("log") != null) {
 				log();
 			}
@@ -114,11 +114,12 @@ public class Daemon implements Runnable {
 		log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
 		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS");
 	}
+
 	protected void log(Event event) throws IOException {
-		if(log != null && !event.output().push()) {
+		if (log != null) {
 			Calendar date = Calendar.getInstance();
 			StringBuilder b = new StringBuilder();
-			
+
 			b.append(DATE.format(date.getTime()));
 			b.append(' ');
 			b.append(event.remote());
@@ -126,14 +127,11 @@ public class Daemon implements Runnable {
 			b.append(event.query().path());
 			b.append(' ');
 			b.append(event.reply().code());
-			b.append(' ');
-			b.append(event.reply().output().length());
-			b.append(Output.EOL);
-			
+
 			log.write(b.toString().getBytes("UTF-8"));
 		}
 	}
-	
+
 	/**
 	 * Starts the selector, heartbeat and worker threads.
 	 */
@@ -149,31 +147,31 @@ public class Daemon implements Runnable {
 			}
 
 			alive = true;
-			
+
 			new Thread(this).start();
 		} catch (Exception e) {
 			e.printStackTrace(out);
 		}
 	}
-	
+
 	/**
 	 * Stops the selector, heartbeat and worker threads.
 	 */
 	public void stop() {
 		Iterator it = workers.iterator();
-		
+
 		while(it.hasNext()) {
 			Worker worker = (Worker) it.next();
 			worker.stop();
 		}
-		
+
 		workers.clear();
 		alive = false;
 		heart.stop();
-		
+
 		selector.wakeup();
 	}
-	
+
 	protected HashMap session() {
 		return session;
 	}
@@ -218,10 +216,10 @@ public class Daemon implements Runnable {
 		if(!name.endsWith(".jar")) {
 			name += ".jar";
 		}
-		
+
 		return archive.containsKey(name);
 	}
-	
+
 	/**
 	 * Get archive.
 	 * @return
@@ -230,17 +228,17 @@ public class Daemon implements Runnable {
 		if(!name.endsWith(".jar")) {
 			name += ".jar";
 		}
-		
+
 		return (Deploy.Archive) this.archive.get(name);
 	}
-	
+
 	/*
 	 * Listener - Cross class-loader communication interface. So that a class 
 	 * deployed in one archive can send messages to a class deployed in another.
 	 */
-	
+
 	private Listener listener;
-	
+
 	/**
 	 * Send Object to listener. We recommend you only send bootclasspath loaded 
 	 * classes here otherwise hotdeploy will fail.
@@ -253,10 +251,10 @@ public class Daemon implements Runnable {
 		if(listener == null) {
 			return message;
 		}
-		
+
 		return listener.receive(message);
 	}
-	
+
 	/**
 	 * Register your listener here.
 	 * 
@@ -265,7 +263,7 @@ public class Daemon implements Runnable {
 	public void set(Listener listener) {
 		this.listener = listener;
 	}
-	
+
 	public interface Listener {
 		public Object receive(Object message) throws Exception;
 	}
@@ -273,18 +271,18 @@ public class Daemon implements Runnable {
 	/*
 	 * Listener
 	 */
-	
+
 	public void add(Service service) throws Exception {
 		add(this.service, service);
 	}
 
 	protected void add(HashMap map, Service service) throws Exception {
 		String path = service.path();
-		
+
 		if(path == null) {
 			path = "null";
 		}
-		
+
 		StringTokenizer paths = new StringTokenizer(path, ":");
 
 		while (paths.hasMoreTokens()) {
@@ -320,14 +318,14 @@ public class Daemon implements Runnable {
 
 	protected String padding(String path) {
 		StringBuffer buffer = new StringBuffer();
-		
+
 		for(int i = 0; i < 10 - path.length(); i++) {
 			buffer.append(' ');
 		}
-		
+
 		return buffer.toString();
 	}
-	
+
 	protected void verify(Deploy.Archive archive) throws Exception {
 		Iterator it = archive.chain().keySet().iterator();
 
@@ -356,18 +354,18 @@ public class Daemon implements Runnable {
 			return content(query.path());
 		}
 	}
-	
+
 	protected Deploy.Stream content(String path) {
 		return content("content", path);
 	}
-		
+
 	protected Deploy.Stream content(String host, String path) {
 		File file = new File("app" + File.separator + host + File.separator + path);
 
 		if(file.exists() && !file.isDirectory()) {
 			return new Deploy.Big(file);
 		}
-		
+
 		return null;
 	}
 
@@ -379,11 +377,11 @@ public class Daemon implements Runnable {
 			return chain(query.path());
 		}
 	}
-	
+
 	public Chain chain(String path) {
 		return chain("content", path);
 	}
-	
+
 	public Chain chain(String host, String path) {
 		synchronized (this.service) {
 			Chain chain = (Chain) this.service.get(path);
@@ -398,7 +396,7 @@ public class Daemon implements Runnable {
 
 			while (it.hasNext()) {
 				Deploy.Archive archive = (Deploy.Archive) it.next();
-				
+
 				if (archive.host().equals(host)) {
 					Chain chain = (Chain) archive.chain().get(path);
 
@@ -428,7 +426,7 @@ public class Daemon implements Runnable {
 	public void run() {
 		String pass = properties.getProperty("pass", "");
 		ServerSocketChannel server = null;
-		
+
 		try {
 			selector = Selector.open();
 			server = ServerSocketChannel.open();
@@ -525,7 +523,7 @@ public class Daemon implements Runnable {
 				event.disconnect(e);
 			}
 		}
-		
+
 		try {
 			if(selector != null) {
 				selector.close();
@@ -542,17 +540,17 @@ public class Daemon implements Runnable {
 		synchronized (this.queue) {
 			queue.add(event);
 		}
-		
+
 		if (debug)
 			out.println("queue " + queue.size());
 	}
-	
+
 	protected synchronized void employ(Event event) {
 		if(queue.size() > 0) {
 			queue(event);
 			return;
 		}
-		
+
 		workers.reset();
 		Worker worker = (Worker) workers.next();
 
@@ -587,7 +585,7 @@ public class Daemon implements Runnable {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Set custom log.
 	 * @param out
@@ -597,16 +595,16 @@ public class Daemon implements Runnable {
 			this.out = out;
 		}
 	}
-	
+
 	protected void log(Object o) {
 		if(out != null) {
 			out.println(o);
 		}
 	}
-	
+
 	class Heart implements Runnable {
 		boolean alive;
-		
+
 		Heart() {
 			alive = true;
 			new Thread(this).start();
@@ -615,7 +613,7 @@ public class Daemon implements Runnable {
 		protected void stop() {
 			alive = false;
 		}
-		
+
 		public void run() {
 			while (alive) {
 				try {
@@ -683,6 +681,7 @@ public class Daemon implements Runnable {
 	void test() throws Exception {
 		System.out.println("Parallel testing begins in one second:");
 		System.out.println("- OP_READ, OP_WRITE and selector wakeup.");
+		System.out.println("- Fixed and chunked, read and write.");
 		System.out.println("- Asynchronous non-blocking reply.");
 		System.out.println("- Session creation and timeout.");
 		System.out.println("- Exception handling.");
@@ -690,17 +689,24 @@ public class Daemon implements Runnable {
 		System.out.println("             ---o---");
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 		}
-
-		add(new Test.Service("/io"));
-		add(new Test.Service("/async"));
+		/*
+		verbose = true;
+		debug = true;
+		 */
+		add(new Test.Service("/chunk"));
+		add(new Test.Service("/fixed"));
 		add(new Test.Service("/error"));
+		add(new Test.Service("/comet"));
 
-		new Thread(new Test("localhost:" + port + "/io",
+		new Thread(new Test("localhost:" + port + "/chunk",
 				new File(Test.original))).start();
-		new Thread(new Test("localhost:" + port + "/async", null)).start();
+		new Thread(new Test("localhost:" + port + "/fixed",
+				new File(Test.original))).start();
+
 		new Thread(new Test("localhost:" + port + "/error", null)).start();
+		new Thread(new Test("localhost:" + port + "/comet", null)).start();
 	}
 }

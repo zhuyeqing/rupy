@@ -16,9 +16,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private final static byte[] alive = ("Connection: Keep-Alive" + EOL).getBytes();
 	private final static byte[] chunked = ("Transfer-Encoding: Chunked" + EOL).getBytes();
 	
-	//private ByteArrayOutputStream array;
 	private byte[] one = new byte[1];
-	private boolean chunk; //, cache;
+	private boolean chunk;
 	protected int length, size;
 	protected Reply reply;
 	protected boolean init, push, fixed, done;
@@ -39,10 +38,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 	 */
 	public boolean complete() {
 		return !push && done;
-	}
-	
-	public int length() {
-		return length;
 	}
 	
 	protected boolean push() {
@@ -127,24 +122,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	protected void end() throws IOException {
 		reply.event().log("end", Event.DEBUG);
-/*
-		if (!chunk) {
-			if (array != null && array.size() > 0) {
-				array.flush();
 
-				int length = array.size();
-				byte[] data = array.toByteArray();
-
-				headers(length);
-				write(data, 0, length);
-
-				array.reset();
-			} else if (reply.code().startsWith("302")
-					|| reply.code().startsWith("304")) {
-				headers(0);
-			}
-		}
-*/
 		done = true;
 
 		flush();
@@ -235,7 +213,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		wrote(EOL.getBytes());
-		flush();
+		//flush();
 		length = 0;
 	}
 
@@ -250,9 +228,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	protected void wrote(byte[] b, int off, int len) throws IOException {
 		try {
-			//if (cache) {
-			//	array.write(b, off, len);
-			//} else {
 				ByteBuffer out = reply.event().worker().out();
 				int remaining = out.remaining();
 
@@ -263,9 +238,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 					off += remaining;
 					len -= remaining;
-
-					// reply.event().log("wrote off " + off + " len " + len + "
-					// remaining " + remaining, Event.DEBUG);
 
 					/*
 					 * oh, nasty little bugger, added this when a page with
@@ -279,12 +251,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 				if (len > 0) {
 					out.put(b, off, len);
 				}
-			//}
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
 			throw (IOException) new IOException().initCause(e);
 		}
+
+		length += len;
 	}
 
 	protected void internal(boolean debug) throws Exception {
@@ -361,19 +334,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 		public static int OFFSET = 6;
 		private int cursor = OFFSET, count = 0;
 
-		// private byte[] chunk;
-
 		Chunked(Reply reply) throws IOException {
 			super(reply);
 		}
 
 		public void write(int b) throws IOException {
-			/*
-			if (!chunk() || fixed) {
-				wrote(b);
-				return;
-			}
-			*/
 			reply.event().worker().chunk()[cursor++] = (byte) b;
 			count++;
 
@@ -464,7 +429,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 					if (complete()) {
 						write();
 					}
-
+					
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			} else if (!fixed) {
