@@ -127,7 +127,8 @@ public class Daemon implements Runnable {
 			b.append(event.query().path());
 			b.append(' ');
 			b.append(event.reply().code());
-
+			b.append(Output.EOL);
+			
 			log.write(b.toString().getBytes("UTF-8"));
 		}
 	}
