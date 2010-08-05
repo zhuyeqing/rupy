@@ -25,7 +25,7 @@ public class Daemon implements Runnable {
 	private Heart heart;
 	private Selector selector;
 	private String pass;
-	protected PrintStream out, log;
+	protected PrintStream out, access, error;
 	private static DateFormat DATE;
 
 	/**
@@ -102,7 +102,8 @@ public class Daemon implements Runnable {
 		try {
 			out = new PrintStream(System.out, true, "UTF-8");
 
-			if(properties.getProperty("log") != null) {
+			if(properties.getProperty("log") != null || properties.getProperty("test", "false").toLowerCase().equals(
+			"true")) {
 				log();
 			}
 		} catch (Exception e) {
@@ -110,13 +111,39 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	private void log() throws IOException {
-		log = new PrintStream(new FileOutputStream(new File("access.txt")), true, "UTF-8");
+	protected void log() throws IOException {
+		File file = new File("log");
+		
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		
+		access = new PrintStream(new FileOutputStream(new File("log/access.txt")), true, "UTF-8");
+		error = new PrintStream(new FileOutputStream(new File("log/error.txt")), true, "UTF-8");
+		
 		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS");
 	}
 
-	protected void log(Event event) throws IOException {
-		if (log != null) {
+	protected void error(Event event, Exception e) throws IOException {
+		if (error != null) {
+			Calendar date = Calendar.getInstance();
+			StringBuilder b = new StringBuilder();
+
+			b.append(DATE.format(date.getTime()));
+			b.append(' ');
+			b.append(event.query().path());
+			b.append(' ');
+			b.append(event.query().parameters());
+			b.append(Output.EOL);
+
+			error.write(b.toString().getBytes("UTF-8"));
+			
+			e.printStackTrace(error);
+		}
+	}
+		
+	protected String access(Event event) throws IOException {
+		if (access != null && !event.reply().push()) {
 			Calendar date = Calendar.getInstance();
 			StringBuilder b = new StringBuilder();
 
@@ -127,11 +154,37 @@ public class Daemon implements Runnable {
 			b.append(event.query().path());
 			b.append(' ');
 			b.append(event.reply().code());
+			
+			int length = event.reply().length();
+			
+			if(length > 0) {
+				b.append(' ');
+				b.append(length);
+			}
+			
+			return b.toString();
+		}
+		
+		return null;
+	}
+	
+	protected void access(String row, boolean push) throws IOException {
+		if (access != null) {
+			StringBuilder b = new StringBuilder();
+			
+			b.append(row);
+			
+			if(push) {
+				b.append(' ');
+				b.append('>');
+			}
+			
 			b.append(Output.EOL);
 			
-			log.write(b.toString().getBytes("UTF-8"));
+			access.write(b.toString().getBytes("UTF-8"));
 		}
 	}
+	
 
 	/**
 	 * Starts the selector, heartbeat and worker threads.
@@ -467,8 +520,7 @@ public class Daemon implements Runnable {
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
-				log();
-				test();
+				new Thread(new Test(this, 1)).start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace(out);
@@ -673,41 +725,5 @@ public class Daemon implements Runnable {
 		}
 
 		new Daemon(properties).start();
-	}
-
-	/*
-	 * Test cases are performed in parallel with one worker thread, in order to
-	 * detect synchronous errors.
-	 */
-	void test() throws Exception {
-		System.out.println("Parallel testing begins in one second:");
-		System.out.println("- OP_READ, OP_WRITE and selector wakeup.");
-		System.out.println("- Fixed and chunked, read and write.");
-		System.out.println("- Asynchronous non-blocking reply.");
-		System.out.println("- Session creation and timeout.");
-		System.out.println("- Exception handling.");
-		System.out.println("Estimated duration: ~2 sec.");
-		System.out.println("             ---o---");
-
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-		}
-		/*
-		verbose = true;
-		debug = true;
-		 */
-		add(new Test.Service("/chunk"));
-		add(new Test.Service("/fixed"));
-		add(new Test.Service("/error"));
-		add(new Test.Service("/comet"));
-
-		new Thread(new Test("localhost:" + port + "/chunk",
-				new File(Test.original))).start();
-		new Thread(new Test("localhost:" + port + "/fixed",
-				new File(Test.original))).start();
-
-		new Thread(new Test("localhost:" + port + "/error", null)).start();
-		new Thread(new Test("localhost:" + port + "/comet", null)).start();
 	}
 }

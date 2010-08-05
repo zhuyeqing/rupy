@@ -206,10 +206,7 @@ public class Event extends Throwable implements Chain.Link {
 					"<pre>'" + query.path() + "' was not found.</pre>");
 		}
 		
-		daemon.log(this);
-
-		reply.done();
-		query.done();
+		finish();
 	}
 
 	protected String address() {
@@ -265,6 +262,7 @@ public class Event extends Throwable implements Chain.Link {
 			// Break the filter chain.
 		} catch (Exception e) {
 			log(e);
+			daemon.error(this, e);
 
 			StringWriter trace = new StringWriter();
 			PrintWriter print = new PrintWriter(trace);
@@ -279,13 +277,20 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void write() throws IOException {
 		service();
-
-		daemon.log(this);
-		
-		reply.done();
-		query.done();
+		finish();
 	}
 
+	private void finish() throws IOException {
+		String log = daemon.access(this);
+
+		reply.done();
+		query.done();
+		
+		if(log != null) {
+			daemon.access(log, reply.push());
+		}
+	}
+	
 	protected void register() throws IOException {
 		if (interest != key.interestOps()) {
 			log((interest == READ ? "read" : "write") + " prereg " + interest
@@ -330,7 +335,7 @@ public class Event extends Throwable implements Chain.Link {
 			key.selector().wakeup();
 		}
 
-		throw new Exception("IO timeout.");
+		throw new Exception("IO timeout. (" + daemon.delay + ")");
 	}
 
 	interface Block {
@@ -353,7 +358,11 @@ public class Event extends Throwable implements Chain.Link {
 
 			log("disconnect " + e);
 
-			worker.snooze(5); // to avoid deadlock when proxy closes socket
+			if(worker != null) {
+				worker.snooze(5); // to avoid deadlock when proxy closes socket
+			}
+			
+			daemon.error(this, e);
 		} catch (Exception de) {
 			de.printStackTrace(daemon.out);
 		}

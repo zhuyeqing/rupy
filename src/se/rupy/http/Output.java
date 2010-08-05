@@ -40,6 +40,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 		return !push && done;
 	}
 	
+	protected int length() {
+		return length;
+	}
+	
 	protected boolean push() {
 		return push;
 	}
@@ -109,22 +113,18 @@ public abstract class Output extends OutputStream implements Event.Block {
 				headers(-1);
 			}
 		} else {
-			throw new IOException("HTTP/1.1 support only.");
 			/*
-			cache = true;
-
-			if (array == null) {
-				array = new ByteArrayOutputStream();
-			}
-			*/
+			 * HTTP/1.0 is a waste of time and resources.
+			 * To buffer dynamic response data instead of 
+			 * chunking it is so wasteful I decided to remove it.
+			 */
+			throw new IOException("HTTP/1.1 support only.");
 		}
 	}
 
 	protected void end() throws IOException {
 		reply.event().log("end", Event.DEBUG);
-
 		done = true;
-
 		flush();
 		
 		if (length > 0) {
@@ -137,7 +137,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 		 * Added this to fix the push bug that adding the 
 		 * fixed flag caused. If you look in the flush method 
 		 * at the bottom of this file you will see why this is needed.
-		 * TODO: Add test unit for fixed length!
 		 */
 		fixed = false;
 		init = false;
@@ -214,7 +213,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		wrote(EOL.getBytes());
 		//flush();
-		length = 0;
+		//length = 0;
 	}
 
 	protected void wrote(int b) throws IOException {
@@ -256,8 +255,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 		} catch (Exception e) {
 			throw (IOException) new IOException().initCause(e);
 		}
-
-		length += len;
 	}
 
 	protected void internal(boolean debug) throws Exception {
@@ -314,7 +311,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 					Event.DEBUG);
 		}
 
-		length += sent;
 		return sent;
 	}
 	
@@ -352,6 +348,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void write(byte[] b, int off, int len) throws IOException {
+			length += len;
+			
 			if (!chunk() || fixed) {
 				wrote(b, off, len);
 				return;
