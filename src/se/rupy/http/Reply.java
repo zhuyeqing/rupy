@@ -64,7 +64,7 @@ public class Reply {
 		type = "text/html; charset=UTF-8";
 		code = "200 OK";
 	}
-
+	
 	protected Event event() {
 		return event;
 	}

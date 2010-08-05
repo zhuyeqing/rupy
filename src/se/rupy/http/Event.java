@@ -206,9 +206,8 @@ public class Event extends Throwable implements Chain.Link {
 					"<pre>'" + query.path() + "' was not found.</pre>");
 		}
 		
-		output().flush();
 		daemon.log(this);
-		
+
 		reply.done();
 		query.done();
 	}
@@ -280,8 +279,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void write() throws IOException {
 		service();
-		
-		output().flush();
+
 		daemon.log(this);
 		
 		reply.done();
