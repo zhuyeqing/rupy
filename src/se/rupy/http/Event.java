@@ -361,7 +361,7 @@ public class Event extends Throwable implements Chain.Link {
 			if(worker != null) {
 				worker.snooze(5); // to avoid deadlock when proxy closes socket
 			}
-			
+
 			daemon.error(this, e);
 		} catch (Exception de) {
 			de.printStackTrace(daemon.out);

@@ -4,28 +4,35 @@ import java.io.*;
 import java.net.*;
 
 class Test implements Runnable {
-	String[] unit = new String[] {
+	final static String[] unit = new String[] {
 			"comet", 
 			"chunk", 
 			"fixed", 
 			"error"
 		};
 	
-	static String original = "bin/http.jar";
+	final static String original = "bin/http.jar";
 
 	protected boolean failed;
-
-	protected static File file;
-
-	protected int loop;
+	protected int loop, done, http;
 	protected String host, name;
 	protected Service service;
 	protected Daemon daemon;
+	protected Thread thread;
+	protected long time;
+	
+	protected static File file;
+	protected static Test test;
 	
 	protected Test(Daemon daemon, int loop) {
 		this.loop = loop;
 		Test.file = new File(Test.original);
 		this.daemon = daemon;
+		
+		test = this;
+		
+		thread = new Thread(this);
+		thread.start();
 	}
 	
 	protected Test(String host, String name, int loop) throws IOException {
@@ -40,25 +47,52 @@ class Test implements Runnable {
 	}
 	
 	protected boolean failed() {
-		return failed && service.failed();
+		return failed || service.failed();
 	}
 	
 	protected String name() {
 		return name;
 	}
 	
+	protected void done(Test test) {
+		done++;
+		http++;
+		System.out.println(done + "/" + (unit.length + 2) + " Done: " + test.name + " (" + test.loop + ")");
+		
+		if(http == unit.length) {
+			System.out.println((300 * loop + 10 * loop) + " dynamic requests in " + (System.currentTimeMillis() - time) + " ms.");
+		}
+		
+		done();
+	}
+	
+	protected void done(String text) {
+		done++;
+		System.out.println(done + "/" + (unit.length + 2) + " Done: " + text);
+		done();
+	}
+	
+	protected void done() {
+		if(done == unit.length + 2) {
+			synchronized (thread) {
+				thread.notify();
+			}
+		}
+	}
+	
 	void save(String name, InputStream in) {
 		int read = 0;
 
 		try {
-			OutputStream out = new FileOutputStream(new File(name));
+			File file = new File(name);
+			OutputStream out = new FileOutputStream(file);
 			
 			read = Deploy.pipe(in, out);
 
 			out.flush();
 			out.close();
 
-			if (file.length() != new File(original).length()) {
+			if (file.length() != Test.file.length()) {
 				failed = true;
 			}
 		} catch (Exception e) {
@@ -82,16 +116,16 @@ class Test implements Runnable {
 			System.out.println("Connection failed, is there a server on "
 					+ host + "?");
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			failed = true;
 			
 			if(daemon != null) {
 				System.exit(1);
 			}
 		}
-		// finally {
-		// System.exit(0);
-		// }
+		finally {
+			test.done(this);
+		}
 	}
 	
 	/*
@@ -99,20 +133,17 @@ class Test implements Runnable {
 	 * detect synchronous errors.
 	 */
 	void test(Daemon daemon) throws Exception {
-		int wait = loop + 5;
+		time = System.currentTimeMillis();
 		
-		System.out.println("Parallel testing begins in one second:");
-		System.out.println("- OP_READ, OP_WRITE and selector wakeup.");
+		System.out.println("Parallel testing:");
 		System.out.println("- Fixed and chunked, read and write.");
 		System.out.println("- Asynchronous non-blocking reply.");
 		System.out.println("- Session creation and timeout.");
 		System.out.println("- Exception handling.");
-		System.out.println("The test runs " + (loop * 100) + " (50kb) fixed-, " + 
-				(loop * 100) + " (50kb) chunked-, " + (loop * 100) + " error-, " + 
-				loop + " comet- requests and takes " + wait + " seconds.");
+		System.out.println("The test receives and sends the bin/http.jar which is ~50kb");
 		System.out.println("             ---o---");
 
-		Thread.sleep(200);
+		Thread.sleep(1000);
 
 		/*
 		daemon.verbose = true;
@@ -122,12 +153,15 @@ class Test implements Runnable {
 		Test[] test = new Test[unit.length];
 		
 		for(int i = 0; i < test.length; i++) {
-			test[i] = new Test("localhost:" + daemon.port, unit[i], loop * (unit[i].equals("/comet") ? 1 : 100));
+			test[i] = new Test("localhost:" + daemon.port, unit[i], loop * (unit[i].equals("comet") ? 10 : 100));
 			daemon.add(test[i].service());
-			new Thread(test[i]).start();
+			Thread thread = new Thread(test[i]);
+			thread.start();
 		}
-		
-		Thread.sleep(wait * 1000);
+
+		synchronized (thread) {
+			thread.wait();
+		}
 		
 		boolean failed = false;
 		
@@ -139,7 +173,7 @@ class Test implements Runnable {
 			new File(test[i].name).deleteOnExit();
 		}
 		
-		System.out.println(failed ? "UNIT FAILED!" : "UNIT SUCCESSFUL!");
+		System.out.println(failed ? "UNIT FAILED! (see log/error.txt)" : "UNIT SUCCESSFUL!");
 		System.exit(0);
 	}
 	
@@ -147,15 +181,12 @@ class Test implements Runnable {
 		URL url = new URL("http://" + host + "/" + name);
 
 		if (name.equals("error")) {
-			if(Deploy.Client.toString(new Deploy.Client().send(url, null, null, true)).indexOf("Error Succeded") == -1) {
+			String error = Deploy.Client.toString(new Deploy.Client().send(url, null, null, true));
+			if(error.indexOf("Error successful") == -1) {
 				failed = true;
 			}
-		} else if (name.equals("chunk")) {
-			save("Chunk", new Deploy.Client().send(url, file, null, true));
-		} else if (name.equals("fixed")) {
-			save("Fixed", new Deploy.Client().send(url, file, null, false));
-		} else if (name.equals("comet")) {
-			save("Comet", new Deploy.Client().send(url, null, null, true));
+		} else {
+			save(name, new Deploy.Client().send(url, file, null, true));
 		}
 	}
 	
@@ -182,48 +213,46 @@ class Test implements Runnable {
 		
 		public void session(Session session, int type) {
 			if (type == Service.CREATE) {
-				if (!this.session) {
-					System.out.println("Session successful.");
-					this.session = true;
+				if (!Service.session) {
+					test.done("Session successful.");
+					Service.session = true;
 				}
 			} else if (type == Service.TIMEOUT) {
-				if (!this.timeout) {
-					System.out.println("Timeout successful.");
-					this.timeout = true;
+				if (!Service.timeout) {
+					test.done("Timeout successful.");
+					Service.timeout = true;
 				}
 			} else {
 				/*
 				 * FORCED, HttpURLConnection timeout, has the time to happen
 				 * sometimes.
 				 */
-				System.out.println("Socket closed. (" + type + ")");
+				System.out.println("Socket closed. (" + path + ")");
 			}
 		}
 
 		public void filter(Event event) throws Event, Exception {
+			try {
+				work(event);
+			}
+			catch(Exception e) {
+				//e.printStackTrace();
+				failed = true;
+				throw e;
+			}
+			
+			if (path.equals("/error")) {
+				throw new Exception("Error successful.");
+			}
+		}
+
+		private void work(Event event) throws Exception {
 			if (path.equals("/chunk")) {
-				try {
-					int read = read(event.input());
-					if (read != new File(original).length()) {
-						failed = true;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					failed = true;
-				}
+				load(event);
 				write(event.output());
 			} else if (path.equals("/fixed")) {
-				try {
-					int read = read(event.input());
-					if (read != new File(original).length()) {
-						failed = true;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					failed = true;
-				}
-				
-				write(event.reply().output(new File(original).length()));
+				load(event);
+				write(event.reply().output(Test.file.length()));
 			} else if (path.equals("/comet")) {
 				if (event.push()) {
 					write(event.output());
@@ -234,17 +263,23 @@ class Test implements Runnable {
 					 * tricky part, making sure there is no memory leak can be
 					 * very difficult. See our Comet tutorial for more info.
 					 */
+					load(event);
 					this.event = event;
 					new Thread(this).start();
 				}
-			} else {
-				throw new Exception("Error successful.");
 			}
 		}
-
+		
+		private void load(Event event) throws IOException {
+			int read = read(event.input());
+			if (read != Test.file.length()) {
+				failed = true;
+			}
+		}
+		
 		public void run() {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(50);
 				event.reply().wakeup();
 			} catch (Exception e) {
 				e.printStackTrace();
