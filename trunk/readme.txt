@@ -16,6 +16,14 @@ RUN:
 
     >run.sh OR
     >run.bat
+    
+    ##IMPORTANT##
+
+    Since NIO has been very unstable from 
+    1.6.0_00 until 1.6.0_18 with Selector bugs 
+    ranging from 100% CPU to thread deadlock; 
+    you should use 1.4, 1.5 or 1.6.0_18 and later 
+    on your live server.
 
 BUILD AND TEST OR DOCUMENT:
 

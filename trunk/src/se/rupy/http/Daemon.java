@@ -131,9 +131,17 @@ public class Daemon implements Runnable {
 
 			b.append(DATE.format(date.getTime()));
 			b.append(' ');
-			b.append(event.query().path());
+			b.append(event.remote());
 			b.append(' ');
-			b.append(event.query().parameters());
+			b.append(event.query().path());
+			
+			String parameters = event.query().parameters();
+			
+			if(parameters != null) {
+				b.append(' ');
+				b.append(parameters);
+			}
+			
 			b.append(Output.EOL);
 
 			error.write(b.toString().getBytes("UTF-8"));
@@ -520,7 +528,7 @@ public class Daemon implements Runnable {
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
-				new Thread(new Test(this, 1)).start();
+				new Test(this, 20);
 			}
 		} catch (Exception e) {
 			e.printStackTrace(out);
