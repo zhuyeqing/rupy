@@ -326,10 +326,81 @@ public class Daemon implements Runnable {
 		this.listener = listener;
 	}
 
+	/**
+	 * The listener filters JSONObject messages.
+	 * @author Marc
+	 */
 	public interface Listener {
+		/**
+		 * Forward, alter or swallow message.
+		 * @param message
+		 * @return The forwarded, altered message or null to swallow.
+		 * @throws Exception
+		 */
 		public Object receive(Object message) throws Exception;
 	}
 
+	/**
+	 * The pipe class gives you a way to 
+	 * route data to another event per session 
+	 * without classloading issues.
+	 * <br><br>
+	 * If you use this make sure you: <br>
+	 * <pre>try {
+	 *     ...
+	 * }
+	 * finally {
+	 *     pipe.close();
+	 * }</pre>
+	 * Otherwise you will encounter thread locks.
+	 * @author Marc
+	 */
+	public static class Pipe {
+		public PipedOutputStream out;
+		public PipedInputStream in;
+		
+		public Pipe() {
+			in = new PipedInputStream();
+		}
+		
+		public void connect() throws IOException {
+			connect(in);
+		}
+
+		public void connect(PipedInputStream in) throws IOException {
+			out = new PipedOutputStream(in);
+		}
+		
+		/**
+		 * To remove latency from the pipe.
+		 * @param length How many bytes you want to buffer.
+		 * @return The amount of bytes skipped.
+		 * @throws IOException
+		 */
+		public int latency(int length) throws IOException {
+			int remove = in.available() - length;
+			if(remove > 0) {
+				in.skip(remove);
+			}
+			return remove;
+		}
+		
+		/**
+		 * To avoid thread locks.
+		 * @throws IOException
+		 */
+		public void close() throws IOException {
+			synchronized(out) {
+				out.notify();
+				out.close();
+			}
+			synchronized(in) {
+				in.notify();
+				in.close();
+			}
+		}
+	}
+	
 	/*
 	 * Listener
 	 */
