@@ -2,11 +2,13 @@
 
 *Thread Model*
 
-Rupy has one selector thread that feeds many worker threads. This model is simple but hard to synchronize, fortunately that's been done for you!
+Rupy has one selector thread that feeds many worker threads. This model is simple to understand, but hard to synchronize; fortunately that's been done for you!
 
 *Delay Variable*
 
-The event/worker has a network timeout variable called _delay_ which is 1 second (1000 ms.) by default. This should be increased (add '-delay 5000' to startup script) if you will serve large files and/or is succeptible to get large volumes of traffic.
+The events have a network timeout variable called _delay_ which is 1 second (1000 ms.) by default. This should be increased (add '-delay 5000' to startup script) if you will serve large files and/or is succeptible to get large volumes of traffic.
+
+The way this works is that if the event socket IO stalls during an ongoing request / response the server timeouts and frees the worker from this event.
 
 *API*
 
