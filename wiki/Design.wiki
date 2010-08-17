@@ -4,6 +4,10 @@
 
 Rupy has one selector thread that feeds many worker threads. This model is simple but hard to synchronize, fortunately that's been done for you!
 
+*Delay Variable*
+
+The event/worker has a network timeout variable called _delay_ which is 1 second (1000 ms.) by default. This should be increased (add '-delay 5000' to startup script) if you will serve large files and/or is succeptible to get large volumes of traffic.
+
 *API*
 
 The API is designed to be as small as possible, and therefore you have to handle the asynchronous events being recycled. While other Comet API's provide you with special methods for asynchronous callbacks, we rely on the Event.push() method to tell us wether an event is "real" or "recycled".
