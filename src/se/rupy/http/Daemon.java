@@ -392,12 +392,14 @@ public class Daemon implements Runnable {
 		public void close() throws IOException {
 			synchronized(out) {
 				out.notify();
-				out.close();
 			}
+
 			synchronized(in) {
 				in.notify();
-				in.close();
 			}
+
+			out.close();
+			in.close();
 		}
 	}
 	
