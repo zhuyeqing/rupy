@@ -106,6 +106,10 @@ public class Worker implements Runnable, Chain.Link {
 		alive = false;
 	}
 
+	public String toString() {
+		return String.valueOf(index);
+	}
+	
 	public void run() {
 		while (alive) {
 			try {
@@ -115,6 +119,11 @@ public class Worker implements Runnable, Chain.Link {
 						event.push(false);
 					} else {
 						event.read();
+						/*
+						if(!event.push()) {
+							event.output().flush(); // to write trailing bytes...
+						}
+						*/
 					}
 				}
 			} catch (Exception e) {
