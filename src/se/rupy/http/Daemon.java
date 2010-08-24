@@ -342,24 +342,27 @@ public class Daemon implements Runnable {
 
 	/**
 	 * The pipe class gives you a way to 
-	 * route data to another event per session 
-	 * without classloading issues.
-	 * <br><br>
-	 * If you use this make sure you: <br>
-	 * <pre>try {
-	 *     ...
-	 * }
-	 * finally {
-	 *     pipe.close();
-	 * }</pre>
-	 * Otherwise you will encounter thread locks.
+	 * route data between events per session 
+	 * without classloading and threadlocking 
+	 * issues.
 	 * @author Marc
 	 */
 	public static class Pipe {
-		public PipedOutputStream out;
-		public PipedInputStream in;
+		private PipedOutputStream out;
+		private PipedInputStream in;
+
+		private int timeout;
+		private int length;
+		private int total;
 		
-		public Pipe() {
+		/**
+		 * Create an unconnected pipe.
+		 * @param timeout The wait before the pipe is connected after read has begun.
+		 * @param length The minimum bytes transfered before timeout is lifted.
+		 */
+		public Pipe(int timeout, int length) {
+			this.length = length;
+			this.timeout = timeout;
 			in = new PipedInputStream();
 		}
 		
@@ -367,38 +370,64 @@ public class Daemon implements Runnable {
 			connect(in);
 		}
 
-		public void connect(PipedInputStream in) throws IOException {
+		protected void connect(PipedInputStream in) throws IOException {
 			out = new PipedOutputStream(in);
+		}
+		
+		public boolean connected() {
+			return out != null;
 		}
 		
 		/**
 		 * To remove latency from the pipe.
-		 * @param length How many bytes you want to buffer.
+		 * @param keep How many bytes you want to buffer.
 		 * @return The amount of bytes skipped.
 		 * @throws IOException
 		 */
-		public int latency(int length) throws IOException {
-			int remove = in.available() - length;
-			if(remove > 0) {
-				in.skip(remove);
+		public int purge(int keep) throws IOException {
+			int skip = in.available() - keep;
+			
+			if(skip > 0) {
+				in.skip(skip);
 			}
-			return remove;
+			
+			return skip;
 		}
 		
-		/**
-		 * To avoid thread locks.
-		 * @throws IOException
-		 */
+		public int read(byte[] data) throws InterruptedException, IOException {
+			return read(data, 0, data.length);
+		}
+		
+		public int read(byte[] data, int offset, int length) throws InterruptedException, IOException {
+			long time = System.currentTimeMillis();
+			
+			while(total < this.length) {
+				long wait = System.currentTimeMillis() - time;
+				
+				if(wait > timeout) {
+					throw new InterruptedException("Waited for too long!");
+				}
+				
+				Thread.sleep(100);
+			}
+			
+			return in.read(data, offset, length);
+		}
+
+		public void write(byte[] data) throws IOException {
+			out.write(data, 0, data.length);
+		}
+		
+		public void write(byte[] data, int offset, int length) throws IOException {
+			out.write(data, offset, length);
+			total += length - offset;
+		}
+		
 		public void close() throws IOException {
-			synchronized(out) {
-				out.notify();
+			if(out != null) {
+				out.close();			
 			}
 
-			synchronized(in) {
-				in.notify();
-			}
-
-			out.close();
 			in.close();
 		}
 	}
