@@ -433,8 +433,10 @@ public class Event extends Throwable implements Chain.Link {
 				if (equals > -1 && part.substring(0, equals).equals(key)) {
 					String subpart = part.substring(equals + 1);
 
-					if (subpart.endsWith(";")) {
-						value = subpart.substring(0, subpart.length() - 1);
+					int index = subpart.indexOf(";");
+					
+					if (index > 0) {
+						value = subpart.substring(0, index);
 					} else {
 						value = subpart;
 					}
