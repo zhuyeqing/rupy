@@ -95,7 +95,7 @@ public class Query extends Hash {
 		if (since != null && since.length() > 0) {
 			try {
 				modified = input.event().DATE.parse(since).getTime();
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				modified = 0;
 			}
