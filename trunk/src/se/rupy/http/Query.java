@@ -29,6 +29,12 @@ public class Query extends Hash {
 		headers.clear();
 
 		String line = input.line();
+		
+		while(line.equals("")) {
+			//System.out.println("loop");
+			line = input.line();
+		}
+		
 		StringTokenizer http = new StringTokenizer(line, " ");
 		String method = http.nextToken();
 

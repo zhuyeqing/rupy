@@ -234,7 +234,7 @@ public class Daemon implements Runnable {
 		selector.wakeup();
 	}
 
-	protected HashMap session() {
+	public HashMap session() {
 		return session;
 	}
 
@@ -538,7 +538,7 @@ public class Daemon implements Runnable {
 
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
-				new Test(this, 20);
+				new Test(this, 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace(out);
