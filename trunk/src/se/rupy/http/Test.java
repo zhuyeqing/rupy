@@ -279,8 +279,11 @@ class Test implements Runnable {
 		
 		public void run() {
 			try {
-				Thread.sleep(50);
+				//System.out.println(event + " " + event.worker() + " start " + System.currentTimeMillis());
+				Thread.sleep(10);
 				event.reply().wakeup();
+				Thread.sleep(5);
+				//System.out.println(event + " " + event.worker() + " stop " + System.currentTimeMillis());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

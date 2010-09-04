@@ -33,7 +33,7 @@
 	
 	<target name="test" depends="build">
 		<java fork="yes" jar="bin/http.jar">
-			<arg line="-delay 1000"/>
+			<arg line="-delay 200"/>
 			<arg line="-timeout 1"/>
 			<arg line="-threads 1"/>
 			<!--arg line="-verbose"/>
