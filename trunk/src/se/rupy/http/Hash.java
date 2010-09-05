@@ -123,7 +123,10 @@ public class Hash extends HashMap {
 		} else if (value instanceof Boolean) {
 			return ((Boolean) value).booleanValue();
 		} else if (value instanceof String) {
-			return (exist ? true : Boolean.parseBoolean((String) value));
+			if(exist) return true;
+			String s = (String) value;
+			if(s.equalsIgnoreCase("true") || s.equalsIgnoreCase("on") || s.equalsIgnoreCase("yes")) return true;
+			return false;
 		}
 
 		throw new ClassCastException();
