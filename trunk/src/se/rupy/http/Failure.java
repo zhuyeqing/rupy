@@ -42,4 +42,6 @@ public class Failure extends IOException {
 			return root;
 		}
 	}
+	
+	public static class Close extends IOException {}
 }

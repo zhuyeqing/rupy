@@ -318,10 +318,9 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
-
-		while (System.currentTimeMillis() < max) {
+		
+		while (System.currentTimeMillis() < max) {			
 			register();
-			
 			int available = block.fill(true);
 
 			if (available > 0) {
@@ -329,9 +328,9 @@ public class Event extends Throwable implements Chain.Link {
 				log("delay " + delay + " " + available, VERBOSE);
 				return available;
 			}
-			
-			worker.snooze(10);
 
+			Thread.yield();
+			worker.snooze(10);
 			key.selector().wakeup();
 		}
 
@@ -362,7 +361,8 @@ public class Event extends Throwable implements Chain.Link {
 				worker.snooze(5); // to avoid deadlock when proxy closes socket
 			}
 
-			daemon.error(this, e);
+			if(!(e instanceof Failure.Close))
+				daemon.error(this, e);
 		} catch (Exception de) {
 			de.printStackTrace(daemon.out);
 		}

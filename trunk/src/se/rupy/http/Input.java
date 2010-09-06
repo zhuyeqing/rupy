@@ -68,6 +68,8 @@ public abstract class Input extends InputStream implements Event.Block {
 			available -= read;
 			length += read;
 			return read;
+		} catch (Failure.Close c) {
+			throw c;
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
@@ -91,17 +93,23 @@ public abstract class Input extends InputStream implements Event.Block {
 
 		ByteBuffer buffer = event.worker().in();
 		buffer.clear();
-		available = event.channel().read(buffer);
+		
+		try {
+			available = event.channel().read(buffer);
+		}
+		catch(IOException e) {
+			throw new Failure.Close(); // Connection reset by peer
+		}
 
 		if (available > 0) {
 			buffer.flip();
 		} else if (available < 0) {
-			throw new IOException("Socket closed.");
+			throw new Failure.Close(); // Connection dropped by peer
 		}
 
 		return available;
 	}
-
+	
 	/**
 	 * Reads a \r\n terminated line of text from the input.
 	 * @return

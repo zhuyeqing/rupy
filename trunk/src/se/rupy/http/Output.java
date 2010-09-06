@@ -15,7 +15,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private final static byte[] close = ("Connection: Close" + EOL).getBytes();
 	private final static byte[] alive = ("Connection: Keep-Alive" + EOL).getBytes();
 	private final static byte[] chunked = ("Transfer-Encoding: Chunked" + EOL).getBytes();
-	
+
 	private byte[] one = new byte[1];
 	private boolean chunk;
 	protected int length, size;
@@ -39,15 +39,15 @@ public abstract class Output extends OutputStream implements Event.Block {
 	public boolean complete() {
 		return !push && done;
 	}
-	
+
 	protected int length() {
 		return length;
 	}
-	
+
 	protected boolean push() {
 		return push;
 	}
-	
+
 	public void println(Object o) throws IOException {
 		write((o.toString() + EOL).getBytes("UTF-8"));
 	}
@@ -81,12 +81,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 					Event.DEBUG);
 
 		done = false;
-		
+
 		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
 		reply.event().interest(Event.WRITE);
 
 		init = true;
-		
+
 		if(length > 0) {
 			fixed = true;
 			headers(length);
@@ -126,7 +126,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		reply.event().log("end", Event.DEBUG);
 		done = true;
 		flush();
-		
+
 		if (length > 0) {
 			reply.event().log("reply " + length, Event.VERBOSE);
 		}
@@ -166,7 +166,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 					+ reply.event().DATE.format(new Date(reply.modified())) + EOL)
 					.getBytes());
 		}
-		
+
 		if (fixed && reply.event().daemon().properties.getProperty("live") != null) {
 			wrote(("Cache-Control: max-age=3600, must-revalidate" + EOL)
 					.getBytes());
@@ -178,13 +178,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 		if (reply.event().session() != null && !reply.event().session().set()) {
 			Session session = reply.event().session();
 			String cookie = "Set-Cookie: key="
-					+ reply.event().session().key()
-					+ ";"
-					+ (session.expires() > 0 ? " expires="
-							+ reply.event().DATE.format(new Date(session
-									.expires())) + ";" : "")
-					+ (session.domain() != null ? " domain=" + session.domain()
-							+ ";" : "") + " path=/;";
+				+ reply.event().session().key()
+				+ ";"
+				+ (session.expires() > 0 ? " expires="
+						+ reply.event().DATE.format(new Date(session
+								.expires())) + ";" : "")
+								+ (session.domain() != null ? " domain=" + session.domain()
+										+ ";" : "") + " path=/;";
 
 			wrote((cookie + EOL).getBytes());
 
@@ -227,29 +227,31 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	protected void wrote(byte[] b, int off, int len) throws IOException {
 		try {
-				ByteBuffer out = reply.event().worker().out();
-				int remaining = out.remaining();
+			ByteBuffer out = reply.event().worker().out();
+			int remaining = out.remaining();
 
-				while (len > remaining) {
-					out.put(b, off, remaining);
+			while (len > remaining) {
+				out.put(b, off, remaining);
 
-					internal(false);
+				internal(false);
 
-					off += remaining;
-					len -= remaining;
+				off += remaining;
+				len -= remaining;
 
-					/*
-					 * oh, nasty little bugger, added this when a page with
-					 * exact multiple of IO buffer length was sent and the
-					 * trailing empty chunked line blocked the server at 99%
-					 * CPU!
-					 */
-					remaining = out.remaining();
-				}
+				/*
+				 * oh, nasty little bugger, added this when a page with
+				 * exact multiple of IO buffer length was sent and the
+				 * trailing empty chunked line blocked the server at 99%
+				 * CPU!
+				 */
+				remaining = out.remaining();
+			}
 
-				if (len > 0) {
-					out.put(b, off, len);
-				}
+			if (len > 0) {
+				out.put(b, off, len);
+			}
+		} catch (Failure.Close c) {
+			throw c;
 		} catch (IOException e) {
 			Failure.chain(e);
 		} catch (Exception e) {
@@ -304,7 +306,14 @@ public abstract class Output extends OutputStream implements Event.Block {
 			remaining = out.remaining();
 		}
 
-		int sent = reply.event().channel().write(out);
+		int sent = 0;
+
+		try {
+			sent = reply.event().channel().write(out);
+		}
+		catch(IOException e) {
+			throw new Failure.Close(); // Connection reset by peer
+		}
 
 		if (debug) {
 			reply.event().log("filled " + sent + " out of " + remaining,
@@ -313,7 +322,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		return sent;
 	}
-	
+
 	/**
 	 * Flush the terminating empty chunk of a asynchronous stream push. An
 	 * event becomes an asynchronous stream push if a request is not written
@@ -349,7 +358,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		public void write(byte[] b, int off, int len) throws IOException {
 			length += len;
-			
+
 			if (!chunk() || fixed) {
 				wrote(b, off, len);
 				return;
@@ -427,7 +436,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 					if (complete()) {
 						write();
 					}
-					
+
 					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			} else if (!fixed) {
