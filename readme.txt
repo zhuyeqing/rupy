@@ -185,4 +185,10 @@ VERSION:
         error logs in a log folder created in the execution path..
       - Added fixed length test and improved unit.
         
+      0.4
+      
+      - Fixed test.
+      - Corrected default timeout value to 5 seconds.
+      - Corrected boolean parameter parsing.
+      
 have fun!
