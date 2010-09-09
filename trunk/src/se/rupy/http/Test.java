@@ -135,12 +135,13 @@ class Test implements Runnable {
 	void test(Daemon daemon) throws Exception {
 		time = System.currentTimeMillis();
 		
-		System.out.println("Parallel testing:");
+		System.out.println("Parallel testing with one worker thread:");
 		System.out.println("- Fixed and chunked, read and write.");
 		System.out.println("- Asynchronous non-blocking reply.");
 		System.out.println("- Session creation and timeout.");
 		System.out.println("- Exception handling.");
-		System.out.println("The test receives and sends the bin/http.jar which is ~50kb");
+		System.out.println("NOTICE: The test receives and sends the bin/http.jar");
+		System.out.println("which is >50kb, if you wonder why it takes ~3 seconds.");
 		System.out.println("             ---o---");
 
 		Thread.sleep(1000);
