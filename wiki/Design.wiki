@@ -6,7 +6,7 @@ Rupy has one selector thread that feeds many worker threads. This model is simpl
 
 *Delay Variable*
 
-The events have a network timeout variable called _delay_ which is 5 seconds by default. This can be increased (add '-delay [milliseconds]' to startup script) if you will download and/or upload large files from/to the server.
+The events have a network timeout variable called _delay_ which is 5 seconds by default. This can be increased (add '-delay milliseconds' to startup script) if you will download and/or upload large files from/to the server.
 
 The way this works is that if the event socket IO stalls during an ongoing request / response the server timeouts and frees the worker from this event.
 
