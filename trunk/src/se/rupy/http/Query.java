@@ -156,7 +156,7 @@ public class Query extends Hash {
 
 		if (parameters != null) {
 			StringTokenizer amp = new StringTokenizer(parameters, "&");
-
+			/*
 			while (amp.hasMoreTokens()) {
 				StringTokenizer equ = new StringTokenizer(amp.nextToken(), "=");
 
@@ -166,6 +166,17 @@ public class Query extends Hash {
 				if (equ.hasMoreTokens()) {
 					value = decoder.decode(equ.nextToken(), "UTF-8");
 				}
+
+				put(key, value);
+			}
+			*/
+			// Base64 parameter fix by akarchen
+			while (amp.hasMoreTokens()) {
+				String equ = amp.nextToken();
+				int pos = equ.indexOf('=');
+
+				String key = equ.substring(0, pos);
+				String value = equ.length() > pos + 1 ? decoder.decode(equ.substring(pos + 1), "UTF-8") : "";
 
 				put(key, value);
 			}
