@@ -191,4 +191,8 @@ VERSION:
       - Corrected default timeout value to 5 seconds.
       - Corrected boolean parameter parsing.
       
+      0.4.1
+      
+      - Base64 parameter fix by akarchen
+      
 have fun!
