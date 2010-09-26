@@ -43,6 +43,12 @@ public class Query extends Hash {
 		} else if (method.equalsIgnoreCase("post")) {
 			this.method = POST;
 			parsed = false;
+		} else if (method.equalsIgnoreCase("put")) {
+			this.method = PUT;
+			parsed = false;
+		} else if (method.equalsIgnoreCase("delete")) {
+			this.method = DELETE;
+			parsed = false;
 		} else {
 			throw new IOException("Unsupported method.");
 		}
@@ -156,21 +162,7 @@ public class Query extends Hash {
 
 		if (parameters != null) {
 			StringTokenizer amp = new StringTokenizer(parameters, "&");
-			/*
-			while (amp.hasMoreTokens()) {
-				StringTokenizer equ = new StringTokenizer(amp.nextToken(), "=");
 
-				String key = equ.nextToken();
-				String value = "";
-
-				if (equ.hasMoreTokens()) {
-					value = decoder.decode(equ.nextToken(), "UTF-8");
-				}
-
-				put(key, value);
-			}
-			*/
-			// Base64 parameter fix by akarchen
 			while (amp.hasMoreTokens()) {
 				String equ = amp.nextToken();
 				int pos = equ.indexOf('=');
