@@ -194,5 +194,6 @@ VERSION:
       0.4.1
       
       - Base64 parameter fix by akarchen
+      - PUT and DELETE by mathias.funk
       
 have fun!
