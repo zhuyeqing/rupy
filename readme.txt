@@ -195,5 +195,6 @@ VERSION:
       
       - Base64 parameter fix by akarchen
       - PUT and DELETE by mathias.funk
+      - CancelledKeyException & Threadlock fix, thanks to mathias.funk
       
 have fun!

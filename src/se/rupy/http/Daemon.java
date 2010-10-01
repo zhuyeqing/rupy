@@ -18,7 +18,7 @@ public class Daemon implements Runnable {
 	public Properties properties;
 	public boolean verbose, debug, host, alive;
 
-	int threads, timeout, cookie, delay, size, port;
+	int threads, timeout, cookie, delay, size, port, lock;
 
 	private HashMap archive, service, session;
 	private Chain workers, queue;
@@ -70,6 +70,8 @@ public class Daemon implements Runnable {
 	 *            loading info.</i><br><br>
 	 * @param <b>log</b> (false)
 	 *            <i>simple log of each synchronous request in the access.txt file.</i><br><br>
+	 * @param <b>lock</b> (120000 ms.)
+	 *            <i>push and lost worker timeout.</i><br><br>
 	 */
 	public Daemon(Properties properties) {
 		this.properties = properties;
@@ -80,7 +82,8 @@ public class Daemon implements Runnable {
 		timeout = Integer.parseInt(properties.getProperty("timeout", "300")) * 1000;
 		delay = Integer.parseInt(properties.getProperty("delay", "5000"));
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
-
+		lock = Integer.parseInt(properties.getProperty("lock", "120000"));
+		
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
 		.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(
@@ -134,6 +137,8 @@ public class Daemon implements Runnable {
 			b.append(event.remote());
 			b.append(' ');
 			b.append(event.query().path());
+			b.append(' ');
+			b.append(event.worker().index());
 			
 			String parameters = event.query().parameters();
 			
@@ -536,6 +541,20 @@ public class Daemon implements Runnable {
 				}
 			}
 
+			add(new Service() {
+				public String path() { return "/workers"; }
+				public void filter(Event event) throws Event, Exception {
+					Iterator it = workers.iterator();
+					event.output().println("<pre>");
+					while(it.hasNext()) {
+						Worker worker = (Worker) it.next();
+						event.output().println(worker.index() + " " + worker.event() + " " + worker.busy() + " " + worker.lock());
+						
+					}
+					event.output().println("</pre>");
+				}
+			});
+			
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
 				new Test(this, 1);
