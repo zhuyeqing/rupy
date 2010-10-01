@@ -127,9 +127,7 @@ public class Worker implements Runnable, Chain.Link {
 					}
 				}
 			} catch (Exception e) {
-				event.disconnect(e);
-				out.clear();
-				in.clear();
+				reset(e);
 			} finally {
 				if (event != null) {
 					event.worker(null);
@@ -145,5 +143,11 @@ public class Worker implements Runnable, Chain.Link {
 				}
 			}
 		}
+	}
+	
+	protected void reset(Exception e) {
+		event.disconnect(e);
+		out.clear();
+		in.clear();
 	}
 }
