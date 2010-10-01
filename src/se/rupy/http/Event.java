@@ -123,6 +123,14 @@ public class Event extends Throwable implements Chain.Link {
 		}
 		catch(CancelledKeyException e) {
 			worker.reset(e);
+			log(e);
+			
+			try {
+				daemon.error(this, new Exception("Key was cancelled.").initCause(e));
+			}
+			catch(IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 	}
 

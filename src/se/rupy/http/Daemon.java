@@ -124,7 +124,7 @@ public class Daemon implements Runnable {
 		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS");
 	}
 
-	protected void error(Event event, Exception e) throws IOException {
+	protected void error(Event event, Throwable t) throws IOException {
 		if (error != null) {
 			Calendar date = Calendar.getInstance();
 			StringBuilder b = new StringBuilder();
@@ -146,7 +146,7 @@ public class Daemon implements Runnable {
 
 			error.write(b.toString().getBytes("UTF-8"));
 			
-			e.printStackTrace(error);
+			t.printStackTrace(error);
 		}
 	}
 		
