@@ -117,7 +117,13 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void worker(Worker worker) {
 		this.worker = worker;
-		register(READ);
+		
+		try {
+			register(READ);
+		}
+		catch(CancelledKeyException e) {
+			worker.reset(e);
+		}
 	}
 
 	protected SocketChannel channel() {
