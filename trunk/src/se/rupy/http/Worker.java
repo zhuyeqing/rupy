@@ -1,5 +1,6 @@
 package se.rupy.http;
 
+import java.io.IOException;
 import java.nio.*;
 
 /**
@@ -26,7 +27,7 @@ public class Worker implements Runnable, Chain.Link {
 		out = ByteBuffer.allocateDirect(daemon.size);
 
 		alive = true;
-		
+
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -43,18 +44,18 @@ public class Worker implements Runnable, Chain.Link {
 		if(chunk == null) {
 			chunk = new byte[daemon.size + Output.Chunked.OFFSET + 2];
 		}
-	
+
 		return chunk;
 	}
-	
+
 	void wakeup() {
 		if(event != null)
 			event.log("wakeup", Event.DEBUG);
-		
+
 		synchronized (thread) {
 			thread.notify();
 		}
-		
+
 		awake = true;
 	}
 
@@ -65,7 +66,7 @@ public class Worker implements Runnable, Chain.Link {
 	void snooze(long delay) {
 		if(event != null)
 			event.log("snooze " + delay, Event.DEBUG);
-		
+
 		synchronized (thread) {
 			try {
 				if (delay > 0) {
@@ -73,7 +74,7 @@ public class Worker implements Runnable, Chain.Link {
 						awake = false;
 						return;
 					}
-					
+
 					thread.wait(delay);
 				} else {
 					thread.wait();
@@ -81,7 +82,7 @@ public class Worker implements Runnable, Chain.Link {
 			} catch (InterruptedException e) {
 				event.disconnect(e);
 			}
-			
+
 			awake = false;
 		}
 	}
@@ -97,54 +98,64 @@ public class Worker implements Runnable, Chain.Link {
 	public int index() {
 		return index;
 	}
-	
+
 	public void stop() {
 		synchronized (thread) {
 			thread.notify();
 		}
-		
+
 		alive = false;
 	}
 
 	public String toString() {
 		return String.valueOf(index);
 	}
-	
+
 	public void run() {
-		while (alive) {
-			try {
-				if (event != null) {
-					if (event.push()) {
-						event.write();
-						event.push(false);
-					} else {
-						event.read();
-						/*
+		try {
+			while (alive) {
+				try {
+					if (event != null) {
+						if (event.push()) {
+							event.write();
+							event.push(false);
+						} else {
+							event.read();
+							/*
 						if(!event.push()) {
 							event.output().flush(); // to write trailing bytes...
 						}
-						*/
+							 */
+						}
 					}
-				}
-			} catch (Exception e) {
-				reset(e);
-			} finally {
-				if (event != null) {
-					event.worker(null);
-					event = daemon.next(this);
-
+				} catch (Exception e) {
+					reset(e);
+				} finally {
 					if (event != null) {
-						event.worker(this);
+						event.worker(null);
+						event = daemon.next(this);
+
+						if (event != null) {
+							event.worker(this);
+						} else {
+							snooze();
+						}
 					} else {
 						snooze();
 					}
-				} else {
-					snooze();
 				}
 			}
 		}
+		catch(Exception e) {
+			try {
+				daemon.error(event, new Exception("Worker died unexpectedly.").initCause(e));
+			}
+			catch(IOException ioe) {
+				ioe.printStackTrace();
+			}
+		}
 	}
-	
+
 	protected void reset(Exception e) {
 		event.disconnect(e);
 		out.clear();
