@@ -36,7 +36,7 @@ public class Reply {
 	
 	private String type = "text/html; charset=UTF-8";
 	private HashMap headers;
-	private Output output;
+	protected Output output;
 	private Event event;
 	private long modified;
 	private String code;

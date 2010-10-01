@@ -111,26 +111,26 @@ public class Event extends Throwable implements Chain.Link {
 		return index;
 	}
 
+	protected boolean valid() {
+		return key.isValid();
+	}
+	
 	protected void close(boolean close) {
 		this.close = close;
 	}
 
 	protected void worker(Worker worker) {
 		this.worker = worker;
+
+		if(worker != null) {
+			worker.touch();
+		}
 		
 		try {
 			register(READ);
 		}
 		catch(CancelledKeyException e) {
 			worker.reset(e);
-			log(e);
-			
-			try {
-				daemon.error(this, new Exception("Key was cancelled.").initCause(e));
-			}
-			catch(IOException ioe) {
-				ioe.printStackTrace();
-			}
 		}
 	}
 
@@ -219,7 +219,7 @@ public class Event extends Throwable implements Chain.Link {
 			reply.output().print(
 					"<pre>'" + query.path() + "' was not found.</pre>");
 		}
-		
+
 		finish();
 	}
 
@@ -299,12 +299,12 @@ public class Event extends Throwable implements Chain.Link {
 
 		reply.done();
 		query.done();
-		
+
 		if(log != null) {
 			daemon.access(log, reply.push());
 		}
 	}
-	
+
 	protected void register() throws IOException {
 		if (interest != key.interestOps()) {
 			log((interest == READ ? "read" : "write") + " prereg " + interest
@@ -332,7 +332,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected int block(Block block) throws Exception {
 		long max = System.currentTimeMillis() + daemon.delay;
-		
+
 		while (System.currentTimeMillis() < max) {			
 			register();
 			int available = block.fill(true);
@@ -371,10 +371,6 @@ public class Event extends Throwable implements Chain.Link {
 
 			log("disconnect " + e);
 
-			if(worker != null) {
-				worker.snooze(5); // to avoid deadlock when proxy closes socket
-			}
-
 			if(!(e instanceof Failure.Close))
 				daemon.error(this, e);
 		} catch (Exception de) {
@@ -392,7 +388,7 @@ public class Event extends Throwable implements Chain.Link {
 			query.parse();
 			String cookie = query.string("cookie");
 			key = cookie.length() > 0 ? cookie : null;
-			
+
 		}
 
 		if (key != null) {
@@ -448,7 +444,7 @@ public class Event extends Throwable implements Chain.Link {
 					String subpart = part.substring(equals + 1);
 
 					int index = subpart.indexOf(";");
-					
+
 					if (index > 0) {
 						value = subpart.substring(0, index);
 					} else {

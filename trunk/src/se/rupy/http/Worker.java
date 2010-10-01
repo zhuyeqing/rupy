@@ -2,6 +2,7 @@ package se.rupy.http;
 
 import java.io.IOException;
 import java.nio.*;
+import java.nio.channels.CancelledKeyException;
 
 /**
  * Worker gets the job done. The worker holds the in/out/chunk buffers in order to
@@ -16,10 +17,11 @@ public class Worker implements Runnable, Chain.Link {
 	private byte[] chunk;
 	private Thread thread;
 	private Event event;
-	private int index;
+	private int index, lock;
 	private boolean awake, alive;
+	private long touch;
 
-	Worker(Daemon daemon, int index) {
+	protected Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
 		this.index = index;
 
@@ -31,16 +33,16 @@ public class Worker implements Runnable, Chain.Link {
 		thread = new Thread(this);
 		thread.start();
 	}
-
-	ByteBuffer in() {
+	
+	protected ByteBuffer in() {
 		return in;
 	}
 
-	ByteBuffer out() {
+	protected ByteBuffer out() {
 		return out;
 	}
 
-	byte[] chunk() {
+	protected byte[] chunk() {
 		if(chunk == null) {
 			chunk = new byte[daemon.size + Output.Chunked.OFFSET + 2];
 		}
@@ -48,7 +50,7 @@ public class Worker implements Runnable, Chain.Link {
 		return chunk;
 	}
 
-	void wakeup() {
+	protected void wakeup() {
 		if(event != null)
 			event.log("wakeup", Event.DEBUG);
 
@@ -59,11 +61,11 @@ public class Worker implements Runnable, Chain.Link {
 		awake = true;
 	}
 
-	void snooze() {
+	protected void snooze() {
 		snooze(0);
 	}
 
-	void snooze(long delay) {
+	protected void snooze(long delay) {
 		if(event != null)
 			event.log("snooze " + delay, Event.DEBUG);
 
@@ -87,12 +89,35 @@ public class Worker implements Runnable, Chain.Link {
 		}
 	}
 
-	void event(Event event) {
+	protected Event event() {
+		return event;
+	}
+	
+	protected void event(Event event) {
 		this.event = event;
 	}
-
+	
+	protected void touch() {
+		touch = System.currentTimeMillis();
+	}
+	
+	protected int lock() {
+		return lock;
+	}
+	
 	boolean busy() {
-		return event != null;
+		if(event != null) {
+			lock = (int) (System.currentTimeMillis() - touch);
+			
+			if(lock > daemon.lock) {
+				reset(new Exception("Threadlock (" + index + ")"));
+				return false;
+			}
+			
+			return event.valid();
+		}
+		
+		return false;
 	}
 
 	public int index() {
@@ -112,52 +137,42 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	public void run() {
-		try {
-			while (alive) {
-				try {
-					if (event != null) {
-						if (event.push()) {
-							event.write();
-							event.push(false);
-						} else {
-							event.read();
-							/*
-						if(!event.push()) {
-							event.output().flush(); // to write trailing bytes...
-						}
-							 */
-						}
+		touch = System.currentTimeMillis();
+		
+		while (alive) {
+			try {
+				if (event != null) {
+					if (event.push()) {
+						event.write();
+						event.push(false);
+					} else {
+						event.read();
 					}
-				} catch (Exception e) {
-					reset(e);
-				} finally {
-					if (event != null) {
-						event.worker(null);
-						event = daemon.next(this);
+				}
+			} catch (Exception e) {
+				reset(e);
+			} finally {
+				if (event != null) {
+					event.worker(null);
+					event = daemon.next(this);
 
-						if (event != null) {
-							event.worker(this);
-						} else {
-							snooze();
-						}
+					if (event != null) {
+						event.worker(this);
 					} else {
 						snooze();
 					}
+				} else {
+					snooze();
 				}
-			}
-		}
-		catch(Exception e) {
-			try {
-				daemon.error(event, new Exception("Worker died unexpectedly.").initCause(e));
-			}
-			catch(IOException ioe) {
-				ioe.printStackTrace();
 			}
 		}
 	}
 
 	protected void reset(Exception e) {
 		event.disconnect(e);
+		
+		//snooze(5); // to avoid deadlock when proxy closes socket
+		
 		out.clear();
 		in.clear();
 	}
