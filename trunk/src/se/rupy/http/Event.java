@@ -112,7 +112,10 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	protected boolean valid() {
-		return key.isValid();
+		//return key.isValid();
+		Output out = reply().output;
+		//System.out.println(out.done);
+		return key.isValid() || out.done == false;
 	}
 	
 	protected void close(boolean close) {
