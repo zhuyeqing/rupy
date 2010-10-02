@@ -130,7 +130,7 @@ public class Event extends Throwable implements Chain.Link {
 			register(READ);
 		}
 		catch(CancelledKeyException e) {
-			worker.reset(e);
+			disconnect(e);
 		}
 	}
 
