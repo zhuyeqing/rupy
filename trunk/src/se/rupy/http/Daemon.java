@@ -550,6 +550,9 @@ public class Daemon implements Runnable {
 						Worker worker = (Worker) it.next();
 						event.output().println(worker.index() + " " + worker.event() + " " + worker.busy() + " " + worker.lock());
 						
+						if(worker.event() != null) {
+							event.output().println("  " + worker.event().reply().output.init + " " + worker.event().reply().output.done);
+						}
 					}
 					event.output().println("</pre>");
 				}

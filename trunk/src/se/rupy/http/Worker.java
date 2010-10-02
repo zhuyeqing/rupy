@@ -171,7 +171,7 @@ public class Worker implements Runnable, Chain.Link {
 	protected void reset(Exception e) {
 		event.disconnect(e);
 		
-		//snooze(5); // to avoid deadlock when proxy closes socket
+		//snooze(10); // to avoid deadlock when proxy closes socket
 		
 		out.clear();
 		in.clear();
