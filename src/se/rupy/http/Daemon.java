@@ -137,8 +137,6 @@ public class Daemon implements Runnable {
 			b.append(event.remote());
 			b.append(' ');
 			b.append(event.query().path());
-			b.append(' ');
-			b.append(event.worker().index());
 			
 			String parameters = event.query().parameters();
 			
