@@ -726,6 +726,13 @@ public class Daemon implements Runnable {
 							}
 						}
 					}
+					
+					Iterator it = workers.iterator();
+
+					while(it.hasNext()) {
+						Worker worker = (Worker) it.next();
+						worker.busy();
+					}
 				} catch (Exception e) {
 					e.printStackTrace(out);
 				}

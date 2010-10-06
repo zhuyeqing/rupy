@@ -122,7 +122,7 @@ public class Worker implements Runnable, Chain.Link {
 				}
 			}
 			
-			return event.valid();
+			return event != null;
 		}
 		
 		return false;
