@@ -110,10 +110,6 @@ public class Event extends Throwable implements Chain.Link {
 	public int index() {
 		return index;
 	}
-
-	protected boolean valid() {
-		return key.isValid();
-	}
 	
 	protected void close(boolean close) {
 		this.close = close;
