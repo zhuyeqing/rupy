@@ -18,7 +18,7 @@ public class Daemon implements Runnable {
 	public Properties properties;
 	public boolean verbose, debug, host, alive;
 
-	int threads, timeout, cookie, delay, size, port, lock;
+	int threads, timeout, cookie, delay, size, port;
 
 	private HashMap archive, service, session;
 	private Chain workers, queue;
@@ -55,7 +55,10 @@ public class Daemon implements Runnable {
 	 *            content with a 'open/save/cancel' + save location dialog, 
 	 *            since this will timeout otherwise. And reduce this if you are 
 	 *            running a comet application, otherwise blocked responses will 
-	 *            make you drop the connection altogether, around 50 ms. should be ok.</i><br><br>
+	 *            make you drop the connection altogether, around 50 ms. should be ok.
+	 *            This is also the dead socket worker cleanup variable, so if a worker 
+	 *            has a socket that hasn't been active for longer than this the worker 
+	 *            will be released and the socket deemed as dead.</i><br><br>
 	 * @param <b>size</b> (1024 bytes)
 	 *            <i>IO buffer size, should be proportional to the data sizes
 	 *            received/sent by the server currently this is input/output-
@@ -70,8 +73,6 @@ public class Daemon implements Runnable {
 	 *            loading info.</i><br><br>
 	 * @param <b>log</b> (false)
 	 *            <i>simple log of each synchronous request in the access.txt file.</i><br><br>
-	 * @param <b>lock</b> (120000 ms.)
-	 *            <i>push and lost worker timeout.</i><br><br>
 	 */
 	public Daemon(Properties properties) {
 		this.properties = properties;
@@ -82,8 +83,7 @@ public class Daemon implements Runnable {
 		timeout = Integer.parseInt(properties.getProperty("timeout", "300")) * 1000;
 		delay = Integer.parseInt(properties.getProperty("delay", "5000"));
 		size = Integer.parseInt(properties.getProperty("size", "1024"));
-		lock = Integer.parseInt(properties.getProperty("lock", "120000"));
-		
+
 		verbose = properties.getProperty("verbose", "false").toLowerCase()
 		.equals("true");
 		debug = properties.getProperty("debug", "false").toLowerCase().equals(

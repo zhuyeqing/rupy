@@ -33,12 +33,14 @@ public class Worker implements Runnable, Chain.Link {
 		thread = new Thread(this);
 		thread.start();
 	}
-	
+
 	protected ByteBuffer in() {
+		touch();
 		return in;
 	}
 
 	protected ByteBuffer out() {
+		touch();
 		return out;
 	}
 
@@ -54,6 +56,10 @@ public class Worker implements Runnable, Chain.Link {
 		if(event != null)
 			event.log("wakeup", Event.DEBUG);
 
+		touch();
+		
+		//System.out.println(index + " touch " + touch);
+		
 		synchronized (thread) {
 			thread.notify();
 		}
@@ -61,6 +67,10 @@ public class Worker implements Runnable, Chain.Link {
 		awake = true;
 	}
 
+	protected void touch() {
+		touch = System.currentTimeMillis();
+	}
+	
 	protected void snooze() {
 		snooze(0);
 	}
@@ -92,39 +102,27 @@ public class Worker implements Runnable, Chain.Link {
 	protected Event event() {
 		return event;
 	}
-	
+
 	protected void event(Event event) {
 		this.event = event;
 	}
-	
-	protected void touch() {
-		touch = System.currentTimeMillis();
-	}
-	
+
 	protected int lock() {
 		return lock;
 	}
-	
+
 	boolean busy() {
-		if(event != null) {
+		if(event != null && touch > 0) {
 			lock = (int) (System.currentTimeMillis() - touch);
-			
-			if(event.push()) {
-				if(lock > daemon.lock) {
-					reset(new Exception("Threadlock " + lock + " (" + index + ")"));
-					return false;
-				}
+
+			if(lock > daemon.delay) {
+				reset(new Exception("Threadlock " + lock + " (" + index + ")"));
+				return false;
 			}
-			else {
-				if(lock > 1000) {
-					reset(new Exception("Threadlock 1000 (" + index + ")"));
-					return false;
-				}
-			}
-			
+
 			return event != null;
 		}
-		
+
 		return false;
 	}
 
@@ -146,7 +144,7 @@ public class Worker implements Runnable, Chain.Link {
 
 	public void run() {
 		touch = System.currentTimeMillis();
-		
+
 		while (alive) {
 			try {
 				if (event != null) {
@@ -178,9 +176,9 @@ public class Worker implements Runnable, Chain.Link {
 
 	protected void reset(Exception e) {
 		event.disconnect(e);
-		
+
 		//snooze(10); // to avoid deadlock when proxy closes socket
-		
+
 		out.clear();
 		in.clear();
 	}

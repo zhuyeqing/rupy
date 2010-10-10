@@ -117,10 +117,6 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void worker(Worker worker) {
 		this.worker = worker;
-
-		if(worker != null) {
-			worker.touch();
-		}
 		
 		try {
 			register(READ);
