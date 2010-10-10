@@ -65,23 +65,15 @@ public abstract class Service implements Chain.Link {
 	public abstract String path();
 
 	/**
-	 * Same as {@link #create()}, but with the {@link Daemon} as argument, so you can setup yourself as a listener.
-	 * @param daemon
-	 * @throws Exception
-	 */
-	public void create(Daemon daemon) throws Exception {
-	}
-
-	/**
 	 * Initiate service dependencies. This is called when you hot-deploy the
 	 * application / start the server. Important: This will be called for every 
 	 * chain instance of the service. So if you have multiple paths this will be 
 	 * called once for every path. Use static lock if you use this to start some 
 	 * singleton thread.
-	 * 
+	 * @param daemon so you can setup yourself as a listener.
 	 * @throws Exception
 	 */
-	public void create() throws Exception {
+	public void create(Daemon daemon) throws Exception {
 	}
 
 	/**

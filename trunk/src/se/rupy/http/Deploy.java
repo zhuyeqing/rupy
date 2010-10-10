@@ -9,6 +9,17 @@ import java.util.jar.*;
  * Hot-deploys an application containing one or many service filters from disk
  * with simplistic dynamic class loading, eventually after receiving it through
  * a HTTP POST.
+ * <pre>
+ * &lt;target name="deploy"&gt;
+ * &lt;java fork="yes" 
+ *     classname="se.rupy.http.Deploy" 
+ *     classpath="http.jar"&gt;
+ *      &lt;arg line="localhost:8000"/&gt;&lt;!-- any host:port --&gt;
+ *      &lt;arg line="service.jar"/&gt;&lt;!-- your application jar --&gt;
+ *      &lt;arg line="secret"/&gt;&lt;!-- see run.bat and run.sh --&gt;
+ * &lt;/java&gt;
+ * &lt;/target&gt;
+ * </pre>
  * @author marc
  */
 public class Deploy extends Service {
@@ -74,7 +85,7 @@ public class Deploy extends Service {
 		private long date;
 
 		Vector classes = new Vector();
-		
+
 		Archive(Daemon daemon, File file) throws Exception {
 			service = new HashSet();
 			chain = new HashMap();
@@ -130,11 +141,11 @@ public class Deploy extends Service {
 			}
 			throw new ClassNotFoundException();
 		}
-		
+
 		private void instantiate(Small small, Daemon daemon) throws Exception {
 			if (small.clazz == null) {
 				small.clazz = defineClass(small.name, small.data, 0,
-					small.data.length);
+						small.data.length);
 				resolveClass(small.clazz);
 			}
 
@@ -167,11 +178,11 @@ public class Deploy extends Service {
 		protected static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
-			
+
 			if(name.startsWith("WEB-INF.classes")) {
 				name = name.substring(16);
 			}
-			
+
 			return name;
 		}
 
@@ -290,7 +301,7 @@ public class Deploy extends Service {
 		byte[] data() {
 			return data;
 		}
-		
+
 		public String toString() {
 			return name;
 		}
@@ -307,7 +318,7 @@ public class Deploy extends Service {
 		InputStream send(URL url, File file, String pass) throws IOException {
 			return send(url, file, pass, true);
 		}
-		
+
 		InputStream send(URL url, File file, String pass, boolean chunk) throws IOException {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
@@ -325,7 +336,7 @@ public class Deploy extends Service {
 				if (chunk) {
 					conn.setChunkedStreamingMode(0);
 				}
-				
+
 				conn.setDoOutput(true);
 
 				out = conn.getOutputStream();
@@ -406,20 +417,6 @@ public class Deploy extends Service {
 		}
 	}
 
-	/**
-	 * <pre>
-	 * &lt;target name="deploy"&gt;
-	 * &lt;java fork="yes" 
-	 *     classname="se.rupy.http.Deploy" 
-	 *     classpath="http.jar"&gt;
-	 *      &lt;arg line="localhost:8000"/&gt;&lt;!-- any host:port --&gt;
-	 *      &lt;arg line="service.jar"/&gt;&lt;!-- your application jar --&gt;
-	 *      &lt;arg line="secret"/&gt;&lt;!-- see run.bat and run.sh --&gt;
-	 * &lt;/java&gt;
-	 * &lt;/target&gt;
-	 * </pre>
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		if (args.length > 2) {
 			try {
