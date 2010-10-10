@@ -62,7 +62,11 @@ public class Deploy extends Service {
 		return archive.name();
 	}
 
-	static class Archive extends ClassLoader {
+	/**
+	 * This is our dynamic classloader. Very simple, basically just extracts a jar and writes all files to disk except .class files which are loaded into the JVM. All {@link Service} classes are instantiated.
+	 * @author Marc
+	 */
+	public static class Archive extends ClassLoader {
 		private HashSet service;
 		private HashMap chain;
 		private String name;
@@ -160,7 +164,7 @@ public class Deploy extends Service {
 			}
 		}
 
-		static String name(String name) {
+		protected static String name(String name) {
 			name = name.substring(0, name.indexOf("."));
 			name = name.replace("/", ".");
 			
@@ -183,11 +187,11 @@ public class Deploy extends Service {
 			return date;
 		}
 
-		public HashMap chain() {
+		protected HashMap chain() {
 			return chain;
 		}
 
-		public HashSet service() {
+		protected HashSet service() {
 			return service;
 		}
 	}

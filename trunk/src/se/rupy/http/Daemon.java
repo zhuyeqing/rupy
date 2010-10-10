@@ -27,7 +27,14 @@ public class Daemon implements Runnable {
 	private String pass;
 	protected PrintStream out, access, error;
 	private static DateFormat DATE;
-
+	
+	/**
+	 * Use this to start the daemon from your application.
+	 */
+	public Daemon() {
+		this(new Properties());
+	}
+	
 	/**
 	 * Use this to start the daemon from your application. The parameters below
 	 * should be in the properties argument.
@@ -53,9 +60,7 @@ public class Daemon implements Runnable {
 	 *            <i>time in milliseconds before started event gets dropped due to
 	 *            inactivity. Increase this if your users will download 
 	 *            content with a 'open/save/cancel' + save location dialog, 
-	 *            since this will timeout otherwise. And reduce this if you are 
-	 *            running a comet application, otherwise blocked responses will 
-	 *            make you drop the connection altogether, around 50 ms. should be ok.
+	 *            since this will timeout otherwise. 
 	 *            This is also the dead socket worker cleanup variable, so if a worker 
 	 *            has a socket that hasn't been active for longer than this the worker 
 	 *            will be released and the socket deemed as dead.</i><br><br>
@@ -273,21 +278,8 @@ public class Daemon implements Runnable {
 	}
 
 	/**
-	 * Is the archive deployed?
-	 * @param name With or without '.jar' suffix.
-	 * @return
-	 */
-	public boolean deployed(String name) {
-		if(!name.endsWith(".jar")) {
-			name += ".jar";
-		}
-
-		return archive.containsKey(name);
-	}
-
-	/**
 	 * Get archive.
-	 * @return
+	 * @return If null the archive is not deployed.
 	 */
 	public Deploy.Archive archive(String name) {
 		if(!name.endsWith(".jar")) {
@@ -330,7 +322,7 @@ public class Daemon implements Runnable {
 	}
 
 	/**
-	 * The listener filters JSONObject messages.
+	 * The listener filters Object messages, for example JSONObject.
 	 * @author Marc
 	 */
 	public interface Listener {
@@ -677,11 +669,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	/**
-	 * Set custom log.
-	 * @param out
-	 */
-	public void log(PrintStream out) {
+	protected void log(PrintStream out) {
 		if(out != null) {
 			this.out = out;
 		}
