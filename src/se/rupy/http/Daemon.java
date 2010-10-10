@@ -376,7 +376,6 @@ public class Daemon implements Runnable {
 
 			try {
 				service.create(this);
-				service.create();
 			} catch (Exception e) {
 				e.printStackTrace(out);
 			}
