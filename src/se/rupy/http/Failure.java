@@ -10,7 +10,7 @@ import java.io.IOException;
  * 
  * @author marc
  */
-public class Failure extends IOException {
+class Failure extends IOException {
 	protected Failure(String message) {
 		super(message);
 	}
@@ -43,5 +43,9 @@ public class Failure extends IOException {
 		}
 	}
 	
-	public static class Close extends IOException {}
+	/**
+	 * To close the event without logging to error.txt.
+	 * @author Marc
+	 */
+	static class Close extends IOException {}
 }

@@ -6,8 +6,8 @@ import java.nio.channels.CancelledKeyException;
 
 /**
  * Worker gets the job done. The worker holds the in/out/chunk buffers in order to
- * save resources, since the worker is assigned per event until a request is
- * completed.
+ * save resources, since the worker is assigned per event until a query is read and 
+ * a reply is written.
  * 
  * @author marc
  */
@@ -111,7 +111,7 @@ public class Worker implements Runnable, Chain.Link {
 		return lock;
 	}
 
-	boolean busy() {
+	protected boolean busy() {
 		if(event != null && touch > 0) {
 			lock = (int) (System.currentTimeMillis() - touch);
 
@@ -130,7 +130,7 @@ public class Worker implements Runnable, Chain.Link {
 		return index;
 	}
 
-	public void stop() {
+	protected void stop() {
 		synchronized (thread) {
 			thread.notify();
 		}

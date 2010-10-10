@@ -422,7 +422,7 @@ public class Event extends Throwable implements Chain.Link {
 		}
 	}
 
-	public static String cookie(String cookie, String key) {
+	protected static String cookie(String cookie, String key) {
 		String value = null;
 
 		if (cookie != null) {

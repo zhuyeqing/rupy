@@ -143,10 +143,7 @@ public class Reply {
 	/**
 	 * Important: call {@link #header(String, String)} and {@link #code(String)}
 	 * first, in that order, this method is the point of no return for delivery
-	 * of a request. It enables OP_WRITE and writes the headers immediately if
-	 * your reply is chunked, ie. if your client is HTTP/1.1. If your client is
-	 * HTTP/1.0, the headers will be prepended automatically after the
-	 * {@link Service#filter(Event)} method returns.
+	 * of a request. It enables OP_WRITE and writes the headers immediately.
 	 * 
 	 * @param length if you want to write fixed length data
 	 * @return the output stream.
