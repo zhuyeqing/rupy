@@ -29,14 +29,14 @@ public class Daemon implements Runnable {
 	private static DateFormat DATE;
 	
 	/**
-	 * Use this to start the daemon from your application.
+	 * Don't forget to call {@link #start()}.
 	 */
 	public Daemon() {
 		this(new Properties());
 	}
 	
 	/**
-	 * Use this to start the daemon from your application. The parameters below
+	 * Don't forget to call {@link #start()}. The parameters below
 	 * should be in the properties argument.
 	 * 
 	 * @param <br><b>host</b> (false)
