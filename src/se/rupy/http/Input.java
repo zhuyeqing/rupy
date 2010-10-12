@@ -19,13 +19,17 @@ public abstract class Input extends InputStream implements Event.Block {
 
 	protected void init() {
 		chunk = event.query().length() > -1 ? false : true;
-		event.log("header " + length, Event.VERBOSE);
+		
+		if(event.daemon().verbose) {
+			event.log("header " + length, Event.VERBOSE);
+		}
+		
 		length = 0;
 		init = true;
 	}
 
 	protected void end() {
-		if (length > 0)
+		if (event.daemon().verbose && length > 0)
 			event.log("query " + length, Event.VERBOSE);
 
 		available = 0;
@@ -98,13 +102,13 @@ public abstract class Input extends InputStream implements Event.Block {
 			available = event.channel().read(buffer);
 		}
 		catch(IOException e) {
-			throw new Failure.Close(); // Connection reset by peer
+			throw (Failure.Close) new Failure.Close().initCause(e); // Connection reset by peer
 		}
 
 		if (available > 0) {
 			buffer.flip();
 		} else if (available < 0) {
-			throw new Failure.Close(); // Connection dropped by peer
+			throw new Failure.Close("Available: " + available); // Connection dropped by peer
 		}
 
 		return available;

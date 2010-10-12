@@ -361,7 +361,10 @@ public class Event extends Throwable implements Chain.Link {
 				session.remove(this);
 			}
 
-			log("disconnect " + e);
+			if(daemon.debug) {
+				log("disconnect " + e);
+				e.printStackTrace();
+			}
 
 			if(!(e instanceof Failure.Close))
 				daemon.error(this, e);
@@ -380,7 +383,6 @@ public class Event extends Throwable implements Chain.Link {
 			query.parse();
 			String cookie = query.string("cookie");
 			key = cookie.length() > 0 ? cookie : null;
-
 		}
 
 		if (key != null) {
