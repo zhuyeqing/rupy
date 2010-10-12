@@ -123,11 +123,14 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	protected void end() throws IOException {
-		reply.event().log("end", Event.DEBUG);
+		if(reply.event().daemon().debug) {
+			reply.event().log("end", Event.DEBUG);
+		}
+		
 		done = true;
 		flush();
 
-		if (length > 0) {
+		if (reply.event().daemon().verbose && length > 0) {
 			reply.event().log("reply " + length, Event.VERBOSE);
 		}
 
@@ -144,9 +147,9 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	protected void headers(long length) throws IOException {
-		//cache = false;
-
-		reply.event().log("code " + reply.code(), Event.VERBOSE);
+		if (reply.event().daemon().verbose) {
+			reply.event().log("code " + reply.code(), Event.VERBOSE);
+		}
 
 		wrote((reply.event().query().version() + " " + reply.code() + EOL)
 				.getBytes());
@@ -189,7 +192,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 			wrote((cookie + EOL).getBytes());
 
 			reply.event().session().set(true);
-			reply.event().log("cookie " + cookie, Event.VERBOSE);
+			
+			if (reply.event().daemon().verbose) {
+				reply.event().log("cookie " + cookie, Event.VERBOSE);
+			}
 		}
 
 		if (reply.event().close()) {
@@ -212,8 +218,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		wrote(EOL.getBytes());
-		//flush();
-		//length = 0;
 	}
 
 	protected void wrote(int b) throws IOException {
@@ -230,6 +234,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 			ByteBuffer out = reply.event().worker().out();
 			int remaining = out.remaining();
 
+			if(reply.event().daemon().debug) {
+				reply.event().log(
+					"wrote " + new String(b, off, len),
+					Event.DEBUG);
+			}
+			
 			while (len > remaining) {
 				out.put(b, off, remaining);
 
@@ -289,7 +299,10 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	public void flush() throws IOException {
-		reply.event().log("flush " + length, Event.DEBUG);
+		if(reply.event().daemon().debug) {
+			reply.event().log("flush " + length, Event.DEBUG);
+		}
+		
 		try {
 			internal(true);
 		} catch (Exception e) {
@@ -312,7 +325,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			sent = reply.event().channel().write(out);
 		}
 		catch(IOException e) {
-			throw new Failure.Close(); // Connection reset by peer
+			throw (Failure.Close) new Failure.Close().initCause(e); // Connection reset by peer
 		}
 
 		if (debug) {
@@ -427,8 +440,14 @@ public abstract class Output extends OutputStream implements Event.Block {
 			if (chunk() && init) {
 				if (reply.code().startsWith("302")
 						|| reply.code().startsWith("304")) {
-					reply.event().log("length " + length, Event.DEBUG);
+					if(reply.event().daemon().debug) {
+						reply.event().log("length " + length, Event.DEBUG);
+					}
 				} else if (!fixed) {
+					if(reply.event().daemon().debug) {
+						reply.event().log("chunk flush " + count + " " + complete(), Event.DEBUG);
+					}
+					
 					if (count > 0) {
 						write();
 					}
@@ -436,11 +455,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 					if (complete()) {
 						write();
 					}
-
-					reply.event().log("chunk flush " + length, Event.DEBUG);
 				}
 			} else if (!fixed) {
-				reply.event().log("asynchronous push " + count, Event.DEBUG);
+				if(reply.event().daemon().debug) {
+					reply.event().log("asynchronous push " + count, Event.DEBUG);
+				}
+				
 				push = true;
 			}
 

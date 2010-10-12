@@ -48,15 +48,17 @@ public class Reply {
 	}
 
 	protected void done() throws IOException {
-		event.log("done", Event.DEBUG);
+		event.log("done " + output.push(), Event.DEBUG);
 
-		output.end();
+		if(!output.push()) {
+			output.end();
 
-		if (headers != null) {
-			headers.clear();
+			if (headers != null) {
+				headers.clear();
+			}
+
+			reset();
 		}
-
-		reset();
 	}
 
 	protected void reset() {

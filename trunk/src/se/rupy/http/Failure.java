@@ -47,5 +47,10 @@ class Failure extends IOException {
 	 * To close the event without logging to error.txt.
 	 * @author Marc
 	 */
-	static class Close extends IOException {}
+	static class Close extends IOException {
+		public Close() {}
+		public Close(String message) {
+			super(message);
+		}
+	}
 }
