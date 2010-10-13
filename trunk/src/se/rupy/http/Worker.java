@@ -53,12 +53,10 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	protected void wakeup() {
-		if(event != null)
+		if(event != null && event.daemon().debug)
 			event.log("wakeup", Event.DEBUG);
 
 		touch();
-		
-		//System.out.println(index + " touch " + touch);
 		
 		synchronized (thread) {
 			thread.notify();
@@ -76,7 +74,7 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	protected void snooze(long delay) {
-		if(event != null)
+		if(event != null && event.daemon().debug)
 			event.log("snooze " + delay, Event.DEBUG);
 
 		synchronized (thread) {
@@ -176,9 +174,6 @@ public class Worker implements Runnable, Chain.Link {
 
 	protected void reset(Exception e) {
 		event.disconnect(e);
-
-		//snooze(10); // to avoid deadlock when proxy closes socket
-
 		out.clear();
 		in.clear();
 	}
