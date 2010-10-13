@@ -7,6 +7,11 @@ INTRODUCTION:
     I think the HTTP server should be small and 
     easy to use without sacrificing performance 
     or basic features.
+    
+    Industrial Strength ---
+    
+    Since version 0.4.1 there is no reason to use 
+    Jetty, Tomcat, Grizzly, WebSphere or WebLogic.
 
 RUN:
 
@@ -185,16 +190,17 @@ VERSION:
         error logs in a log folder created in the execution path..
       - Added fixed length test and improved unit.
         
-      0.4
+    0.4 Industrial
       
-      - Fixed test.
-      - Corrected default timeout value to 5 seconds.
-      - Corrected boolean parameter parsing.
+    - Fixed test.
+    - Corrected default timeout value to 5 seconds.
+    - Corrected boolean parameter parsing.
       
-      0.4.1
+      0.4.1 
       
       - Base64 parameter fix by akarchen
       - PUT and DELETE by mathias.funk
       - CancelledKeyException & Threadlock fix, thanks to mathias.funk
+      - Fixed async streaming response.
       
 have fun!
