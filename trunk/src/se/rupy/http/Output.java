@@ -306,7 +306,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		try {
 			internal(true);
 		} catch (Exception e) {
-			throw (Failure) new Failure("No flush!").initCause(e);
+			throw (Failure.Close) new Failure.Close("No flush!").initCause(e); // Connection dropped by peer
 		}
 	}
 

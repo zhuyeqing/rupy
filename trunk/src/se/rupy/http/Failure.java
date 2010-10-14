@@ -10,7 +10,7 @@ import java.io.IOException;
  * 
  * @author marc
  */
-class Failure extends IOException {
+public class Failure extends IOException {
 	protected Failure(String message) {
 		super(message);
 	}
@@ -44,10 +44,12 @@ class Failure extends IOException {
 	}
 	
 	/**
-	 * To close the event without logging to error.txt.
+	 * To close the event without logging to error.txt. It is very important 
+	 * that these errors are not caught, or if caught then re-thrown, in a Comet 
+	 * application because it can cause the server to loop.
 	 * @author Marc
 	 */
-	static class Close extends IOException {
+	public static class Close extends IOException {
 		public Close() {}
 		public Close(String message) {
 			super(message);

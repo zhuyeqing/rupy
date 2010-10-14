@@ -7,11 +7,6 @@ INTRODUCTION:
     I think the HTTP server should be small and 
     easy to use without sacrificing performance 
     or basic features.
-    
-    Industrial Strength ---
-    
-    Since version 0.4.1 there is no reason to use 
-    Jetty, Tomcat, Grizzly, WebSphere or WebLogic.
 
 RUN:
 
@@ -200,7 +195,7 @@ VERSION:
       
       - Base64 parameter fix by akarchen
       - PUT and DELETE by mathias.funk
-      - CancelledKeyException & Threadlock fix, thanks to mathias.funk
+      - CancelledKeyException & thread lock fix, thanks to mathias.funk
       - Fixed async streaming response.
       
 have fun!

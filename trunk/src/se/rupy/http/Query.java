@@ -108,10 +108,7 @@ public class Query extends Hash {
 			try {
 				modified = input.event().DATE.parse(since).getTime();
 			} catch (Exception e) {
-				System.out.println(e);
-				System.out.println(path);
-				System.out.println(headers);
-				System.out.println(since);
+				// TODO: Sometimes the parsing fails and I can't figure out why.
 				modified = 0;
 			}
 		}
