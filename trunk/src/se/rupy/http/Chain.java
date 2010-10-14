@@ -63,7 +63,7 @@ public class Chain extends LinkedList {
 		return (Link) get(next++);
 	}
 
-	public interface Link {
+	interface Link {
 		public int index();
 	}
 	
