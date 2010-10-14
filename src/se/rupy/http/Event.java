@@ -364,7 +364,10 @@ public class Event extends Throwable implements Chain.Link {
 
 			if(daemon.debug) {
 				log("disconnect " + e);
-				e.printStackTrace();
+				
+				if(e != null) {
+					e.printStackTrace();
+				}
 			}
 
 			if(e != null && !(e instanceof Failure.Close))
