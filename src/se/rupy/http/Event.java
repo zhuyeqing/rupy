@@ -50,7 +50,8 @@ public class Event extends Throwable implements Chain.Link {
 
 	private int index, interest;
 	private String remote;
-	private boolean close, push;
+	//private boolean close, push;
+	private boolean close;
 
 	protected Event(Daemon daemon, SelectionKey key, int index) throws IOException {
 		channel = ((ServerSocketChannel) key.channel()).accept();
@@ -366,7 +367,7 @@ public class Event extends Throwable implements Chain.Link {
 				e.printStackTrace();
 			}
 
-			if(!(e instanceof Failure.Close))
+			if(e != null && !(e instanceof Failure.Close))
 				daemon.error(this, e);
 		} catch (Exception de) {
 			de.printStackTrace(daemon.out);
@@ -398,7 +399,7 @@ public class Event extends Throwable implements Chain.Link {
 			}
 		}
 
-		if(service.index() == 0) {
+		if(service.index() == 0 && !push()) {
 			session = new Session(daemon);
 			session.add(service);
 			session.add(this);
@@ -471,13 +472,14 @@ public class Event extends Throwable implements Chain.Link {
 	 *         {@link Reply#wakeup()}.
 	 */
 	public boolean push() {
-		return push;
+		return reply.output.push();
+		//return push;
 	}
-
+/*
 	protected void push(boolean push) {
 		this.push = push;
 	}
-
+*/
 	/**
 	 * Keeps the chunked reply open for asynchronous writes. If you are 
 	 * streaming data and you need to send something upon the first request 
@@ -486,8 +488,8 @@ public class Event extends Throwable implements Chain.Link {
 	 * @throws IOException
 	 */
 	public void hold() throws IOException {
-		output().push = true;
-		this.push = true;
+		reply.output.push = true;
+		//this.push = true;
 	}
 
 	static class Mime extends Properties {

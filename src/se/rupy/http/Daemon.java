@@ -529,7 +529,9 @@ public class Daemon implements Runnable {
 					}
 				}
 			}
-
+/*
+ * Used to debug thread lock.
+ * 
 			add(new Service() {
 				public String path() { return "/workers"; }
 				public void filter(Event event) throws Event, Exception {
@@ -546,7 +548,7 @@ public class Daemon implements Runnable {
 					event.output().println("</pre>");
 				}
 			});
-			
+*/
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
 				new Test(this, 1);
@@ -587,7 +589,9 @@ public class Daemon implements Runnable {
 									event.log("write ---");
 							}
 
-							if (worker == null) {
+							if (key.isReadable() && event.push()) {
+								event.disconnect(null);
+							} else if (worker == null) {
 								employ(event);
 							} else {
 								worker.wakeup();

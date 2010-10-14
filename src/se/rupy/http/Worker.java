@@ -148,7 +148,7 @@ public class Worker implements Runnable, Chain.Link {
 				if (event != null) {
 					if (event.push()) {
 						event.write();
-						event.push(false);
+						//event.push(false);
 					} else {
 						event.read();
 					}
