@@ -478,6 +478,15 @@ public class Event extends Throwable implements Chain.Link {
 		return reply.output.push();
 		//return push;
 	}
+	
+	/**
+	 * Touch the worker if you have a http connection that needs to wait.
+	 */
+	public void touch() {
+		if(worker != null) {
+			worker.touch();
+		}
+	}
 /*
 	protected void push(boolean push) {
 		this.push = push;
