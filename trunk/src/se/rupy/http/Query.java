@@ -50,7 +50,7 @@ public class Query extends Hash {
 			this.method = DELETE;
 			parsed = false;
 		} else {
-			throw new IOException("Unsupported method.");
+			throw new IOException("Unsupported method (" + method + ").");
 		}
 		
 		String get = http.nextToken();
