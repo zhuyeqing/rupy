@@ -118,7 +118,7 @@ public class Worker implements Runnable, Chain.Link {
 			lock = (int) (System.currentTimeMillis() - touch);
 
 			if(lock > daemon.delay) {
-				reset(new Exception("Threadlock " + lock + " (" + index + ")"));
+				reset(new Exception("Threadlock " + lock + " (" + event.query().path() + ")"));
 				return false;
 			}
 

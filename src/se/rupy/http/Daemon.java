@@ -15,11 +15,9 @@ import java.nio.channels.*;
  */
 
 public class Daemon implements Runnable {
-	public Properties properties;
-	public boolean verbose, debug, host, alive;
-
-	int threads, timeout, cookie, delay, size, port;
-
+	protected Properties properties;
+	protected boolean verbose, debug, host, alive, show_workers;
+	protected int threads, timeout, cookie, delay, size, port;
 	private HashMap archive, service, session;
 	private Chain workers, queue;
 	private Heart heart;
@@ -95,7 +93,9 @@ public class Daemon implements Runnable {
 		"true");
 		host = properties.getProperty("host", "false").toLowerCase().equals(
 		"true");
-
+		show_workers = properties.getProperty("workers", "false").toLowerCase().equals(
+		"true");
+		
 		if (!verbose) {
 			debug = false;
 		}
@@ -533,7 +533,7 @@ public class Daemon implements Runnable {
 			 * Used to debug thread lock.
 			 */
 
-			if(debug) {
+			if(show_workers) {
 				add(new Service() {
 					public String path() { return "/workers"; }
 					public void filter(Event event) throws Event, Exception {
