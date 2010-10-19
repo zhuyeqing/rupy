@@ -27,14 +27,14 @@ public class Daemon implements Runnable {
 	private String pass;
 	protected PrintStream out, access, error;
 	private static DateFormat DATE;
-	
+
 	/**
 	 * Don't forget to call {@link #start()}.
 	 */
 	public Daemon() {
 		this(new Properties());
 	}
-	
+
 	/**
 	 * Don't forget to call {@link #start()}. The parameters below
 	 * should be in the properties argument.
@@ -121,14 +121,14 @@ public class Daemon implements Runnable {
 
 	protected void log() throws IOException {
 		File file = new File("log");
-		
+
 		if(!file.exists()) {
 			file.mkdir();
 		}
-		
+
 		access = new PrintStream(new FileOutputStream(new File("log/access.txt")), true, "UTF-8");
 		error = new PrintStream(new FileOutputStream(new File("log/error.txt")), true, "UTF-8");
-		
+
 		DATE = new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS");
 	}
 
@@ -142,22 +142,22 @@ public class Daemon implements Runnable {
 			b.append(event.remote());
 			b.append(' ');
 			b.append(event.query().path());
-			
+
 			String parameters = event.query().parameters();
-			
+
 			if(parameters != null) {
 				b.append(' ');
 				b.append(parameters);
 			}
-			
+
 			b.append(Output.EOL);
 
 			error.write(b.toString().getBytes("UTF-8"));
-			
+
 			t.printStackTrace(error);
 		}
 	}
-		
+
 	protected String access(Event event) throws IOException {
 		if (access != null && !event.reply().push()) {
 			Calendar date = Calendar.getInstance();
@@ -170,37 +170,37 @@ public class Daemon implements Runnable {
 			b.append(event.query().path());
 			b.append(' ');
 			b.append(event.reply().code());
-			
+
 			int length = event.reply().length();
-			
+
 			if(length > 0) {
 				b.append(' ');
 				b.append(length);
 			}
-			
+
 			return b.toString();
 		}
-		
+
 		return null;
 	}
-	
+
 	protected void access(String row, boolean push) throws IOException {
 		if (access != null) {
 			StringBuilder b = new StringBuilder();
-			
+
 			b.append(row);
-			
+
 			if(push) {
 				b.append(' ');
 				b.append('>');
 			}
-			
+
 			b.append(Output.EOL);
-			
+
 			access.write(b.toString().getBytes("UTF-8"));
 		}
 	}
-	
+
 
 	/**
 	 * Starts the selector, heartbeat and worker threads.
@@ -334,7 +334,7 @@ public class Daemon implements Runnable {
 		 */
 		public Object receive(Object message) throws Exception;
 	}
-	
+
 	/*
 	 * Listener
 	 */
@@ -529,26 +529,29 @@ public class Daemon implements Runnable {
 					}
 				}
 			}
-/*
- * Used to debug thread lock.
- * 
-			add(new Service() {
-				public String path() { return "/workers"; }
-				public void filter(Event event) throws Event, Exception {
-					Iterator it = workers.iterator();
-					event.output().println("<pre>");
-					while(it.hasNext()) {
-						Worker worker = (Worker) it.next();
-						event.output().println(worker.index() + " " + worker.event() + " " + worker.busy() + " " + worker.lock());
-						
-						if(worker.event() != null) {
-							event.output().println("  " + worker.event().reply().output.init + " " + worker.event().reply().output.done + " " + worker.event().worker());
+			/*
+			 * Used to debug thread lock.
+			 */
+
+			if(debug) {
+				add(new Service() {
+					public String path() { return "/workers"; }
+					public void filter(Event event) throws Event, Exception {
+						Iterator it = workers.iterator();
+						event.output().println("<pre>");
+						while(it.hasNext()) {
+							Worker worker = (Worker) it.next();
+							event.output().println(worker.index() + " " + worker.event() + " " + worker.busy() + " " + worker.lock());
+
+							if(worker.event() != null) {
+								event.output().println("  " + worker.event().reply().output.init + " " + worker.event().reply().output.done + " " + worker.event().worker());
+							}
 						}
+						event.output().println("</pre>");
 					}
-					event.output().println("</pre>");
-				}
-			});
-*/
+				});
+			}
+
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 			"true")) {
 				new Test(this, 1);
@@ -717,7 +720,7 @@ public class Daemon implements Runnable {
 							}
 						}
 					}
-					
+
 					Iterator it = workers.iterator();
 
 					while(it.hasNext()) {
