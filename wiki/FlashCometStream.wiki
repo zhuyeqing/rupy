@@ -1,5 +1,7 @@
 #summary Howto stream chunks to flash asynchronously.
 
+This code will send a empty JSON message every 5 seconds to all listeners (could be 10000 or more) using one thread. The snippet at the bottom lets you wakeup one client for real-time sending of a chunk!
+
 {{{
 package {
     import flash.errors.*;
@@ -74,7 +76,7 @@ public class Ping extends Service implements Runnable {
 					}
 				}
 
-				Thread.sleep(5000);
+				Thread.sleep(5000); // this should be maybe 1 minute
 			}
 		}
 		catch(Exception e) {
