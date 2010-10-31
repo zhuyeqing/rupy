@@ -107,8 +107,6 @@ public class Ping extends Service implements Runnable {
 				pings.remove(event);
 				throw e;
 			}
-			
-			throw event;
 		}
 		else {
 			event.query().parse();
@@ -125,8 +123,6 @@ public class Ping extends Service implements Runnable {
 			Output out = event.output();
 			out.print("{}");
 			out.flush();
-			
-			throw event;
 		}
 	}
 
