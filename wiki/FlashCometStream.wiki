@@ -154,10 +154,6 @@ public class Ping extends Service implements Runnable {
 			this.name = name;
 			this.event = event;
 		}
-		
-		public String toString() {
-			return name + " " + super.toString();
-		}
 	}
 }
 }}}
