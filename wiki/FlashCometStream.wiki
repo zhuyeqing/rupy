@@ -1,6 +1,6 @@
 #summary Howto stream chunks to flash asynchronously.
 
-This code will send a empty JSON message every 5 seconds to all listeners (could be 10000 or more) using one thread. The snippet at the bottom lets you wakeup one client for real-time sending of a message!
+This code will send a empty JSON message every 5 seconds to all listeners (could be 10000 or more) using one thread. The snippet at the bottom let's you wakeup one client for real-time sending of a message!
 
 {{{
 package {
@@ -130,13 +130,13 @@ public class Ping extends Service implements Runnable {
 		}
 	}
 
-	private static Queue find(String call) {
+	private static Queue find(String name) {
 		Iterator it = pings.values().iterator();
 		
 		while(it.hasNext()) {
 			Queue queue = (Queue) it.next();
 			
-			if(queue.name.equals(call)) {
+			if(queue.name.equals(name)) {
 				return queue;
 			}
 		}
