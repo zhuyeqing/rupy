@@ -157,3 +157,16 @@ public class Ping extends Service implements Runnable {
 	}
 }
 }}}
+
+{{{
+Queue queue = find(name);
+if(queue != null) {
+	JSONObject realtime = new JSONObject();
+	realtime.put("name", name);
+	queue.add(realtime);
+
+	int wakeup = queue.event.reply().wakeup();
+	System.out.println("wakeup " + wakeup);
+}
+throw event;
+}}}
