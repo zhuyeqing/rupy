@@ -1,0 +1,163 @@
+#summary Howto stream chunks to flash asynchronously.
+
+{{{
+package {
+    import flash.errors.*;
+    import flash.events.*;
+    import flash.net.URLRequest;
+    import flash.net.URLStream;
+
+    public class Comet {
+        private var stream:URLStream;
+        private var offset:int = 0;
+
+        /*
+         * Call /ping?name=XXX here.
+         */
+        public function Comet(url:String) {
+            stream = new URLStream();
+            var request:URLRequest = new URLRequest(url);
+            stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+            try {
+                stream.load(request);
+            } catch (error:Error) {
+                trace("Unable to load requested URL.");
+            }
+        }
+
+        private function progressHandler(event:Event):void {
+            var progress:ProgressEvent = ProgressEvent(event);
+            var message:String = stream.readUTFBytes(progress.bytesLoaded - offset);
+            offset = progress.bytesLoaded;
+            trace(message);
+        }
+    }
+}
+}}}
+
+{{{
+public class Ping extends Service implements Runnable {
+	public static Map pings = new HashMap();
+	
+	static Thread thread;
+	static boolean alive;
+	
+	public String path() {
+		return "/ping";
+	}
+
+	public void create(Daemon daemon) throws Exception {
+		if(thread == null) {
+			alive = true;
+			thread = new Thread(this);
+			thread.start();
+		}
+	}
+	
+	public void destroy() throws Exception {
+		alive = false;
+	}
+
+	public void run() {
+		try {
+			while(alive) {
+				synchronized(pings) {
+					Iterator it = pings.values().iterator();
+					
+					while(it.hasNext()) {
+						Queue queue = (Queue) it.next();
+						int wakeup = queue.event.reply().wakeup();
+						
+						if(wakeup != Reply.OK) {
+							it.remove();
+						}
+					}
+				}
+
+				Thread.sleep(5000);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void filter(Event event) throws Event, Exception {
+		if(event.push()) {
+			try {
+				Output out = event.output();
+				Queue queue = (Queue) pings.get(event);
+				
+				if(queue == null || queue.isEmpty()) {
+					out.print("{}");
+				}
+				else {
+					out.print(queue.getFirst());
+				}
+				
+				out.flush();
+				
+				if(queue != null) {
+					queue.clear();
+				}
+			}
+			catch(Exception e) {
+				pings.remove(event);
+				throw e;
+			}
+			
+			throw event;
+		}
+		else {
+			event.query().parse();
+			name = event.string("name");
+			Queue queue = find(name);
+
+			if(queue != null) {
+				pings.remove(queue.event);
+			}
+			
+			pings.put(event, new Queue(name, event));
+			
+			event.hold();
+			Output out = event.output();
+			out.print("{}");
+			out.flush();
+			
+			throw event;
+		}
+	}
+
+	private static Queue find(String call) {
+		Iterator it = pings.values().iterator();
+		
+		while(it.hasNext()) {
+			Queue queue = (Queue) it.next();
+			
+			if(queue.name.equals(call)) {
+				return queue;
+			}
+		}
+		
+		return null;
+	}
+
+	/*
+	 * The queue contains the event and the messages 
+	 * to be sent to the client.
+	 */
+	static class Queue extends LinkedList {
+		private String name;
+		private Event event;
+
+		public Queue(String name, Event event) {
+			this.name = name;
+			this.event = event;
+		}
+		
+		public String toString() {
+			return name + " " + super.toString();
+		}
+	}
+}
+}}}
