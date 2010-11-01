@@ -1,4 +1,4 @@
-#summary Howto stream chunks to flash asynchronously.
+#summary How to stream chunks to flash asynchronously.
 
 This code will send a empty JSON message every 5 seconds to all listeners (could be 10000 or more) using one thread. The snippet at the bottom let's you wakeup one client for real-time sending of a message!
 
