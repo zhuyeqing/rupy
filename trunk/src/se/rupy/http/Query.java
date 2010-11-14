@@ -167,9 +167,18 @@ public class Query extends Hash {
 				String equ = amp.nextToken();
 				int pos = equ.indexOf('=');
 
-				String key = equ.substring(0, pos);
-				String value = equ.length() > pos + 1 ? decoder.decode(equ.substring(pos + 1), "UTF-8") : "";
-
+				String key = null;
+				String value = "false";
+				
+				if(pos == -1) {
+					pos = equ.length();
+					key = equ.substring(0, pos);
+				}
+				else {
+					key = equ.substring(0, pos);
+					value = equ.length() > pos + 1 ? decoder.decode(equ.substring(pos + 1), "UTF-8") : "";
+				}
+				
 				put(key, value);
 			}
 		}
