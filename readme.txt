@@ -191,11 +191,16 @@ VERSION:
     - Corrected default timeout value to 5 seconds.
     - Corrected boolean parameter parsing.
       
-      0.4.1 
+      0.4.1
       
       - Base64 parameter fix by akarchen
       - PUT and DELETE by mathias.funk
       - CancelledKeyException & thread lock fix, thanks to mathias.funk
       - Fixed async streaming response.
+      
+      0.4.2
+      
+      - Fixed socket timeout loop.
+      - Fixed boolean parameter.
       
 have fun!
