@@ -119,6 +119,10 @@ public class Daemon implements Runnable {
 		}
 	}
 
+	public Properties properties() {
+		return properties;
+	}
+	
 	protected void log() throws IOException {
 		File file = new File("log");
 
