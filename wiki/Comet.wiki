@@ -5,9 +5,11 @@
 || XSS || Cross-site scripting ||
 || XDR || Cross Domain Request ||
 
-_First, try either the [http://sprout.rupy.se XHR] *or^1^* [http://tentacle.rupy.se XSS] chat demo, it's the little black box in the bottom right corner!_
+ XSS = XDR
 
-If you want to chat between XSS _*and^1^*_ XHR chats make sure you use _*two different browser applications^1^*_ and join the same channel, XSS starts in the _tentacle_ channel and XHR starts in the _lobby_ channel. Either join _tentacle_ with the XHR client (_/join tentacle_) or exit _tentacle_ with the XSS chat (_/exit_).
+_First, try either the [http://sprout.rupy.se XHR] *or^1^* [http://tentacle.rupy.se XDR] chat demo, it's the little black box in the bottom right corner!_
+
+If you want to chat between XDR _*and^1^*_ XHR chats make sure you use _*two different browser applications^1^*_ and join the same channel, XDR starts in the _tentacle_ channel and XHR starts in the _lobby_ channel. Either join _tentacle_ with the XHR client (_/join tentacle_) or exit _tentacle_ with the XDR chat (_/exit_).
 
 Type _/list_ for channel listing and _/color `<rrggbb>`_ to change color.
 
@@ -15,7 +17,7 @@ Type _/list_ for channel listing and _/color `<rrggbb>`_ to change color.
 
 ----
 
-With XSS long-poll you can add the chat widget to any page, notwithstanding of platform and domain, without serverside modifications. In a few rows of html, some images, one css and js file; you're truly minutes away from having your own industrial strength, real-time, comet chat; accessible from behind the thickest of firewalls.
+With XDR long-poll you can add the chat widget to any page, notwithstanding of platform and domain, without serverside modifications. In a few rows of html, some images, one css and js file; you're truly minutes away from having your own industrial strength, real-time, comet chat; accessible from behind the thickest of firewalls.
 
 Try it now: [http://rupy.googlecode.com/files/talk-client-0.5.zip Download]!
 
