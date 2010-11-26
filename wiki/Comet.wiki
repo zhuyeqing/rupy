@@ -3,6 +3,7 @@
 
 || XHR || XMLHttpRequest ||
 || XSS || Cross-site scripting ||
+|| XDR || Cross Domain Request ||
 
 _First, try either the [http://sprout.rupy.se XHR] *or^1^* [http://tentacle.rupy.se XSS] chat demo, it's the little black box in the bottom right corner!_
 
