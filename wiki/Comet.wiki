@@ -2,10 +2,7 @@
 #labels Phase-Implementation,Featured
 
 || XHR || XMLHttpRequest ||
-|| XSS || Cross-site scripting ||
 || XDR || Cross Domain Request ||
-
- XSS = XDR
 
 _First, try either the [http://sprout.rupy.se XHR] *or^1^* [http://tentacle.rupy.se XDR] chat demo, it's the little black box in the bottom right corner!_
 
