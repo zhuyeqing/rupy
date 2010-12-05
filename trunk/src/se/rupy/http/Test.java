@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.*;
 
 class Test implements Runnable {
+	final static int other_count = 100;
+	final static int comet_count = 10;
+	final static int comet_sleep = 50;
 	final static String[] unit = new String[] {
 			"comet", 
 			"chunk", 
@@ -60,7 +63,7 @@ class Test implements Runnable {
 		System.out.println(done + "/" + (unit.length + 2) + " Done: " + test.name + " (" + test.loop + ")");
 		
 		if(http == unit.length) {
-			System.out.println((300 * loop + 10 * loop) + " dynamic requests in " + (System.currentTimeMillis() - time) + " ms.");
+			System.out.println((3 * other_count * loop + comet_count * loop) + " dynamic requests in " + (System.currentTimeMillis() - time) + " ms.");
 		}
 		
 		done();
@@ -133,19 +136,19 @@ class Test implements Runnable {
 	 * detect synchronous errors.
 	 */
 	void test(Daemon daemon) throws Exception {
-		time = System.currentTimeMillis();
-		
 		System.out.println("Parallel testing with one worker thread:");
 		System.out.println("- Fixed and chunked, read and write.");
 		System.out.println("- Asynchronous non-blocking reply.");
 		System.out.println("- Session creation and timeout.");
 		System.out.println("- Exception handling.");
 		System.out.println("NOTICE: The test receives and sends the bin/http.jar");
-		System.out.println("which is >50kb, if you wonder why it takes ~3 seconds.");
+		System.out.println("which is >50kb, if you wonder why it takes ~2 seconds.");
 		System.out.println("             ---o---");
 
-		Thread.sleep(1000);
+		Thread.sleep(100);
 
+		time = System.currentTimeMillis();
+		
 		/*
 		daemon.verbose = true;
 		daemon.debug = true;
@@ -154,7 +157,7 @@ class Test implements Runnable {
 		Test[] test = new Test[unit.length];
 		
 		for(int i = 0; i < test.length; i++) {
-			test[i] = new Test("localhost:" + daemon.port, unit[i], loop * (unit[i].equals("comet") ? 10 : 100));
+			test[i] = new Test("localhost:" + daemon.port, unit[i], loop * (unit[i].equals("comet") ? comet_count : other_count));
 			daemon.add(test[i].service());
 			Thread thread = new Thread(test[i]);
 			thread.start();
@@ -280,11 +283,8 @@ class Test implements Runnable {
 		
 		public void run() {
 			try {
-				//System.out.println(event + " " + event.worker() + " start " + System.currentTimeMillis());
-				Thread.sleep(10);
+				Thread.sleep(comet_sleep);
 				event.reply().wakeup();
-				Thread.sleep(5);
-				//System.out.println(event + " " + event.worker() + " stop " + System.currentTimeMillis());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
