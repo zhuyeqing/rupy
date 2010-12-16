@@ -106,9 +106,8 @@ public class Query extends Hash {
 
 		if (since != null && since.length() > 0) {
 			try {
-				modified = input.event().DATE.parse(since).getTime();
-			} catch (Exception e) {
-				// TODO: Sometimes the parsing fails and I can't figure out why.
+				modified = input.event().worker().date().parse(since).getTime();
+			} catch (ParseException e) {
 				modified = 0;
 			}
 		}

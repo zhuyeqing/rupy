@@ -27,13 +27,11 @@ public class Event extends Throwable implements Chain.Link {
 	private static char[] BASE_24 = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K',
 		'M', 'P', 'Q', 'R', 'T', 'V', 'W', 'X', 'Y', '2', '3', '4', '6',
 		'7', '8', '9' };
-	static DateFormat DATE;
+
 	static Mime MIME;
 
 	static {
 		MIME = new Mime();
-		DATE = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-		DATE.setTimeZone(TimeZone.getTimeZone("GMT"));
 		READ = SelectionKey.OP_READ;
 		WRITE = SelectionKey.OP_WRITE;
 	}

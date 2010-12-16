@@ -202,5 +202,6 @@ VERSION:
       
       - Fixed socket timeout loop.
       - Fixed boolean parameter.
+      - Fixed SimpleDateFormat concurrency.
       
 have fun!
