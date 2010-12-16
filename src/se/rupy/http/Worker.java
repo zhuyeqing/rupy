@@ -3,6 +3,10 @@ package se.rupy.http;
 import java.io.IOException;
 import java.nio.*;
 import java.nio.channels.CancelledKeyException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Worker gets the job done. The worker holds the in/out/chunk buffers in order to
@@ -20,7 +24,8 @@ public class Worker implements Runnable, Chain.Link {
 	private int index, lock;
 	private boolean awake, alive;
 	private long touch;
-
+	private DateFormat date;
+	
 	protected Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
 		this.index = index;
@@ -28,12 +33,19 @@ public class Worker implements Runnable, Chain.Link {
 		in = ByteBuffer.allocateDirect(daemon.size);
 		out = ByteBuffer.allocateDirect(daemon.size);
 
+		date = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+		date.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
 		alive = true;
 
 		thread = new Thread(this);
 		thread.start();
 	}
 
+	protected DateFormat date() {
+		return date;
+	}
+	
 	protected ByteBuffer in() {
 		touch();
 		return in;

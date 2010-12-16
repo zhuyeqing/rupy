@@ -153,7 +153,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		wrote((reply.event().query().version() + " " + reply.code() + EOL)
 				.getBytes());
-		wrote(("Date: " + reply.event().DATE.format(new Date()) + EOL)
+		wrote(("Date: " + reply.event().worker().date().format(new Date()) + EOL)
 				.getBytes());
 		wrote(server);
 		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
@@ -166,7 +166,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 		if (reply.modified() > 0) {
 			wrote(("Last-Modified: "
-					+ reply.event().DATE.format(new Date(reply.modified())) + EOL)
+					+ reply.event().worker().date().format(new Date(reply.modified())) + EOL)
 					.getBytes());
 		}
 
@@ -174,7 +174,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 			wrote(("Cache-Control: max-age=3600, must-revalidate" + EOL)
 					.getBytes());
 			wrote(("Expires: "
-					+ reply.event().DATE.format(new Date(System.currentTimeMillis() + ((long) 1000 * 60 * 60 * 24 * 365))) + EOL)
+					+ reply.event().worker().date().format(new Date(System.currentTimeMillis() + ((long) 1000 * 60 * 60 * 24 * 365))) + EOL)
 					.getBytes());
 		}
 
@@ -184,7 +184,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 				+ reply.event().session().key()
 				+ ";"
 				+ (session.expires() > 0 ? " expires="
-						+ reply.event().DATE.format(new Date(session
+						+ reply.event().worker().date().format(new Date(session
 								.expires())) + ";" : "")
 								+ (session.domain() != null ? " domain=" + session.domain()
 										+ ";" : "") + " path=/;";
