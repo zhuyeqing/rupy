@@ -43,7 +43,7 @@ Also add the http.jar dependency to the classpath and bundle and deploy the war 
 {{{
 <path id="project.class.path">
 	...
-	<pathelement location="http.jar"/>
+	<pathelement location="lib/http.jar"/>
 </path>
 
 <target name="gwtc" depends="javac" ...>
