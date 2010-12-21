@@ -23,7 +23,7 @@ import se.rupy.http.*;
 import com.google.gwt.user.server.rpc.*;
 import com.google.gwt.user.client.rpc.*;
 
-public static class Bridge extends Service {
+public static class Call extends Service {
 	public String path() { return "/REPLACE/greet"; }
 	public void filter(Event event) throws Event, Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
