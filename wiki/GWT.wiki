@@ -2,7 +2,7 @@
 
 *Decode, invoke and encode*
 
-Add this inner class below to GreetingServiceImpl in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Then add gwt-user.jar to the classpath, deploy the war file as a jar to rupy and everything will just magically work.
+Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Then add gwt-user.jar to the classpath, deploy the war file as a jar to rupy and everything will just magically work.
 
 NOTE: You should still develop using devmode because the compiler takes 30 sec. to compile the smallest app.
 
@@ -36,4 +36,13 @@ public static class Bridge extends Service {
 		event.output().print(res);
 	}
 }
+}}}
+
+Also add this to the build.xml:
+
+{{{
+<path id="project.class.path">
+    ...
+	<pathelement location="lib/http.jar"/>
+</path>
 }}}
