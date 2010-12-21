@@ -38,11 +38,27 @@ public static class Bridge extends Service {
 }
 }}}
 
-Also add the http.jar dependency to the classpath in build.xml:
+Also add the http.jar dependency to the classpath and bundle and deploy the war in build.xml:
 
 {{{
 <path id="project.class.path">
 	...
 	<pathelement location="http.jar"/>
 </path>
+
+<target name="gwtc" depends="javac" ...>
+	...
+	<mkdir dir="bin"/>
+	<jar jarfile="bin/book.jar">
+		<manifest>
+			<attribute name="Built-By" value="${user.name}"/>
+		</manifest>
+		<fileset dir="war"/>
+	</jar>
+	<java fork="yes" classname="se.rupy.http.Deploy" classpath="lib/http.jar">
+		<arg line="localhost:8000"/>
+		<arg line="bin/book.jar"/>
+		<arg line="secret"/>
+  	</java>
+</target>
 }}}
