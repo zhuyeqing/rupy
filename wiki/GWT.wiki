@@ -38,11 +38,11 @@ public static class Bridge extends Service {
 }
 }}}
 
-Also add this to the build.xml:
+Also add the http.jar dependency to the classpath in build.xml:
 
 {{{
 <path id="project.class.path">
 	...
-	<pathelement location="lib/http.jar"/>
+	<pathelement location="http.jar"/>
 </path>
 }}}
