@@ -4,7 +4,14 @@
 
 IMPORTANT: This is using GWT 2.1.1! Before that you have to use SerializableException even though the documentation tells you not to to encode a failure!
 
-Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Then add gwt-user.jar to the classpath, deploy the war file as a jar to rupy and everything will just magically work.
+Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Also remove these servlet specific lines:
+
+{{{
+String serverInfo = getServletContext().getServerInfo();
+String userAgent = getThreadLocalRequest().getHeader("User-Agent");
+}}}
+
+Then add gwt-user.jar to the classpath, deploy the war file as a jar to rupy and everything will just magically work.
 
 NOTE: You should still develop using devmode because the compiler takes 30 sec. to compile the smallest app.
 
