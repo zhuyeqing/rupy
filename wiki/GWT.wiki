@@ -29,7 +29,8 @@ public static class Bridge extends Service {
 		String res = null;
 
 		try {
-			res = RPC.encodeResponseForSuccess(rpc.getMethod(), rpc.getMethod().invoke(new GreetingServiceImpl(), rpc.getParameters()));
+			Object response = rpc.getMethod().invoke(new GreetingServiceImpl(), rpc.getParameters());
+			res = RPC.encodeResponseForSuccess(rpc.getMethod(), response);
 		}
 		catch(InvocationTargetException e) {
 			res = RPC.encodeResponseForFailure(rpc.getMethod(), e.getCause());
