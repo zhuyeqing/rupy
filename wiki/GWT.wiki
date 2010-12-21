@@ -7,6 +7,13 @@ Add this inner class below to GreetingServiceImpl in the generated GWT start app
 NOTE: You should still develop using devmode because the compiler takes 30 sec. to compile the smallest app.
 
 {{{
+
+import java.io.*;
+import java.lang.reflect.*;
+import se.rupy.http.*;
+import com.google.gwt.user.server.rpc.*;
+import com.google.gwt.user.client.rpc.*;
+
 public static class Bridge extends Service {
 	public String path() { return "/REPLACE/greet"; }
 	public void filter(Event event) throws Event, Exception {
