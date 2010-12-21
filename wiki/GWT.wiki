@@ -62,3 +62,9 @@ Also add the http.jar dependency to the classpath and bundle and deploy the war 
   	</java>
 </target>
 }}}
+
+Don't forget to add gwt-user.jar to the classpath!
+
+{{{
+java -classpath "lib\http.jar;lib\gwt-user.jar" se.rupy.http.Daemon -verbose -pass secret -log
+}}}
