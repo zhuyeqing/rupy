@@ -42,7 +42,7 @@ Also add this to the build.xml:
 
 {{{
 <path id="project.class.path">
-    ...
+	...
 	<pathelement location="lib/http.jar"/>
 </path>
 }}}
