@@ -20,6 +20,8 @@
 
 *Design*
 
+ The Rupy [API http://rupy.se/doc/] is designed from the ground up and is simpler than the JSP and Servlet API's without loosing any needed functionality. 
+
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
 
   * No clear separation between the protocol concerns and the application concerns. 
