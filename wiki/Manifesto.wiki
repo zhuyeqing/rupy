@@ -20,7 +20,7 @@
 
 *Design*
 
- The Rupy [http://rupy.se/doc/ API] and core [http://code.google.com/p/rupy/wiki/Design design] is designed from the ground up to be simpler than the JSP and Servlet API's and their implementations without loosing any needed functionality.
+ The Rupy [http://rupy.se/doc/ API] and core [http://code.google.com/p/rupy/wiki/Design design] is built from the ground up to be simpler than the JSP and Servlet API's and their implementations without loosing any needed functionality.
 
  At the end of 2003, Greg Wilkins, the author of the Jetty Web container and contributor to the Servlet specifications, blogged about some issues with Servlets: 
 
