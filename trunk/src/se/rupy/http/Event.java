@@ -388,6 +388,7 @@ public class Event extends Throwable implements Chain.Link {
 		}
 
 		if (key != null) {
+			// Synchronize?
 			session = (Session) daemon.session().get(key);
 
 			if (session != null) {

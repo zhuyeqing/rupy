@@ -93,9 +93,14 @@ public class Deploy extends Service {
 			date = file.lastModified();
 
 			JarInputStream in = new JarInput(new FileInputStream(file));
-			Attributes attr = in.getManifest().getMainAttributes();
-
-			host = (String) attr.get("host");
+			
+			try {
+				Attributes attr = in.getManifest().getMainAttributes();
+				host = (String) attr.get("host");
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 
 			if(host == null) {
 				host = "content";
