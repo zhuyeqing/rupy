@@ -7,7 +7,7 @@ It's simple, virtual-host-proxy the requests through your current HTTP server, i
 
 The only drawback of this is that you won't profit from the concurrency scalability of rupy. But by the time you have concurrency problems, you will hopefully have the money to buy new hardware! ;)
 
-Below is an example Apache 2.2 vhost.conf.
+Below is an example Apache 2.2 vhost.conf, you need to enable mod_proxy.
 
 This is particularly useful if you need HTTPS!
 
