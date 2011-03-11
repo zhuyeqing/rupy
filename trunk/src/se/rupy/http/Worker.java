@@ -78,10 +78,11 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	protected void touch() {
+		/*
 		if(event.daemon().debug) {
 			event.log("touch " + (System.currentTimeMillis() - touch), Event.DEBUG);
 		}
-		
+		*/
 		touch = System.currentTimeMillis();
 	}
 	

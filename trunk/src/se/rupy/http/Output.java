@@ -233,13 +233,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 		try {
 			ByteBuffer out = reply.event().worker().out();
 			int remaining = out.remaining();
-
+/*
 			if(reply.event().daemon().debug) {
 				reply.event().log(
 					"wrote " + new String(b, off, len),
 					Event.DEBUG);
 			}
-			
+	*/		
 			while (len > remaining) {
 				out.put(b, off, remaining);
 
