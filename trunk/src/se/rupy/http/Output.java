@@ -118,7 +118,8 @@ public abstract class Output extends OutputStream implements Event.Block {
 			 * To buffer dynamic response data instead of 
 			 * chunking it is so wasteful I decided to remove it.
 			 */
-			throw new IOException("HTTP/1.1 support only.");
+			headers(-1);
+			throw new IOException("HTTP/1.1 support only. (" + reply.event().query().version() + ")");
 		}
 	}
 
