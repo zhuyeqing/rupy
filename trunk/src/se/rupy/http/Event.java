@@ -203,11 +203,11 @@ public class Event extends Throwable implements Chain.Link {
 		boolean method = query.headers();
 		remote = address();
 
-		if (!query.version().equalsIgnoreCase("HTTP/1.1")) {
-			reply.code("505 Not Supported (" + query.version() + ")");
-		}
-		else if (!method) {
+		if (!method) {
 			reply.code("501 Not Implemented (" + query.method() + ")");
+		}
+		else if (!query.version().equalsIgnoreCase("HTTP/1.1")) {
+			reply.code("505 Not Supported (" + query.version() + ")");
 		}
 		else if (!content() && !service()) {
 			reply.code("404 Not Found");
@@ -348,11 +348,11 @@ public class Event extends Throwable implements Chain.Link {
 
 			if (available > 0) {
 				long delay = daemon.delay - (max - System.currentTimeMillis());
-				
+
 				if (Event.LOG) {
 					log("delay " + delay + " " + available, VERBOSE);
 				}
-				
+
 				return available;
 			}
 
@@ -386,7 +386,7 @@ public class Event extends Throwable implements Chain.Link {
 				if (Event.LOG) {
 					log("disconnect " + e);
 				}
-				
+
 				if(e != null) {
 					e.printStackTrace();
 				}
@@ -420,7 +420,7 @@ public class Event extends Throwable implements Chain.Link {
 				if (Event.LOG) {
 					log("old key " + key, VERBOSE);
 				}
-				
+
 				session.add(this);
 				session.touch();
 
@@ -445,7 +445,7 @@ public class Event extends Throwable implements Chain.Link {
 				if (Event.LOG) {
 					log("new key " + session.key(), VERBOSE);
 				}
-				
+
 				daemon.session().put(session.key(), session);
 			}
 		}
