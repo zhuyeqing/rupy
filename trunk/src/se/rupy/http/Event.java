@@ -56,7 +56,7 @@ public class Event extends Throwable implements Chain.Link {
 	protected Event(Daemon daemon, SelectionKey key, int index) throws IOException {
 		channel = ((ServerSocketChannel) key.channel()).accept();
 		channel.configureBlocking(false);
-		
+
 		this.daemon = daemon;
 		this.index = index;
 		this.key = key;
