@@ -372,6 +372,14 @@ public class Event extends Throwable implements Chain.Link {
 		try {
 			if (channel != null) { // && channel.isOpen()) {
 				channel.close();
+				
+				Socket socket = channel.socket();
+				
+				if(socket != null) {
+					socket.shutdownInput();
+					socket.shutdownOutput();
+					socket.close();
+				}
 			}
 
 			if (key != null) {
