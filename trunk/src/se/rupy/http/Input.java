@@ -19,18 +19,22 @@ public abstract class Input extends InputStream implements Event.Block {
 
 	protected void init() {
 		chunk = event.query().length() > -1 ? false : true;
-		
-		if(event.daemon().verbose) {
-			event.log("header " + length, Event.VERBOSE);
+
+		if (Event.LOG) {
+			if(event.daemon().verbose) {
+				event.log("header " + length, Event.VERBOSE);
+			}
 		}
-		
+
 		length = 0;
 		init = true;
 	}
 
 	protected void end() {
-		if (event.daemon().verbose && length > 0)
-			event.log("query " + length, Event.VERBOSE);
+		if (Event.LOG) {
+			if (event.daemon().verbose && length > 0)
+				event.log("query " + length, Event.VERBOSE);
+		}
 
 		available = 0;
 		init = false;
@@ -97,7 +101,7 @@ public abstract class Input extends InputStream implements Event.Block {
 
 		ByteBuffer buffer = event.worker().in();
 		buffer.clear();
-		
+
 		try {
 			available = event.channel().read(buffer);
 		}
@@ -113,7 +117,7 @@ public abstract class Input extends InputStream implements Event.Block {
 
 		return available;
 	}
-	
+
 	/**
 	 * Reads a \r\n terminated line of text from the input.
 	 * @return

@@ -17,7 +17,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 	private final static byte[] chunked = ("Transfer-Encoding: Chunked" + EOL).getBytes();
 
 	private byte[] one = new byte[1];
-	private boolean chunk;
 	protected int length, size;
 	protected Reply reply;
 	protected boolean init, push, fixed, done;
@@ -25,10 +24,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 	Output(Reply reply) throws IOException {
 		this.reply = reply;
 		size = reply.event().daemon().size;
-	}
-
-	protected boolean chunk() {
-		return chunk;
 	}
 
 	/**
@@ -74,15 +69,19 @@ public abstract class Output extends OutputStream implements Event.Block {
 
 	protected void init(long length) throws IOException {
 		if (init) {
-			reply.event().log("already inited", Event.DEBUG);
+			if (Event.LOG) {
+				reply.event().log("already inited", Event.DEBUG);
+			}
 			return;
-		} else
-			reply.event().log("init " + reply.event().query().version() + " " + length,
-					Event.DEBUG);
+		} else {
+			if (Event.LOG) {
+				reply.event().log("init " + reply.event().query().version() + " " + length,
+						Event.DEBUG);
+			}
+		}
 
 		done = false;
-
-		chunk = reply.event().query().version().equalsIgnoreCase("HTTP/1.1");
+		
 		reply.event().interest(Event.WRITE);
 
 		init = true;
@@ -90,67 +89,43 @@ public abstract class Output extends OutputStream implements Event.Block {
 		if(length > 0) {
 			fixed = true;
 			headers(length);
-		} else if (chunk) {
-			/*
-			 * TODO: What am I doing wrong?
-			 * 
-			 * Browsers do NOT support "Transfer-Encoding: Chunked" with length
-			 * 0 from status codes that they expect to have "Content-Length: 0"
-			 * for some reason it seems? Or is it my fault?
-			 * 
-			 * If an Event returns chunked with length 0 it will, upon next use,
-			 * leave the browser waiting for more... then "An established
-			 * connection was aborted by the software in your host machine" with
-			 * IE and "Socket closed" with Firefox. Help needed!
-			 * 
-			 * This workaround works fine for now though. See end() and
-			 * Chunked.flush().
-			 */
-			if (reply.code().startsWith("302")
-					|| reply.code().startsWith("304")) {
+		} else {
+			if (zero()) {
 				headers(0);
 			} else {
 				headers(-1);
 			}
-		} else {
-			/*
-			 * HTTP/1.0 is a waste of time and resources.
-			 * To buffer dynamic response data instead of 
-			 * chunking it is so wasteful I decided to remove it.
-			 */
-			// Can't serve answer because of HTTP/1.0!!!
-			//headers(-1);
-			throw new IOException("HTTP/1.1 support only. (" + reply.event().query().version() + ")");
 		}
 	}
 
 	protected void end() throws IOException {
-		if(reply.event().daemon().debug) {
-			reply.event().log("end", Event.DEBUG);
+		if (Event.LOG) {
+			if(reply.event().daemon().debug) {
+				reply.event().log("end", Event.DEBUG);
+			}
 		}
-		
+
 		done = true;
 		flush();
 
-		if (reply.event().daemon().verbose && length > 0) {
-			reply.event().log("reply " + length, Event.VERBOSE);
+		if (Event.LOG) {
+			if (reply.event().daemon().verbose && length > 0) {
+				reply.event().log("reply " + length, Event.VERBOSE);
+			}
 		}
 
 		reply.event().interest(Event.READ);
 
-		/*
-		 * Added this to fix the push bug that adding the 
-		 * fixed flag caused. If you look in the flush method 
-		 * at the bottom of this file you will see why this is needed.
-		 */
 		fixed = false;
 		init = false;
 		length = 0;
 	}
 
 	protected void headers(long length) throws IOException {
-		if (reply.event().daemon().verbose) {
-			reply.event().log("code " + reply.code(), Event.VERBOSE);
+		if (Event.LOG) {
+			if (reply.event().daemon().verbose) {
+				reply.event().log("code " + reply.code(), Event.VERBOSE);
+			}
 		}
 
 		wrote((reply.event().query().version() + " " + reply.code() + EOL)
@@ -194,9 +169,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 			wrote((cookie + EOL).getBytes());
 
 			reply.event().session().set(true);
-			
-			if (reply.event().daemon().verbose) {
-				reply.event().log("cookie " + cookie, Event.VERBOSE);
+
+			if (Event.LOG) {
+				if (reply.event().daemon().verbose) {
+					reply.event().log("cookie " + cookie, Event.VERBOSE);
+				}
 			}
 		}
 
@@ -235,13 +212,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		try {
 			ByteBuffer out = reply.event().worker().out();
 			int remaining = out.remaining();
-/*
-			if(reply.event().daemon().debug) {
-				reply.event().log(
-					"wrote " + new String(b, off, len),
-					Event.DEBUG);
-			}
-	*/		
+	
 			while (len > remaining) {
 				out.put(b, off, remaining);
 
@@ -250,12 +221,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 				off += remaining;
 				len -= remaining;
 
-				/*
-				 * oh, nasty little bugger, added this when a page with
-				 * exact multiple of IO buffer length was sent and the
-				 * trailing empty chunked line blocked the server at 99%
-				 * CPU!
-				 */
 				remaining = out.remaining();
 			}
 
@@ -280,18 +245,22 @@ public abstract class Output extends OutputStream implements Event.Block {
 			while (out.remaining() > 0) {
 				int sent = fill(debug);
 
-				if (debug) {
-					reply.event().log(
-							"sent " + sent + " remaining " + out.remaining(),
-							Event.DEBUG);
+				if (Event.LOG) {
+					if (debug) {
+						reply.event().log(
+								"sent " + sent + " remaining " + out.remaining(),
+								Event.DEBUG);
+					}
 				}
 
 				if (sent == 0) {
 					reply.event().block(this);
 
-					if (debug) {
-						reply.event().log("still in buffer " + out.remaining(),
-								Event.DEBUG);
+					if (Event.LOG) {
+						if (debug) {
+							reply.event().log("still in buffer " + out.remaining(),
+									Event.DEBUG);
+						}
 					}
 				}
 			}
@@ -301,10 +270,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 	}
 
 	public void flush() throws IOException {
-		if(reply.event().daemon().debug) {
-			reply.event().log("flush " + length, Event.DEBUG);
+		if (Event.LOG) {
+			if(reply.event().daemon().debug) {
+				reply.event().log("flush " + length, Event.DEBUG);
+			}
 		}
-		
+
 		try {
 			internal(true);
 		} catch (Exception e) {
@@ -330,9 +301,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 			throw (Failure.Close) new Failure.Close().initCause(e); // Connection reset by peer
 		}
 
-		if (debug) {
-			reply.event().log("filled " + sent + " out of " + remaining,
-					Event.DEBUG);
+		if (Event.LOG) {
+			if (debug) {
+				reply.event().log("filled " + sent + " out of " + remaining,
+						Event.DEBUG);
+			}
 		}
 
 		return sent;
@@ -347,9 +320,13 @@ public abstract class Output extends OutputStream implements Event.Block {
 	 */
 	public abstract void finish() throws IOException;
 
-	/*
-	 * Borrowed from sun.net.httpserver.ChunkedOutputStream.java
-	 */
+	protected boolean zero() {
+		return reply.code().startsWith("302")
+		|| reply.code().startsWith("304")
+		|| reply.code().startsWith("505")
+		|| reply.code().startsWith("505");
+	}
+	
 	static class Chunked extends Output {
 		public static int OFFSET = 6;
 		private int cursor = OFFSET, count = 0;
@@ -374,7 +351,7 @@ public abstract class Output extends OutputStream implements Event.Block {
 		public void write(byte[] b, int off, int len) throws IOException {
 			length += len;
 
-			if (!chunk() || fixed) {
+			if (fixed) {
 				wrote(b, off, len);
 				return;
 			}
@@ -439,17 +416,20 @@ public abstract class Output extends OutputStream implements Event.Block {
 		}
 
 		public void flush() throws IOException {
-			if (chunk() && init) {
-				if (reply.code().startsWith("302")
-						|| reply.code().startsWith("304")) {
-					if(reply.event().daemon().debug) {
-						reply.event().log("length " + length, Event.DEBUG);
+			if (init) {
+				if (zero()) {
+					if (Event.LOG) {
+						if(reply.event().daemon().debug) {
+							reply.event().log("length " + length, Event.DEBUG);
+						}
 					}
 				} else if (!fixed) {
-					if(reply.event().daemon().debug) {
-						reply.event().log("chunk flush " + count + " " + complete(), Event.DEBUG);
+					if (Event.LOG) {
+						if(reply.event().daemon().debug) {
+							reply.event().log("chunk flush " + count + " " + complete(), Event.DEBUG);
+						}
 					}
-					
+
 					if (count > 0) {
 						write();
 					}
@@ -459,10 +439,12 @@ public abstract class Output extends OutputStream implements Event.Block {
 					}
 				}
 			} else if (!fixed) {
-				if(reply.event().daemon().debug) {
-					reply.event().log("asynchronous push " + count, Event.DEBUG);
+				if (Event.LOG) {
+					if(reply.event().daemon().debug) {
+						reply.event().log("asynchronous push " + count, Event.DEBUG);
+					}
 				}
-				
+
 				push = true;
 			}
 
