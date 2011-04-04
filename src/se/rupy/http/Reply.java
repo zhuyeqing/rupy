@@ -48,8 +48,10 @@ public class Reply {
 	}
 
 	protected void done() throws IOException {
-		event.log("done " + output.push(), Event.DEBUG);
-
+		if (Event.LOG) {
+			event.log("done " + output.push(), Event.DEBUG);
+		}
+		
 		if(!output.push()) {
 			output.end();
 
@@ -104,7 +106,10 @@ public class Reply {
 	 * @param code
 	 */
 	public void code(String code) throws IOException {
-		event.log("code", Event.DEBUG);
+		if (Event.LOG) {
+			event.log("code", Event.DEBUG);
+		}
+		
 		this.code = code;
 		output.init(0);
 	}
@@ -152,7 +157,10 @@ public class Reply {
 	 * @throws IOException
 	 */
 	public Output output(long length) throws IOException {
-		event.log("output " + length, Event.DEBUG);
+		if (Event.LOG) {
+			event.log("output " + length, Event.DEBUG);
+		}
+		
 		output.init(length);
 		return output;
 	}

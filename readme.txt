@@ -203,5 +203,7 @@ VERSION:
       - Fixed socket timeout loop.
       - Fixed boolean parameter.
       - Fixed SimpleDateFormat concurrency.
+      - Added response codes 501 and 505 for unimplemented 
+        methods and HTTP/1.0
       
 have fun!

@@ -95,7 +95,7 @@ public class Daemon implements Runnable {
 		"true");
 		show_workers = properties.getProperty("workers", "false").toLowerCase().equals(
 		"true");
-		
+
 		if (!verbose) {
 			debug = false;
 		}
@@ -122,7 +122,7 @@ public class Daemon implements Runnable {
 	public Properties properties() {
 		return properties;
 	}
-	
+
 	protected void log() throws IOException {
 		File file = new File("log");
 
@@ -582,18 +582,23 @@ public class Daemon implements Runnable {
 						if (key.isAcceptable()) {
 							// TODO: Event pool?
 							event = new Event(this, key, index++);
-							event.log("accept ---");
+
+							if (Event.LOG) {
+								event.log("accept ---");
+							}
 						} else if (key.isReadable() || key.isWritable()) {
 							key.interestOps(0);
 
 							event = (Event) key.attachment();
 							Worker worker = event.worker();
 
-							if (debug) {
-								if (key.isReadable())
-									event.log("read ---");
-								if (key.isWritable())
-									event.log("write ---");
+							if (Event.LOG) {
+								if (debug) {
+									if (key.isReadable())
+										event.log("read ---");
+									if (key.isWritable())
+										event.log("write ---");
+								}
 							}
 
 							if (key.isReadable() && event.push()) {

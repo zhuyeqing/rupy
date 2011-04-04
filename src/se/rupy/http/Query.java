@@ -25,16 +25,16 @@ public class Query extends Hash {
 		input = new Input.Chunked(event);
 	}
 
-	protected void headers() throws IOException {
+	protected boolean headers() throws IOException {
 		headers.clear();
 
 		String line = input.line();
-		
+
 		while(line.equals("")) {
 			//System.out.println("loop");
 			line = input.line();
 		}
-		
+
 		StringTokenizer http = new StringTokenizer(line, " ");
 		String method = http.nextToken();
 
@@ -50,9 +50,9 @@ public class Query extends Hash {
 			this.method = DELETE;
 			parsed = false;
 		} else {
-			throw new IOException("Unsupported method (" + method + ").");
+			return false;
 		}
-		
+
 		String get = http.nextToken();
 		int index = get.indexOf('?');
 
@@ -88,12 +88,12 @@ public class Query extends Hash {
 		}
 
 		String encoding = header("transfer-encoding");
-		
+
 		if (encoding != null && encoding.equalsIgnoreCase("chunked")) {
 			length = -1;
 		} else {
 			String content = header("content-length");
-			
+
 			if(content != null) {
 				length = Integer.parseInt(content);
 			}
@@ -113,18 +113,22 @@ public class Query extends Hash {
 		}
 
 		String connection = header("connection");
-		
+
 		if (connection != null && connection.equalsIgnoreCase("close")) {
 			input.event().close(true);
 		}
 
 		clear();
 
-		input.event().log(
-				method + " " + (length > -1 ? "" + length : "*") + " " + path
-						+ (parameters != null ? "?" + parameters : ""),
-				Event.VERBOSE);
+		if (Event.LOG) {
+			input.event().log(
+					method + " " + (length > -1 ? "" + length : "*") + " " + path
+					+ (parameters != null ? "?" + parameters : ""),
+					Event.VERBOSE);
+		}
+
 		input.init();
+		return true;
 	}
 
 	/**
@@ -157,8 +161,10 @@ public class Query extends Hash {
 				parameters = new String(out.toByteArray());
 		}
 
-		input.event().log("query " + parameters, Event.VERBOSE);
-
+		if (Event.LOG) {
+			input.event().log("query " + parameters, Event.VERBOSE);
+		}
+		
 		if (parameters != null) {
 			StringTokenizer amp = new StringTokenizer(parameters, "&");
 
@@ -168,7 +174,7 @@ public class Query extends Hash {
 
 				String key = null;
 				String value = "false";
-				
+
 				if(pos == -1) {
 					pos = equ.length();
 					key = equ.substring(0, pos);
@@ -177,7 +183,7 @@ public class Query extends Hash {
 					key = equ.substring(0, pos);
 					value = equ.length() > pos + 1 ? decoder.decode(equ.substring(pos + 1), "UTF-8") : "";
 				}
-				
+
 				put(key, value);
 			}
 		}
@@ -221,7 +227,7 @@ public class Query extends Hash {
 	public String header(String name) {
 		return (String) headers.get(name.toLowerCase());
 	}
-	
+
 	protected void header(String name, String value) {
 		headers.put(name, value);
 	}
@@ -236,11 +242,11 @@ public class Query extends Hash {
 	public String parameters() {
 		return parameters;
 	}
-	
+
 	public HashMap header() {
 		return headers;
 	}
-	
+
 	public Input input() {
 		return input;
 	}

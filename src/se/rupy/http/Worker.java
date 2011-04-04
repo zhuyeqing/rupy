@@ -25,7 +25,7 @@ public class Worker implements Runnable, Chain.Link {
 	private boolean awake, alive;
 	private long touch;
 	private DateFormat date;
-	
+
 	protected Worker(Daemon daemon, int index) {
 		this.daemon = daemon;
 		this.index = index;
@@ -35,7 +35,7 @@ public class Worker implements Runnable, Chain.Link {
 
 		date = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 		date.setTimeZone(TimeZone.getTimeZone("GMT"));
-		
+
 		alive = true;
 
 		thread = new Thread(this);
@@ -45,7 +45,7 @@ public class Worker implements Runnable, Chain.Link {
 	protected DateFormat date() {
 		return date;
 	}
-	
+
 	protected ByteBuffer in() {
 		touch();
 		return in;
@@ -65,11 +65,13 @@ public class Worker implements Runnable, Chain.Link {
 	}
 
 	protected void wakeup() {
-		if(event != null && event.daemon().debug)
-			event.log("wakeup", Event.DEBUG);
+		if (Event.LOG) {
+			if(event != null && event.daemon().debug)
+				event.log("wakeup", Event.DEBUG);
+		}
 
 		touch();
-		
+
 		synchronized (thread) {
 			thread.notify();
 		}
@@ -82,17 +84,19 @@ public class Worker implements Runnable, Chain.Link {
 		if(event.daemon().debug) {
 			event.log("touch " + (System.currentTimeMillis() - touch), Event.DEBUG);
 		}
-		*/
+		 */
 		touch = System.currentTimeMillis();
 	}
-	
+
 	protected void snooze() {
 		snooze(0);
 	}
 
 	protected void snooze(long delay) {
-		if(event != null && event.daemon().debug)
-			event.log("snooze " + delay, Event.DEBUG);
+		if (Event.LOG) {
+			if(event != null && event.daemon().debug)
+				event.log("snooze " + delay, Event.DEBUG);
+		}
 
 		synchronized (thread) {
 			try {
@@ -194,7 +198,7 @@ public class Worker implements Runnable, Chain.Link {
 		if(event != null) {
 			event.disconnect(e);
 		}
-		
+
 		out.clear();
 		in.clear();
 	}

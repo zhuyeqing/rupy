@@ -19,6 +19,9 @@ import java.nio.channels.*;
  * @author marc
  */
 public class Event extends Throwable implements Chain.Link {
+	// waste of time it seems. hotspot does this optimisation for me! :)
+	public final static boolean LOG = true;
+
 	static int READ = 1 << 0;
 	static int WRITE = 1 << 2;
 	static int VERBOSE = 1 << 0;
@@ -48,7 +51,6 @@ public class Event extends Throwable implements Chain.Link {
 
 	private int index, interest;
 	private String remote;
-	//private boolean close, push;
 	private boolean close;
 
 	protected Event(Daemon daemon, SelectionKey key, int index) throws IOException {
@@ -90,10 +92,6 @@ public class Event extends Throwable implements Chain.Link {
 		return session;
 	}
 
-	//void session(Session session) {
-	//	this.session = session;
-	//}
-
 	public String remote() {
 		return remote;
 	}
@@ -109,14 +107,14 @@ public class Event extends Throwable implements Chain.Link {
 	public int index() {
 		return index;
 	}
-	
+
 	protected void close(boolean close) {
 		this.close = close;
 	}
 
 	protected void worker(Worker worker) {
 		this.worker = worker;
-		
+
 		try {
 			register(READ);
 		}
@@ -202,10 +200,16 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	protected void read() throws IOException {
-		query.headers();
+		boolean method = query.headers();
 		remote = address();
 
-		if (!content() && !service()) {
+		if (!query.version().equalsIgnoreCase("HTTP/1.1")) {
+			reply.code("505 Not Supported (" + query.version() + ")");
+		}
+		else if (!method) {
+			reply.code("501 Not Implemented (" + query.method() + ")");
+		}
+		else if (!content() && !service()) {
 			reply.code("404 Not Found");
 			reply.output().print(
 					"<pre>'" + query.path() + "' was not found.</pre>");
@@ -223,7 +227,9 @@ public class Event extends Throwable implements Chain.Link {
 			remote = address.getAddress().getHostAddress();
 		}
 
-		log("remote " + remote, VERBOSE);
+		if (Event.LOG) {
+			log("remote " + remote, VERBOSE);
+		}
 
 		return remote;
 	}
@@ -241,7 +247,10 @@ public class Event extends Throwable implements Chain.Link {
 
 		if (query.modified() == 0 || query.modified() < reply.modified()) {
 			Deploy.pipe(stream.input(), reply.output(stream.length()));
-			log("content " + type, VERBOSE);
+
+			if (Event.LOG) {
+				log("content " + type, VERBOSE);
+			}
 		} else {
 			reply.code("304 Not Modified");
 		}
@@ -266,7 +275,10 @@ public class Event extends Throwable implements Chain.Link {
 		} catch (Event e) {
 			// Break the filter chain.
 		} catch (Exception e) {
-			log(e);
+			if (Event.LOG) {
+				log(e);
+			}
+
 			daemon.error(this, e);
 
 			StringWriter trace = new StringWriter();
@@ -298,16 +310,22 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void register() throws IOException {
 		if (interest != key.interestOps()) {
-			log((interest == READ ? "read" : "write") + " prereg " + interest
-					+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			if (Event.LOG) {
+				log((interest == READ ? "read" : "write") + " prereg " + interest
+						+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			}
 			key = channel.register(key.selector(), interest, this);
-			log((interest == READ ? "read" : "write") + " postreg " + interest
-					+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			if (Event.LOG) {
+				log((interest == READ ? "read" : "write") + " postreg " + interest
+						+ " " + key.interestOps() + " " + key.readyOps(), DEBUG);
+			}
 		}
 
 		key.selector().wakeup();
 
-		log((interest == READ ? "read" : "write") + " wakeup", DEBUG);
+		if (Event.LOG) {
+			log((interest == READ ? "read" : "write") + " wakeup", DEBUG);
+		}
 	}
 
 	protected void register(int interest) {
@@ -330,7 +348,11 @@ public class Event extends Throwable implements Chain.Link {
 
 			if (available > 0) {
 				long delay = daemon.delay - (max - System.currentTimeMillis());
-				log("delay " + delay + " " + available, VERBOSE);
+				
+				if (Event.LOG) {
+					log("delay " + delay + " " + available, VERBOSE);
+				}
+				
 				return available;
 			}
 
@@ -361,7 +383,9 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			if(daemon.debug) {
-				log("disconnect " + e);
+				if (Event.LOG) {
+					log("disconnect " + e);
+				}
 				
 				if(e != null) {
 					e.printStackTrace();
@@ -381,6 +405,7 @@ public class Event extends Throwable implements Chain.Link {
 		if(key == null && query.method() == Query.GET) {
 			/*
 			 * XSS comet cookie: this means first GETs are parsed!
+			 * TODO: This should be removed because you can use a P3P header to fix this, go figure!
 			 */
 			query.parse();
 			String cookie = query.string("cookie");
@@ -392,8 +417,10 @@ public class Event extends Throwable implements Chain.Link {
 			session = (Session) daemon.session().get(key);
 
 			if (session != null) {
-				log("old key " + key, VERBOSE);
-
+				if (Event.LOG) {
+					log("old key " + key, VERBOSE);
+				}
+				
 				session.add(this);
 				session.touch();
 
@@ -415,7 +442,10 @@ public class Event extends Throwable implements Chain.Link {
 			}
 
 			synchronized (daemon.session()) {
-				log("new key " + session.key(), VERBOSE);
+				if (Event.LOG) {
+					log("new key " + session.key(), VERBOSE);
+				}
+				
 				daemon.session().put(session.key(), session);
 			}
 		}
@@ -475,9 +505,8 @@ public class Event extends Throwable implements Chain.Link {
 	 */
 	public boolean push() {
 		return reply.output.push();
-		//return push;
 	}
-	
+
 	/**
 	 * Touch the worker if you have a http connection that needs to wait.
 	 */
@@ -486,11 +515,7 @@ public class Event extends Throwable implements Chain.Link {
 			worker.touch();
 		}
 	}
-/*
-	protected void push(boolean push) {
-		this.push = push;
-	}
-*/
+
 	/**
 	 * Keeps the chunked reply open for asynchronous writes. If you are 
 	 * streaming data and you need to send something upon the first request 
@@ -500,7 +525,6 @@ public class Event extends Throwable implements Chain.Link {
 	 */
 	public void hold() throws IOException {
 		reply.output.push = true;
-		//this.push = true;
 	}
 
 	static class Mime extends Properties {
