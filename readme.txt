@@ -10,7 +10,7 @@ INTRODUCTION:
 
 RUN:
 
-    You need java 1.4 or later installed and 
+    You need java 1.5 or later installed and 
     added to the path and JAVA_HOME set to run 
     the server.
 
@@ -22,7 +22,7 @@ RUN:
     Since NIO has been very unstable from 
     1.6.0_00 until 1.6.0_18 with Selector bugs 
     ranging from 100% CPU to thread deadlock; 
-    you should use 1.4, 1.5 or 1.6.0_18 and later 
+    you should use 1.5 or 1.6.0_18 and later 
     on your live server.
 
 BUILD AND TEST OR DOCUMENT:
@@ -203,7 +203,9 @@ VERSION:
       - Fixed socket timeout loop.
       - Fixed boolean parameter.
       - Fixed SimpleDateFormat concurrency.
-      - Added response codes 501 and 505 for unimplemented 
-        methods and HTTP/1.0
+      - Added response code 505 for HTTP/1.0.
+      - Fixed file descriptor leak. Added -panel startup property 
+        so you can browse to /panel to get worker and event status 
+        to debug locks and leaks.
       
 have fun!

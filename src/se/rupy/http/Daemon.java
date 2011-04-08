@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import java.nio.channels.*;
 
@@ -16,9 +17,11 @@ import java.nio.channels.*;
 
 public class Daemon implements Runnable {
 	protected Properties properties;
-	protected boolean verbose, debug, host, alive, show_workers;
+	protected boolean verbose, debug, host, alive, panel;
 	protected int threads, timeout, cookie, delay, size, port;
-	private HashMap archive, service, session;
+	private int selected, valid, accept, readwrite; // panel stats
+	private HashMap archive, service;
+	protected ConcurrentHashMap events, session;
 	private Chain workers, queue;
 	private Heart heart;
 	private Selector selector;
@@ -93,7 +96,7 @@ public class Daemon implements Runnable {
 		"true");
 		host = properties.getProperty("host", "false").toLowerCase().equals(
 		"true");
-		show_workers = properties.getProperty("workers", "false").toLowerCase().equals(
+		panel = properties.getProperty("panel", "false").toLowerCase().equals(
 		"true");
 
 		if (!verbose) {
@@ -102,7 +105,8 @@ public class Daemon implements Runnable {
 
 		archive = new HashMap();
 		service = new HashMap();
-		session = new HashMap();
+		session = new ConcurrentHashMap();
+		events = new ConcurrentHashMap();
 
 		workers = new Chain();
 		queue = new Chain();
@@ -137,7 +141,7 @@ public class Daemon implements Runnable {
 	}
 
 	protected void error(Event event, Throwable t) throws IOException {
-		if (error != null) {
+		if (error != null && t != null && !(t instanceof Failure.Close)) {
 			Calendar date = Calendar.getInstance();
 			StringBuilder b = new StringBuilder();
 
@@ -246,7 +250,7 @@ public class Daemon implements Runnable {
 		selector.wakeup();
 	}
 
-	public HashMap session() {
+	public ConcurrentHashMap session() {
 		return session;
 	}
 
@@ -483,9 +487,11 @@ public class Daemon implements Runnable {
 	protected synchronized Event next(Worker worker) {
 		synchronized (this.queue) {
 			if (queue.size() > 0) {
-				if (debug)
-					out.println("worker " + worker.index()
-							+ " found work " + queue);
+				if (Event.LOG) {
+					if (debug)
+						out.println("worker " + worker.index()
+								+ " found work " + queue);
+				}
 
 				return (Event) queue.remove(0);
 			}
@@ -533,25 +539,38 @@ public class Daemon implements Runnable {
 					}
 				}
 			}
+
 			/*
-			 * Used to debug thread lock.
+			 * Used to debug thread locks and file descriptor leaks.
 			 */
 
-			if(show_workers) {
+			if(panel) {
 				add(new Service() {
-					public String path() { return "/workers"; }
+					public String path() { return "/panel"; }
 					public void filter(Event event) throws Event, Exception {
 						Iterator it = workers.iterator();
-						event.output().println("<pre>");
+						event.output().println("<pre>workers: {size: " + workers.size() + ", ");
 						while(it.hasNext()) {
 							Worker worker = (Worker) it.next();
-							event.output().println(worker.index() + " " + worker.event() + " " + worker.busy() + " " + worker.lock());
+							event.output().print(" worker: {index: " + worker.index() + ", busy: " + worker.busy() + ", lock: " + worker.lock());
 
 							if(worker.event() != null) {
-								event.output().println("  " + worker.event().reply().output.init + " " + worker.event().reply().output.done + " " + worker.event().worker());
+								event.output().println(", ");
+								event.output().println("  event: {index: " + worker.event() + ", init: " + worker.event().reply().output.init + ", done: " + worker.event().reply().output.done + "}");
+								event.output().println(" }");
+							}
+							else {
+								event.output().println("}");
 							}
 						}
-						event.output().println("</pre>");
+						event.output().println("}");
+						event.output().println("events: {size: " + events.size() + ", selected: " + selected + ", valid: " + valid + ", accept: " + accept + ", readwrite: " + readwrite + ", ");
+						it = events.values().iterator();
+						while(it.hasNext()) {
+							Event e = (Event) it.next();
+							event.output().println(" event: {index: " + e + ", last: " + (System.currentTimeMillis() - e.last()) + "}");
+						}
+						event.output().println("}</pre>");
 					}
 				});
 			}
@@ -572,21 +591,26 @@ public class Daemon implements Runnable {
 		while (alive) {
 			try {
 				selector.select();
-				Iterator it = selector.selectedKeys().iterator();
+				Set set = selector.selectedKeys();
+				int valid = 0, accept = 0, readwrite = 0, selected = set.size();
+				Iterator it = set.iterator();
 
 				while (it.hasNext()) {
 					key = (SelectionKey) it.next();
 					it.remove();
 
 					if (key.isValid()) {
+						valid++;
 						if (key.isAcceptable()) {
-							// TODO: Event pool?
+							accept++;
 							event = new Event(this, key, index++);
+							events.put(new Integer(event.index()), event);
 
 							if (Event.LOG) {
 								event.log("accept ---");
 							}
 						} else if (key.isReadable() || key.isWritable()) {
+							readwrite++;
 							key.interestOps(0);
 
 							event = (Event) key.attachment();
@@ -611,6 +635,11 @@ public class Daemon implements Runnable {
 						}
 					}
 				}
+
+				this.valid = valid;
+				this.accept = accept;
+				this.readwrite = readwrite;
+				this.selected = selected;
 			} catch (Exception e) {
 				/*
 				 * Here we get mostly ClosedChannelExceptions and
@@ -618,7 +647,12 @@ public class Daemon implements Runnable {
 				 * taking a beating. Better to drop connections than to drop the
 				 * server.
 				 */
-				event.disconnect(e);
+				if(event == null) {
+					System.out.println(events + " " + key);
+				}
+				else {
+					event.disconnect(e);
+				}
 			}
 		}
 
@@ -639,8 +673,10 @@ public class Daemon implements Runnable {
 			queue.add(event);
 		}
 
-		if (debug)
-			out.println("queue " + queue.size());
+		if (Event.LOG) {
+			if (debug)
+				out.println("queue " + queue.size());
+		}
 	}
 
 	protected synchronized void employ(Event event) {
@@ -666,8 +702,10 @@ public class Daemon implements Runnable {
 			}
 		}
 
-		if (debug)
-			out.println("worker " + worker.index() + " hired. (" + queue.size() + ")");
+		if (Event.LOG) {
+			if (debug)
+				out.println("worker " + worker.index() + " hired. (" + queue.size() + ")");
+		}
 
 		event.worker(worker);
 		worker.event(event);
@@ -713,16 +751,16 @@ public class Daemon implements Runnable {
 				try {
 					Thread.sleep(1000);
 
-					synchronized (session) {
-						Iterator it = session.values().iterator();
+					Iterator it = session.values().iterator();
 
-						while (it.hasNext()) {
-							Session se = (Session) it.next();
+					while (it.hasNext()) {
+						Session se = (Session) it.next();
 
-							if (System.currentTimeMillis() - se.date() > timeout) {
-								it.remove();
-								se.remove();
+						if (System.currentTimeMillis() - se.date() > timeout) {
+							it.remove();
+							se.remove();
 
+							if (Event.LOG) {
 								if (debug)
 									out.println("session timeout "
 											+ se.key());
@@ -730,11 +768,21 @@ public class Daemon implements Runnable {
 						}
 					}
 
-					Iterator it = workers.iterator();
+					it = workers.iterator();
 
 					while(it.hasNext()) {
 						Worker worker = (Worker) it.next();
 						worker.busy();
+					}
+
+					it = events.values().iterator();
+
+					while(it.hasNext()) {
+						Event event = (Event) it.next();
+
+						if(System.currentTimeMillis() - event.last() > 300000) {
+							event.disconnect(null);
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace(out);

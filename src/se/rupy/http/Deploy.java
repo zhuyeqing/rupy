@@ -2,6 +2,7 @@ package se.rupy.http;
 
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.*;
 
@@ -428,7 +429,7 @@ public class Deploy extends Service {
 				URL url = new URL("http://" + args[0] + "/deploy");
 				File file = new File(args[1]);
 				InputStream in = new Client().send(url, file, args[2]);
-				System.out.println(Client.toString(in));
+				System.out.println(new SimpleDateFormat("H:mm").format(new Date()) + " " + Client.toString(in));
 			} catch (ConnectException ce) {
 				System.out
 				.println("Connection failed, is there a server running on "
