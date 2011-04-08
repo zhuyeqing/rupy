@@ -52,20 +52,25 @@ public class Event extends Throwable implements Chain.Link {
 	private int index, interest;
 	private String remote;
 	private boolean close;
+	private long touch;
 
 	protected Event(Daemon daemon, SelectionKey key, int index) throws IOException {
+		touch();
+		
 		channel = ((ServerSocketChannel) key.channel()).accept();
 		channel.configureBlocking(false);
 
 		this.daemon = daemon;
 		this.index = index;
-		this.key = key;
+		//this.key = key;
 
 		query = new Query(this);
 		reply = new Reply(this);
-
+		
 		key = channel.register(key.selector(), READ, this);
 		key.selector().wakeup();
+		
+		this.key = key;
 	}
 
 	protected int interest() {
@@ -200,14 +205,16 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	protected void read() throws IOException {
-		boolean method = query.headers();
+		touch();
+		
+		if (!query.headers()) {		
+			disconnect(null);
+		}
+		
 		remote = address();
 
-		if (!method) {
-			reply.code("501 Not Implemented (" + query.method() + ")");
-		}
-		else if (!query.version().equalsIgnoreCase("HTTP/1.1")) {
-			reply.code("505 Not Supported (" + query.version() + ")");
+		if (!query.version().equalsIgnoreCase("HTTP/1.1")) {
+			reply.code("505 Not Supported");
 		}
 		else if (!content() && !service()) {
 			reply.code("404 Not Found");
@@ -293,6 +300,7 @@ public class Event extends Throwable implements Chain.Link {
 	}
 
 	protected void write() throws IOException {
+		touch();
 		service();
 		finish();
 	}
@@ -392,10 +400,12 @@ public class Event extends Throwable implements Chain.Link {
 				}
 			}
 
-			if(e != null && !(e instanceof Failure.Close))
-				daemon.error(this, e);
+			daemon.error(this, e);
 		} catch (Exception de) {
 			de.printStackTrace(daemon.out);
+		}
+		finally {
+			daemon.events.remove(new Integer(index));
 		}
 	}
 
@@ -413,7 +423,6 @@ public class Event extends Throwable implements Chain.Link {
 		}
 
 		if (key != null) {
-			// Synchronize?
 			session = (Session) daemon.session().get(key);
 
 			if (session != null) {
@@ -511,11 +520,17 @@ public class Event extends Throwable implements Chain.Link {
 	 * Touch the worker if you have a http connection that needs to wait.
 	 */
 	public void touch() {
+		touch = System.currentTimeMillis();
+		
 		if(worker != null) {
 			worker.touch();
 		}
 	}
 
+	protected long last() {
+		return touch;
+	}
+	
 	/**
 	 * Keeps the chunked reply open for asynchronous writes. If you are 
 	 * streaming data and you need to send something upon the first request 

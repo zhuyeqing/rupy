@@ -133,8 +133,11 @@ public abstract class Output extends OutputStream implements Event.Block {
 		wrote(("Date: " + reply.event().worker().date().format(new Date()) + EOL)
 				.getBytes());
 		wrote(server);
-		wrote(("Content-Type: " + reply.type() + EOL).getBytes());
-
+		
+		if(!zero()) {
+			wrote(("Content-Type: " + reply.type() + EOL).getBytes());
+		}
+		
 		if (length > -1) {
 			wrote(("Content-Length: " + length + EOL).getBytes());
 		} else {
@@ -323,7 +326,6 @@ public abstract class Output extends OutputStream implements Event.Block {
 	protected boolean zero() {
 		return reply.code().startsWith("302")
 		|| reply.code().startsWith("304")
-		|| reply.code().startsWith("505")
 		|| reply.code().startsWith("505");
 	}
 	
