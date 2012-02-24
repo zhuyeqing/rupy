@@ -3,7 +3,11 @@
 
  If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.4.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.4.3.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant local_ task, this should build and deploy a test.jar application to your rupy server. Now try browsing to http://localhost:8000.
 ----
- If you wan't to deploy to host.rupy.se you can follow the tutorial above with some alterations: You don't need to start a local rupy process. You need to edit the build.xml script with your properties. You should run _ant remote_ instead of _ant local_.
+ If you wan't to deploy to *host.rupy.se* you can follow the tutorial above with some alterations:
+
+  You don't need to start a local rupy process.
+  You need to edit the build.xml script with your properties.
+  You should run _ant remote_ instead of _ant local_.
 ----
  We have started the development of [http://sprout.googlecode.com sprout], a simple blogger; based on top of rupy and [http://memory.googlecode.com memory]. If you want a real-world example of rupy in action try this out!
 ----
