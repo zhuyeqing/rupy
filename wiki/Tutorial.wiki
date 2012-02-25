@@ -1,12 +1,12 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
 
-=local=
+===local===
 
  If you feel a bit lazy today, then simply download the [http://rupy.googlecode.com/files/page-0.4.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.4.3.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant local_ task, this should build and deploy a test.jar application to your rupy server. Now try browsing to http://localhost:8000.
 ----
 
-=remote=
+===remote===
 
  If you wan't to deploy to [http://host.rupy.se host.rupy.se] you can follow the tutorial above with these changes:
 
