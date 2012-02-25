@@ -8,7 +8,7 @@
 
 ===remote===
 
- If you wan't to deploy to [http://host.rupy.se host.rupy.se] you can follow the tutorial above with these changes:
+ If you wan't to deploy to [http://host.rupy.se host.rupy.se] you can follow the *local* tutorial above with these changes:
 
   # You need to edit the _build.xml_ script with your properties.
   # You should run _ant remote_ instead of _ant local_.
