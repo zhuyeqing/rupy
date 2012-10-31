@@ -15,3 +15,15 @@ Since 0.4.1 delay is also a cleanup duration for dead TCP layer sockets. Which m
 *API*
 
 The API is designed to be as small as possible, and therefore you have to handle the asynchronous events being recycled. While other Comet API's provide you with special methods for asynchronous callbacks, we rely on the Event.push() method to tell us wether an event is "real" or "recycled".
+
+*Code*
+
+The hierarchy of the code is as follows:
+
+{{{
+
+Event -+- Query --- Input
+       |
+       +- Reply --- Output
+
+}}}
