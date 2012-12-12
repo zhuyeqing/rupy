@@ -19,6 +19,6 @@ Another positive side-effect of limitations in Rupy is the lack of hot-deployed 
 
 {{{
     public class Lock {
-        static Lock = new Lock();
+        static Lock lock = new Lock();
     }
 }}}
