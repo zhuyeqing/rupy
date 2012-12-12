@@ -1,5 +1,4 @@
 #summary Common class loading pitfalls.
-#labels Phase-Design
 
 The classloader in rupy is very simplistic, so you have to be careful how you write your hot-deployable code and what you store in the session. We recommend that you don't store hot-deployed classes with the {{{Session.put(key, value)}}} method, since {{{Session.get(key)}}} will throw a {{{ClassCastException}}} if you hot-deploy your application.
 
@@ -16,3 +15,10 @@ Another positive side-effect of limitations in Rupy is the lack of hot-deployed 
   * All classes have to have a void attribute constructor.
   * Inner classes need to be public static.
   * Implemented interfaces in the bootclasspath need to be public, even if the hot-deployed implementing class is in the same package.
+  * Don't instantiate the class statically inside itself.
+
+{{{
+    public class Lock {
+        static Lock = new Lock();
+    }
+}}}
