@@ -6,7 +6,7 @@
 
 *Simplicity*
 
- _You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.3.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
+ _You want to serve active HTML? We figured that precompiling the Services before deployment would be simpler than traditional server-side JSP compiling; so we built a Java/HTML [http://rupy.googlecode.com/files/page-0.4.zip processor], which transforms a HTML page with plain Java in it, to a Java class that prints HTML. Simple!_
 
 *Agility*
 
