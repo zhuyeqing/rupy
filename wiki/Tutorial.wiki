@@ -3,7 +3,7 @@
 
 ===local===
 
- Download the [http://rupy.googlecode.com/files/page-0.4.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.4.4.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant local_ task, this should build and deploy the test application to your rupy server. Now try browsing to http://localhost:8000.
+ Download the [http://rupy.googlecode.com/files/page-0.5.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-0.4.4.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant local_ task, this should build and deploy the test application to your rupy server. Now try browsing to http://localhost:8000.
 ----
 
 ===remote===
