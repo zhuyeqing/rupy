@@ -1,4 +1,5 @@
 #summary How it works.
+#labels Phase-Design
 
 *Thread Model*
 
@@ -22,8 +23,8 @@ The hierarchy of the code is as follows:
 
 {{{
 
-Event -+- Query --- Input
-       |
-       +- Reply --- Output
+Event -+-- Query <-- Input <--- +---------+
+       |                        | Browser |
+       +-> Reply --> Output --> +---------+
 
 }}}
