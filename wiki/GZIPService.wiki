@@ -1,4 +1,6 @@
+#summary Example of how to send compressed data.
 #labels Phase-Implementation
+
 {{{
 public static class Stats extends Service {
 	public String path() { return "/stats.html"; }
