@@ -1,0 +1,28 @@
+#labels Phase-Implementation
+{{{
+public static class Stats extends Service {
+		public String path() { return "/stats.html"; }
+		public void filter(Event event) throws Event, Exception {
+			event.reply().header("Content-Encoding", "gzip");
+
+			File file = new File("app/content/stats.html.gzip");
+			file.createNewFile();
+			
+			GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(file));
+			FileInputStream in = new FileInputStream("app/content/stats.html");
+
+			Deploy.pipe(in, out);
+
+			in.close();
+
+			out.finish();
+			out.close();
+
+			in = new FileInputStream(file);
+
+			Deploy.pipe(in, event.reply().output(file.length()));
+			
+			in.close();
+		}
+	}
+}}}
