@@ -36,4 +36,6 @@ Compile the Hello class above and put it in a jar file (hello.jar in the example
 </target>
 }}}
 
-For more details on how to configure rupy, see the [http://rupy.se/doc/se/rupy/http/Daemon.html#Daemon(java.util.Properties) javadoc].
+
+
+For more details on how to configure rupy, see the [http://rupy.se/doc/index.html?se/rupy/http/Daemon.html#Daemon(java.util.Properties) javadoc].
