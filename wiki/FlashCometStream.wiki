@@ -110,7 +110,7 @@ public class Ping extends Service implements Runnable {
 		}
 		else {
 			event.query().parse();
-			name = event.string("name");
+			String name = event.string("name");
 			Queue queue = find(name);
 
 			if(queue != null) {
