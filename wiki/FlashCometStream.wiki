@@ -4,9 +4,9 @@ You can now stream messages over HTTP via rupy.
 
 The performance ranges from 0% 3770S(4), 80-120% D510MO(2) to 99% RPi(1). Output is req x2 for one, two and three but x3 for four; so total throughput:
            
-  3770S ~13.000 event/s (~4.000 req/s).
-  D510MO ~9.000 event/s (~3.000 req/s).
-  RPi ~1.000 event/s (~300 req/s).
+  3770S ~13.000 event/s (~4.000 req/s).<br>
+  D510MO ~9.000 event/s (~3.000 req/s).<br>
+  RPi ~1.000 event/s (~300 req/s).<br>
 
 This code allows you to receive dynamic chunks with Flash from rupy.
 
