@@ -2,7 +2,7 @@
 
 You can now [http://rupy.googlecode.com/files/talk-0.9.1.zip stream] messages over HTTP via rupy.
 
-The included test implementation CPU performance:<br>
+The included test implementation performance:<br>
            
 ||CPU||usage||event/s||req/s||
 ||3770S(4)||0%||~13.000||~4.000||
