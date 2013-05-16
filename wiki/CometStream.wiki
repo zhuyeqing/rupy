@@ -9,7 +9,7 @@ The above test implementation performance:<br>
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
 ||RPi (1)||99%||~300||~700||~1.000||
 
-This code allows you to receive dynamic chunks with Flash from rupy.
+This code allows you to receive dynamic chunks with flash:
 
 {{{
 package {
