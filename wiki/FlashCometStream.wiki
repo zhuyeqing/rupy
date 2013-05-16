@@ -4,10 +4,10 @@ You can now [http://rupy.googlecode.com/files/talk-0.9.1.zip stream] messages ov
 
 The included test implementation performance:<br>
            
-||CPU(s)||usage||event/s||req/s||
-||3770S (4)||0%||~13.000||~4.000||
-||D510MO (2)||80-120%||~9.000||~3.000||
-||RPi (1)||99%||~1.000||~300||
+||CPU(s)||usage||event/s||req/s||res/s||
+||3770S (4)||0%||~13.000||~4.000||~9.000||
+||D510MO (2)||80-120%||~9.000||~3.000||~6.000||
+||RPi (1)||99%||~1.000||~300||~700||
 
 This code allows you to receive dynamic chunks with Flash from rupy.
 
