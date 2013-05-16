@@ -2,8 +2,8 @@
 
 You can now [http://rupy.googlecode.com/files/talk-0.9.1.zip stream] messages over HTTP via rupy.
 
-The CPU performance ranges from 0% 3770S(4), 80-120% D510MO(2) to 99% RPi(1).<br><br>
-Output is req x2 for one, two and three but x3 for four; so total throughput:
+In the included test implementation CPU performance ranges from 0% 3770S(4), 80-120% D510MO(2) to 99% RPi(1).<br><br>
+Output is req x2 for clients one, two and three but x3 for client four; so total throughput:
            
   3770S ~13.000 event/s (~4.000 req/s).<br>
   D510MO ~9.000 event/s (~3.000 req/s).<br>
