@@ -34,5 +34,3 @@ NameVirtualHost *:80
         SSLCertificateKeyFile /etc/apache2/ssl.key/server.key
 </VirtualHost>
 }}}
-
-But you should really use HAProxy becuse it allows for epoll virtual hosting and loadbalancing... Instructions coming soon!
