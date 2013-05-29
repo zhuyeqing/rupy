@@ -33,7 +33,7 @@ Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is inc
 
 {{{
 > echo 'net.core.wmem_max=1048576' >> /etc/sysctl.conf
-> echo 'net.ipv4.tcp_wmem= 16384 65536 1048576' >> /etc/sysctl.conf
+> echo 'net.ipv4.tcp_wmem=16384 65536 1048576' >> /etc/sysctl.conf
 > sysctl -p
 }}}
 
