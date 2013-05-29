@@ -4,8 +4,8 @@ Because NIO uses a few threads to serve many clients, it will/should/can _not_ b
 
 So we have 2 options:
 
-  - Drop slow connections.
-  - Increase socket WRITE buffer.
+  # Drop slow connections.
+  # Increase socket WRITE buffer.
 
 So if you see these kind of errors in log.error.txt you need to increase the socket WRITE buffer:
 
