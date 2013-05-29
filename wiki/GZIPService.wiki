@@ -1,7 +1,9 @@
 #summary Example of how to send compressed data.
 #labels Phase-Implementation
 
-This compresses the file on each request. If you have some customer fetched file you should obviously GZip it before deployment.
+This compresses the file on each request.
+
+If you have some customer fetched file you should obviously GZip it before deployment.
 
 {{{
 public static class Stats extends Service {
