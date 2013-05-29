@@ -32,12 +32,12 @@ Caused by: java.lang.Exception: IO timeout. (5000)
 Since kernel 2.4 TCP auto-tuning has been in the kernel. So all we have to do is increase the max limit (for example, as root):
 
 {{{
-> echo 'net.core.wmem_max=1048576' >> /etc/sysctl.conf
-> echo 'net.ipv4.tcp_wmem=16384 65536 1048576' >> /etc/sysctl.conf
+> echo 'net.core.wmem_max=5242880' >> /etc/sysctl.conf
+> echo 'net.ipv4.tcp_wmem=16384 65536 5242880' >> /etc/sysctl.conf
 > sysctl -p
 }}}
 
-Here you can play with the numbers, for me 1 MB is enough since our largest file is 5 MB.
+Here you can play with the numbers, for me 5 MB is enough since our largest file is 5 MB.
 
 So a complementary solution is to compress your uncompressed static files with [https://code.google.com/p/rupy/wiki/GZIPService GZip].
 
