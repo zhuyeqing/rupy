@@ -31,7 +31,7 @@ TCP auto-tuning has been in linux since kernel 2.4; so all we have to do is incr
 > sysctl -p
 }}}
 
-Here you can play with the numbers, for me 5 MB is enough since our largest file is 5 MB.
+Here you can play with the numbers, 5 MB (5242880) is enough for us in this case since our largest file is 5 MB.
 
 So a complementary solution is to compress your uncompressed static files with [https://code.google.com/p/rupy/wiki/GZIPService GZip].
 
