@@ -9,7 +9,7 @@ So we have 3 options:
   # Wait for slow connections, we need more threads: -delay 60000 -threads 50
   # Increase socket write buffer (memory usage).
 
-So if you see these kind of errors in log/error.txt you need to increase the socket write buffer:
+So if you see these kind of errors in log/error.txt your clients are getting dropped:
 
 {{{
 13-05-28 22:46:29.884 70.138.240.112 /[someLargeFile]
