@@ -12,7 +12,7 @@ So we have 3 options:
 So if you see these kind of errors in log/error.txt your clients are getting dropped:
 
 {{{
-13-05-28 22:46:29.884 70.138.240.112 /[file/service]
+13-05-28 22:46:29.884 127.0.0.1 /[file/service]
 
 ...
 
