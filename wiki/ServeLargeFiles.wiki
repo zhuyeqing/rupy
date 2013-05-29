@@ -12,7 +12,7 @@ So if you see these kind of errors in log/error.txt you need to increase the soc
 
 {{{
 13-05-28 22:46:29.884 70.138.240.112 /main.swf
-java.io.IOException: Remaining (344656, 783, 0, 1024)
+java.io.IOException: You need to increase your socket write buffer!
         at se.rupy.http.Output.wrote(Output.java:241)
         at se.rupy.http.Output$Chunked.write(Output.java:364)
         at se.rupy.http.Deploy.pipe(Deploy.java:552)
@@ -21,7 +21,7 @@ java.io.IOException: Remaining (344656, 783, 0, 1024)
         at se.rupy.http.Event.read(Event.java:223)
         at se.rupy.http.Worker.run(Worker.java:174)
         at java.lang.Thread.run(Thread.java:722)
-Caused by: java.lang.Exception: IO timeout. (10000, Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0))
+Caused by: java.lang.Exception: IO timeout. (10000)
         at se.rupy.http.Event.block(Event.java:381)
         at se.rupy.http.Output.internal(Output.java:263)
         at se.rupy.http.Output.wrote(Output.java:225)
