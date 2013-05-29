@@ -1,34 +1,44 @@
 #summary Example of how to send compressed data.
 #labels Phase-Implementation
 
-This compresses the file on each request.
-
-If you have some customer fetched file you should obviously GZip it before deployment.
-
 {{{
 public static class Stats extends Service {
 	public String path() { return "/stats.html"; }
 	public void filter(Event event) throws Event, Exception {
 		event.reply().header("Content-Encoding", "gzip");
 
-		File file = new File("app/content/stats.html.gzip");
-		file.createNewFile();
-			
-		GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(file));
-		FileInputStream in = new FileInputStream("app/content/stats.html");
+		File from = new File("app/host.rupy.se/res/some.file");
+		File to = new File("app/host.rupy.se/res/some.file.gzip");
+		
+		boolean zip = false;
+		
+		if(to.exists()) {
+			if(from.lastModified() > to.lastModified()) {
+				zip = true;
+			}
+		}
+		else {
+			to.createNewFile();
+			zip = true;
+		}
+		
+		if(zip) {
+			FileInputStream in = new FileInputStream(from);
+			GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(to));
 
-		Deploy.pipe(in, out);
+			Deploy.pipe(in, out);
 
-		in.close();
+			in.close();
 
-		out.finish();
-		out.close();
+			out.finish();
+			out.close();
+		}
 
-		in = new FileInputStream(file);
-
-		Deploy.pipe(in, event.reply().output(file.length()));
-			
+		FileInputStream in = new FileInputStream(to);
+		Deploy.pipe(in, event.reply().output(to.length()));
 		in.close();
 	}
 }
 }}}
+
+You could also GZip the files before deployment.
