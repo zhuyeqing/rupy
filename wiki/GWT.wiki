@@ -3,7 +3,9 @@
 
 *Decode, invoke and encode*
 
-This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string with the name of your project/jar:
+This is using GWT 2.1.1 or later.
+
+Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string with the name of your project/jar:
 
 {{{
 public static class Call extends Service {
