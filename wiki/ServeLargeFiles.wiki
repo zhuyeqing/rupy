@@ -38,6 +38,6 @@ Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is inc
 
 Here you can play with the numbers, for me 1 MB is enough since our largest file is 5 MB.
 
-This will increase your memory usage so use it with precaution.
+This will increase your memory usage; so use it with precaution.
 
 For more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
