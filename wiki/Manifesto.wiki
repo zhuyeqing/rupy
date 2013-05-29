@@ -12,7 +12,7 @@
 
  _You won't need to restart Rupy every time you edit a Service (the equivalent of Servlets), there's no servlet context to be reloaded and your session state will be kept out of the box; without "out of memory" issues. This is specially welcomed when you design dynamic GUIs with Ajax and JSON since you don't have to login *again* every time you redeploy._
 
- With rupy you can remote [Deployment hot-replace] a major refactoring, without _any_ kind of interruption for your end users and _directly_ from your development station to the dev or live environment.
+ With rupy you can remote [Deployment hot-replace] a major refactoring, without _any_ kind of interruption for your end users and _directly_ from your development station to the dev or live environment to a cluster.
 
  Configuration by hot-deployment enables you to write all configurations directly in the java code instead of having the traditional XML configuration which often requires a reboot, is typo prone and always induces an extra learning step.
 
