@@ -1,0 +1,41 @@
+#summary How to configure linux to serve large files with NIO.
+#labels Phase-Deploy
+
+Because NIO uses a few threads to serve many clients, it will/should/can _not_ block to wait for slow connections.
+
+So we have 2 options:
+
+  # Drop slow connections.
+  # Increase socket WRITE buffer.
+
+So if you see these kind of errors in log.error.txt you need to increase the socket WRITE buffer:
+
+{{{
+13-05-28 22:46:29.884 70.138.240.112 /main.swf
+java.io.IOException: Remaining (344656, 783, 0, 1024)
+        at se.rupy.http.Output.wrote(Output.java:241)
+        at se.rupy.http.Output$Chunked.write(Output.java:364)
+        at se.rupy.http.Deploy.pipe(Deploy.java:552)
+        at se.rupy.http.Deploy.pipe(Deploy.java:535)
+        at se.rupy.http.Event.content(Event.java:265)
+        at se.rupy.http.Event.read(Event.java:223)
+        at se.rupy.http.Worker.run(Worker.java:174)
+        at java.lang.Thread.run(Thread.java:722)
+Caused by: java.lang.Exception: IO timeout. (10000, Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0))
+        at se.rupy.http.Event.block(Event.java:381)
+        at se.rupy.http.Output.internal(Output.java:263)
+        at se.rupy.http.Output.wrote(Output.java:225)
+        ... 7 more
+}}}
+
+Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is increase the MAX limit:
+
+{{{
+> echo 'net.core.wmem_max=1048576' >> /etc/sysctl.conf
+> echo 'net.ipv4.tcp_wmem= 16384 65536 1048576' >> /etc/sysctl.conf
+> sysctl -p
+}}}
+
+Here you can play with the numbers, for me 1 MB is enough since our largest file is 5 MB.
+
+This will increase your memory usage so use it with precaution.
