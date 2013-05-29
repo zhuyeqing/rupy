@@ -5,7 +5,7 @@ Because NIO uses a few threads to serve many clients, it should _not_ block to w
 
 So we have 3 options:
 
-  # Drop slow connections (default).
+  # Drop slow connections after 5 seconds (default).
   # Wait for slow connections; then we need more threads: -delay 60000 -threads 50 (not ideal)
   # Increase socket write buffer (memory usage). (preferred)
 
