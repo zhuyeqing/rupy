@@ -41,4 +41,4 @@ public static class Stats extends Service {
 }
 }}}
 
-You could also Gzip the files before deployment.
+You could also zip the files before deployment.
