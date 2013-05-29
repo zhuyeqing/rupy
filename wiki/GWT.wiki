@@ -3,7 +3,7 @@
 
 *Decode, invoke and encode*
 
-This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string with the name of your project/jar.
+This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string with the name of your project/jar:
 
 {{{
 public static class Call extends Service {
@@ -37,7 +37,13 @@ String serverInfo = getServletContext().getServerInfo();
 String userAgent = getThreadLocalRequest().getHeader("User-Agent");
 }}}
 
-Then add http.jar and gwt-user.jar to the classpath, deploy the war file as a jar to rupy with the following build.xml modifications and everything will just magically work.
+Then add http.jar and gwt-user.jar to the classpath:
+
+{{{
+java -classpath "lib\http.jar;lib\gwt-user.jar" se.rupy.http.Daemon -verbose -pass secret -log
+}}}
+
+At last, deploy the war file as a jar to rupy with the following build.xml modifications and everything will just magically work:
 
 {{{
 <path id="project.class.path">
@@ -60,12 +66,6 @@ Then add http.jar and gwt-user.jar to the classpath, deploy the war file as a ja
 		<arg line="secret"/>
   	</java>
 </target>
-}}}
-
-Don't forget to add gwt-user.jar to the classpath!
-
-{{{
-java -classpath "lib\http.jar;lib\gwt-user.jar" se.rupy.http.Daemon -verbose -pass secret -log
 }}}
 
 Before 2.1.1 you had to use SerializableException to encode a failure; even though the documentation told you not to.
