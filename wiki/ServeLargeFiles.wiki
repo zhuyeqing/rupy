@@ -28,7 +28,7 @@ Caused by: java.lang.Exception: IO timeout. (5000)
         ... 7 more
 }}}
 
-Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is increase the max limit (for example):
+Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is increase the max limit (for example, as root):
 
 {{{
 > echo 'net.core.wmem_max=1048576' >> /etc/sysctl.conf
