@@ -31,7 +31,8 @@ public static class Call extends Service {
 		Deploy.pipe(event.input(), out);
 		String req = out.toString();
 
-// rupy 1.0 does this for you.		//Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
+		// rupy 1.0 does this for you.
+		//Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
 
 		String res = null;
