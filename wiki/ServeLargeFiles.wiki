@@ -12,7 +12,7 @@ So we have 3 options:
 So if you see these kind of errors in log/error.txt your clients are getting dropped:
 
 {{{
-13-05-28 22:46:29.884 70.138.240.112 /[someLargeFile]
+13-05-28 22:46:29.884 70.138.240.112 /[someLargeFile/Service]
 java.io.IOException: You need to increase your socket write buffer!
         at se.rupy.http.Output.wrote(Output.java:241)
         at se.rupy.http.Output$Chunked.write(Output.java:364)
