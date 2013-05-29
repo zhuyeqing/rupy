@@ -3,7 +3,7 @@
 
 Because NIO uses a few threads to serve many clients, it will/should/can _not_ block to wait for slow connections.
 
-So we have 2 options:
+So we have 3 options:
 
   # Drop slow connections.
   # Wait (one minute!) for slow connections, we need more threads: -delay 60000 -threads 50
