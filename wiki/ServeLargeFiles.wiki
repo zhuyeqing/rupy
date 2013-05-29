@@ -33,6 +33,6 @@ TCP auto-tuning has been in linux since kernel 2.4; so all we have to do is incr
 
 Here you can play with the numbers, 5 MB (5242880) is enough for us since our largest file is 5 MB.
 
-So a complementary solution is to compress your uncompressed static files with [https://code.google.com/p/rupy/wiki/GZIPService GZip].
+So a complementary solution is to compress your uncompressed static files with [https://code.google.com/p/rupy/wiki/GZIPService zip].
 
 Increasing the write buffer will increase your memory usage, for more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
