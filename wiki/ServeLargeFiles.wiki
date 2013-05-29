@@ -6,7 +6,7 @@ Because NIO uses a few threads to serve many clients, it will/should/can _not_ b
 So we have 3 options:
 
   # Drop slow connections.
-  # Wait (one minute!) for slow connections, we need more threads: -delay 60000 -threads 50
+  # Wait for slow connections, we need more threads: -delay 60000 -threads 50
   # Increase socket write buffer.
 
 So if you see these kind of errors in log/error.txt you need to increase the socket write buffer:
