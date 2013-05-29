@@ -2,7 +2,7 @@
 #labels Phase-Implementation
 
 {{{
-public static class Stats extends Service {
+public static class GZIPService extends Service {
 	public String path() { return "/stats.html"; }
 	public void filter(Event event) throws Event, Exception {
 		event.reply().header("Content-Encoding", "gzip");
