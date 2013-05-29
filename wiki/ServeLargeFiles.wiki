@@ -1,7 +1,7 @@
 #summary How to configure linux to serve large files with NIO with rupy 1.0.
 #labels Phase-Deploy
 
-Because NIO uses a few threads to serve many clients, it will/should/can _not_ block to wait for slow connections.
+Because NIO uses a few threads to serve many clients, it should _not_ block to wait for slow connections.
 
 So we have 3 options:
 
