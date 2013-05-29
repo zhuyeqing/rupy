@@ -41,6 +41,4 @@ Here you can play with the numbers, for me 1 MB is enough since our largest file
 
 So a complementary solution is to compress your files with [https://code.google.com/p/rupy/wiki/GZIPService GZip].
 
-This will increase your memory usage; so use it with precaution.
-
-For more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
+Increasing the write buffer will increase your memory usage, for more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
