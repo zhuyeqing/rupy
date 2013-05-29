@@ -7,8 +7,8 @@ public static class Stats extends Service {
 	public void filter(Event event) throws Event, Exception {
 		event.reply().header("Content-Encoding", "gzip");
 
-		File from = new File("app/host.rupy.se/res/some.file");
-		File to = new File("app/host.rupy.se/res/some.file.gzip");
+		File from = new File("app/content/some.file");
+		File to = new File("app/content/some.file.gzip");
 		
 		boolean zip = false;
 		
