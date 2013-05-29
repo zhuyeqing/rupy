@@ -2,7 +2,7 @@
 #labels Phase-Implementation,Featured
 
 || XHR || XMLHttpRequest ||
-|| XDR<sup>1</sup> || Cross Domain Request ||
+|| XDR*^1^* || Cross Domain Request ||
 
 _First, try either the [http://sprout.rupy.se XHR] *or^2^* [http://tentacle.rupy.se XDR] chat demo, it's the little black box in the bottom right corner!_
 
@@ -40,4 +40,4 @@ If you want to use rupy talk with apache enable mod_proxy and add something alon
 </VirtualHost>
 }}}
 
-<sup>1</sup> Also known as XSS or cross site scripting.
+*^1^* Also known as XSS or cross site scripting.
