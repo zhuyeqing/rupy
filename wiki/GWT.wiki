@@ -3,9 +3,7 @@
 
 *Decode, invoke and encode*
 
-This is using GWT 2.1.1 or later. Before that you had to use SerializableException to encode a failure; even though the documentation told you not to!
-
-Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Also remove these servlet specific lines:
+This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Also remove these servlet specific lines:
 
 {{{
 String serverInfo = getServletContext().getServerInfo();
@@ -76,3 +74,5 @@ Don't forget to add gwt-user.jar to the classpath!
 {{{
 java -classpath "lib\http.jar;lib\gwt-user.jar" se.rupy.http.Daemon -verbose -pass secret -log
 }}}
+
+Before 2.1.1 you had to use SerializableException to encode a failure; even though the documentation told you not to.
