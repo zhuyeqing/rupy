@@ -6,7 +6,7 @@ Because NIO uses a few threads to serve many clients, it should _not_ block to w
 So we have 3 options:
 
   # Drop slow connections (default).
-  # Wait for slow connections, we need more threads: -delay 60000 -threads 50 (not ideal)
+  # Wait for slow connections; then we need more threads: -delay 60000 -threads 50 (not ideal)
   # Increase socket write buffer (memory usage). (preferred)
 
 So if you see these kind of errors in log/error.txt your clients are getting dropped:
