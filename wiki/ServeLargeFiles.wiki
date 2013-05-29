@@ -6,9 +6,9 @@ Because NIO uses a few threads to serve many clients, it will/should/can _not_ b
 So we have 2 options:
 
   # Drop slow connections.
-  # Increase socket WRITE buffer.
+  # Increase socket write buffer.
 
-So if you see these kind of errors in log/error.txt you need to increase the socket WRITE buffer:
+So if you see these kind of errors in log/error.txt you need to increase the socket write buffer:
 
 {{{
 13-05-28 22:46:29.884 70.138.240.112 /main.swf
@@ -28,7 +28,7 @@ Caused by: java.lang.Exception: IO timeout. (5000)
         ... 7 more
 }}}
 
-Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is increase the MAX limit:
+Since kernel 2.4 auto-tuning has been in the kernel. So all we have to do is increase the max limit:
 
 {{{
 > echo 'net.core.wmem_max=1048576' >> /etc/sysctl.conf
