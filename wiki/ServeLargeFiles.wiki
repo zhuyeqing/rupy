@@ -13,15 +13,9 @@ So if you see these kind of errors in log/error.txt your clients are getting dro
 
 {{{
 13-05-28 22:46:29.884 70.138.240.112 /[someLargeFile/Service]
-java.io.IOException: You need to increase your socket write buffer!
-        at se.rupy.http.Output.wrote(Output.java:241)
-        at se.rupy.http.Output$Chunked.write(Output.java:364)
-        at se.rupy.http.Deploy.pipe(Deploy.java:552)
-        at se.rupy.http.Deploy.pipe(Deploy.java:535)
-        at se.rupy.http.Event.content(Event.java:265)
-        at se.rupy.http.Event.read(Event.java:223)
-        at se.rupy.http.Worker.run(Worker.java:174)
-        at java.lang.Thread.run(Thread.java:722)
+
+...
+
 Caused by: java.lang.Exception: IO timeout. (5000)
         at se.rupy.http.Event.block(Event.java:381)
         at se.rupy.http.Output.internal(Output.java:263)
