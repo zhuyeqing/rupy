@@ -3,23 +3,9 @@
 
 *Decode, invoke and encode*
 
-This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places). Also remove these servlet specific lines:
+This is using GWT 2.1.1 or later. Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE string in both places with the name of your project/jar (might not be the same in both places).
 
 {{{
-String serverInfo = getServletContext().getServerInfo();
-String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-}}}
-
-Then add gwt-user.jar to the classpath, deploy the war file as a jar to rupy and everything will just magically work.
-
-{{{
-
-import java.io.*;
-import java.lang.reflect.*;
-import se.rupy.http.*;
-import com.google.gwt.user.server.rpc.*;
-import com.google.gwt.user.client.rpc.*;
-
 public static class Call extends Service {
 	public String path() { return "/REPLACE/greet"; }
 	public void filter(Event event) throws Event, Exception {
@@ -44,7 +30,14 @@ public static class Call extends Service {
 }
 }}}
 
-Also add the http.jar dependency to the classpath and bundle and deploy the war in build.xml:
+Remove these servlet specific lines:
+
+{{{
+String serverInfo = getServletContext().getServerInfo();
+String userAgent = getThreadLocalRequest().getHeader("User-Agent");
+}}}
+
+Then add http.jar and gwt-user.jar to the classpath, deploy the war file as a jar to rupy with the following build.xml modifications and everything will just magically work.
 
 {{{
 <path id="project.class.path">
