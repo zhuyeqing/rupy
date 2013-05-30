@@ -22,7 +22,8 @@ You can try it quickly by right-clicking these two links and opening them in new
   If it doesn't work, try later, somebody else might <br>
   be trying it at the same time.
 
-  IE doesen't render until a certain amount is received, so hold down F5 in tab number <i>two</i> for a while.
+  IE doesen't render until a certain amount is received, <br>
+  so hold down F5 in tab number <i>two</i> for a while.
 
 This code allows you to receive dynamic chunks with flash:
 
