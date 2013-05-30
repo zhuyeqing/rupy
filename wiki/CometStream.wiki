@@ -12,7 +12,8 @@ The message performance of the above test implementation:<br>
 
 You can try it quickly by right-clicking these two links and open them in new tabs: [http://host.rupy.se/pull?name=one one] [http://host.rupy.se/push?name=two&message=hello two]
 
-You will then send hello from tab <i>one</i> to tab <i>two</i>. Reloading tab two will resend the message. You can play around with name=one/two/three/four and message.
+You will then send hello from tab <i>one</i> to tab <i>two</i>. Reloading tab two will resend the message.
+You can play around with name=one/two/three/four and message values.
 
 This code allows you to receive dynamic chunks with flash:
 
