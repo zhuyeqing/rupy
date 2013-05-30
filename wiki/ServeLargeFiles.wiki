@@ -37,4 +37,4 @@ A complementary solution is to [https://code.google.com/p/rupy/wiki/GZIPService 
 
 Increasing the write buffer will increase your memory usage, for more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
 
-If you want to share really large files (>5MB) you should use bittorrent!
+If you want to share really large files (>5MB) you could use bittorrent!
