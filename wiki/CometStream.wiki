@@ -13,9 +13,9 @@ The message performance of the above test implementation:<br>
 You can try it quickly by right-clicking these two links and opening them in new windows <br>
 (so you can see the reception in link <i>one</i> in realtime):
 
-  |[http://host.rupy.se/pull?name=one one]| < hello |[http://host.rupy.se/push?name=two&message=hello two]|
+  |[http://host.rupy.se/pull?name=one one]| < 'hello' |[http://host.rupy.se/push?name=two&message=hello two]|
 
-  You will then send hello from <i>two</i> to <i>one</i>. <br>
+  You will then send 'hello' from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
   You can play around with more windows and <br>
   <i>name=[http://host.rupy.se/pull?name=three three]&message=[http://host.rupy.se/push?name=two&message=hi hi]</i> values.
