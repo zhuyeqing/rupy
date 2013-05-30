@@ -14,7 +14,7 @@ You can try it quickly by right-clicking these two links and opening them in new
 
   |[http://host.rupy.se/pull?name=one one]| < hello |[http://host.rupy.se/push?name=two&message=hello two]|
 
-  You will then send hello from tab <i>one</i> to tab <i>two</i>. <br>
+  You will then send hello from tab <i>two</i> to tab <i>one</i>. <br>
   Reloading tab two will resend the message.<br>
   You can play around with more tabs and <br>
   <i>name=[http://host.rupy.se/pull?name=three three]&message=[http://host.rupy.se/push?name=two&message=hi hi]</i> values.
