@@ -1,5 +1,5 @@
 #summary How to integrate with GWT.
-#labels Featured
+#labels Featured,Phase-Implementation
 
 *Decode, invoke and encode*
 
