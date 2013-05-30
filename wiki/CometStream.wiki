@@ -11,7 +11,7 @@ The message performance of the above test implementation:<br>
 ||RPi (1)||99%||~300||~700||~1.000||
 
 You can try it quickly by right-clicking these two links and opening them in new tabs:
-
+{{{
   |[http://host.rupy.se/pull?name=one one]| < hello |[http://host.rupy.se/push?name=two&message=hello two]|
 
   You will then send hello from tab <i>two</i> to tab <i>one</i>. <br>
@@ -21,7 +21,7 @@ You can try it quickly by right-clicking these two links and opening them in new
 
   If it doesn't work, try later, somebody else might <br>
   be trying it at the same time.
-
+}}}
 This code allows you to receive dynamic chunks with flash:
 
 {{{
