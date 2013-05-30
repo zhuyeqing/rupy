@@ -1,4 +1,5 @@
 #summary Common class loading pitfalls.
+#labels Phase-Requirements
 
 The classloader in rupy is very simplistic, so you have to be careful how you write your hot-deployable code and what you store in the session. We recommend that you don't store hot-deployed classes with the {{{Session.put(key, value)}}} method, since {{{Session.get(key)}}} will throw a {{{ClassCastException}}} if you hot-deploy your application.
 
