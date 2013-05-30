@@ -11,7 +11,7 @@ The message performance of the above test implementation:<br>
 ||RPi (1)||99%||~300||~700||~1.000||
 
 You can try it quickly by right-clicking these two links and opening them in new windows <br>
-(so you can see the reception in link <i>one</i> when you press F5 in <i>two</i>):
+(so you can see the reception in link <i>one</i>):
 
   |[http://host.rupy.se/pull?name=one one]| < hello |[http://host.rupy.se/push?name=two&message=hello two]|
 
