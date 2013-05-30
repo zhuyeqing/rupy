@@ -17,6 +17,12 @@ public static class Call extends Service {
 		Deploy.pipe(event.input(), out);
 		String req = out.toString();
 
+		/*
+		 * on host.rupy.se this is done for you
+		 * so you should remove this line since
+		 * you don't have the privileges to alter
+		 * context class loader there.
+		 */
 		Thread.currentThread().setContextClassLoader(event.daemon().archive("book"));
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
 
