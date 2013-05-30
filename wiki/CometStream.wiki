@@ -10,10 +10,7 @@ The message performance of the above test implementation:<br>
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
 ||RPi (1)||99%||~300||~700||~1.000||
 
-You can try it quickly by clicking these two links:
-
-[http://host.rupy.se/pull?name=one one]
-[http://host.rupy.se/push?name=two&message=hello two]
+You can try it quickly by clicking these two links: [http://host.rupy.se/pull?name=one one] [http://host.rupy.se/push?name=two&message=hello two]
 
 You will then send hello from one tab to the other.
 
