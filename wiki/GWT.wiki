@@ -40,13 +40,13 @@ String serverInfo = getServletContext().getServerInfo();
 String userAgent = getThreadLocalRequest().getHeader("User-Agent");
 }}}
 
-Then add http.jar and gwt-user.jar to the classpath:
+Then add http.jar and gwt-user.jar to the classpath and start rupy:
 
 {{{
 java -classpath "lib\http.jar;lib\gwt-user.jar" se.rupy.http.Daemon -verbose -pass secret -log
 }}}
 
-At last, deploy the war file as a jar to rupy with the following build.xml modifications and everything will just magically work:
+Finally deploy the war file as a jar to rupy with the following build.xml modifications and everything will just magically work:
 
 {{{
 <path id="project.class.path">
