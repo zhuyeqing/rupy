@@ -10,8 +10,8 @@ The message performance of the above test implementation:<br>
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
 ||RPi (1)||99%||~300||~700||~1.000||
 
-You can try it quickly by right-clicking these two links and opening them in new windows <br>
-(so you can see the reception in link <i>one</i> in realtime):
+You can try it quickly by right-clicking these two links and opening <br>
+them in new windows (so you can see the stream in real-time):
 
   |[http://host.rupy.se/pull?name=one one]| < 'hello' |[http://host.rupy.se/push?name=two&message=hello two]|
 
