@@ -5,17 +5,19 @@
 
 This is using GWT 2.1.1 or later.
 
-Add this inner class below to GreetingServiceImpl.java in the generated GWT start app and replace the REPLACE strings with the name of your project/jar:
+This example uses 'book' as project/jar name.
+
+Add this inner class below to GreetingServiceImpl.java in the generated GWT start app:
 
 {{{
 public static class Call extends Service {
-	public String path() { return "/REPLACE/greet"; }
+	public String path() { return "/book/greet"; }
 	public void filter(Event event) throws Event, Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Deploy.pipe(event.input(), out);
 		String req = out.toString();
 
-		Thread.currentThread().setContextClassLoader(event.daemon().archive("REPLACE"));
+		Thread.currentThread().setContextClassLoader(event.daemon().archive("book"));
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
 
 		String res = null;
