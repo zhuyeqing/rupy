@@ -24,7 +24,7 @@ them in new windows (so you can see the stream in real-time):
   be trying it at the same time.
 
   IE doesen't render until a certain amount is received, <br>
-  so hold down F5 in tab number <i>two</i> for a while.
+  so hold down F5 in <i>two</i> for a while.
 
 This code allows you to receive dynamic chunks with flash:
 
