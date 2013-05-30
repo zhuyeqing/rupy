@@ -24,6 +24,7 @@ public static class Call extends Service {
 		 * context class loader there.
 		 */
 		Thread.currentThread().setContextClassLoader(event.daemon().archive("book"));
+
 		RPCRequest rpc = RPC.decodeRequest(req, GreetingService.class);		  
 
 		String res = null;
