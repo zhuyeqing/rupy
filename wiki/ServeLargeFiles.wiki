@@ -39,6 +39,4 @@ Here you can play with the numbers, 5MB (5242880) is enough for us since our lar
 
 A complementary solution is to [https://code.google.com/p/rupy/wiki/GZIPService zip] your uncompressed static files.
 
-Increasing the write buffer will increase your memory usage, for more details: [http://www.cyberciti.biz/faq/linux-tcp-tuning/ linux-tcp-tuning]
-
 If you have very large client files (>5MB) you could make an application and share it with bittorrent!
