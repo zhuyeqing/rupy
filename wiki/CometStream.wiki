@@ -1,4 +1,4 @@
-#summary How to stream chunks asynchronously.
+#summary How to stream chunks in real-time.
 #labels Featured,Phase-Implementation
 
 You can now [http://rupy.googlecode.com/files/talk-0.9.1.zip stream] messages over HTTP with rupy.
