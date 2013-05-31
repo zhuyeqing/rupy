@@ -13,7 +13,7 @@
   # You need to edit the _page/build.xml_ script with your domain and the password given to you when you register at [http://host.rupy.se host.rupy.se].
   # You should run _ant remote_ instead of _ant local_.
 ----
- We have started the development of [http://sprout.googlecode.com sprout], a simple blogger; based on top of rupy and [http://memory.googlecode.com memory]. If you want a real-world example of rupy in action try this out!
+We have started the development of [http://sprout.googlecode.com sprout], a simple blogger; based on top of rupy and [http://memory.googlecode.com memory]. If you want a real-world example of rupy in action try this out!
 ----
 Let's create a rootservice (when you browse to "/") that returns 'hello'.
 {{{
