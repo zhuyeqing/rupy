@@ -40,7 +40,7 @@ package {
         private var offset:int = 0;
 
         /*
-         * Call /ping?name=XXX here.
+         * Call /pull?name=XXX here.
          */
         public function Comet(url:String) {
             stream = new URLStream();
