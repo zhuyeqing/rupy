@@ -62,3 +62,7 @@ package {
     }
 }
 }}}
+
+Instead of a specification I supply a reference implementation.
+
+It should be clear and compact enough to replace a RFC.
