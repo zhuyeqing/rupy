@@ -63,4 +63,4 @@ package {
 }
 }}}
 
-Instead of a specification I supply a reference implementation.
+Instead of a [http://www.ietf.org/id/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply a reference implementation.
