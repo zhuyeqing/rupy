@@ -1,5 +1,7 @@
-#summary How to deploy a [http://memory.googlecode.com memory] connection pool on host.rupy.se
+#summary How to deploy a connection pool on host.rupy.se
 #labels Phase-Implementation
+
+Using [http://memory.googlecode.com memory] ORM.
 
 {{{
 public class DataBase extends Service {
