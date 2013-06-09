@@ -1,7 +1,7 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-Using [http://memory.googlecode.com memory] ORM.
+Using [http://memory.googlecode.com memory] ORM:
 
 {{{
 public class DataBase extends Service {
