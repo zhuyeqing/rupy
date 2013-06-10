@@ -27,16 +27,11 @@ public class DataBase extends Service {
 	public static class SQL implements Log, Settings {
 		public String host, pass, ip;
 		
-		public SQL(Daemon daemon) {
-			try {
-				JSONObject account = new JSONObject((String) daemon.send("{\"type\": \"account\"}"));
-				host = account.getString("host");
-				pass = account.getString("pass");
-				ip = account.getString("ip");
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+		public SQL(Daemon daemon) throws Exception {
+			JSONObject account = new JSONObject((String) daemon.send("{\"type\": \"account\"}"));
+			host = account.getString("host");
+			pass = account.getString("pass");
+			ip = account.getString("ip");
 		}
 
 		public String driver() {
