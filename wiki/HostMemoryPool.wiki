@@ -11,11 +11,16 @@ public class DataBase extends Service {
 
 	public String path() { return "/somepath"; }
 
-	public void create(Daemon daemon) throws Exception {
-		SQL = new SQL(daemon);
-		POOL = new Pool(SQL, SQL);
-		BASE = new Base();
-		BASE.init(POOL);
+	public void create(Daemon daemon) {
+                try {
+                        SQL = new SQL(daemon);
+                        POOL = new Pool(SQL, SQL);
+                        BASE = new Base();
+                        BASE.init(POOL);
+                }
+                catch(Exception e) {
+                        e.printStackTrace();
+                }
 	}
 
 	public void destroy() {
