@@ -30,7 +30,7 @@ public class DataBase extends Service {
 	public void filter(Event event) throws Exception, Event {}
 
 	public static class SQL implements Log, Settings {
-		public String host, pass, user, ip;
+		public String host, pass, ip;
 		
 		public SQL(Daemon daemon) {
 			try {
