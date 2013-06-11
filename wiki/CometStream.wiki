@@ -18,10 +18,10 @@ them in new windows (so you can see the stream in real-time):
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
   You can play around with more windows <br>
-  and <i>name=[http://host.rupy.se/pull?name=three three]&message=[http://host.rupy.se/push?name=two&message=hi hi]</i> values.
+  and <i>name=[http://one.rupy.se/pull?name=three three]&message=[http://one.rupy.se/push?name=two&message=hi hi]</i> values.
 
-  If it doesn't work, try later, somebody else <br>
-  might be trying it at the same time.
+  If it doesn't work, try later or on host _two.rupy.se_, <br>
+  somebody else might be trying it at the same time.
 
   IE doesen't render until a certain amount is <br>
   received, so hold down F5 in <i>two</i> for a while.
@@ -52,7 +52,7 @@ package {
 
         public function Comet() {
             stream = new URLStream();
-            var request:URLRequest = new URLRequest("http://host.rupy.se/pull?name=one");
+            var request:URLRequest = new URLRequest("http://one.rupy.se/pull?name=one");
             stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
             try {
                 stream.load(request);
