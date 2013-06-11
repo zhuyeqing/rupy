@@ -1,7 +1,7 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-_*We are working on a query queue+replication system.*_
+<font color="red">_*We are working on a query queue+replication system.*_</font>
 
 Using [http://memory.googlecode.com memory] ORM:
 
