@@ -13,7 +13,7 @@ The message performance of the above test implementation:<br>
 You can try it quickly by right-clicking these two links and opening <br>
 them in new windows (so you can see the stream in real-time):
 
-  | [http://host.rupy.se/pull?name=one one] | < "hello" | [http://host.rupy.se/push?name=two&message=hello two] |
+  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] |
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
