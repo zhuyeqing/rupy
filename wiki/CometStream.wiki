@@ -34,7 +34,7 @@ Tutorial:
 
   * Create 2 new files:
     # Comet.as _ActionScript File_ - Paste the code below into it and save it.
-    # Comet.fla _Flash File (ActionScript 3.0)_ - Edit the PUBLISH - Class to 'Comet' in the Comet.fla PROPERTIES pane on the right, save this into the same folder.
+    # Comet.fla _Flash File (ActionScript 3.0)_ - Edit the Class to 'Comet' in the PROPERTIES PUBLISH pane on the right, save this into the same folder.
   * Then run Control -> Test Movie (Ctrl+Enter).
 
 {{{
