@@ -31,10 +31,8 @@ This code allows you to receive dynamic chunks with flash:
 Tutorial:
 
   * Create in the same folder:
-
-  # FlashFile (ActionScript 3.0) called Comet.fla
-  # ActionScriptFile called Comet.as
-
+    # Comet.fla _Flash File (ActionScript 3.0)_
+    # Comet.as _ActionScript File_
   * Save them.
   * Edit the PUBLISH -> Class to "Comet".
   * Then run Control -> Test Movie.
