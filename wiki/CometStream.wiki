@@ -30,13 +30,6 @@ them in new windows (so you can see the stream in real-time):
 
 This code allows you to receive dynamic chunks with flash:
 
-Tutorial:
-
-  * Create 2 new files:
-    # _ActionScript_ - Paste the code below into it and save it as Comet.as.
-    # _Flash (AS 3.0)_ - Edit the Class to 'Comet' in the PROPERTIES PUBLISH pane on the right, save in the same folder.
-  * Then run Control -> Test Movie (Ctrl+Enter).
-
 {{{
 package {
     import flash.errors.*;
@@ -69,3 +62,10 @@ package {
     }
 }
 }}}
+
+Tutorial:
+
+  * Create 2 new files:
+    # _ActionScript_ - Paste the code below into it and save it as Comet.as.
+    # _Flash (AS 3.0)_ - Edit the Class to 'Comet' in the PROPERTIES PUBLISH pane on the right, save in the same folder.
+  * Then run Control -> Test Movie (Ctrl+Enter).
