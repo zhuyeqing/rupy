@@ -28,6 +28,17 @@ them in new windows (so you can see the stream in real-time):
 
 This code allows you to receive dynamic chunks with flash:
 
+Create in the same folder:
+
+- FlashFile (ActionScript 3.0) called Comet.fla
+- ActionScriptFile called Comet.as
+
+Save them.
+
+Edit the PUBLISH -> Class to Comet.
+
+Then run Control -> Test Movie.
+
 {{{
 package {
     import flash.errors.*;
