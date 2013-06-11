@@ -34,17 +34,18 @@ package {
     import flash.events.*;
     import flash.net.URLRequest;
     import flash.net.URLStream;
+	import flash.display.MovieClip;
 
-    public class Comet {
+    public class Comet extends flash.display.MovieClip {
         private var stream:URLStream;
         private var offset:int = 0;
 
         /*
          * Call /pull?name=XXX here.
          */
-        public function Comet(url:String) {
+        public function Comet() {
             stream = new URLStream();
-            var request:URLRequest = new URLRequest(url);
+            var request:URLRequest = new URLRequest("http://host.rupy.se/pull?name=one");
             stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
             try {
                 stream.load(request);
