@@ -5,8 +5,8 @@ You can now [http://rupy.googlecode.com/files/talk-1.0.zip stream] messages over
 
 As [http://www.ietf.org/id/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply this reference implementation.
 
-The message performance of the above test implementation:<br>
-           
+The message performance of the test included above:<br>
+
 ||CPU (s)||usage||in/s||out/s||total/s||
 ||3770S (4)||0%||~4.000||~9.000||~13.000||
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
