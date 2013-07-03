@@ -26,9 +26,6 @@ Caused by: java.lang.Exception: IO timeout. ([delay])
 TCP auto-tuning has been in linux since kernel 2.4; so all we have to do is increase the max limit (for example, as root):
 
 {{{
-echo 'net.core.rmem_max=1048576' >> /etc/sysctl.conf
-echo 'net.ipv4.tcp_rmem= 16384 65536 1048576' >> /etc/sysctl.conf
-
 echo 'net.core.wmem_max=5242880' >> /etc/sysctl.conf
 echo 'net.ipv4.tcp_wmem=16384 65536 5242880' >> /etc/sysctl.conf
 
