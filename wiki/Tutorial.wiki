@@ -1,7 +1,7 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
 
-<font color="red">*_Prerequisites_*</font>_: You need a JDK and Ant installed on your computer and added to the path. Also you need to add JAVA_HOME and ANT_HOME environment variables._
+<font color="red">*_Prerequisites_*</font>_: You need a [JDK http://www.oracle.com/technetwork/java/javase/downloads/index.html] and [Ant http://ant.apache.org/] installed on your computer and added to the path. Also you need to add JAVA_HOME and ANT_HOME environment variables._
 ----
 
 ===local===
