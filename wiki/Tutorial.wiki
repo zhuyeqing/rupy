@@ -1,6 +1,8 @@
 #summary The usual hello world example.
 #labels Phase-Implementation,Featured
 
+Prerequisites: You need JDK and Ant installed on your computer and added to the path. Also you might need to add JAVA_HOME and ANT_HOME environment variables.
+
 ===local===
 
  Download the [http://rupy.googlecode.com/files/page-0.6.zip page] application, together with the latest [http://rupy.googlecode.com/files/rupy-1.0.zip rupy] and extract them to the same folder. Go to the http/ folder first and start rupy with either the _run.bat_ or _run.sh_ script depending on your OS. Then go to the page/ folder and run the _ant local_ task, this should build and deploy the test application to your rupy server. Now try browsing to http://localhost:8000.
