@@ -7,14 +7,12 @@ public static class GZIPService extends Service {
 	public void filter(Event event) throws Event, Exception {
 		event.reply().header("Content-Encoding", "gzip");
 
-		compress();
-
-		FileInputStream in = new FileInputStream(to);
+		FileInputStream in = new FileInputStream(compress());
 		Deploy.pipe(in, event.reply().output(to.length()));
 		in.close();
 	}
 
-	public synchronized void compress() {
+	public synchronized File compress() {
 		File from = new File("app/content/some.file");
 		File to = new File("app/content/some.file.gzip");
 		
@@ -40,6 +38,8 @@ public static class GZIPService extends Service {
 			out.close();
 			in.close();
 		}
+
+		return to;
 	}
 }
 }}}
