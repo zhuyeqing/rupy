@@ -8,7 +8,6 @@ public static class GZIPService extends Service {
 		event.reply().header("Content-Encoding", "gzip");
 
 		File to = compress();
-
 		FileInputStream in = new FileInputStream(to);
 		Deploy.pipe(in, event.reply().output(to.length()));
 		in.close();
