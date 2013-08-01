@@ -7,7 +7,9 @@ public static class GZIPService extends Service {
 	public void filter(Event event) throws Event, Exception {
 		event.reply().header("Content-Encoding", "gzip");
 
-		FileInputStream in = new FileInputStream(compress());
+		File to = compress();
+
+		FileInputStream in = new FileInputStream(to);
 		Deploy.pipe(in, event.reply().output(to.length()));
 		in.close();
 	}
