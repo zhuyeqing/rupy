@@ -28,10 +28,9 @@ public static class GZIPService extends Service {
 
 			Deploy.pipe(in, out);
 
-			in.close();
-
 			out.finish();
 			out.close();
+			in.close();
 		}
 
 		FileInputStream in = new FileInputStream(to);
