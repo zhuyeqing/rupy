@@ -14,6 +14,7 @@ public static class Async extends Service {
 		}
 		else {
 			event.hold();
+
 			new Thread(new Runnable() {
 				public void run() {
 					try {
@@ -29,7 +30,7 @@ public static class Async extends Service {
 				}
 			}).start();
 
-			event.output().println("<pre>Slow request!");
+			event.output().println("Async request started!");
 			event.output().flush();
 		}
 	}
