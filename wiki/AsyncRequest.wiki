@@ -34,7 +34,7 @@ public class Async extends Service {
 				}
 			}).start();
 
-			out.println("Async request started!");
+			out.println("Async response started!");
 			out.flush();
 		}
 	}
