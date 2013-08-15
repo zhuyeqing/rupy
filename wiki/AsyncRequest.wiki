@@ -21,7 +21,7 @@ public static class Async extends Service {
 			new Thread(new Runnable() {
 				public void run() {
 					while(true) {
-						// do something slow/asynchronously
+						// do something asynchronous slowly
 						Thread.currentThread().sleep(100);
 						event.query().put("done", "data to send back");
 						event.reply().wakeup();
