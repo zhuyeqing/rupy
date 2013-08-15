@@ -19,7 +19,10 @@ public static class Async extends Service {
 			// this is an example, this method will lock 
 			// for separate requests, you need some kind 
 			// of async executor here.
-			start(event);
+			// start(event);
+
+			Exe exe = new Exe(event);
+			exe.start();
 
 			out.println("Async request started!");
 			out.flush();
