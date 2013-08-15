@@ -20,7 +20,7 @@ public static class Async extends Service {
 				public void run() {
 					try {
 						while(true) {
-							// Do something slow in a separate thread.
+							// do something asynchronously.
 							event.query().put("done", "data to send back");
 							event.reply().wakeup();
 						}
