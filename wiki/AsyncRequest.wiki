@@ -8,7 +8,7 @@ public static class Async extends Service {
 		Output out = event.output();
 
 		if(event.push()) {
-			out.print(event.query().string("done"));
+			out.println(event.query().string("done"));
 			// call this when you are completely done
 			// event.output().finish();
 			out.flush();
