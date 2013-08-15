@@ -16,28 +16,11 @@ public static class Async extends Service {
 		else {
 			event.hold();
 
-			// this is an example, this method will lock 
-			// for separate requests, you need some kind 
-			// of async executor here.
-			// start(event);
-
 			new Exe(event).start();
 
 			out.println("Async request started!");
 			out.flush();
 		}
-	}
-
-	private void start(final Event event) {
-		new Thread(new Runnable() {
-			public void run() {
-				while(true) {
-					// do something asynchronously
-					event.query().put("done", "data to send back");
-					event.reply().wakeup();
-				}
-			}
-		}).start();
 	}
 
 	public static class Exe extends Thread {
