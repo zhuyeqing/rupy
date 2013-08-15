@@ -18,9 +18,11 @@ public static class Async extends Service {
 
 			new Thread(new Runnable() {
 				public void run() {
-					// do something asynchronously
-					event.query().put("done", "data to send back");
-					event.reply().wakeup();
+					while(true) {
+						// do something asynchronously
+						event.query().put("done", "data to send back");
+						event.reply().wakeup();
+					}
 				}
 			}).start();
 
