@@ -16,24 +16,23 @@ public static class Async extends Service {
 		else {
 			event.hold();
 
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						while(true) {
-							// do something asynchronously
-							event.query().put("done", "data to send back");
-							event.reply().wakeup();
-						}
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
+			start();
 
 			out.println("Async request started!");
 			out.flush();
 		}
+	}
+
+	private void start(final Event event) {
+		new Thread(new Runnable() {
+			public void run() {
+				while(true) {
+					// do something asynchronously
+					event.query().put("done", "data to send back");
+					event.reply().wakeup();
+				}
+			}
+		}).start();
 	}
 }
 }}}
