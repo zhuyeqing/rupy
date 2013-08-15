@@ -1,4 +1,4 @@
-#summary How to send async/chunked responses with rupy.
+#summary How to send slow/async/chunked responses with rupy.
 #labels Phase-Implementation
 
 This example runs indefinitely.
