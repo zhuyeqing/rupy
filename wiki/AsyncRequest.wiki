@@ -1,6 +1,8 @@
 #summary How to send async/chunked responses with rupy.
 #labels Phase-Implementation
 
+This example runs indefinitely.
+
 {{{
 public static class Async extends Service {
 	public String path() { return "/async"; }
