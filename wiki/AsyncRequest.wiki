@@ -3,19 +3,18 @@
 
 {{{
 public static class Async extends Service {
-		public String path() { return "/async"; }
-		public void filter(Event event) throws Event, Exception {
-			if(event.push()) {
-				Output out = event.output();
-				out.print(event.query().string("done"));
-				// call this when you are completely done
-				// event.output().finish();
-				out.flush();
-			}
-			else {
-				event.hold();
-				
-				new Thread(new Runnable() {
+	public String path() { return "/async"; }
+	public void filter(Event event) throws Event, Exception {
+		if(event.push()) {
+			Output out = event.output();
+			out.print(event.query().string("done"));
+			// call this when you are completely done
+			// event.output().finish();
+			out.flush();
+		}
+		else {
+			event.hold();
+			new Thread(new Runnable() {
 				public void run() {
 					try {
 						while(true) {
@@ -30,9 +29,9 @@ public static class Async extends Service {
 				}
 			}).start();
 
-				event.output().println("<pre>Slow request!");
-				event.output().flush();
-			}
+			event.output().println("<pre>Slow request!");
+			event.output().flush();
 		}
 	}
+}
 }}}
