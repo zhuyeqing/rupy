@@ -5,8 +5,9 @@
 public static class Async extends Service {
 	public String path() { return "/async"; }
 	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+
 		if(event.push()) {
-			Output out = event.output();
 			out.print(event.query().string("done"));
 			// call this when you are completely done
 			// event.output().finish();
@@ -30,8 +31,8 @@ public static class Async extends Service {
 				}
 			}).start();
 
-			event.output().println("Async request started!");
-			event.output().flush();
+			out.println("Async request started!");
+			out.flush();
 		}
 	}
 }
