@@ -37,5 +37,21 @@ public static class Async extends Service {
 			}
 		}).start();
 	}
+
+	public static class Exe extends Thread {
+		Event event;
+			
+		public Exe(Event event) {
+			this.event = event;
+		}
+			
+		public void run() {
+			while(true) {
+				// do something asynchronously
+				event.query().put("done", "data to send back");
+				event.reply().wakeup();
+			}	
+		}
+	}
 }
 }}}
