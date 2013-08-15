@@ -16,26 +16,16 @@ public static class Async extends Service {
 		else {
 			event.hold();
 
-			new Exe(event).start();
+			new Thread(new Runnable() {
+				public void run() {
+					// do something asynchronously
+					event.query().put("done", "data to send back");
+					event.reply().wakeup();
+				}
+			}).start();
 
 			out.println("Async request started!");
 			out.flush();
-		}
-	}
-
-	public static class Exe extends Thread {
-		Event event;
-			
-		public Exe(Event event) {
-			this.event = event;
-		}
-			
-		public void run() {
-			while(true) {
-				// do something asynchronously
-				event.query().put("done", "data to send back");
-				event.reply().wakeup();
-			}	
 		}
 	}
 }
