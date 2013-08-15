@@ -18,25 +18,29 @@ public class Async extends Service {
 		else {
 			event.hold();
 
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						while(true) {
-							// do something asynchronous slowly
-							Thread.currentThread().sleep(100);
-							event.query().put("done", "data to send back");
-							event.reply().wakeup();
-						}
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
+			start(event);
 
 			out.println("Async response started!");
 			out.flush();
 		}
+	}
+
+	private void deploy(final Event event) {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					while(true) {
+						// do something asynchronous slowly
+						Thread.currentThread().sleep(100);
+						event.query().put("done", "data to send back");
+						event.reply().wakeup();
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 }
 }}}
