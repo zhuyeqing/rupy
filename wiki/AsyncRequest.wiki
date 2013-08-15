@@ -24,7 +24,7 @@ public class Async extends Service {
 		}
 	}
 
-	private void deploy(final Event event) {
+	private void start(final Event event) {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
