@@ -21,8 +21,7 @@ public static class Async extends Service {
 			// of async executor here.
 			// start(event);
 
-			Exe exe = new Exe(event);
-			exe.start();
+			new Exe(event).start();
 
 			out.println("Async request started!");
 			out.flush();
