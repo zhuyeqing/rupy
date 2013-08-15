@@ -26,8 +26,8 @@ public static class Async extends Service {
 							Thread.currentThread().sleep(100);
 							event.query().put("done", "data to send back");
 							event.reply().wakeup();
+						}
 					}
-}
 					catch(Exception e) {
 						e.printStackTrace();
 					}
