@@ -17,7 +17,6 @@ public class Async extends Service {
 		}
 		else {
 			event.hold();
-
 			start(event);
 
 			out.println("Async response started!");
