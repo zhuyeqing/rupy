@@ -29,7 +29,7 @@ public class Async extends Service {
 			public void run() {
 				try {
 					while(true) {
-						// do something asynchronous slowly
+						// do something asynchronously
 						Thread.currentThread().sleep(100);
 						event.query().put("done", "data to send back");
 						event.reply().wakeup();
