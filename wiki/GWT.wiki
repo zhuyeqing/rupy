@@ -1,6 +1,8 @@
 #summary How to integrate with GWT.
 #labels Featured,Phase-Implementation
 
+[http://bitcoinbankbook.com bitcoinbankbook.com] is an example of GWT on rupy.
+
 *Decode, invoke and encode*
 
 This is using GWT 2.1.1 or later.
