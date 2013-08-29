@@ -19,6 +19,8 @@
 
  _This is particularily useful if you have a dev environment against which you test some external integration, use a property that you initialize rupy with to separate the different environments from each other._
 
+ Once you try this you will never go back to fragmented environment development.
+
 *Design*
 
  The Rupy [http://rupy.se/doc/ API] and core [http://code.google.com/p/rupy/wiki/Design design] was built from the ground up to be simpler than the JSP and Servlet API's and their existing implementations without loosing any needed functionality.
