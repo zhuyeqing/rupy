@@ -22,8 +22,8 @@ them in new windows (so you can see the stream in real-time):
   You can play around with more windows <br>
   and <i>name=[http://one.rupy.se/pull?name=three three]&message=[http://one.rupy.se/push?name=two&message=hi hi]</i> values.
 
-  If it doesn't work, try later or on host _two.rupy.se_, <br>
-  somebody else might be trying it at the same time.
+  If it doesn't work, try later or on host _two.rupy.se_ or<br>
+  _tre.rupy.se_, somebody else might be trying it at the same time.
 
   IE doesen't render until a certain amount is <br>
   received, so hold down F5 in <i>two</i> for a while.
