@@ -3,7 +3,7 @@
 
 <font color="red">_*We are working on a query queue+replication system.*_</font>
 
-<font color="green">_*For true redundancy you need to use some custom cluster database, mysql with replication is not good enough, we are working on it!*_</font>
+For true redundancy you need to use some custom cluster database, mysql with replication is not good enough, we are working on it! Since we now have hosting across multiple colocations this is prio no. 1!
 
 Using [http://memory.googlecode.com memory] ORM:
 
