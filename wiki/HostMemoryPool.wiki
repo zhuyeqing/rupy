@@ -3,7 +3,7 @@
 
 <font color="red">_*We are working on a query queue+replication system.*_</font>
 
-For true redundancy you need to use some custom cluster database, mysql with replication is not good enough, we are working on it! Since we now have hosting across multiple colocations ([http://one.rupy.se one], [http://two.rupy.se two] on FSData in Sweden and [http://tre.rupy.se tre] on PCExtreme in the Netherlands) this is prio no. 1!
+For true redundancy you need to use some custom cluster database, mysql with replication is not good enough. Since we now have hosting across multiple colocations ([http://one.rupy.se one] and [http://two.rupy.se two] on FSData in Sweden and [http://tre.rupy.se tre] on PCExtreme in the Netherlands) this is prio no. 1!
 
 Using [http://memory.googlecode.com memory] ORM:
 
