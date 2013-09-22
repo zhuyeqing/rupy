@@ -7,7 +7,7 @@ For true redundancy you need to use some custom cluster database, mysql with rep
 
 In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
 
-Using [http://memory.googlecode.com memory] ORM:
+Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
 {{{
 public class DataBase extends Service {
