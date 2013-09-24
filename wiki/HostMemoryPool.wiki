@@ -1,9 +1,11 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">_*We are working on a new cluster key value store.*_</font>
+<font color="red">_*The new cluster key value store is done.*_</font>
 
 For true redundancy you need to use some custom cluster database, mysql with replication is not good enough. Since we now have hosting across multiple colocations!
+
+We simply use Dropbox for our database, simply writing files with JSON content. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
 In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
 
