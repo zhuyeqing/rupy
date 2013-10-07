@@ -9,7 +9,11 @@ We use Dropbox for our key/value store, simply writing files with encrypted JSON
 
 In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
 
-Important: This is not secure, use Dropbox persistence with custom encryption instead. MySQL connections between the two colocations are not encrypted. Alternatively, if you trust FSData only use one and two nodes.
+Important: This is not secure, MySQL connections between the two colocations are not encrypted.
+
+Use Dropbox persistence with custom encryption instead, and don't send the encryption keys in the deployment jar more than once, ie. deploy some text file with the key(s), then protect it with a service and remove the file from the deployment jar. 
+
+Alternatively, if you trust FSData only use one and two nodes.
 
 Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
