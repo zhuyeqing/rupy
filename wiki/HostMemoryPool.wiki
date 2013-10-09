@@ -11,9 +11,7 @@ In the meantime you should register on the node you want your mysql database on:
 
 Important: This is not secure or uptime capable, MySQL connections between the two colocations are not encrypted, and if the colocation where you host your database is down, your site will be down.
 
-If you setup the Dropbox store above; don't send the encryption keys in the deployment jar more than once, ie. deploy some text file with the key(s), then protect it with a service and remove the file from the deployment jar. 
-
-Alternatively, if you trust FSData; only use [http://one.rupy.se one] and [http://two.rupy.se two] nodes with A-Record instead of host.rupy.se CNAME after registering.
+You should use your host.rupy.se password to encrypt the data, we make sure that password is protected all the way to the JVM.
 
 Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
