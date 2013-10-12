@@ -11,7 +11,7 @@ In the meantime you should register on the node you want your mysql database on:
 
 Important: This is not secure or uptime capable, MySQL connections between the two colocations are not encrypted, and if the colocation where you host your database is down, your site will be down.
 
-You should use your host.rupy.se password to encrypt the data, we make sure that password is protected all the way to the JVM.
+You should use your host.rupy.se password (retrieved in the code below) to encrypt the data, we make sure that password is protected all the way to the JVM.
 
 Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
