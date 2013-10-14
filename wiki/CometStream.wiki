@@ -64,7 +64,7 @@ package {
 			}
 		}
 
-		function delay():void {
+		function delay() {
 			socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
 			socket.writeUTFBytes("Host: one.rupy.se\r\n");
 			socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
