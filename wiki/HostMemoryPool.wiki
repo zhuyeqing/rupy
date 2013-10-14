@@ -13,7 +13,7 @@ You should use your host.rupy.se password (retrieved in the code below) to encry
 
 You could use Dropbox for images too; specially if you have a Public folder (accounts created before October 4, 2012), otherwise you have to store the unique URL of each image. Make sure you give your Dropbox app access to everything.
 
-In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
+In the meantime you register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
 
 Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
