@@ -33,34 +33,53 @@ This code allows you to receive dynamic chunks with flash:
 
 {{{
 package {
-    import flash.errors.*;
-    import flash.events.*;
-    import flash.net.URLRequest;
-    import flash.net.URLStream;
-    import flash.display.MovieClip;
+	import flash.errors.*;
+	import flash.events.*;
+	import flash.net.*;
+	import flash.display.MovieClip;
+	import flash.utils.setTimeout;
 
-    public class Comet extends flash.display.MovieClip {
-        private var stream:URLStream;
-        private var offset:int = 0;
+	public class Comet extends flash.display.MovieClip {
+		var pull;
+		var socket;
+		var offset = 0;
 
-        public function Comet() {
-            stream = new URLStream();
-            var request:URLRequest = new URLRequest("http://one.rupy.se/pull?name=one");
-            stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
-            try {
-                stream.load(request);
-            } catch (error:Error) {
-                trace("Unable to load requested URL.");
-            }
-        }
+		public function Comet() {
+			var req = new URLRequest("http://one.rupy.se/pull?name=one");
+			
+			pull = new URLStream();
+			pull.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+			
+			try {
+				pull.load(req);
+			} catch(error) {
+				trace("Unable to pull. " + error);
+			}
+			
+			socket = new Socket();
+			socket.connect("one.rupy.se", 80);
+			
+			for(var i = 1; i < 10; i++) {
+				setTimeout(delay, 1000 * i);
+			}
+		}
 
-        private function progressHandler(event:Event):void {
-            var progress:ProgressEvent = ProgressEvent(event);
-            var message:String = stream.readUTFBytes(progress.bytesLoaded - offset);
-            offset = progress.bytesLoaded;
-            trace(message);
-        }
-    }
+		function delay():void {
+			socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
+			socket.writeUTFBytes("Host: one.rupy.se\r\n");
+			socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+			socket.writeUTFBytes("\r\n");
+			socket.writeUTFBytes("name=two&message=hello");
+			socket.flush();
+		}
+
+		function progressHandler(event) {
+			var progress = ProgressEvent(event);
+			var message = pull.readUTFBytes(progress.bytesLoaded - offset);
+			offset = progress.bytesLoaded;
+			trace("in " + message);
+		}
+	}
 }
 }}}
 
