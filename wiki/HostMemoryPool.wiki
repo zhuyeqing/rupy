@@ -61,6 +61,7 @@ public class DataBase extends Service {
 			return "jdbc:mysql://" + ip + "/" + host.replaceAll("\\.", "_");
 		}
 
+		// MySQL username can only be 16 characters long
 		public String user() {
 			return pass;
 		}
