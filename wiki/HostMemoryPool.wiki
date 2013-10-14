@@ -5,13 +5,13 @@
 
 For true redundancy you need to use some custom cluster datastore, mysql with replication is not good enough. Since we now have hosting across multiple colocations!
 
-We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
-
-In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
-
 MySQL is not secure or uptime capable, database connections between the two colocations are not encrypted, and if the colocation where you host your database is down, your site will be down.
 
+We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
+
 You should use your host.rupy.se password (retrieved in the code below) to encrypt the data, we make sure that password is protected all the way to the JVM.
+
+In the meantime you should register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands.
 
 Using [http://memory.googlecode.com memory] (you need to add memory.jar and util.jar to your classpath) ORM:
 
