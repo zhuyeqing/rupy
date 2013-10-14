@@ -3,7 +3,7 @@
 
 <font color="red">_*We recommend you use Dropbox as data store, for images too, and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
 
-For true redundancy you need to use some custom cluster database, mysql with replication is not good enough. Since we now have hosting across multiple colocations!
+For true redundancy you need to use some custom cluster datastore, mysql with replication is not good enough. Since we now have hosting across multiple colocations!
 
 We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
