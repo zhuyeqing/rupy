@@ -83,6 +83,8 @@ package {
 }
 }}}
 
+Demo: [http://talk.rupy.se/stream.html]
+
 Tutorial:
 
   * Create 2 new files:
