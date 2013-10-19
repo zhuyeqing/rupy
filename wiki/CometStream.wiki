@@ -48,9 +48,9 @@ package {
 		var port = 80;
 		var pull;
 		var socket;
-		var offset = 0, i = 0;
+		var offset = 0, i = 1;
 		var output;
-		var first = false;
+		var first = true;
 		
 		public function stream() {
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
