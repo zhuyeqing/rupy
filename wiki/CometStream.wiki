@@ -48,7 +48,7 @@ package {
 		var port = 80;
 		var pull;
 		var socket;
-		var offset = 0, i = 0, j = 0;
+		var offset = 0, i = 0;
 		var output;
 		var first = false;
 		
