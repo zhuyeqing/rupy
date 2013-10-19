@@ -124,6 +124,6 @@ Demo: [http://talk.rupy.se/stream.html]
 Tutorial:
 
   * Create 2 new files:
-    # _ActionScript_ - Paste the code above into it and save it as Comet.as.
-    # _Flash (AS 3.0)_ - Edit the Class to 'Comet' in the PROPERTIES PUBLISH pane on the right, save in the same folder.
+    # _ActionScript_ - Paste the code above into it and save it as stream.as.
+    # _Flash (AS 3.0)_ - Edit the Class to 'stream' in the PROPERTIES PUBLISH pane on the right, save in the same folder.
   * Then run Control -> Test Movie (Ctrl+Enter).
