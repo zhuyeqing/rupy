@@ -33,54 +33,83 @@ This code allows you to receive dynamic chunks with flash:
 
 {{{
 package {
+	import flash.display.*;
+	import flash.system.*;
 	import flash.errors.*;
 	import flash.events.*;
+	import flash.utils.*;
+	import flash.text.*;
 	import flash.net.*;
-	import flash.display.MovieClip;
-	import flash.utils.setTimeout;
 
 	public class Comet extends flash.display.MovieClip {
+		var host = "one.rupy.se";
+		var port = 80;
 		var pull;
 		var socket;
 		var offset = 0;
-
+		var output;
+		
 		public function Comet() {
-			var req = new URLRequest("http://one.rupy.se/pull?name=one");
+			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
 			
-			pull = new URLStream();
-			pull.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+			output = new TextField();
+			output.width = 450;
+			output.height = 450;
+			output.multiline = true;
 			
+			addChild(output);
+
 			try {
+				var req = new URLRequest("http://" + host + ":" + port + "/pull?name=one");
+				
+				pull = new URLStream();
+				pull.addEventListener(ProgressEvent.PROGRESS, progress);
+				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
 				pull.load(req);
+			
+				socket = new Socket();
+				socket.addEventListener(IOErrorEvent.IO_ERROR, error);
+				socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+				socket.addEventListener(Event.CONNECT, connect);
+				socket.connect(host, port);
 			} catch(error) {
-				trace("Unable to pull. " + error);
+				output.appendText(error + "\n");
 			}
-			
-			socket = new Socket();
-			socket.connect("one.rupy.se", 80);
-			
+		}
+
+		function delay() {
+			if(socket.connected) {
+				socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
+				socket.writeUTFBytes("Host: " + host + "\r\n");
+				socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+				socket.writeUTFBytes("\r\n");
+				socket.writeUTFBytes("name=two&message=hello");
+				socket.flush();
+			}
+			else {
+				output.appendText("socket not connected\n");
+			}
+		}
+
+		function connect(event) {
 			for(var i = 1; i < 10; i++) {
 				setTimeout(delay, 1000 * i);
 			}
 		}
 
-		function delay() {
-			// You will need rupy 1.1 for the 
-			// cross domain socket policy request.
-			// Checkout from SVN until release.
-			socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
-			socket.writeUTFBytes("Host: one.rupy.se\r\n");
-			socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
-			socket.writeUTFBytes("\r\n");
-			socket.writeUTFBytes("name=two&message=hello");
-			socket.flush();
+		function progress(event) {
+			var progress = ProgressEvent(event);
+			var length = progress.bytesLoaded - offset;
+			
+			if(length > 0) {
+				var message = pull.readUTFBytes(length);
+				offset = progress.bytesLoaded;
+				output.appendText(message + "\n");
+			}
 		}
 
-		function progressHandler(event) {
-			var progress = ProgressEvent(event);
-			var message = pull.readUTFBytes(progress.bytesLoaded - offset);
-			offset = progress.bytesLoaded;
-			trace("in " + message);
+		function error(event) {
+			output.appendText(event + "\n");
 		}
 	}
 }
