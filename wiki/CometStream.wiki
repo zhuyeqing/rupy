@@ -48,6 +48,7 @@ package {
 		var socket;
 		var offset = 0;
 		var output;
+		var first = true;
 		
 		public function stream() {
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
@@ -82,7 +83,12 @@ package {
 			if(socket.connected) {
 				socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
 				socket.writeUTFBytes("Host: " + host + "\r\n");
-				socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+				
+				if(first) {
+					socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+					first = false;
+				}
+				
 				socket.writeUTFBytes("\r\n");
 				socket.writeUTFBytes("name=two&message=hello");
 				socket.flush();
