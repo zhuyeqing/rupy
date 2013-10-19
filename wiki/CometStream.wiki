@@ -41,7 +41,7 @@ package {
 	import flash.text.*;
 	import flash.net.*;
 
-	public class Comet extends flash.display.MovieClip {
+	public class stream extends flash.display.MovieClip {
 		var host = "one.rupy.se";
 		var port = 80;
 		var pull;
@@ -49,7 +49,7 @@ package {
 		var offset = 0;
 		var output;
 		
-		public function Comet() {
+		public function stream() {
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
 			
 			output = new TextField();
@@ -70,6 +70,7 @@ package {
 				socket = new Socket();
 				socket.addEventListener(IOErrorEvent.IO_ERROR, error);
 				socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+				socket.addEventListener(ProgressEvent.SOCKET_DATA, data); 
 				socket.addEventListener(Event.CONNECT, connect);
 				socket.connect(host, port);
 			} catch(error) {
@@ -98,14 +99,17 @@ package {
 		}
 
 		function progress(event) {
-			var progress = ProgressEvent(event);
-			var length = progress.bytesLoaded - offset;
+			var length = event.bytesLoaded - offset;
 			
 			if(length > 0) {
 				var message = pull.readUTFBytes(length);
-				offset = progress.bytesLoaded;
+				offset = event.bytesLoaded;
 				output.appendText(message + "\n");
 			}
+		}
+
+		function data(event) {
+			socket.readUTFBytes(event.bytesLoaded); // HTTP/1.1 200 OK
 		}
 
 		function error(event) {
