@@ -48,7 +48,7 @@ package {
 		var port = 80;
 		var pull;
 		var socket;
-		var offset = 0;
+		var offset = 0, i = 0, j = 0;
 		var output;
 		var first = false;
 		
@@ -81,38 +81,36 @@ package {
 			}
 		}
 
-		function delay() {
-			if(socket.connected) {
-				socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
-				socket.writeUTFBytes("Host: " + host + "\r\n");
-				
-				if(first) {
-					socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
-					first = false;
-				}
-				
-				socket.writeUTFBytes("\r\n");
-				socket.writeUTFBytes("name=two&message=hello");
-				socket.flush();
-			}
-			else {
-				output.appendText("socket not connected\n");
-			}
-		}
-
 		function connect(event) {
-			for(var i = 1; i < 10; i++) {
-				setTimeout(delay, 100 * i);
+			var timer = new Timer(30, 60);
+			timer.addEventListener(TimerEvent.TIMER, tick);
+			timer.start();
+		}
+		
+		function tick(event) {
+			socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
+			socket.writeUTFBytes("Host: " + host + "\r\n");
+				
+			if(first) {
+				socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+				first = false;
 			}
+				
+			socket.writeUTFBytes("\r\n");
+			socket.writeUTFBytes("name=two&message=" + i++);
+			socket.flush();
 		}
 
 		function progress(event) {
 			var length = event.bytesLoaded - offset;
 
 			if(length > 0) {
-				var message = pull.readUTFBytes(length);
+				var messages = pull.readUTFBytes(length);
 				offset = event.bytesLoaded;
-				output.appendText(message);
+				var array = messages.split("\n");
+				for(var i = 0; i < array.length; i++) {
+					output.appendText(array[i] + "\n");
+				}
 			}
 		}
 
