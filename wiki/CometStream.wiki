@@ -42,13 +42,13 @@ package {
 	import flash.net.*;
 
 	public class stream extends flash.display.MovieClip {
-		var host = "one.rupy.se";
+		var host = "talk.rupy.se";
 		var port = 80;
 		var pull;
 		var socket;
 		var offset = 0;
 		var output;
-		var first = true;
+		var first = false;
 		
 		public function stream() {
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
@@ -100,22 +100,23 @@ package {
 
 		function connect(event) {
 			for(var i = 1; i < 10; i++) {
-				setTimeout(delay, 1000 * i);
+				setTimeout(delay, 100 * i);
 			}
 		}
 
 		function progress(event) {
 			var length = event.bytesLoaded - offset;
-			
+
 			if(length > 0) {
 				var message = pull.readUTFBytes(length);
 				offset = event.bytesLoaded;
-				output.appendText(message + "\n");
+				output.appendText(message);
 			}
 		}
 
 		function data(event) {
-			socket.readUTFBytes(event.bytesLoaded); // HTTP/1.1 200 OK
+			var message = socket.readUTFBytes(event.bytesLoaded);
+			//output.appendText(message + "\n"); // HTTP/1.1 200 OK
 		}
 
 		function error(event) {
