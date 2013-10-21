@@ -47,10 +47,10 @@ package {
 		var host = "talk.rupy.se";
 		var port = 80;
 		var pull;
-		var socket;
+		var push;
 		var offset = 0, i = 1;
 		var output;
-		var first = true;
+		var first = false;
 		
 		public function stream() {
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
@@ -63,44 +63,61 @@ package {
 			addChild(output);
 
 			try {
+				// Flash bundles the chunks, not good for realtime.
+				/*
 				var req = new URLRequest("http://" + host + ":" + port + "/pull?name=one");
-				
 				pull = new URLStream();
 				pull.addEventListener(ProgressEvent.PROGRESS, progress);
 				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
 				pull.load(req);
+				*/
 			
-				socket = new Socket();
-				socket.addEventListener(IOErrorEvent.IO_ERROR, error);
-				socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
-				socket.addEventListener(ProgressEvent.SOCKET_DATA, data); 
-				socket.addEventListener(Event.CONNECT, connect);
-				socket.connect(host, port);
+				pull = new Socket();
+				pull.addEventListener(IOErrorEvent.IO_ERROR, error);
+				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+				pull.addEventListener(ProgressEvent.SOCKET_DATA, pull_data); 
+				pull.addEventListener(Event.CONNECT, pull_connect);
+				pull.connect(host, port);
+			
+				push = new Socket();
+				push.addEventListener(IOErrorEvent.IO_ERROR, error);
+				push.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+				push.addEventListener(ProgressEvent.SOCKET_DATA, push_data); 
+				push.addEventListener(Event.CONNECT, push_connect);
+				push.connect(host, port);
 			} catch(error) {
 				output.appendText(error + "\n");
 			}
 		}
 
-		function connect(event) {
+		function pull_connect(event) {
+			pull.writeUTFBytes("get /pull?name=one HTTP/1.1\r\n");
+			pull.writeUTFBytes("Host: " + host + "\r\n");
+			pull.writeUTFBytes("Head: less\r\n");
+			pull.writeUTFBytes("\r\n");
+			pull.flush();
+		}
+
+		function push_connect(event) {
 			var timer = new Timer(30, 60);
 			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
 		
 		function tick(event) {
-			socket.writeUTFBytes("POST /push HTTP/1.1\r\n");
-			socket.writeUTFBytes("Host: " + host + "\r\n");
+			push.writeUTFBytes("POST /push HTTP/1.1\r\n");
+			push.writeUTFBytes("Host: " + host + "\r\n");
 				
 			if(first) {
-				socket.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
+				push.writeUTFBytes("Head: less\r\n"); // tells rupy to not send any headers
 				first = false;
 			}
 				
-			socket.writeUTFBytes("\r\n");
-			socket.writeUTFBytes("name=two&message=" + i++);
-			socket.flush();
+			push.writeUTFBytes("\r\n");
+			push.writeUTFBytes("name=two&message=" + i++);
+			push.flush();
 		}
-
+/*
 		function progress(event) {
 			var length = event.bytesLoaded - offset;
 
@@ -113,10 +130,20 @@ package {
 				}
 			}
 		}
-
-		function data(event) {
-			var message = socket.readUTFBytes(event.bytesLoaded);
+*/
+		function push_data(event) {
+			var message = push.readUTFBytes(event.bytesLoaded);
 			//output.appendText(message + "\n"); // HTTP/1.1 200 OK
+		}
+		
+		function pull_data(event) {
+			var message = pull.readUTFBytes(event.bytesLoaded);
+			
+			var array = message.split("\r\n");
+			
+			for(var i = 1; i < array.length; i += 2) {
+				output.appendText(array[i]);
+			}
 		}
 
 		function error(event) {
