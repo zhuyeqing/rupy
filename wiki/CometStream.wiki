@@ -61,22 +61,21 @@ package {
 			addChild(output);
 
 			try {
-				pull = new Socket();
-				pull.addEventListener(IOErrorEvent.IO_ERROR, error);
-				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
-				pull.addEventListener(ProgressEvent.SOCKET_DATA, pull_data); 
-				pull.addEventListener(Event.CONNECT, pull_connect);
-				pull.connect(host, port);
-			
-				push = new Socket();
-				push.addEventListener(IOErrorEvent.IO_ERROR, error);
-				push.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
-				push.addEventListener(ProgressEvent.SOCKET_DATA, push_data); 
-				push.addEventListener(Event.CONNECT, push_connect);
-				push.connect(host, port);
+				pull = socket(pull_data, pull_connect);
+				push = socket(push_data, push_connect);
 			} catch(error) {
 				output.appendText(error + "\n");
 			}
+		}
+
+		function socket(data, connect):Socket {
+			var socket = new Socket();
+			socket.addEventListener(IOErrorEvent.IO_ERROR, error);
+			socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+			socket.addEventListener(ProgressEvent.SOCKET_DATA, data); 
+			socket.addEventListener(Event.CONNECT, connect);
+			socket.connect(host, port);
+			return socket;
 		}
 
 		function pull_connect(event) {
