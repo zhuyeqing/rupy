@@ -80,7 +80,7 @@ package {
 		}
 
 		function pull_connect(event) {
-			pull.writeUTFBytes("get /pull?name=one HTTP/1.1\r\n");
+			pull.writeUTFBytes("GET /pull?name=one HTTP/1.1\r\n");
 			pull.writeUTFBytes("Host: " + host + "\r\n");
 			pull.writeUTFBytes("Head: less\r\n");
 			pull.writeUTFBytes("\r\n");
@@ -114,9 +114,7 @@ package {
 		
 		function pull_data(event) {
 			var message = pull.readUTFBytes(event.bytesLoaded);
-			
 			var array = message.split("\r\n");
-			
 			for(var i = 1; i < array.length; i += 2) {
 				output.appendText(array[i]);
 			}
