@@ -1,8 +1,6 @@
 #summary How to stream chunks in real-time.
 #labels Featured,Phase-Implementation
 
-<font color="red">_*Had to switch from \0 to \n for packet delimiter. Will be in next release.*_</font>
-
 You can now [http://rupy.googlecode.com/files/talk-1.0.zip stream] messages over HTTP with rupy.
 
 As [http://www.ietf.org/id/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply this reference implementation.
