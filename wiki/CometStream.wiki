@@ -48,13 +48,11 @@ package {
 		var port = 80;
 		var pull;
 		var push;
-		var offset = 0, i = 1;
+		var i = 1;
 		var output;
-		var first = false;
+		var first = true;
 		
 		public function stream() {
-			Security.loadPolicyFile("xmlsocket://" + host + ":" + port);
-			
 			output = new TextField();
 			output.width = 450;
 			output.height = 450;
@@ -63,15 +61,6 @@ package {
 			addChild(output);
 
 			try {
-				// Flash bundles the chunks, not good for realtime.
-				/*
-				var req = new URLRequest("http://" + host + ":" + port + "/pull?name=one");
-				pull = new URLStream();
-				pull.addEventListener(ProgressEvent.PROGRESS, progress);
-				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
-				pull.load(req);
-				*/
-			
 				pull = new Socket();
 				pull.addEventListener(IOErrorEvent.IO_ERROR, error);
 				pull.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
@@ -117,20 +106,7 @@ package {
 			push.writeUTFBytes("name=two&message=" + i++);
 			push.flush();
 		}
-/*
-		function progress(event) {
-			var length = event.bytesLoaded - offset;
 
-			if(length > 0) {
-				var messages = pull.readUTFBytes(length);
-				offset = event.bytesLoaded;
-				var array = messages.split("\n");
-				for(var i = 0; i < array.length; i++) {
-					output.appendText(array[i] + "\n");
-				}
-			}
-		}
-*/
 		function push_data(event) {
 			var message = push.readUTFBytes(event.bytesLoaded);
 			//output.appendText(message + "\n"); // HTTP/1.1 200 OK
