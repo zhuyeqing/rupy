@@ -57,22 +57,23 @@ package {
 			
 			addChild(output);
 
-			try {
-				pull = socket(pull_data, pull_connect);
-				push = socket(push_data, push_connect);
-			} catch(error) {
-				output.appendText(error + "\n");
-			}
+			pull = socket(pull_data, pull_connect);
 		}
 
 		function socket(data, connect):Socket {
-			var socket = new Socket();
-			socket.addEventListener(IOErrorEvent.IO_ERROR, error);
-			socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
-			socket.addEventListener(ProgressEvent.SOCKET_DATA, data); 
-			socket.addEventListener(Event.CONNECT, connect);
-			socket.connect(host, port);
-			return socket;
+			try {
+				var socket = new Socket();
+				socket.addEventListener(IOErrorEvent.IO_ERROR, error);
+				socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+				socket.addEventListener(ProgressEvent.SOCKET_DATA, data); 
+				socket.addEventListener(Event.CONNECT, connect);
+				socket.connect(host, port);
+				return socket;
+			} catch(error) {
+				output.appendText(error + "\n");
+			}
+			
+			return null;
 		}
 
 		function pull_connect(event) {
@@ -81,10 +82,12 @@ package {
 			pull.writeUTFBytes("Head: less\r\n"); // enables TCP no delay
 			pull.writeUTFBytes("\r\n");
 			pull.flush();
+			
+			push = socket(push_data, push_connect);
 		}
 
 		function push_connect(event) {
-			var timer = new Timer(30, 60);
+			var timer = new Timer(20, 120);
 			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
@@ -112,9 +115,10 @@ package {
 			var message = pull.readUTFBytes(event.bytesLoaded);
 			var array = message.split("\r\n");
 			for(var i = 1; i < array.length; i += 2) {
-				// here we need to split on \0 or \n
-				// will be in next release
+				// here we need to split on \0
+				// or \n in next release
 				output.appendText(array[i]);
+				output.scrollV+=10000;
 			}
 		}
 
