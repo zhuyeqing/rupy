@@ -51,8 +51,8 @@ package {
 		
 		public function stream() {
 			output = new TextField();
-			output.width = 450;
-			output.height = 450;
+			output.width = 400;
+			output.height = 400;
 			output.multiline = true;
 			
 			addChild(output);
