@@ -48,6 +48,8 @@ package {
 		var id = 1;
 		var output;
 		var first = true;
+		var length = 120;
+		var sleep = 20;
 		
 		public function stream() {
 			output = new TextField();
@@ -56,6 +58,8 @@ package {
 			output.multiline = true;
 			
 			addChild(output);
+			
+			output.appendText("security...");
 
 			pull = socket(pull_data, pull_connect);
 		}
@@ -77,6 +81,8 @@ package {
 		}
 
 		function pull_connect(event) {
+			output.appendText(" done\n");
+			
 			pull.writeUTFBytes("GET /pull?name=one HTTP/1.1\r\n");
 			pull.writeUTFBytes("Host: " + host + "\r\n");
 			pull.writeUTFBytes("Head: less\r\n"); // enables TCP no delay
@@ -87,7 +93,7 @@ package {
 		}
 
 		function push_connect(event) {
-			var timer = new Timer(20, 120);
+			var timer = new Timer(sleep, length);
 			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
