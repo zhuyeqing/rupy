@@ -44,9 +44,8 @@ package {
 	public class stream extends flash.display.MovieClip {
 		var host = "talk.rupy.se";
 		var port = 80;
-		var pull;
-		var push;
-		var i = 1;
+		var pull, push; // sockets
+		var id = 1;
 		var output;
 		var first = true;
 		
@@ -100,7 +99,7 @@ package {
 			}
 				
 			push.writeUTFBytes("\r\n");
-			push.writeUTFBytes("name=two&message=" + i++);
+			push.writeUTFBytes("name=two&message=" + id++);
 			push.flush();
 		}
 
@@ -113,6 +112,8 @@ package {
 			var message = pull.readUTFBytes(event.bytesLoaded);
 			var array = message.split("\r\n");
 			for(var i = 1; i < array.length; i += 2) {
+				// here we need to split on \0 or \n
+				// will be in next release
 				output.appendText(array[i]);
 			}
 		}
