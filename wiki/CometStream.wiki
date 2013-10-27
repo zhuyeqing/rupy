@@ -95,9 +95,11 @@ package {
 		}
 
 		function push_connect(event) {
-			var timer = new Timer(sleep, length);
-			timer.addEventListener(TimerEvent.TIMER, tick);
-			timer.start();
+			//var timer = new Timer(sleep, length);
+			//timer.addEventListener(TimerEvent.TIMER, tick);
+			//timer.start();
+			
+			tick(null);
 		}
 		
 		function tick(event) {
@@ -117,6 +119,9 @@ package {
 		function push_data(event) {
 			var message = push.readUTFBytes(event.bytesLoaded);
 			//output.appendText(message + "\n"); // HTTP/1.1 200 OK
+			if(id < length) {
+				tick(null);
+			}
 		}
 		
 		function pull_data(event) {
