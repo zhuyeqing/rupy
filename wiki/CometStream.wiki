@@ -126,7 +126,8 @@ package {
 				tick(null);
 			}
 			else {
-				output.appendText("avg. packet latency " + int((new Date().getTime() - start) / length) + " ms.\n");
+				var latency = int((new Date().getTime() - start) / length);
+				output.appendText("avg. packet latency " + latency + " ms.\n");
 				output.scrollV+=10000;
 			}
 		}
