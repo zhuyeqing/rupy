@@ -52,6 +52,7 @@ package {
 		var first = true;
 		var length = 120;
 		var sleep = 20;
+		var start;
 		
 		public function stream() {
 			output = new TextField();
@@ -83,7 +84,9 @@ package {
 		}
 
 		function pull_connect(event) {
-			output.appendText(" done\n");
+			output.appendText(" done \n");
+			
+			start = new Date().getTime();
 			
 			pull.writeUTFBytes("GET /pull?name=one HTTP/1.1\r\n");
 			pull.writeUTFBytes("Host: " + host + "\r\n");
@@ -119,8 +122,12 @@ package {
 		function push_data(event) {
 			var message = push.readUTFBytes(event.bytesLoaded);
 			//output.appendText(message + "\n"); // HTTP/1.1 200 OK
-			if(id < length) {
+			if(id <= length) {
 				tick(null);
+			}
+			else {
+				output.appendText("avg. packet latency " + int((new Date().getTime() - start) / length) + " ms.\n");
+				output.scrollV+=10000;
 			}
 		}
 		
