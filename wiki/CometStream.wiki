@@ -132,13 +132,14 @@ package {
 			}
 		}
 		
+		/* here we need to split on \0
+		 * or \n in next release
+		 * or binary fixed length
+		 */
 		function pull_data(event) {
 			var message = pull.readUTFBytes(event.bytesLoaded);
 			var array = message.split("\r\n");
 			for(var i = 1; i < array.length; i += 2) {
-				// here we need to split on \0
-				// or \n in next release
-				// or binary fixed length
 				output.appendText(array[i]);
 				output.scrollV+=10000;
 			}
