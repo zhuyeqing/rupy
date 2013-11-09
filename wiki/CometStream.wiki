@@ -2,7 +2,7 @@
 #labels Featured,Phase-Implementation
 
 <font color="red">_*Had to switch to \n for separator since AS doesn't like \0 in Strings.</font><br>
-<font color="red">Also there is a problem running the stream client on linux and mac, since printlnt uses \n on those operatives. Embarrassing!*_</font>
+<font color="red">Also there is a problem running the stream client on linux and mac,<br>since printlnt uses \n on those operatives. Embarrassing!*_</font>
 
 You can now [http://rupy.googlecode.com/files/talk-1.0.zip stream] messages over HTTP with rupy.
 
