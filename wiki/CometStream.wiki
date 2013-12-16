@@ -1,10 +1,6 @@
 #summary How to stream chunks in real-time.
 #labels Featured,Phase-Implementation
 
-<font color="red">_*Had to switch to \n for separator since .as doesn't like \0 in Strings.</font><br>
-<font color="red">Also there is a problem running the stream/Client.java on linux and mac</font><br>
-<font color="red">with this first release, since println uses \n on those operatives.</font>
-
 You can now [http://rupy.googlecode.com/files/talk-1.1.zip stream] messages over HTTP with rupy.
 
 As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply this reference implementation.
