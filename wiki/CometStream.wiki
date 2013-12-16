@@ -7,7 +7,7 @@
 
 You can now [http://rupy.googlecode.com/files/talk-1.0.zip stream] messages over HTTP with rupy.
 
-As [http://www.ietf.org/id/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply this reference implementation.
+As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RFC] specification I supply this reference implementation.
 
 The message performance of the test included above:<br>
 
