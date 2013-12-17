@@ -1,6 +1,8 @@
 #summary HTTP in real-time.
 #labels Phase-Implementation,Featured
 
+<font color="red">_*This covers Javascript longpoll, for custom client and flash use [https://code.google.com/p/rupy/wiki/CometStream streaming].*_</font>
+
 || XHR || XMLHttpRequest ||
 || XDR*^1^* || Cross Domain Request ||
 
