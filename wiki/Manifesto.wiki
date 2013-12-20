@@ -31,8 +31,6 @@
   * Unable to take full advantage of the non-blocking NIO due to blocking IO assumptions. 
   * Full Servlet Web containers are overkill for many applications. 
 
- Source: http://www.restlet.org/about/introduction
-
 *Modularity*
 
  Ideally, you should be able to choose your tools and fix or replace a broken tool quickly. That's what modular software is all about, like binary lego. Dividing your application over many servers is a proven approach to scalability and provides a clear separation of the architectural interfaces. See [http://queue.acm.org/detail.cfm?id=1142065 this] interview with the Amazon CTO on SOA.
