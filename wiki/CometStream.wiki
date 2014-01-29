@@ -131,8 +131,7 @@ package {
 			}
 		}
 		
-		/* here we need to split on \0
-		 * or \n in next release
+		/* here we need to split on \n 
 		 * or binary fixed length
 		 */
 		function pull_data(event) {
