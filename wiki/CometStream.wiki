@@ -3,7 +3,8 @@
 
 You can now [http://rupy.googlecode.com/files/talk-1.1.zip stream] messages over HTTP with rupy.
 
-As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RFC] I supply this reference implementation. <font color="red">Termination is now \n for text based implementation</font>
+As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RFC] I supply this reference implementation.
+<font color="red">Termination is now \n for text based implementation</font>
 
 The message performance of the test included above:<br>
 
