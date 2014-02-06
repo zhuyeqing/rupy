@@ -11,7 +11,7 @@ We use Dropbox as a "key/value" store, simply writing and reading files with com
 
 You should use your host.rupy.se password (retrieved in the code below) to encrypt the data, we make sure that password is protected all the way to the JVM.
 
-You could use Dropbox for images too; very easy if you have a Public folder (accounts created after October 4, 2012 need to activate this [https://www.dropbox.com/enable_public_folder here]), otherwise you have to store the unique URL of each image. Make sure you give your Dropbox app access to everything.
+You could use Dropbox for images too if you have a Public folder (accounts created after October 4, 2012 need to activate this [https://www.dropbox.com/enable_public_folder here]), otherwise you have to store the unique URL of each image. Make sure you give your Dropbox app access to everything.
 
 In the meantime; you register on the node you want your mysql database on: [http://one.rupy.se one] or [http://two.rupy.se two] hosted by FSData in Sweden and [http://tre.rupy.se tre] hosted by PCExtreme in the Netherlands. For now if you need security, you have to change the DNS to the node with the MySQL (100% secure unless hardware is tampered with which would be criminal and impossible for us to not notice) or the two swedish nodes (only FSData can snoop your data).
 
