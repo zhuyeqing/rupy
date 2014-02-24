@@ -16,7 +16,7 @@ The message performance of the test included above:<br>
 You can try it quickly by right-clicking these two links and opening <br>
 them in new windows (so you can see the stream in real-time):
 
-  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] |
+  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] | <font color="red">Seems chrome changed it's implementation and this does not render any more?!</font>
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
