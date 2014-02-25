@@ -149,7 +149,7 @@ package {
 }
 }}}
 
-Demo: [http://talk.rupy.se/stream.html]<font color="red"> - Seems chrome changed it's implementation and this does not render in realtime any more?!</font>
+Demo: [http://talk.rupy.se/stream.html]
 
 Tutorial:
 
