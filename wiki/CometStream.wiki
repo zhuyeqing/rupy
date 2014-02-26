@@ -15,7 +15,7 @@ The message performance of the test included above:<br>
 You can try it quickly by right-clicking these two links and opening <br>
 them in new windows (so you can see the stream in real-time):
 
-  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] | <font color="red"> - Seems chrome changed it's implementation; look under "Developer tools - Network" you will see the data for the "one" page grow, but nothing is rendered?!</font>
+  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] | <font color="red"> - Seems this demo is broken now; in chrome look under "Developer tools - Network" you will see the data for the "one" page grow, but nothing is rendered?!</font>
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
