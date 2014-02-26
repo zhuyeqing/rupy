@@ -15,8 +15,7 @@ The message performance of the test included above:<br>
 You can try it quickly by right-clicking these two links and opening <br>
 them in new windows (so you can see the stream in real-time):
 
-  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] | <font color="red"> - Seems this demo is broken in chrome now; look under "Developer tools - Network" you will see the data for the "one" page grow, but nothing is rendered?! Maybe it's the '\n' termination?</font> Luckily event-streams below works!
-
+  | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello two] | <font color="red"> - Seems this demo is broken in chrome now; look under "Developer tools - Network" you will see the data for the "one" page grow, but nothing is rendered?! Maybe it's the '\n' termination? Luckily event-streams below works!</font>
   | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello two] |
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
