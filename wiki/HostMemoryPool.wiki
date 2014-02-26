@@ -1,7 +1,7 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">_*Hold on, we have a better idea, why not just store the user file with all the data in json encrypted WITH the users own password SHA (this way we don't even store the password!) in a sub folder to your app (that we protect obviously) and broadcast to all cluster nodes!*_</font>
+<font color="red">_*Hold on, we have a better idea, why not just store the user file with all the data in json encrypted WITH the users own password SHA (this way we don't even store the password!) in a sub folder to your app "app/your.host.name/data" (that we protect from requests obviously) and broadcast to all cluster nodes!*_</font>
 
 <font color="orange">_*We recommend you use Dropbox as datastore and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
 
