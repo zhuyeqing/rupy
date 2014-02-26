@@ -1,7 +1,9 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">_*We recommend you use Dropbox as datastore and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
+<font color="red">_*Hold on, we have a better idea, why not just store the user file with all the data in json encrypted WITH the password SHA in a sub folder to your app (that we protect obviously) and broadcast!*_</font>
+
+<font color="orange">_*We recommend you use Dropbox as datastore and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
