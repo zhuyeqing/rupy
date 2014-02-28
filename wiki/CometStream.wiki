@@ -15,7 +15,7 @@ The message performance of the test included above:<br>
 You can try it quickly by right-clicking these two links and opening <br>
 them in new windows (so you can see the stream in real-time):
 
-  HTTP | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello%3Cbr%3E two] |
+  HTTP | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello%3Cbr%3E two] | <font color="red"> - Chrome doesn't render without a html tag now.</font>
 
   event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello two] |
 
