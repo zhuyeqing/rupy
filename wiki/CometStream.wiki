@@ -13,11 +13,13 @@ The message performance of the test included above:<br>
 ||RPi (1)||99%||~300||~700||~1.000||
 
 You can try it quickly by right-clicking these two links and opening <br>
-them in new windows (so you can see the stream in real-time):
+them in new tabs/windows (so you can see the stream in real-time):
 
   HTTP | [http://one.rupy.se/pull?name=one one] | < "hello" | [http://one.rupy.se/push?name=two&message=hello%3Cbr%3E two] | <font color="red"> - Chrome doesn't render without a html tag now.</font>
 
   event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello two] |
+
+  Flash: [http://talk.rupy.se/stream.html]
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
@@ -150,8 +152,6 @@ package {
 	}
 }
 }}}
-
-Demo: [http://talk.rupy.se/stream.html]
 
 Tutorial:
 
