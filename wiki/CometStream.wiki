@@ -19,7 +19,7 @@ them in new tabs/windows (so you can see the stream in real-time):
 
   event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello two] |
 
-  Flash: [http://talk.rupy.se/stream.html stream] (see code below)
+  Flash: [http://talk.rupy.se/stream.html stream] (see code below) (server is in Helsingborg, Sweden)
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
