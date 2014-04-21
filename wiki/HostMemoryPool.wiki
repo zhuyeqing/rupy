@@ -1,9 +1,11 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">_*We recommend you use Dropbox <font color="orange">(we are working on our own file replication)</font> as datastore and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
+<font color="red">_*We recommend you use Dropbox as datastore and only use MySQL for unsecured up-to-date non-crucial indexes.*_</font>
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
+
+<font color="orange">We are working on our own file replication, will post code as soon as it's done here!</font>
 
 MySQL is not secure, scalable or uptime capable; database connections between the two colocations are not encrypted, and since databases do not have NIO you can't scale them and finally if the colocation where you host your database is down, your site will be down.
 
