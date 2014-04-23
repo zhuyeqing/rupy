@@ -12,8 +12,23 @@ MySQL is not secure, scalable or uptime capable; database connections between th
 
 We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
-You should use a password in a file that you upload once (and protect with the following code) to encrypt the data:
+You should use a password in a file that you upload once (then retrieve and protect with the following code) to encrypt the data:
 
+{{{
+public static String secret() {
+	try {
+		RandomAccessFile file = new RandomAccessFile(new File("app/your.app.host/secret"), "r");
+		pass = file.readLine();
+		file.close();
+		return pass;
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+	}
+
+	return null;
+}
+}}}
 {{{
 public static class Protect extends Service {
 	public String path() {
