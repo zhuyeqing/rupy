@@ -19,7 +19,7 @@ static String secret;
 
 public static String secret() throws Exception {
 	if(secret == null) {
-		RandomAccessFile file = new RandomAccessFile(new File("app/aeon.rupy.se/secret"), "r");
+		RandomAccessFile file = new RandomAccessFile(new File("app/your.app.domain/secret"), "r");
 		secret = file.readLine();
 		file.close();
 	}
