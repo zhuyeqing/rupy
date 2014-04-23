@@ -18,7 +18,7 @@ You should use a password in a file that you upload once (then retrieve and prot
 public static String secret() {
 	try {
 		RandomAccessFile file = new RandomAccessFile(new File("app/your.app.host/secret"), "r");
-		pass = file.readLine();
+		String pass = file.readLine();
 		file.close();
 		return pass;
 	}
