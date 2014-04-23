@@ -8,7 +8,7 @@ For true redundancy you need to use some custom cluster datastore since we now h
 
 <font color="orange">We are working on our own file replication, will post code as soon as it's done here!</font>
 
-MySQL is not secure, scalable or uptime capable; database connections between the two colocations are not encrypted, and since databases don't have NIO; you can't scale them. Finally, if the colocation were you host your database is down, your site will be down.
+MySQL is not secure, scalable or uptime capable; database connections between the two colocations are not encrypted, and since databases don't have NIO; you can't scale them. Finally, if the colocation where you host your database is down, your site will be down.
 
 We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
