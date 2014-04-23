@@ -14,7 +14,7 @@ For true redundancy you need to use some custom cluster datastore since we now h
  * long ids, collisions should be rare, at least over the network.
  */
 public class Root extends Service {
-	static String app = "aeon.rupy.se";
+	static String app = "aeon.rupy.se"; // Change this to your app domain
 	static String local;
 	static String[] hosts = {"one", "two", "tre"};
 	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
