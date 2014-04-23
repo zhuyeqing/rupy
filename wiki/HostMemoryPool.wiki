@@ -6,7 +6,7 @@
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
-<font color="orange">We are working on our own file replication, this is the first rough draft!</font>
+<font color="orange">We are working on our own file replication, this is the first rough draft:</font>
 
 {{{
 /* Distributed secure unique identity cluster.
