@@ -15,18 +15,16 @@ We use Dropbox as a "key/value" store, simply writing and reading files with com
 You should use a password in a file that you upload once (then retrieve and protect with the following code) to encrypt the data:
 
 {{{
-public static String secret() {
-	try {
-		RandomAccessFile file = new RandomAccessFile(new File("app/your.app.host/secret"), "r");
-		String pass = file.readLine();
+static String secret;
+
+public static String secret() throws Exception {
+	if(secret == null) {
+		RandomAccessFile file = new RandomAccessFile(new File("app/aeon.rupy.se/secret"), "r");
+		secret = file.readLine();
 		file.close();
-		return pass;
-	}
-	catch(Exception e) {
-		e.printStackTrace();
 	}
 
-	return null;
+	return secret;
 }
 }}}
 {{{
