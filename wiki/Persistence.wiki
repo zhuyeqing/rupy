@@ -3,7 +3,7 @@
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
-MySQL is not secure, scalable, uptime capable or redundant in a cluster environment:
+MySQL is not secure, scalable or redundant in a cluster environment:
 
   * Database connections between the two colocations are not encrypted.
   * Databases don't have NIO; you can't scale them.
