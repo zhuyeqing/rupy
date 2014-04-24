@@ -1,4 +1,4 @@
-#summary Distributed secure unique identity cluster backup.
+#summary Distributed secure unique identity cluster.
 #labels Phase-Design,Phase-Implementation
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
