@@ -191,7 +191,7 @@ public class Root extends Service {
 	}
 
 	/* The path is folders of the first four characters then a file of the remainder.
-	 * With Ext4 this should not be necessary but I think it might offload the index somewhat?
+	 * With Ext4 this shouldn't be required, but I think it might offload the index?
 	 */
 	static String path(String key) {
 		StringBuilder path = new StringBuilder("/");
