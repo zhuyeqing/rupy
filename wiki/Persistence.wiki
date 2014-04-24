@@ -1,4 +1,4 @@
-#summary How to deploy a MySQL connection pool on host.rupy.se
+#summary Distributed secure unique identity cluster backup persistence.
 #labels Phase-Design,Phase-Implementation
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
@@ -11,7 +11,7 @@ MySQL is not secure, scalable, uptime capable or redundant in a cluster environm
   * You need to backup your MySQL.
 
 {{{
-/* Distributed secure unique identity cluster.
+/* Distributed secure unique identity cluster backup persistence.
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
  * 
