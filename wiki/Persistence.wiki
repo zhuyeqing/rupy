@@ -12,7 +12,7 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
 
 {{{
 /**
- * Distributed unique & secure identity cluster. (DU&SIC)
+ * Distributed Unique & Secure Identity Cluster. (DU&SIC)
  * 
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
