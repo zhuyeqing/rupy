@@ -1,9 +1,9 @@
-#summary Distributed secure unique identity.
+#summary Distributed secure unique identity cluster.
 #labels Phase-Design,Phase-Implementation
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
-Ordinary databases are not secure, scalable or redundant in a cluster environment:
+Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
 
   * Database connections between colocations are not encrypted.
   * Databases don't have NIO; you can't scale them.
@@ -11,7 +11,7 @@ Ordinary databases are not secure, scalable or redundant in a cluster environmen
   * You need to backup your data.
 
 {{{
-/* Distributed secure unique identity.
+/* Distributed secure unique identity cluster.
  * 
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
