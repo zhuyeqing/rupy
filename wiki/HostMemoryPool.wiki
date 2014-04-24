@@ -18,7 +18,7 @@ For true redundancy you need to use some custom cluster datastore since we now h
  * two.your.app.domain -> 89.221.241.33
  * tre.your.app.domain -> 92.63.174.125
  * 
- * If you want to index my e-mail or username you need to change that 
+ * If you want to index by e-mail or username you need to change that 
  * part of the code too.
  */
 public class Root extends Service {
