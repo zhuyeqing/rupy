@@ -9,7 +9,7 @@ We are working on our own file replication system: [https://code.google.com/p/ru
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
-Ordinary databases are not secure, scalable or redundant in a cluster environment:
+Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
 
   * Database connections between colocations are not encrypted.
   * Databases don't have NIO; you can't scale them.
