@@ -1,4 +1,4 @@
-#summary Distributed Unique & Secure Identity Cluster. (DU&SIC)
+#summary Distributed Unique Secure File Identity Cluster. (DUSFIC)
 #labels Phase-Design,Phase-Implementation
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
@@ -14,7 +14,7 @@ On the other hand modern file systems are B-Tree indexed and capable of scaling 
 
 {{{
 /**
- * Distributed Unique & Secure Identity Cluster. (DU&SIC)
+ * Distributed Unique Secure File Identity Cluster. (DUSFIC)
  * 
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
