@@ -6,6 +6,8 @@
 
 <font color="orange">*We are working on our own file replication system:*</font> [https://code.google.com/p/rupy/wiki/Persistence Persistence]
 
+For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
+
 MySQL is not secure, scalable or redundant in a cluster environment:
 
   * Database connections between the two colocations are not encrypted.
