@@ -12,13 +12,22 @@ For true redundancy you need to use some custom cluster datastore since we now h
 /* Distributed secure unique identity cluster.
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
+ * 
+ * To use this you need to configure three additional DNS entries:
+ * one.your.app.domain -> 89.221.241.32
+ * two.your.app.domain -> 89.221.241.33
+ * tre.your.app.domain -> 92.63.174.125
+ * 
+ * If you want to index my e-mail or username you need to change that 
+ * part of the code too.
  */
 public class Root extends Service {
-	static String app = "aeon.rupy.se"; // Change this to your app domain
+	static String app = "aeon.rupy.se"; // Change this to your.app.domain
 	static String local;
 	static String[] hosts = {"one", "two", "tre"};
 	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
 	static String prefix = "app/" + app + "/root";
+
 	public String path() { return "/root"; }
 
 	public void create(Daemon daemon) throws Exception {
