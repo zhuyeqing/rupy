@@ -1,7 +1,7 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">_*We recommend you use Dropbox (or any other distributed file storage) as database and only use MySQL for unsecure non-crucial indexes.*_</font>
+<font color="red">_*We recommend you use Dropbox (or any other distributed file storage) as database and only use MySQL for non-crucial stuff.*_</font>
 <font color="red">_You need to contact Dropbox about request volumes and you might need a paid subscription._</font>
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
