@@ -4,7 +4,7 @@
 <font color="red">_*We recommend you use Dropbox (or any other distributed file storage) as database and only use MySQL for non-crucial stuff.*_</font>
 <font color="red">_You need to contact Dropbox about request volumes and you might need a paid subscription._</font>
 
-<font color="orange">*We are working on our own file replication:*</font> [https://code.google.com/p/rupy/wiki/Persistence Persistence]
+<font color="orange">*We are working on our own file replication system:*</font> [https://code.google.com/p/rupy/wiki/Persistence Persistence]
 
 MySQL is not secure, scalable or redundant in a cluster environment:
 
