@@ -6,7 +6,12 @@
 
 <font color="orange">*We are working on our own file replication:*</font> [https://code.google.com/p/rupy/wiki/Persistence Persistence]
 
-MySQL is not secure, scalable or uptime capable; database connections between the two colocations are not encrypted, and since databases don't have NIO; you can't scale them. Finally, if the colocation where you host your database is down, your site will be down.
+MySQL is not secure, scalable, uptime capable or redundant in a cluster environment:
+
+  * Database connections between the two colocations are not encrypted.
+  * Databases don't have NIO; you can't scale them.
+  * If the colocation where you host your database is down, your site will be down.
+  * You need to backup your MySQL.
 
 We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
