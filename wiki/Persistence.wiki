@@ -10,6 +10,8 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
   * If the colocation where you host your database is down, your site will be down.
   * You need to backup your data.
 
+On the other hand modern file systems are B-Tree indexed. And capable of scaling beyond any database for simple structures.
+
 {{{
 /**
  * Distributed Unique & Secure Identity Cluster. (DU&SIC)
