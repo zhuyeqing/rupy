@@ -16,7 +16,7 @@ Ordinary databases are not secure, scalable or redundant in a cluster environmen
   * If the colocation where you host your database is down, your site will be down.
   * You need to backup your data.
 
-We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
+We used Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
 
 You should use a password in a file that you upload once (then retrieve and protect with the following code) to encrypt the data:
 
