@@ -1,7 +1,7 @@
 #summary Distributed Unique & Secure Identity Cluster. (DU&SIC)
 #labels Phase-Design,Phase-Implementation
 
-For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
+For true redundancy you need to use some custom cluster datastore since we [host.rupy.se host] across multiple colocations!
 
 Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
 
