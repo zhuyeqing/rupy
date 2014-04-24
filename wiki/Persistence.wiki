@@ -1,0 +1,265 @@
+#summary How to deploy a MySQL connection pool on host.rupy.se
+#labels Phase-Design,Phase-Implementation
+
+<font color="red">_*We recommend you use Dropbox (or any other distributed file storage) as database and only use MySQL for unsecure non-crucial indexes.*_</font>
+<font color="red">_You need to contact Dropbox about request volumes and you might need a paid subscription._</font>
+
+For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
+
+<font color="orange">*We are working on our own file replication, this is the first rough draft:*</font>
+
+{{{
+/* Distributed secure unique identity cluster.
+ * This solution is wasteful; but with 16-digit Base24 keys and 
+ * long ids, collisions should be rare, at least over the network.
+ * 
+ * To use this you need to configure three additional DNS entries:
+ * 
+ * one.your.app.domain -> 89.221.241.32
+ * two.your.app.domain -> 89.221.241.33
+ * tre.your.app.domain -> 92.63.174.125
+ * 
+ * If you want to index by e-mail or username you need to change that 
+ * part of the code too.
+ */
+public class Root extends Service {
+	static String app = "aeon.rupy.se"; // Change this to your.app.domain
+	static String local;
+	static String[] hosts = {"one", "two", "tre"};
+	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
+	static String prefix = "app/" + app + "/root";
+
+	public String path() { return "/root"; }
+
+	public void create(Daemon daemon) throws Exception {
+		local = InetAddress.getLocalHost().getHostName();
+	}
+
+	public void filter(Event event) throws Event, Exception {
+		boolean found = false;
+
+		for(int i = 0; i < ips.length; i++) {
+			if(ips[i].equals(event.remote())) {
+				found = true;
+			}
+		}
+
+		Output out = event.output();
+
+		if(event.query().method() == Query.POST && found) {
+			ByteArrayOutputStream data = new ByteArrayOutputStream();
+			Deploy.pipe(event.input(), data);
+			String key = decrypt(data.toByteArray());
+
+			//System.out.println(key);
+
+			try {
+				store(key);
+				out.print(1);
+			}
+			catch(KeyException e) {
+				out.print(0);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				out.print(-1);
+			}
+		}
+		else {
+			out.print(-1);
+		}
+	}
+
+	static int send(String host, byte[] data) throws Exception {
+		String url = "http://" + host + "." + app + "/root";
+		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+		conn.addRequestProperty("Content-length", "" + data.length);
+		conn.setRequestMethod("POST");
+		conn.setConnectTimeout(500);
+		conn.setDoOutput(true);
+
+		ByteArrayInputStream in = new ByteArrayInputStream(data);
+		OutputStream out = conn.getOutputStream();
+
+		Deploy.pipe(in, out);
+
+		out.close();
+		conn.connect();
+
+		if(conn.getResponseCode() == 200) {
+			return new BufferedReader(new InputStreamReader(conn.getInputStream())).read();
+		}
+
+		return -1;
+	}
+
+	/* Create and synchronize a unique user key and identity across a cluster.
+	 */
+	public static String create() throws Exception {
+		String key;
+
+		do {
+			key = Event.random(16);
+		}
+		while(exists(key, true) == 0);
+
+		store(key);
+
+		return key;
+	}
+
+	/* Fetch the identity of a user key.
+	 */
+	public static long id(String key) throws Exception {
+		RandomAccessFile file = new RandomAccessFile(new File(prefix + "/key" + path(key)), "r");
+		JSONObject o = new JSONObject(file.readLine());
+		file.close();
+
+		return o.getLong("id");
+	}
+
+	static int exists(String key, boolean remote) throws Exception {
+		long id = hash(key);
+
+		if(id < 4) // Reserved for developer
+			return 0;
+
+		if(new File(prefix + path(key)).exists() || new File(prefix + path(id)).exists())
+			return 0;
+
+		if(!remote)
+			return 1;
+
+		byte[] data = encrypt(key);
+
+		for(int i = 0; i < hosts.length; i++) {
+			if(!hosts[i].equals(local)) {
+				int result = send(hosts[i], data);
+
+				if(result < 1) {
+					return result;
+				}
+			}
+		}
+
+		return 1;
+	}
+
+	public static class KeyException extends Exception {}
+
+	static void store(String key) throws Exception {
+		if(exists(key, false) == 0)
+			throw new KeyException();
+
+		long id = hash(key);
+
+		write(new File(prefix + "/key" + path(key)), "{\"id\": " + id + "}");
+		write(new File(prefix + "/id" + path(id)), "{\"key\": \"" + key + "\"}");
+	}
+
+	static void write(File file, String content) throws Exception {
+		File path = new File(file.getPath().substring(0, file.getPath().lastIndexOf("/")));
+		path.mkdirs();
+
+		file.createNewFile();
+
+		BufferedWriter output = new BufferedWriter(new FileWriter(file));
+		output.write(content);
+		output.close();
+	}
+
+	static long hash(String key) throws Exception {
+		long h = 2166136261L;
+
+		for(int i = 0; i < key.length(); i++) {
+			h = (h ^ key.charAt(i)) * 16777619;
+		}
+
+		return Math.abs(h);
+	}
+
+	static String path(long id) {
+		return path(String.valueOf(id));
+	}
+
+	static String path(String key) {
+		StringBuilder path = new StringBuilder("/");
+
+		for(int i = 0; i < key.length(); i++) {
+			if(i < 5) {
+				path.append("/");
+			}
+
+			path.append(key.charAt(i));
+		}
+
+		return path.toString();
+	}
+
+	static String secret;
+
+	static String secret() throws Exception {
+		if(secret == null) {
+			RandomAccessFile file = new RandomAccessFile(new File("app/" + app + "/secret"), "r");
+			secret = file.readLine();
+			file.close();
+		}
+
+		return secret;
+	}
+
+	static class Protect extends Service {
+		public String path() {
+			return "/secret";
+		}
+
+		public void filter(Event event) throws Event, Exception {
+			event.output().println("Nice try!");
+		}
+	}
+
+	static byte[] encrypt(String text) throws Exception {
+		Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		aes.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secret().getBytes(), "AES"));
+		return aes.doFinal(text.getBytes());
+	}
+
+	static String decrypt(byte[] data) throws Exception {
+		Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		aes.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secret().getBytes(), "AES"));
+		return new String(aes.doFinal(data));
+	}
+}
+}}}
+MySQL is not secure, scalable or uptime capable; database connections between the two colocations are not encrypted, and since databases don't have NIO; you can't scale them. Finally, if the colocation where you host your database is down, your site will be down.
+
+We use Dropbox as a "key/value" store, simply writing and reading files with compressed and encrypted JSON content. So the user object is just a file; for example _*/user/marc*_ with _*{"pass": "sha", ...}*_ inside. Follow the tutorial to set it up for your application: [https://www.dropbox.com/developers/core/start/java]
+
+You should use a password in a file that you upload once (then retrieve and protect with the following code) to encrypt the data:
+
+{{{
+static String secret;
+
+public static String secret() throws Exception {
+	if(secret == null) {
+		RandomAccessFile file = new RandomAccessFile(new File("app/your.app.domain/secret"), "r");
+		secret = file.readLine();
+		file.close();
+	}
+
+	return secret;
+}
+}}}
+{{{
+public static class Protect extends Service {
+	public String path() {
+		return "/secret";
+	}
+
+	public void filter(Event event) throws Event, Exception {
+		event.output().println("Nice try!");
+	}
+}
+}}}
+
+You could use Dropbox for static files too (images, css, etc) if you have a Public folder (accounts created after October 4, 2012 need to activate this [https://www.dropbox.com/enable_public_folder here]), othervise you have to store the unique URL of each file. Make sure you give your Dropbox app access to everything.
