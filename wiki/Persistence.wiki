@@ -12,6 +12,7 @@ MySQL is not secure, scalable, uptime capable or redundant in a cluster environm
 
 {{{
 /* Distributed secure unique identity cluster backup persistence.
+ * 
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
  * 
