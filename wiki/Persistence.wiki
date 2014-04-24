@@ -11,7 +11,7 @@ Ordinary databases are not secure, scalable or redundant in a cluster environmen
   * You need to backup your data.
 
 {{{
-/* Distributed secure unique identity cluster backup persistence.
+/* Distributed secure unique identity cluster.
  * 
  * This solution is wasteful; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
