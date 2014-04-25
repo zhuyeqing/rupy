@@ -41,7 +41,7 @@ public class Root extends Service {
 		local = InetAddress.getLocalHost().getHostName();
 		
 		// TODO: connect to other cluster nodes and compare checksum of root folder!
-		// If mismatch, compare filde content diff and sync!
+		// If mismatch, make files checksum diff and sync!
 	}
 
 	public void filter(Event event) throws Event, Exception {
