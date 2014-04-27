@@ -1,7 +1,7 @@
 #summary Distributed Secure Unique File Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
-<font color="red">This requires rupy 1.2</font>
+<font color="red">This requires rupy 1.2 in hosted mode.</font>
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 
