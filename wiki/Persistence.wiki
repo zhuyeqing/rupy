@@ -3,6 +3,8 @@
 
 <font color="red">This requires rupy 1.2 in hosted mode.</font>
 
+<font color="red">Here you can download the "daily" build:</font> [http://rupy.se/rupy.zip rupy-1.2]
+
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 
 Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
