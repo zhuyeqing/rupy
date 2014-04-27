@@ -1,6 +1,8 @@
 #summary Distributed Secure Unique File Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
+<font color="red">This requires rupy 1.2</font>
+
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 
 Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
