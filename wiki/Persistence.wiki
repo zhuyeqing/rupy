@@ -16,7 +16,7 @@ On the other hand modern file systems are B-Tree indexed and capable of scaling 
 
 <font color="red">
 
-_This current version is redundant for reads, but not for writes:_
+_This current version is redundant for reads, but not for writes; meaning:_
 
 _If part of the cluster is down; you will still be able to login, but registrations will fail._
 
