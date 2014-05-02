@@ -9,14 +9,14 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
 
   * Database connections between colocations are not encrypted.
   * Databases don't have NIO; you can't scale them.
-  * If the colocation where you host your database is down, your site will be down completely (no logins or registrations).
+  * If the colocation where you host your database is down, your site will be down completely (no reads or writes).
   * You need to backup your data.
 
 On the other hand modern file systems are B-Tree indexed and capable of scaling beyond any database for simple structures.
 
 <font color="red">
 
-_This current version is redundant for reads, but not for writes; meaning:_
+_This current version is redundant for reads, but not for writes, meaning for example:_
 
 _If part of the cluster is down; you will still be able to login, but registrations will fail._
 
