@@ -9,7 +9,7 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
 
   * Database connections between colocations are not encrypted.
   * Databases don't have NIO; you can't scale them.
-  * If the colocation where you host your database is down, your site will be down.
+  * If the colocation where you host your database is down, your site will be down completely (no logins or registrations).
   * You need to backup your data.
 
 On the other hand modern file systems are B-Tree indexed and capable of scaling beyond any database for simple structures.
