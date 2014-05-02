@@ -14,7 +14,7 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
 
 On the other hand modern file systems are B-Tree indexed and capable of scaling beyond any database for simple structures.
 
-<font color="orange">
+<font color="red">
 
 _This current version is redundant for reads, but not for writes:_
 
