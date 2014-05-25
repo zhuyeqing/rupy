@@ -10,7 +10,7 @@ _First, try either the [http://sprout.rupy.se XHR] *or^2^* [http://hemlistan.se/
 
 If you want to chat between XDR _*and^2^*_ XHR chats make sure you use _*two different browser applications^2^*_.
 
-To create and join a channel type _/join <name>_
+To create and join a channel type _/join <channel>_
 
 To leave the channel type _/exit_
 
