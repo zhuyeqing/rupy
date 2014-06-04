@@ -12,7 +12,7 @@ The message performance of the test included above:<br>
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
 ||RPi (1)||99%||~300||~700||~1.000||
 
-You can try it quickly by 1) going to this flash demo:
+You can try it quickly by going to this flash demo:
 
   Flash: [http://talk.rupy.se/stream.html stream] (see code below) (server is in Helsingborg, Sweden)
 
