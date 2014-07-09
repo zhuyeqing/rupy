@@ -21,7 +21,7 @@ in new tabs/windows (so you can see the stream in real-time):
 
   HTTP | [http://talk.rupy.se/pull?name=one one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello%3Cbr%3E two] | <font color="red"> - Webkit doesn't render without a html tag now.</font>
 
-  event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello two] |
+  event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello%3Cbr%3E two] |
 
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
