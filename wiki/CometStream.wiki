@@ -26,7 +26,7 @@ in new tabs/windows (so you can see the stream in real-time):
   You will then send "hello" from <i>two</i> to <i>one</i>. <br>
   Reloading <i>two</i> will resend the message.<br>
   You can play around with more windows <br>
-  and <i>name=[http://one.rupy.se/pull?name=three three]&message=[http://one.rupy.se/push?name=two&message=hi hi]</i> values.
+  and <i>name=[http://one.rupy.se/pull?name=three three]&message=[http://one.rupy.se/push?name=two&message=hi%3Cbr%3E hi]</i> values.
 
   If it doesn't work, try later, somebody else might <br>
   be trying it at the same time.
