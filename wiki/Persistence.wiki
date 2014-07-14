@@ -239,7 +239,7 @@ public class Root extends Service {
 		return secret;
 	}
 
-	static class Protect extends Service {
+	public static class Protect extends Service {
 		public String path() {
 			return "/secret";
 		}
