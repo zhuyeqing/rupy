@@ -166,8 +166,12 @@ public class Root extends Service {
 			if(!hosts[i].equals(local)) {
 				int result = send(i, data);
 
-				if(result < 1) {
+				if(result < 0) {
 					throw new Exception("Node " + hosts[i] + " failed.");
+				}
+				
+				if(result < 1) {
+					return 0;
 				}
 			}
 		}
