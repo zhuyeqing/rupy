@@ -41,6 +41,11 @@ _The tradeoffs for write uptime are under consideration._
  * that part of the code too.
  */
 public class Root extends Service {
+	static {
+		// Since your DNS provider is VERY likely to screw things up: use IPs!
+		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+	}
+	
 	static String app = "aeon.rupy.se"; // Change this to your.app.domain
 	static String local;
 	static String[] hosts = {"one", "two", "tre"};
@@ -91,10 +96,11 @@ public class Root extends Service {
 		}
 	}
 
-	static int send(String host, byte[] data) throws Exception {
-		String url = "http://" + host + "." + app + "/root";
+	static int send(int id, byte[] data) throws Exception {
+		String url = "http://" + ips[id] + "/root";
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.addRequestProperty("Content-length", "" + data.length);
+		conn.addRequestProperty("Host", hosts[id] + "." + app);
 		conn.setRequestMethod("POST");
 		conn.setConnectTimeout(500);
 		conn.setDoOutput(true);
@@ -158,10 +164,10 @@ public class Root extends Service {
 
 		for(int i = 0; i < hosts.length; i++) {
 			if(!hosts[i].equals(local)) {
-				int result = send(hosts[i], data);
+				int result = send(i, data);
 
 				if(result < 1) {
-					return result;
+					throw new Exception("Node " + hosts[i] + " failed.");
 				}
 			}
 		}
