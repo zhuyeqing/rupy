@@ -141,9 +141,7 @@ public class Root extends Service {
 	 * the user key is that the file is present. 
 	 */
 	public static long id(String key) throws Exception {
-		RandomAccessFile file = new RandomAccessFile(new File(prefix + "/key" + path(key)), "r");
-		JSONObject o = new JSONObject(file.readLine());
-		file.close();
+		JSONObject o = new JSONObject(file(prefix + "/key" + path(key)));
 
 		return o.getLong("id");
 	}
@@ -165,9 +163,9 @@ public class Root extends Service {
 		for(int i = 0; i < hosts.length; i++) {
 			if(!hosts[i].equals(local)) {
 				int result = send(i, data);
-
+				
 				if(result < 0) {
-					throw new Exception("Node " + hosts[i] + " failed.");
+					throw new KeyException("Node [" + hosts[i] + "] failed.");
 				}
 				
 				if(result < 1) {
@@ -179,11 +177,13 @@ public class Root extends Service {
 		return 1;
 	}
 
-	public static class KeyException extends Exception {}
+	public static class KeyException extends Exception {
+		public KeyException(String message) { super(message); }
+	}
 
 	static void store(String key) throws Exception {
 		if(exists(key, false) == 0)
-			throw new KeyException();
+			throw new KeyException("Node [" + local + "] collision.");
 
 		long id = hash(key);
 
@@ -241,14 +241,20 @@ public class Root extends Service {
 
 	static String secret() throws Exception {
 		if(secret == null) {
-			RandomAccessFile file = new RandomAccessFile(new File("app/" + app + "/secret"), "r");
-			secret = file.readLine();
-			file.close();
+			secret = file("app/" + app + "/secret");
 		}
 
 		return secret;
 	}
 
+	static String file(String path) throws Exception {
+		RandomAccessFile file = new RandomAccessFile(new File(path), "r");
+		String content = file.readLine();
+		file.close();
+		
+		return content;
+	}
+	
 	public static class Protect extends Service {
 		public String path() {
 			return "/secret";
