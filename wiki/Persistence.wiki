@@ -46,16 +46,19 @@ public class Root extends Service {
 		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 	}
 	
-	static String app = "aeon.rupy.se"; // Change this to your.app.domain
 	static String local;
+	static Deploy.Archive archive;
+	
 	static String[] hosts = {"one", "two", "tre"};
 	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
-	static String prefix = "app/" + app + "/root";
+
+
 	
 	public String path() { return "/root"; }
 
 	public void create(Daemon daemon) throws Exception {
 		local = InetAddress.getLocalHost().getHostName();
+		archive = (Deploy.Archive) Thread.currentThread().getContextClassLoader();
 		
 		// TODO: connect to other cluster nodes and compare checksum of root folder!
 		// If mismatch, make files checksum diff and sync!
@@ -100,7 +103,7 @@ public class Root extends Service {
 		String url = "http://" + ips[id] + "/root";
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.addRequestProperty("Content-length", "" + data.length);
-		conn.addRequestProperty("Host", hosts[id] + "." + app);
+		conn.addRequestProperty("Host", hosts[id] + "." + archive.host());
 		conn.setRequestMethod("POST");
 		conn.setConnectTimeout(500);
 		conn.setDoOutput(true);
@@ -141,7 +144,7 @@ public class Root extends Service {
 	 * the user key is that the file is present. 
 	 */
 	public static long id(String key) throws Exception {
-		JSONObject o = new JSONObject(file(prefix + "/key" + path(key)));
+		JSONObject o = new JSONObject(file("app/" + archive.host() + "/root/key" + path(key)));
 
 		return o.getLong("id");
 	}
@@ -149,6 +152,8 @@ public class Root extends Service {
 	static int exists(String key, boolean remote) throws Exception {
 		long id = hash(key);
 
+		String prefix = "app/" + archive.host() + "/root";
+		
 		if(id < 4) // Reserved for developer
 			return 0;
 
@@ -187,6 +192,8 @@ public class Root extends Service {
 
 		long id = hash(key);
 
+		String prefix = "app/" + archive.host() + "/root";
+		
 		write(new File(prefix + "/key" + path(key)), "{\"id\": " + id + "}");
 		write(new File(prefix + "/id" + path(id)), "{\"key\": \"" + key + "\"}");
 	}
@@ -241,7 +248,7 @@ public class Root extends Service {
 
 	static String secret() throws Exception {
 		if(secret == null) {
-			secret = file("app/" + app + "/secret");
+			secret = file("app/" + archive.host() + "/secret");
 		}
 
 		return secret;
