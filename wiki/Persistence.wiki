@@ -52,8 +52,6 @@ public class Root extends Service {
 	static String[] hosts = {"one", "two", "tre"};
 	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
 
-
-	
 	public String path() { return "/root"; }
 
 	public void create(Daemon daemon) throws Exception {
