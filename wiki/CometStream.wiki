@@ -21,7 +21,7 @@ You can try it quickly by going to this flash demo:
 Or right-clicking these two links and opening them <br>
 in new tabs/windows (so you can see the stream in real-time):
 
-  HTTP | [http://talk.rupy.se/pull?name=one one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello%3Cbr%3E two] | <font color="red"> - ~~Webkit doesn't render without a html tag now.~~ Now it does again.</font>
+  HTTP | [http://talk.rupy.se/pull?name=one one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello%3Cbr%3E two] | <font color="red"> - ~~Chrome doesn't render without a html tag now.~~ Now it does again.</font>
 
   event-stream | [http://talk.rupy.se/event.html one] | < "hello" | [http://talk.rupy.se/push?name=two&message=hello%3Cbr%3E two] |
 
