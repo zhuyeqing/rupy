@@ -2,19 +2,11 @@
 #labels Featured,Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
   #Agile: You need to be able to hot-deploy because you'll want to work with others remotely at high iteration speeds. Localhost agility is worthless!
-
   #Turnaround: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
-
   #Ownership: The developer owns the service live.
-
   #Errors: Should be pushed from each live client to the service developer in realtime.
-
   #Single SOA: You need to let your developers choose their own tools. One developer per service. HTTP is the common interface. If the developer quits you rewrite the whole service if it needs a change.
-
   #Single TDD: Ski wax for the individual developer. Test only what makes development slip when new code breaks old code due to complexity.
-
   #Morning meetings, no other scheduled meetings.
-
   #Project lead should have no stake in anything.
-
   #No documentation, no configuration, only code!
