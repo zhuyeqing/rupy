@@ -22,10 +22,11 @@ Guidelines:
   # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See [http://sprout.rupy.se/login sprout/login].
   # If persistence can be a file, make it a file!
 
-REST Antiguides:
+REST Antiguides (HTTP vs. HTML):
 
+  # POST --> 302 --> GET is good.
   # Don't use PUT or DELETE if you don't know how they will be handled by routers.
-  # Stateless is not required if you have proper load balancing = cookies.
+  # Stateless is not required if you have proper load balancing.
   # Do not use path parameters, they waste CPU.
   # JSON > XML but HTML > JSON.
 
