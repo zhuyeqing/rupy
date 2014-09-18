@@ -25,7 +25,7 @@ Guidelines:
 REST Antiguides (HTTP vs. HTML):
 
   # POST --> 302 --> GET is good.
-  # Don't use PUT or DELETE if you don't know how they will be handled by routers.
+  # Don't use PUT or DELETE.
   # Stateless is not required if you have proper load balancing.
   # Do not use path parameters, they waste CPU.
   # JSON > XML but HTML > JSON.
