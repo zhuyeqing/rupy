@@ -24,7 +24,16 @@ Guidelines:
 
 REST Antiguides:
 
-  # Don't use PUT or DELETE, if you don't know how they will be handled by routers.
+  # Don't use PUT or DELETE if you don't know how they will be handled by routers.
   # Stateless is not required if you have proper load balancing = cookies.
   # Do not use path parameters, they waste CPU.
   # JSON > XML but HTML > JSON.
+
+Javascript:
+
+  # If you don't require HTML fallback use XSS for modularity.
+
+Loadbalancing:
+
+  # DNS Roundrobin allows for 100% uptime.
+  # But requires a new kind of persistence.
