@@ -24,6 +24,7 @@ Guidelines:
 
 REST Antiguides:
 
-  # Do not use human readable paths, they waste CPU.
+  # Don't use PUT or DELETE, if you don't know how they will be handled by routers.
   # Stateless is not required if you have proper load balancing = cookies.
+  # Do not use path parameters, they waste CPU.
   # JSON > XML but HTML > JSON.
