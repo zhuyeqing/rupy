@@ -19,5 +19,5 @@ Rules:
 
 Guidelines:
 
-  # Don't use libraries that you can avoid.
+  # Don't use libraries/tools that you can avoid.
   # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login.
