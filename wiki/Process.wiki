@@ -8,7 +8,7 @@
   # *Ownership*: The developer owns the service live.
   # *Errors*: Should be pushed from each live client to the service developer in realtime.
   # *_Single_ SOA*: You need to let your developers choose their own tools. One developer per service. HTTP is the only interface.
-  # *_Single_ TDD*: Test only what makes development slip (when new code breaks old code) due to complexity.
+  # *_Single_ TDD*: Test only what makes development slip (when todays code breaks yesterdays code) due to complexity.
 
 ===Management===
 
