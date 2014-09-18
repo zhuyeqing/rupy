@@ -1,7 +1,7 @@
 #summary How to build great server software.
 #labels Featured,Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
-=Rules=
+===Rules===
 
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely at high iteration speeds.
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
