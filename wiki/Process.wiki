@@ -19,5 +19,11 @@ Rules:
 Guidelines:
 
   # Don't use libraries/tools that you can avoid. Be pragmatic, new is not always better.
-  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login!
+  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See [http://sprout.rupy.se/login sprout/login].
   # If persistence can be a file, make it a file!
+
+REST Antiguides:
+
+  # Do not use human readable paths, they waste CPU.
+  # Stateless is not required if you have proper load balancing = cookies.
+  # JSON > XML but HTML > JSON.
