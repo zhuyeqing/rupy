@@ -9,4 +9,4 @@
   # *_Single_ TDD*: Ski wax for the individual developer. Test only what makes development slip (when new code breaks old code) due to complexity.
   # Morning meetings, no other scheduled meetings.
   # No documentation, no configuration, only code!
-  # Project lead should have no stake in anything.
+  # Project lead should be stakeless.
