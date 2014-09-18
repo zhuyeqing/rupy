@@ -18,7 +18,7 @@ Management:
 
 Software:
 
-  # Don't use libraries/tools that you can avoid. Be pragmatic, new is not always better.
+  # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See [http://sprout.rupy.se/login sprout/login].
   # If persistence can be a file, make it a file!
 
