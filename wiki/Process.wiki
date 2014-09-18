@@ -36,4 +36,4 @@ Javascript:
 Loadbalancing:
 
   # DNS Roundrobin allows for 100% uptime.
-  # But requires a new kind of persistence.
+  # But this requires a new kind of real-time distributed persistence.
