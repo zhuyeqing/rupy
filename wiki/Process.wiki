@@ -12,7 +12,7 @@ Laws:
 
 Rules:
 
-  # 5 Minute "Skype" morning meetings, no other scheduled meetings.
+  # 1 Minute per person "Skype" morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
   # If persistence can be a file, make it a file!
   # Project lead should be stakeless.
