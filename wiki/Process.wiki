@@ -31,7 +31,7 @@
 
 ===Development===
 
-  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See example here: [http://sprout.rupy.se/login sprout/login], view here: [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html login.html] and controller here: [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 User.java].
+  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See example here: [http://sprout.rupy.se/login sprout/login], view here: [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html login.html] and controller here: [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 User$Login].
   # If you don't require HTML fallback or login use XSS for modularity.
 
 ===Ware===
