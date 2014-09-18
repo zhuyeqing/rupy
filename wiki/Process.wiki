@@ -14,10 +14,10 @@ Rules:
 
   # 1 Minute per person "Skype" morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
-  # If persistence can be a file, make it a file!
   # Project lead should be stakeless.
 
 Guidelines:
 
   # Don't use libraries/tools that you can avoid. Be pragmatic, new is not always better.
   # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login!
+  # If persistence can be a file, make it a file!
