@@ -9,4 +9,5 @@
   # *_Single_ TDD*: Ski wax for the individual developer. Test only what makes development slip (when new code breaks old code) due to complexity.
   # 5 Minute "Skype" morning meetings, no other scheduled meetings.
   # No documentation, no configuration, only code!
+  # If persistence can be a file, make it a file!
   # Project lead should be stakeless.
