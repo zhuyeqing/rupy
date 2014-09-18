@@ -16,3 +16,8 @@ Rules:
   # No documentation, less configuration, more code!
   # If persistence can be a file, make it a file!
   # Project lead should be stakeless.
+
+Guidelines:
+
+  # Don't use libraries that you can avoid.
+  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login.
