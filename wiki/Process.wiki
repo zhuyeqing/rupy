@@ -10,19 +10,18 @@
   # *_Single_ SOA*: You need to let your developers choose their own tools. One developer per service. HTTP is the only interface. If the developer quits you might need to rewrite the whole service if it needs a change.
   # *_Single_ TDD*: Ski wax for the individual developer. Test only what makes development slip (when new code breaks old code) due to complexity.
 
-Management:
+===Management===
 
   # 1 Minute per person "Skype" morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
   # Project lead should be stakeless.
 
-Software:
+===Software===
 
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
-  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See [http://sprout.rupy.se/login sprout/login].
   # If persistence can be a file, make it a file!
 
-REST Antiguides (HTTP vs. HTML):
+===REST Antiguides (HTTP vs. HTML)===
 
   # POST --> 302 --> GET is good.
   # Don't use PUT or DELETE.
@@ -30,11 +29,12 @@ REST Antiguides (HTTP vs. HTML):
   # Do not use the path for anything dynamic, it wastes CPU.
   # JSON > XML but HTML > JSON.
 
-Javascript:
+===Development===
 
+  # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See [http://sprout.rupy.se/login sprout/login].
   # If you don't require HTML fallback use XSS for modularity.
 
-Loadbalancing:
+===Ware===
 
   # DNS Roundrobin allows for 100% uptime.
   # But this requires a new kind of real-time distributed persistence.
