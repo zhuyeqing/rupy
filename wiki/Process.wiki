@@ -16,7 +16,7 @@
   # No documentation, less configuration, more code!
   # Project lead should be stakeless.
 
-===Software===
+===Soft===
 
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
