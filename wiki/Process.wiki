@@ -5,7 +5,7 @@
 
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely at high iteration speeds.
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
-  # *Ownership*: The developer owns and is responsible for the service everywhere.
+  # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
   # *Errors*: Should be pushed from each live client to the service developer in realtime.
   # *_Single_ SOA*: You need to let your developers choose their own tools. One developer per service. HTTP is the only interface.
   # *_Single_ TDD*: Test only what makes development slip (when todays code breaks yesterdays code) due to complexity.
