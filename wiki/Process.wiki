@@ -23,8 +23,7 @@
 
 ===REST? (HTTP vs. HTML)===
 
-  # POST --> 302 --> GET is good.
-  # Don't use PUT or DELETE.
+  # POST --> 302 --> GET works, don't use PUT or DELETE.
   # Stateless is not required if you have proper load balancing.
   # Do not use the path for anything dynamic, it wastes CPU.
   # JSON > XML but HTML > JSON.
