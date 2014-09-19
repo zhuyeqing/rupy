@@ -21,7 +21,7 @@
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
 
-===REST Antiguides (HTTP vs. HTML)===
+===REST? (HTTP vs. HTML)===
 
   # POST --> 302 --> GET is good.
   # Don't use PUT or DELETE.
