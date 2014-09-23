@@ -7,8 +7,8 @@
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
   # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
   # *Errors*: Should be pushed from each live client to the service developer in realtime.
-  # *_Single_ SOA*: One developer per service. Async HTTP is the only interface.
-  # *_Single_ TDD*: Test only what makes development slip due to complexity.
+  # *"SOA"*: One developer per service. Async HTTP is the only interface.
+  # *"TDD"*: Test only what makes development slip due to complexity.
 
 ===Management===
 
