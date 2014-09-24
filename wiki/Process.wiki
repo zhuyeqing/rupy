@@ -4,7 +4,7 @@
 ===Rules===
 
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely at high iteration speeds.
-  # *Architecture*: The developer is responsible for all architecture (languages, backup and tools etc.) of the service.
+  # *Architecture*: The developer is completely free to choose any software (languages and tools etc.) of the service.
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
   # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
   # *Errors*: Should be pushed from each live client to the service developers mobile phone in realtime.
