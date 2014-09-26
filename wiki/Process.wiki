@@ -10,7 +10,6 @@
   # *Errors*: Should be pushed from each live client to the service developers mobile phone in realtime.
   # *SOA*: One developer per service. HTTP is the only interface.
   # *TDD*: Test only what makes development slip due to complexity.
-  # *Restrictions*: You should never debug others code.
 
 ===Management===
 
