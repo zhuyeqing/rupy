@@ -13,6 +13,7 @@
 
 ===Management===
 
+  # Developer sits as close to the producer (most likely) or consumer (preferable) of the service content.
   # 1 Minute per person "Skype" morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
