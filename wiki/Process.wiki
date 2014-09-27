@@ -24,7 +24,7 @@
   # If you need:
     * Indexing; use the file system.
     * {{{*<->*}}} relations; use a database.
-    * Full text search; use [http://lucene.apache.org/core/ lucene] or [http://www.google.com/enterprise/search/products/gsa.html google].
+    * Full text search; use "[http://lucene.apache.org/core/ lucene]" or [http://www.google.com/enterprise/search/products/gsa.html google].
 
 Either own your tools completely or use a third party service*^2^*.
 
