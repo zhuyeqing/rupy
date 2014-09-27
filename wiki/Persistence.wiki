@@ -26,7 +26,7 @@ _The tradeoffs for write uptime are under consideration._
 
 {{{
 /**
- * Distributed Secure Unique File Identity Cluster.
+ * Secure Unique Identity Cluster.
  * 
  * This solution is "wasteful"; but with 16-digit Base24 keys and 
  * long ids, collisions should be rare, at least over the network.
