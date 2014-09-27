@@ -1,5 +1,5 @@
 #summary How to build great server software.
-#labels Featured,Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
+#labels httpwww.google.comenterprisesearchproductsgsa.html,Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
 ===Rules===
 
@@ -21,6 +21,8 @@
 
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
+  # If you need indexing, use the file system.
+  # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
 
 ===REST===
 
