@@ -19,8 +19,6 @@
 === 3. Simple===
 
   # Tools that try to solve more than one problem don't!
-  # Don't use libraries/tools that you can avoid.
-  # Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file.
   # If you need:
     * Indexing; use the file system.
