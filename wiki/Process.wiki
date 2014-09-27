@@ -13,7 +13,7 @@
 
 === 2. Manage===
 
-  # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* morning meetings, no other scheduled meetings.
+  # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* yesterday/today morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
 === 3. Storage===
