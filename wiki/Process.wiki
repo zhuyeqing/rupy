@@ -14,7 +14,6 @@
 === 2. Manage===
 
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* morning meetings, no other scheduled meetings.
-  # In the trio all are equal and the developer is simply facilitating the transfer of data between the two others.
   # No documentation, less configuration, more code!
 
 === 3. Tools===
