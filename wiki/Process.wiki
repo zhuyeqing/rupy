@@ -34,7 +34,9 @@
 === 5. Develop===
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
-  # Use server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client requests that are "non-blocking selector driven" to transfer your complex services.
+  # Use "non-blocking selector driven" transfer if a service can be slower than 1 second:
+    # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response].
+    # Proxy client requests.
   # Use XSS for modularity.
 
 === 6. Host===
@@ -43,6 +45,6 @@
   # If it makes economical sense to use Akamai your tools are bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
 
-*TODO*: Build new concurrent HTTP client tool to solve §5.2.
+*TODO*: Build new concurrent HTTP client tool to solve §5.2.2.
 
 *^1^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
