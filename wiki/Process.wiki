@@ -45,7 +45,7 @@ Either own your tools completely or use a third party service*^2^*.
   # One domain name per service.
   # If it makes economical sense to use Akamai your tools are bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
-  # Use server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client requests that are "non-blocking selector driven" to load balance your services.
+  # Use server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client requests that are "non-blocking selector driven" to transfer your services.
 *TODO*: Build new concurrent HTTP client tool.
 
 *^1^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
