@@ -13,7 +13,7 @@
 
 ===Management===
 
-  # Developer works (via Skype) as intimately as possible to the producer and consumer of the service content.
+  # Developer works (via Skype) as intimately as possible to the producers and consumers of the service content.
   # 1 Minute per person Skype morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
