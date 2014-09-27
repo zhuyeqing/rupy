@@ -44,7 +44,7 @@
 
   # One domain name per service.
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
-  # If it makes economical sense to use Akamai your software/hardware is bad.
+  # If it makes economical sense to use Akamai your software/hardware is probably bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
 
 *TODO*: Build new concurrent HTTP client tool to solve §5.2.2 with selector.
