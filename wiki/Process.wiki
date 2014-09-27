@@ -21,9 +21,10 @@
   # Don't use libraries/tools that you can avoid.
   # Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
-  # If you need indexing, use the file system.
-  # If you need complex relations, use a database!
-  # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
+  # If you need:
+    * indexing, use the file system.
+    * complex relations, use a database!
+    * full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
 
 Either own your libraries/tools completely or don't at all*^2^*.
 
