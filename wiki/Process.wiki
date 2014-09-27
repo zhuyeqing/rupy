@@ -18,7 +18,7 @@
 
 === 3. Simple===
 
-  # Tools that try to solve more than one problem don't!
+  # Things that try to solve more than one problem don't!
   # If persistence can be a file, make it a file.
   # If you need:
     * Indexing; use the file system.
