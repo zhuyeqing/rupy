@@ -22,7 +22,7 @@
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
 
-===REST? (HTTP vs. HTML)===
+===REST?=== (HTTP vs. HTML)
 
   # {{{POST --> 302 --> GET}}} works, don't use {{{PUT}}} or {{{DELETE}}}.
   # Stateless is not required if you have proper load balancing.
