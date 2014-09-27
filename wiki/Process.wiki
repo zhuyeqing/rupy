@@ -19,15 +19,13 @@
 
 === 3. Tools===
 
-  # Things that try to solve more than one problem don't!
+  # Things that try to solve more than one problem don't!*^2^*
   # If persistence can be a file, make it a file.
   # If you need:
-    * Indexing; use the file system.
-    * {{{*<->*}}} relations; use a database.
-    * Full text search; use "[http://lucene.apache.org/core/ lucene]" or [http://www.google.com/enterprise/search/products/gsa.html google].
+    # Indexing; use the file system.
+    # {{{*<->*}}} relations; use a database.
+    # Full text search; use "[http://lucene.apache.org/core/ lucene]" or [http://www.google.com/enterprise/search/products/gsa.html google].
   # Use server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client requests that are "non-blocking selector driven" to transfer your services.
-
-Either own your tools completely or use a third party service*^2^*.
 
 === 4. REST-less===
 
