@@ -8,7 +8,7 @@
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
   # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
   # *Errors*: Should be pushed from each live client to the service developers mobile phone in realtime.
-  # *SOA*: _One developer per service._ HTTP is the only interface.
+  # *SOA*: _One developer per service._ HTTP is the only interface. Things that try to solve more than one problem fail!
   # *TDD*: Test only what makes development slip due to complexity.
 
 === 2. Manage===
@@ -18,7 +18,6 @@
 
 === 3. Tools===
 
-  # Things that try to solve more than one problem fail!
   # If persistence can be a file, make it a file.
   # If you need:
     # Indexing; use the file system.
