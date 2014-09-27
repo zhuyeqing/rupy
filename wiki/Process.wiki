@@ -38,7 +38,7 @@
   # Use "non-blocking selector driven" threading pool for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if a service load + latency chokes the workers.
     # Proxy client requests; if you can concurrently build the response.
-  # Use XSS for modularity. 
+  # Use XSS for modularity.
 
 === 6. Host===
 
