@@ -35,9 +35,9 @@
 === 5. Develop===
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
-  # Use "non-blocking selector driven" transfer if a service can be slower than 1 second:
-    # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response].
-    # Proxy client requests.
+  # Use "non-blocking selector driven" transfer for:
+    # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response], if a service can be slower than 1 second.
+    # Proxy client requests, if you can concurrently build the response.
   # Use XSS for modularity.
 
 === 6. Host===
