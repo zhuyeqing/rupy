@@ -42,6 +42,5 @@
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND client _requests_ to load balance your services.
 *TODO*: Build new concurrent HTTP client tool.
 
-*^1^* Offices are stupid
-
+*^1^* Offices are stupid<br>
 *^2^* "There is a service for that"
