@@ -36,7 +36,7 @@ Either own your libraries/tools completely or don't at all*^2^*.
 
 === 5. Development===
 
-  # Make the service describe it's own use: If you browse to [http://sprout.rupy.se/login /login] without username and password the response should allow you to login! [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java Model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html View and  [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 Controller].
+  # Make the service describe it's own use: If you browse to [http://sprout.rupy.se/login /login] without username and password the response should allow you to login! [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java Model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html View] and  [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 Controller].
   # If you don't require HTML fallback use XSS for modularity.
 
 === 6. Hosting===
