@@ -13,6 +13,7 @@
 
 === 2. Manage===
 
+  # If there is more than one developer at a meeting there better be eating or drinking involved.
   # 1 minute per person (producer, consumer and developer) remote*^1^* morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
