@@ -36,3 +36,4 @@
 ===Hosting===
 
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
+  # Async HTTP receive and send NIO requires non-blocking servers AND clients! TODO: Build concurrent client tool.
