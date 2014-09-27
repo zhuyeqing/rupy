@@ -19,7 +19,7 @@
 
 === 3. Tools===
 
-  # Things that try to solve more than one problem don't!*^2^*
+  # Things that try to solve more than one problem fail!*^2^*
   # If persistence can be a file, make it a file.
   # If you need:
     # Indexing; use the file system.
