@@ -1,7 +1,7 @@
 #summary How to build great "server" software.
 #labels Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
-===Rules===
+=== 1. Rules===
 
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages and tools etc.) of the service.
@@ -11,32 +11,32 @@
   # *SOA*: One developer per service. HTTP is the only interface.
   # *TDD*: Test only what makes development slip due to complexity.
 
-===Management===
+=== 2. Management===
 
   # Developer works remotely as intimately as possible with the producers and consumers of the service content.
   # 1 minute per person (producer, consumer and developer) remote morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
-===Simplicity===
+=== 3. Simplicity===
 
   # Don't use libraries/tools that you can avoid. Own your libraries. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
   # If you need indexing, use the file system.
   # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
 
-===REST-less===
+=== 4. REST-less===
 
   # {{{POST --> 302 --> GET}}} works, don't use {{{PUT}}} or {{{DELETE}}}.
   # Stateless is not required if you have proper load balancing.
   # Don't use the path for anything dynamic, it wastes CPU.
   # {{{JSON > XML}}} but {{{HTML > JSON}}}.
 
-===Development===
+=== 5. Development===
 
   # Make the service describe it's own use: For example if you browse to /login without username and password the response should explain how to login or even better allow you to login! See example: [http://sprout.rupy.se/login sprout/login]; model: [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java Node], view: [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html login.html] and controller: [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 User.Login].
   # If you don't require HTML fallback use XSS for modularity.
 
-===Hosting===
+=== 6. Hosting===
 
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND client _requests_ to load balance your services.
