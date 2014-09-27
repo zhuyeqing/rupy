@@ -23,7 +23,7 @@
   # If persistence can be a file, make it a file.
   # If you need:
     * Indexing; use the file system.
-    * {{{`*`->`*`}}} relations; use a database.
+    * {{{* <-> *}}} relations; use a database.
     * Full text search; use [http://www.google.com/enterprise/search/products/gsa.html google].
 
 Either own your libraries/tools completely or don't at all*^2^*.
