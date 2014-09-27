@@ -29,7 +29,7 @@ Either own your libraries/tools completely or don't at all*^2^*.
 
 === 4. REST-less===
 
-  # The bottom line is; REST can never be secure.
+  # The bottom line is; REST is hard to secure.
   # {{{POST --> 302 --> GET}}} works, don't use {{{PUT}}} or {{{DELETE}}}.
   # Stateless is not required if you have proper load balancing.
   # Don't use the path for anything dynamic, it wastes CPU.
