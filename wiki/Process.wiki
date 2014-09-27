@@ -25,7 +25,7 @@
   # If you need indexing, use the file system.
   # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
 
-Either own your libraries completely or don't at all*^2^*.
+Either own your libraries/tools completely or don't at all*^2^*.
 
 === 4. REST-less===
 
