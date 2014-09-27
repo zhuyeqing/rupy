@@ -17,7 +17,7 @@
   # No other mandatory scheduled meetings.
   # No documentation.
 
-=== 3. Storage===
+=== 3. Store===
 
   # If persistence can be a file, make it a file.
   # If you need:
