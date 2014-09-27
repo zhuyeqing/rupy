@@ -16,7 +16,7 @@
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
-=== 3. Tools===
+=== 3. Storage===
 
   # If persistence can be a file, make it a file.
   # If you need:
