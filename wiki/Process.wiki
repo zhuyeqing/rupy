@@ -13,7 +13,7 @@
 
 === 2. Manage===
 
-  # 1 minute per person; producer, consumer and developer (trio) remote*^1^* morning meetings, no other scheduled meetings.
+  # Data -producer, -consumer and developer (trio) 1 minute per person; remote*^1^* morning meetings, no other scheduled meetings.
   # In the trio all are equal and the developer is simply facilitating the transfer of data between the two others.
   # No documentation, less configuration, more code!
 
