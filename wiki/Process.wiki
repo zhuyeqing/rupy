@@ -17,7 +17,7 @@
   # In the trio all are equal and the developer is simply facilitating the transfer of data between the two others.
   # No documentation, less configuration, more code!
 
-=== 3. Simple===
+=== 3. Tools===
 
   # Things that try to solve more than one problem don't!
   # If persistence can be a file, make it a file.
@@ -26,7 +26,7 @@
     * {{{*<->*}}} relations; use a database.
     * Full text search; use [http://lucene.apache.org/core/ lucene] or [http://www.google.com/enterprise/search/products/gsa.html google].
 
-Either own your libraries/tools completely or don't at all*^2^*.
+Either own your tools completely or don't at all*^2^*.
 
 === 4. REST-less===
 
