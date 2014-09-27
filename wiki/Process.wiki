@@ -48,5 +48,5 @@ Either own your tools completely or don't at all*^2^*.
   # Use server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client requests that are "non-blocking selector driven" to load balance your services.
 *TODO*: Build new concurrent HTTP client tool.
 
-*^1^* Offices are stupid<br>
+*^1^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
 *^2^* "There's a service for that"
