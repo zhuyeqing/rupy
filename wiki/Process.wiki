@@ -3,7 +3,7 @@
 
 === 1. Rules===
 
-  # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely*^1^* at high iteration speeds.
+  # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely^1^ at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages and tools etc.) of the service.
   # *Turnaround*: Maximum build & deploy time is how long it takes for you to switch to the test client. (1-2 seconds)
   # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
@@ -13,8 +13,8 @@
 
 === 2. Management===
 
-  # Developer works remotely*^1^* as intimately as possible with the producers and consumers of the service content.
-  # 1 minute per person (producer, consumer and developer) remote*^1^* morning meetings, no other scheduled meetings.
+  # Developer works remotely^1^ as intimately as possible with the producers and consumers of the service content.
+  # 1 minute per person (producer, consumer and developer) remote^1^ morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
 === 3. Simplicity===
