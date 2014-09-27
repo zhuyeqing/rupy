@@ -14,7 +14,7 @@
 ===Management===
 
   # Developer works remotely as intimately as possible with the producers and consumers of the service content.
-  # 1 Minute per person (producer, consumer and developer) remote morning meetings, no other scheduled meetings.
+  # 1 minute per person (producer, consumer and developer) remote morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
 ===Simplicity===
