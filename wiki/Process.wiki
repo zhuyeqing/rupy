@@ -35,7 +35,7 @@
 === 5. Develop===
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
-  # Use "non-blocking selector driven" threading for:
+  # Use "non-blocking selector driven" threading pool for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if a service load + latency chokes the workers.
     # Proxy client requests; if you can concurrently build the response.
   # Use XSS for modularity.
