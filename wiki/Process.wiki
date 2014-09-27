@@ -1,4 +1,4 @@
-#summary How to build great networks.
+#summary How to build networks.
 #labels Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
 === 1. Guide===
