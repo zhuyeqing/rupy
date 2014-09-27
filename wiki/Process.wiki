@@ -18,6 +18,7 @@
 
 === 3. Simple===
 
+  # Tools that solve more than one problem at the time are bad!
   # Don't use libraries/tools that you can avoid.
   # Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file.
