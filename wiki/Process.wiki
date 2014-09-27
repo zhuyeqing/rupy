@@ -38,10 +38,11 @@ Either own your libraries/tools completely or don't at all*^2^*.
 === 5. Develop===
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] the response should allow you to login! ([https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
-  # Use XSS for modularity, one domain name per service.
+  # Use XSS for modularity.
 
 === 6. Host===
 
+  # One domain name per service.
   # If it makes economical sense to use Akamai (or even HAProxy) your tools are bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client _requests_ to load balance your services.
