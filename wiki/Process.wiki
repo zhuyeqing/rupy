@@ -19,7 +19,7 @@
 
 === 3. Tools===
 
-  # Things that try to solve more than one problem fail!*^2^*
+  # Things that try to solve more than one problem fail!
   # If persistence can be a file, make it a file.
   # If you need:
     # Indexing; use the file system.
@@ -48,4 +48,3 @@
 *TODO*: Build new concurrent HTTP client tool.
 
 *^1^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
-*^2^* "There's a service for that"
