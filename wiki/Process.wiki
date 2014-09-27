@@ -1,4 +1,4 @@
-#summary How to build great server software.
+#summary How to build great "server" software.
 #labels httpwww.google.comenterprisesearchproductsgsa.html,Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
 ===Rules===
