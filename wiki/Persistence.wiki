@@ -1,4 +1,4 @@
-#summary Distributed Secure Unique File Identity Cluster.
+#summary Distributed Secure Unique Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
 <font color="red">This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.</font>
