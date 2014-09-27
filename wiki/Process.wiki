@@ -13,7 +13,7 @@
 
 ===Management===
 
-  # Developer works remotely as intimately as possible to the producers and consumers of the service content.
+  # Developer works remotely as intimately as possible with the producers and consumers of the service content.
   # 1 Minute per person remote morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
