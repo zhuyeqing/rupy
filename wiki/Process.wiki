@@ -13,8 +13,8 @@
 
 === 2. Management===
 
-  # Developer works remotely* as intimately as possible with the producers and consumers of the service content.
-  # 1 minute per person (producer, consumer and developer) remote* morning meetings, no other scheduled meetings.
+  # Developer works remotely`*` as intimately as possible with the producers and consumers of the service content.
+  # 1 minute per person (producer, consumer and developer) remote`*` morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
 === 3. Simplicity===
@@ -42,4 +42,4 @@
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND client _requests_ to load balance your services.
 *TODO*: Build new concurrent HTTP client tool.
 
-* Offices are stupid
+`*` Offices are stupid
