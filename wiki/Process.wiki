@@ -1,7 +1,7 @@
 #summary How to build great "server" software.
 #labels Phase-Requirements,Phase-Design,Phase-Implementation,Phase-Deploy,Phase-Support
 
-=== 1. Rules===
+=== 1. Guide===
 
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely*^1^* at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages and tools etc.) of the service.
@@ -11,13 +11,13 @@
   # *SOA*: One developer per service. HTTP is the only interface.
   # *TDD*: Test only what makes development slip due to complexity.
 
-=== 2. Management===
+=== 2. Manage===
 
   # Developer works remotely*^1^* as intimately as possible with the producers and consumers of the service content.
   # 1 minute per person (producer, consumer and developer) remote morning meetings, no other scheduled meetings.
   # No documentation, less configuration, more code!
 
-=== 3. Simplicity===
+=== 3. Simple===
 
   # Don't use libraries/tools that you can avoid.
   # Be pragmatic, new is not always better.
@@ -34,12 +34,12 @@ Either own your libraries/tools completely or don't at all*^2^*.
   # Don't use the path for anything dynamic, it wastes CPU.
   # {{{JSON > XML}}} but {{{HTML > JSON}}}.
 
-=== 5. Development===
+=== 5. Develop===
 
   # Make the service describe it's own use: If you browse to [http://sprout.rupy.se/login /login] the response should allow you to login! ([https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/Node.java model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
   # If you don't require HTML fallback use XSS for modularity.
 
-=== 6. Hosting===
+=== 6. Host===
 
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND client _requests_ to load balance your services.
