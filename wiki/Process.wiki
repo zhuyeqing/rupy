@@ -19,7 +19,7 @@
 
 === 3. Simplicity===
 
-  # Don't use libraries/tools that you can avoid. Own your libraries*^2^*. Be pragmatic, new is not always better.
+  # Don't use libraries/tools that you can avoid. Either own your libraries or don't*^2^*. Be pragmatic, new is not always better.
   # If persistence can be a file, make it a file!
   # If you need indexing, use the file system.
   # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
