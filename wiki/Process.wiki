@@ -15,7 +15,7 @@
 
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* yester/to-day morning meetings.
   # No other mandatory scheduled meetings.
-  # No documentation, less configuration, more code!
+  # No documentation.
 
 === 3. Storage===
 
