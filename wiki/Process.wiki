@@ -41,7 +41,7 @@ Either own your libraries/tools completely or don't at all*^2^*.
 
 === 6. Host===
 
-  # If it makes economical sense to use Akamai your tools are bad.
+  # If it makes economical sense to use Akamai (or even HAProxy) your tools are bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Use dynamic "async non-blocking selector driven HTTP" server [https://code.google.com/p/rupy/wiki/AsyncResponse response] AND proxy client _requests_ to load balance your services.
 *TODO*: Build new concurrent HTTP client tool.
