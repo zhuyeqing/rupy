@@ -36,4 +36,4 @@
 ===Hosting===
 
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
-  # Use dynamic async HTTP [https://code.google.com/p/rupy/wiki/AsyncResponse response] and _request_ NIO. This requires non-blocking selector driven HTTP client tools which do not exist yet! TODO: Build concurrent client tool.
+  # Use dynamic async HTTP [https://code.google.com/p/rupy/wiki/AsyncResponse response] and _request_ NIO. This requires non-blocking selector driven HTTP client tools which do not exist yet! TODO: Build concurrent HTTP client tool.
