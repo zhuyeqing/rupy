@@ -24,7 +24,7 @@
   # If you need indexing, use the file system.
   # If you need full text indexing, use [http://www.google.com/enterprise/search/products/gsa.html google].
 
-===REST===
+===RESTLESS===
 
   # {{{POST --> 302 --> GET}}} works, don't use {{{PUT}}} or {{{DELETE}}}.
   # Stateless is not required if you have proper load balancing.
