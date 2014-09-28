@@ -3,12 +3,12 @@
 
 === 1. Guide===
 
+  # *SOA*: _One developer per service._ HTTP is the only interface.
   # *Agile*: You need to be able to hot-deploy because you'll want to work with others remotely*^1^* at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages, tools, persistence etc.) of the service.
   # *Turnaround*: Maximum build & deploy time on _live_ is how long it takes for you to switch to the test client. (1-2 seconds)
   # *Ownership*: The developer owns and is responsible for the service everywhere at all times.
   # *Errors*: Should be pushed from each live client to the service developers mobile phone in realtime.
-  # *SOA*: _One developer per service._ HTTP is the only interface.
   # *TDD*: Test only what makes development slip due to complexity.
 
 === 2. Manage===
