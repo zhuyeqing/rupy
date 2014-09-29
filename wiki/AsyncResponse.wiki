@@ -28,14 +28,14 @@ public class Async extends Service {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-			int state = Reply.OK;
+					int state = Reply.OK;
                     	
-			while(state == Reply.OK) {
-				// do something asynchronously
-				Thread.currentThread().sleep(100);
-				event.query().put("done", "data to send back");
-				state = event.reply().wakeup();
-			}
+					while(state == Reply.OK) {
+						// do something asynchronously
+						Thread.currentThread().sleep(100);
+						event.query().put("done", "data to send back");
+						state = event.reply().wakeup();
+					}
 				}
 				catch(Exception e) {
 					e.printStackTrace();
