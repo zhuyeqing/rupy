@@ -42,7 +42,7 @@
 
 === 6. Host===
 
-  # One domain name per service.
+  # One domain name per service. Port 80 only.
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
   # If it makes economical sense to use Akamai your software is probably bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
