@@ -17,7 +17,7 @@
   # No other mandatory scheduled meetings.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API]!
   # Monitor and notify [http://monitor.rupy.se yourself]!
-  # Even the hardcore [http://sprout.rupy.se/panel stuff]...
+  # Even the hardcore [http://one.rupy.se/panel stuff]...
 
 === 3. Store===
 
