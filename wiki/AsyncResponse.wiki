@@ -1,18 +1,21 @@
 #summary How to send slow/async/chunked responses with rupy.
 #labels Phase-Implementation
 
-This [http://test.rupy.se/async example] runs indefinitely.
+This [http://test.rupy.se/async example] pushes chunks asyncronously.
 
 {{{
 public class Async extends Service {
+	int limit = 30;
+	
 	public String path() { return "/async"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 
 		if(event.push()) {
-			out.println(event.query().string("done"));
-			// call this when you are completely done
-			// event.output().finish();
+			String data = event.query().string("data");
+			out.println(data);
+			if(data.equals("" + limit))
+				event.output().finish();
 			out.flush();
 		}
 		else {
@@ -31,10 +34,9 @@ public class Async extends Service {
 					int state = Reply.OK;
                     			int count = 0;
 
-					while(state == Reply.OK) {
-						// do something asynchronously
+					while(state == Reply.OK && count < limit + 1) {
 						Thread.currentThread().sleep(300);
-						event.query().put("done", "" + count++);
+						event.query().put("data", "" + count++);
 						state = event.reply().wakeup();
 					}
 				}
