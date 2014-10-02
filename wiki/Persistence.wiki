@@ -1,7 +1,7 @@
 #summary Secure Unique Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
-<font color="red">This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.</font>
+This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 
