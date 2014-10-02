@@ -3,7 +3,7 @@
 
 === 1. Guide===
 
-  # *SOA*: _One developer per service._ HTTP is the only interface.
+  # *Micro^1^ SOA*: _One developer per service._ HTTP is the only interface.
   # *Agile*: You need to be able to hot-deploy _everywhere_ because you'll want to work with others remotely at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages, tools, persistence etc.) of the service.
   # *Turnaround*: Maximum build & deploy time on _live_ is how long it takes for you to switch to the test client. (1-2 seconds)
@@ -13,7 +13,7 @@
 
 === 2. Manage===
 
-  # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* daily yester/morrow meetings.
+  # The data -producer, -consumer and developer trio have 1 minute per person remote*^2^* daily yester/morrow meetings.
   # No other mandatory scheduled meetings.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API]!
 
@@ -50,4 +50,5 @@
 
 *TODO*: Build new concurrent HTTP client tool to solve §5.2.2 with selector.
 
-*^1^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
+*^1^* [http://martinfowler.com/articles/microservices.html Microservices] is the future!
+*^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
