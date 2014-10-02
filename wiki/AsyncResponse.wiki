@@ -1,7 +1,7 @@
 #summary How to send slow/async/chunked responses with rupy.
 #labels Phase-Implementation
 
-This example runs indefinitely.
+This [http://test.rupy.se/async example] runs indefinitely.
 
 {{{
 public class Async extends Service {
@@ -29,11 +29,12 @@ public class Async extends Service {
 			public void run() {
 				try {
 					int state = Reply.OK;
-                    	
+                    			int count = 0;
+
 					while(state == Reply.OK) {
 						// do something asynchronously
 						Thread.currentThread().sleep(500);
-						event.query().put("done", "data to send back");
+						event.query().put("done", count);
 						state = event.reply().wakeup();
 					}
 				}
