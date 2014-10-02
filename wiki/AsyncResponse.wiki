@@ -33,8 +33,8 @@ public class Async extends Service {
 
 					while(state == Reply.OK) {
 						// do something asynchronously
-						Thread.currentThread().sleep(100);
-						event.query().put("done", "" + count);
+						Thread.currentThread().sleep(300);
+						event.query().put("done", "" + count++);
 						state = event.reply().wakeup();
 					}
 				}
