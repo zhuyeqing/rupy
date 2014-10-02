@@ -16,6 +16,7 @@
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^1^* daily yester/morrow meetings.
   # No other mandatory scheduled meetings.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API]!
+  # Monitor and notify [http://monitor.rupy.se yourself]!
   # Open web, don't hide your data!
 
 === 3. Store===
