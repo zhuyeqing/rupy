@@ -45,8 +45,7 @@
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
   # One subdomain per service. One service per instance. Port 80 only.
   # If it makes economical sense to use Akamai your software is probably bad.
-  # DNS Roundrobin across backbones allows for 100% uptime.
-    But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
+  # DNS Roundrobin across backbones allows for 100% uptime.<br>But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Monitor and notify [http://monitor.rupy.se yourself]!
   # Even the hardcore [http://one.rupy.se/panel stuff]...
 
