@@ -50,5 +50,5 @@
 
 *TODO*: Build new concurrent HTTP client tool to solve §5.2.2 with selector.
 
-*^1^* [http://martinfowler.com/articles/microservices.html Microservices] is the future!
+*^1^* [http://martinfowler.com/articles/microservices.html Microservices] is the future!<br>
 *^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
