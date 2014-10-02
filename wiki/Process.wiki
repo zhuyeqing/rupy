@@ -18,6 +18,7 @@
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API]!
   # Open web, don't hide your data!
   # Monitor and notify [http://monitor.rupy.se yourself]!
+  # Even the hardcore [http://sprout.rupy.se/panel stuff]...
 
 === 3. Store===
 
