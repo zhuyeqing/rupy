@@ -16,9 +16,10 @@ Work in progress:
 
 _This current version is redundant for reads, but not for writes, meaning for example:<br>
 If part of the cluster is down; you will still be able to login, but registrations will fail.<br>
-The tradeoffs for write uptime are under consideration.
+The tradeoffs for write uptime are under consideration._
+</font>
 
-I'm also looking at adding a relational [http://rupy.se/sprout/se/rupy/sprout/Node.html node graph] API and 2 phase commit._
+I'm also looking at adding a relational [http://rupy.se/sprout/se/rupy/sprout/Node.html node graph] API and 2 phase commit.
 
 {{{
 /**
