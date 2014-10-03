@@ -28,8 +28,8 @@
 === 4. REST-less===
 
   # {{{POST -> 302 -> GET}}} works, if you use {{{PUT}}} or {{{DELETE}}} write a JavaScript interface.
-  # Stateless is not required if you have proper load balancing.
   # Don't use the path for anything dynamic, it wastes CPU. SEO is a myth.
+  # Stateless is not required if you have proper load balancing.
   # {{{JSON > XML}}} but {{{HTML+CSS+JS > JSON}}}.
 
 === 5. Develop===
