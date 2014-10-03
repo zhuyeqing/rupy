@@ -18,7 +18,7 @@ _This current version is redundant for reads, but not for writes, meaning for ex
 If part of the cluster is down; you will still be able to login, but registrations will fail.<br>
 The tradeoffs for write uptime are under consideration.
 
-I'm also looking at adding a relational node graph inpired by the Sprout database and 2 phase commit._</font>
+I'm also looking at adding a relational [http://rupy.se/sprout/se/rupy/sprout/Node.html node graph] API and 2 phase commit._
 
 {{{
 /**
