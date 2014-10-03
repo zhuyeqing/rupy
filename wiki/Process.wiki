@@ -38,7 +38,9 @@
   # Use async for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait.
     # Proxy client requests; if you concurrently build the response to reduce latency.
+  # Use the same keyboards and OS everywhere.
   # Use XSS for modularity.
+
 
 === 6. Host===
 
