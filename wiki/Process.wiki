@@ -37,7 +37,7 @@
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([http://rupy.se/sprout/se/rupy/sprout/Node.html model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
   # Use async for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait.
-    # Proxy client requests; if you concurrently build the response to reduce latency.
+    # Proxy [https://github.com/apache/httpasyncclient client] requests; if you concurrently build the response to reduce latency.
   # Use the same keyboard and OS everywhere.
   # Use XSS for modularity.
 
@@ -49,8 +49,6 @@
   # If it makes economical sense to use Akamai your software is probably bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Install, configure, [http://monitor.rupy.se monitor] and notify yourself; even the hardcore [http://one.rupy.se/panel stuff].
-
-*TODO*: Build new concurrent HTTP client tool to solve §5.2.2 with selector.
 
 *^1^* [http://martinfowler.com/articles/microservices.html Microservices]<br>
 *^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
