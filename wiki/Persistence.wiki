@@ -12,9 +12,13 @@ Ordinary databases are not secure, scalable or redundant in a distributed cluste
 On the other hand modern file systems are now B-Tree indexed and capable of scaling.
 
 <font color="red">
+Work in progress:
+
 _This current version is redundant for reads, but not for writes, meaning for example:_<br>
 _If part of the cluster is down; you will still be able to login, but registrations will fail._<br>
 _The tradeoffs for write uptime are under consideration._
+
+I'm also looking at adding a relational node graph inpired by the Sprout database and 2 phase commit.
 
 {{{
 /**
