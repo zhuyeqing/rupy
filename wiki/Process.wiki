@@ -38,6 +38,7 @@
   # Use async for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait.
     # Client [https://github.com/apache/httpasyncclient requests]; if you concurrently build the response to reduce latency.
+    # Both to load balance!
   # Use the same keyboard and OS everywhere.
   # Use XSS for modularity.
 
