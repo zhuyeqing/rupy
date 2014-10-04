@@ -13,6 +13,9 @@ public static class Plasma extends Service {
 		client = HttpAsyncClients.createMinimal();
 		client.start();
 	}
+	public void destroy() {
+		client.close();
+	}
 	public String path() { return "/plasma"; }
 	public void filter(Event event) throws Event, Exception {
 		event.query().parse();
