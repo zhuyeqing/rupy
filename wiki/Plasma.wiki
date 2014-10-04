@@ -1,7 +1,7 @@
-#summary How to build completely async proxy chains with zero thread iowait and memory footprint.
+#summary How to build completely async proxy chains.
 #labels Featured,Phase-Design,Phase-Implementation
 
-This [http://test.rupy.se/plasma example] pushes chunks asynchronously all the way from the apache homepage to your browser via a rupy instance.
+This [http://test.rupy.se/plasma example] pushes chunks asynchronously all the way from the apache homepage to your browser via a rupy instance with zero thread iowait and memory footprint.
 
 {{{
 public static class Plasma extends Service {
