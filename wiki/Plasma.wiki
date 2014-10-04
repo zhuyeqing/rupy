@@ -3,11 +3,6 @@
 
 {{{
 public static class Plasma extends Service {
-	
-	public void create(Daemon daemon) {
-		
-	}
-        
 	public String path() { return "/plasma"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
