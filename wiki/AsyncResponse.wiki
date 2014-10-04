@@ -1,7 +1,7 @@
 #summary How to send slow/async/chunked responses with rupy.
 #labels Phase-Implementation
 
-This [http://test.rupy.se/async example] pushes chunks asyncronously.
+This [http://test.rupy.se/async example] pushes chunks asynchronously.
 
 {{{
 public class Async extends Service {
