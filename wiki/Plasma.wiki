@@ -5,6 +5,11 @@ This [http://test.rupy.se/plasma?host=www.aftonbladet.se example] proxies data a
 
 {{{
 public static class Plasma extends Service {
+	CloseableHttpAsyncClient client;
+	public void create(Daemon daemon) {
+		client = HttpAsyncClients.createMinimal();
+		client.start();
+	}
 	public String path() { return "/plasma"; }
 	public void filter(Event event) throws Event, Exception {
 		event.query().parse();
@@ -19,9 +24,6 @@ public static class Plasma extends Service {
 		}
 		else {
 			event.hold();
-
-			CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
-			client.start();
 
 			HttpGet request = new HttpGet("http://" + host);
 			EventFutureCallback callback new EventFutureCallback<HttpResponse>(event);
