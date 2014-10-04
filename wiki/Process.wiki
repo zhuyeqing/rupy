@@ -37,8 +37,8 @@
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([http://rupy.se/sprout/se/rupy/sprout/Node.html model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
   # Use async for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait.
-    # Client [https://hc.apache.org/httpcomponents-asyncclient-dev/ requests]; if you concurrently build the response to reduce latency.
-    # Both for high performance [[https://code.google.com/p/rupy/wiki/Plasma routing].
+    # Client requests; if you concurrently build the response to reduce latency.
+    # Both for high performance [https://code.google.com/p/rupy/wiki/Plasma routing].
   # Use the same keyboard and OS everywhere.
   # Use XSS for modularity.
 
