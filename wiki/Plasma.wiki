@@ -2,7 +2,7 @@
 #labels Featured,Phase-Design,Phase-Implementation
 
 {{{
-public static class AsyncClient extends Service {
+public static class Plasma extends Service {
 	
 	public void create(Daemon daemon) {
 		
