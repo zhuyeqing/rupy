@@ -2,51 +2,51 @@
 #labels Featured,Phase-Design,Phase-Implementation
 
 {{{
-	public static class AsyncClient extends Service {
-		CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
+public static class AsyncClient extends Service {
+	CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
 
-		public void create(Daemon daemon) {
-			client.start();
-		}
+	public void create(Daemon daemon) {
+		client.start();
+	}
         
-		public String path() { return "/plasma"; }
-		public void filter(Event event) throws Event, Exception {
-			Output out = event.output();
+	public String path() { return "/plasma"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
 
-			if(event.push()) {
-				HttpResponse response = (HttpResponse) event.query().get("response");
-				Deploy.pipe(response.getEntity().getContent(), out);
-				event.output().finish();
-				out.flush();
-			}
-			else {
-				event.hold();
-
-				HttpGet request = new HttpGet("http://www.apache.org/");
-				Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
-
-				out.println("Async response started!");
-				out.flush();
-			}
+		if(event.push()) {
+			HttpResponse response = (HttpResponse) event.query().get("response");
+			Deploy.pipe(response.getEntity().getContent(), out);
+			event.output().finish();
+			out.flush();
 		}
+		else {
+			event.hold();
 
-		public static class EventFutureCallback<T> implements FutureCallback {
-			Event event;
-			public EventFutureCallback(Event event) {
-				this.event = event;
-			}
-			public void completed(Object result) {
-				HttpResponse response = (HttpResponse) result;
-				
-				event.query().put("response", response);
-				event.reply().wakeup();
-			}
-			public void failed(final Exception e) {
-				System.out.println("Failed " + e);
-			}
-			public void cancelled() {
-				System.out.println("Cancelled");
-			}
+			HttpGet request = new HttpGet("http://www.apache.org/");
+			Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
+
+			out.println("Async response started!");
+			out.flush();
 		}
 	}
+
+	public static class EventFutureCallback<T> implements FutureCallback {
+		Event event;
+		public EventFutureCallback(Event event) {
+			this.event = event;
+		}
+		public void completed(Object result) {
+			HttpResponse response = (HttpResponse) result;
+				
+			event.query().put("response", response);
+			event.reply().wakeup();
+		}
+		public void failed(final Exception e) {
+			System.out.println("Failed " + e);
+		}
+		public void cancelled() {
+			System.out.println("Cancelled");
+		}
+	}
+}
 }}}
