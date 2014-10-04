@@ -1,4 +1,4 @@
-#summary How to build completely async client <-> server <-> server ... chains with zero footprint.
+#summary How to build completely async client <-> server <-> server ... chains with zero thread and memory footprint.
 #labels Featured,Phase-Design,Phase-Implementation
 
 {{{
