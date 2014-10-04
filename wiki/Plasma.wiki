@@ -1,7 +1,7 @@
 #summary How to build completely async proxy chains.
 #labels Featured,Phase-Design,Phase-Implementation
 
-This [http://test.rupy.se/plasma?host=www.aftonbladet.se example] proxies data all the way from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread iowait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor].
+This [http://test.rupy.se/plasma?host=www.aftonbladet.se example] proxies data all the way from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread iowait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage.
 
 
 If you wan't to use microservices this is the most performant way to build your network.
