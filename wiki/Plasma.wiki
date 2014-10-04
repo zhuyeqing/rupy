@@ -7,7 +7,7 @@ This [http://test.rupy.se/plasma example] proxies data all the way from the apac
 public static class Plasma extends Service {
 	public String path() { return "/plasma"; }
 	public void filter(Event event) throws Event, Exception {
-		event.query.parse();
+		event.query().parse();
 		Output out = event.output();
 		String host = event.string("host");
 
