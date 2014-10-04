@@ -23,7 +23,8 @@ public static class AsyncClient extends Service {
 			event.hold();
 
 			HttpGet request = new HttpGet("http://www.apache.org/");
-			Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
+			EventFutureCallback callback new EventFutureCallback<HttpResponse>(event)
+			Future<HttpResponse> future = client.execute(request, callback);
 
 			out.println("Async response started!");
 			out.flush();
