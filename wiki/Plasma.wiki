@@ -22,7 +22,7 @@ public static class Plasma extends Service {
 			client.start();
 
 			HttpGet request = new HttpGet("http://www.apache.org/");
-			EventFutureCallback callback new EventFutureCallback<HttpResponse>(event)
+			EventFutureCallback callback new EventFutureCallback<HttpResponse>(event);
 			Future<HttpResponse> future = client.execute(request, callback);
 
 			out.println("Async response started!");
