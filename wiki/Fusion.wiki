@@ -13,7 +13,7 @@ public static class Fusion extends Service {
 		client = HttpAsyncClients.createMinimal();
 		client.start();
 	}
-	public void destroy() {
+	public void destroy() throws Exception {
 		client.close();
 	}
 	public String path() { return "/fusion"; }
