@@ -46,8 +46,7 @@ public static class Fusion extends Service {
 			this.event = event;
 		}
 		public void completed(Object result) {
-			HttpResponse response = (HttpResponse) result;
-				
+			HttpResponse response = (HttpResponse) result;	
 			event.query().put("response", response);
 			event.reply().wakeup();
 		}
