@@ -19,24 +19,21 @@ public static class Fusion extends Service {
 	public String path() { return "/fusion"; }
 	public void filter(Event event) throws Event, Exception {
 		event.query().parse();
-		Output out = event.output();
 		String host = event.string("host");
 
 		if(event.push()) {
+			Output out = event.output();
 			HttpResponse response = (HttpResponse) event.query().get("response");
+			out.println("iowait avoided: " + (event.big("stop") - event.big("start")) + " ms.<br>");
 			Deploy.pipe(response.getEntity().getContent(), out);
-			event.output().finish();
+			out.finish();
 			out.flush();
 		}
 		else {
-			event.hold();
-
 			HttpGet request = new HttpGet("http://" + host);
-			EventFutureCallback callback new EventFutureCallback<HttpResponse>(event);
-			Future<HttpResponse> future = client.execute(request, callback);
-
-			out.println("Async response started!");
-			out.flush();
+			Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
+			long time = System.currentTimeMillis();
+			event.query().put("start", time);
 		}
 	}
 
@@ -46,7 +43,8 @@ public static class Fusion extends Service {
 			this.event = event;
 		}
 		public void completed(Object result) {
-			HttpResponse response = (HttpResponse) result;	
+			HttpResponse response = (HttpResponse) result;
+			event.query().put("stop", System.currentTimeMillis());
 			event.query().put("response", response);
 			event.reply().wakeup();
 		}
