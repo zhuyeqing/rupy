@@ -36,13 +36,12 @@ public static class Fusion extends Service {
 			event.query().put("start", time);
 		}
 	}
-	public static class EventFutureCallback<T> implements FutureCallback {
+	public static class EventFutureCallback<HttpResponse> implements FutureCallback<HttpResponse> {
 		Event event;
 		public EventFutureCallback(Event event) {
 			this.event = event;
 		}
-		public void completed(Object result) {
-			HttpResponse response = (HttpResponse) result;
+		public void completed(HttpResponse response) {
 			event.query().put("stop", System.currentTimeMillis());
 			event.query().put("response", response);
 			event.reply().wakeup();
