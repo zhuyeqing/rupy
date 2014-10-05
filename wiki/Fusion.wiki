@@ -30,7 +30,8 @@ public static class Fusion extends Service {
 			event.query().parse();
 			String host = event.string("host");
 			HttpGet request = new HttpGet("http://" + host);
-			Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
+			EventFutureCallback callback = new EventFutureCallback<HttpResponse>(event);
+			Future<HttpResponse> future = client.execute(request, callback);
 			long time = System.currentTimeMillis();
 			event.query().put("start", time);
 		}
