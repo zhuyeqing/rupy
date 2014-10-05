@@ -36,7 +36,6 @@ public static class Fusion extends Service {
 			event.query().put("start", time);
 		}
 	}
-
 	public static class EventFutureCallback<T> implements FutureCallback {
 		Event event;
 		public EventFutureCallback(Event event) {
