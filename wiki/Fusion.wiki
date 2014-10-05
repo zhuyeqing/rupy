@@ -18,9 +18,6 @@ public static class Fusion extends Service {
 	}
 	public String path() { return "/fusion"; }
 	public void filter(Event event) throws Event, Exception {
-		event.query().parse();
-		String host = event.string("host");
-
 		if(event.push()) {
 			Output out = event.output();
 			HttpResponse response = (HttpResponse) event.query().get("response");
@@ -30,6 +27,8 @@ public static class Fusion extends Service {
 			out.flush();
 		}
 		else {
+			event.query().parse();
+			String host = event.string("host");
 			HttpGet request = new HttpGet("http://" + host);
 			Future<HttpResponse> future = client.execute(request, new EventFutureCallback<HttpResponse>(event));
 			long time = System.currentTimeMillis();
