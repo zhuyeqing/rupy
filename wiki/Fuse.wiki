@@ -6,7 +6,7 @@ In the graph below:
 
   # Server & client sync.
   # Client async.
-  # Server & client async.
+  # Fuse server & client async.
 
 http://rupy.se/fusion.gif
 
