@@ -1,4 +1,4 @@
-#summary How to build completely async HTTP proxies.
+#summary How to build completely async HTTP proxy chains for REST SOA.
 #labels Featured,Phase-Design,Phase-Implementation
 
 This [http://test.rupy.se/fusion?host=www.aftonbladet.se example] proxies data  from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread iowait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is iowait).
