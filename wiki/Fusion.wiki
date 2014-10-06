@@ -3,6 +3,10 @@
 
 This [http://test.rupy.se/fusion?host=www.aftonbladet.se example] proxies data  from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread iowait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is iowait).
 
+In the graph below the bottom is sync threading model.
+The top is async client, and thread 1 & 2 on the async is fusion.
+
+http://rupy.se/fusion.gif
 
 If you wan't to use microservices this is the most performant way to build your service network. You can even use this as a load balancer.
 
