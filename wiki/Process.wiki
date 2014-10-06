@@ -38,7 +38,7 @@
   # Use async for:
     # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait or realtime services.
     # Client requests; if you concurrently build the response to reduce latency.
-    # Both for high performance [https://code.google.com/p/rupy/wiki/Fusion fusion].
+    # For high performance [https://code.google.com/p/rupy/wiki/Fuse fuse] both.
   # Use the same keyboard and OS everywhere.
   # Use XSS for modularity.
 
