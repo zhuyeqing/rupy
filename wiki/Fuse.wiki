@@ -23,7 +23,7 @@ public static class Fuse extends Service {
 	public void destroy() throws Exception {
 		client.close();
 	}
-	public String path() { return "/fusion"; }
+	public String path() { return "/fuse"; }
 	public void filter(Event event) throws Event, Exception {
 		if(event.push()) {
 			Output out = event.output();
