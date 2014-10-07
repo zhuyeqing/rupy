@@ -31,7 +31,7 @@
 
   # Stateless is not required if you have proper load balancing:
   # {{{POST -> 302 -> GET}}} now works, if you use {{{PUT}}} or {{{DELETE}}} write a JavaScript interface.
-  # Don't use the path for anything dynamic, it wastes CPU.
+  # Don't use the path for anything dynamic.
   # {{{JSON > XML}}} but {{{HTML+CSS+JS > JSON}}}.
 
 === 5. Develop===
