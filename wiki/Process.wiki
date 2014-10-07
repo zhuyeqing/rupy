@@ -15,7 +15,8 @@
 
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^2^* daily yester/morrow meetings.
   # No other mandatory scheduled meetings.
-  # You need to be able to work from home. If you work quicker than expected, you should get time off, because othervise there is no motivation to build great tools.
+  # You need to be able to work from home.
+  # If you finish quicker than expected, you should get time off, because otherwise there is no motivation to build great tools.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API].
 
 === 3. Store===
