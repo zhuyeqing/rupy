@@ -15,7 +15,7 @@
 
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^2^* daily yester/morrow meetings.
   # No other mandatory scheduled meetings.
-  # You need to be able to work from home.
+  # You need to be able to work from home. Money and time are not related, the important thing is quality:
   # If you finish quicker than expected, you should take that time off, because otherwise there is no motivation to build great tools.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API].
 
