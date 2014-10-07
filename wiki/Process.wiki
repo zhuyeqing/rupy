@@ -14,7 +14,7 @@
 === 2. Manage===
 
   # The data -producer, -consumer and developer trio have 1 minute per person remote*^2^* daily yester/morrow meetings.
-  # You need to be able to work from home. Money should not buy time.
+  # You need to be able to work from home. Money should not buy time because then there is no motivation to do great work.
   # No other mandatory scheduled meetings.
   # No documentation. _Automatic_ [http://sprout.rupy.se/api API].
 
