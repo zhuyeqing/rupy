@@ -3,7 +3,7 @@
 
 This [http://test.rupy.se/fuse?host=www.aftonbladet.se example] proxies data  from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
 
-Time and IO-wait is shown in the graph below:
+Time and <font color="red">IO-wait</font> is shown in the graph below:
 
   # Server & client sync.
   # Client async.
