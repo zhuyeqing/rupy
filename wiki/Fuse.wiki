@@ -14,7 +14,7 @@ http://rupy.se/fuse.gif
 If you wan't to use microservices this is the most performant way to build your services network. You can even use this as a load balancer.
 
 {{{
-public static class Fuse extends Service {
+public class Fuse extends Service {
 	CloseableHttpAsyncClient client;
 	public void create(Daemon daemon) {
 		client = HttpAsyncClients.createMinimal();
