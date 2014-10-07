@@ -28,7 +28,7 @@ public class Fuse extends Service {
 		if(event.push()) {
 			Output out = event.output();
 			HttpResponse response = (HttpResponse) event.query().get("response");
-			out.println("iowait avoided: " + (event.big("stop") - event.big("start")) + " ms.<br>");
+			out.println("IO-wait avoided: " + (event.big("stop") - event.big("start")) + " ms.<br>");
 			Deploy.pipe(response.getEntity().getContent(), out);
 			out.finish();
 			out.flush();
