@@ -11,7 +11,7 @@ Time and IO-wait is shown in the graph below:
 
 http://rupy.se/fuse.gif
 
-If you wan't to use [https://code.google.com/p/rupy/w/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
+If you wan't to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 
 {{{
 public class Fuse extends Service {
