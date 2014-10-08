@@ -27,7 +27,7 @@
     # Many-to-many relations; use a database.
     # Full text search; use "[http://lucene.apache.org/core/ lucene]" or [http://www.google.com/enterprise/search/products/gsa.html google].
 
-=== 5. Develop===
+=== 4. Develop===
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([http://rupy.se/sprout/se/rupy/sprout/Node.html model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
   # Use async for:
@@ -38,7 +38,7 @@
   # Use XSS for modularity.
 
 
-=== 6. Host===
+=== 5. Host===
 
   # One subdomain per service. Port 80 only.
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
