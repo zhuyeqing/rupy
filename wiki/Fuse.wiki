@@ -1,4 +1,4 @@
-#summary How to build front & back async HTTP proxy chains for µSOA.
+#summary How to build front & back async realtime HTTP proxy chains for µSOA.
 #labels Featured,Phase-Design,Phase-Implementation
 
 This [http://test.rupy.se/fuse example] proxies data from two sources (of which one is a never ending chunked stream) to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
