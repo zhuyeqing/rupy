@@ -51,7 +51,7 @@ public static class Fuse extends Service {
 						ioctrl.shutdown();
 					}
 				}
-				protected void releaseResources() {  }
+				protected void releaseResources() {}
 				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
 			}, null);
 		}
