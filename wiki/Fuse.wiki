@@ -22,11 +22,13 @@ public static class Fuse extends Service {
 			HttpResponse one = (HttpResponse) event.query().get("poll");
 			if(one != null) {
 				Deploy.pipe(one.getEntity().getContent(), out);
-				event.query().put("one", null);
+				event.query().put("poll", null);
 			}
 			String two = (String) event.query().get("chunk");
-			if(two != null)
+			if(two != null) {
 				out.println(two);
+				event.query().put("chunk", null);
+			}
 			out.flush();
 		}
 		else {
