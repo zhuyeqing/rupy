@@ -1,7 +1,7 @@
 #summary How to build front & back async HTTP proxy chains for µSOA.
 #labels Featured,Phase-Design,Phase-Implementation
 
-This (NOT WORKING RIGHT NOW... fixing things for chunked asynch pipeing, will eb done in 30 mins) [http://test.rupy.se/fuse example] proxies data  from a rather large swedish homepage to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
+This [http://test.rupy.se/fuse example] proxies data from two sources (of which one is a never ending chunked stream) to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and memory footprint. You can try to refresh the page and view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
@@ -14,8 +14,8 @@ http://rupy.se/fuse.gif
 If you wan't to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 
 {{{
-public class Fuse extends Service {
-	CloseableHttpAsyncClient client;
+public static class Fuse extends Service {
+	static CloseableHttpAsyncClient client;
 	public void create(Daemon daemon) {
 		client = HttpAsyncClients.createMinimal();
 		client.start();
@@ -24,40 +24,41 @@ public class Fuse extends Service {
 		client.close();
 	}
 	public String path() { return "/fuse"; }
-	public void filter(Event event) throws Event, Exception {
+	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
 			Output out = event.output();
-			HttpResponse response = (HttpResponse) event.query().get("response");
-			out.println("IO-wait avoided: " + (event.big("stop") - event.big("start")) + " ms.<br>");
-			Deploy.pipe(response.getEntity().getContent(), out);
-			out.finish();
+			HttpResponse one = (HttpResponse) event.query().get("poll");
+			if(one != null) {
+				Deploy.pipe(one.getEntity().getContent(), out);
+				event.query().put("one", null);
+			}
+			String two = (String) event.query().get("chunk");
+			if(two != null)
+				out.println(two);
 			out.flush();
 		}
 		else {
-			event.query().parse();
-			String host = event.string("host");
-			HttpGet request = new HttpGet("http://" + host);
-			EventFutureCallback callback = new EventFutureCallback<HttpResponse>(event);
-			Future<HttpResponse> future = client.execute(request, callback);
-			long time = System.currentTimeMillis();
-			event.query().put("start", time);
-		}
-	}
-	public static class EventFutureCallback<HttpResponse> implements FutureCallback<HttpResponse> {
-		Event event;
-		public EventFutureCallback(Event event) {
-			this.event = event;
-		}
-		public void completed(HttpResponse response) {
-			event.query().put("stop", System.currentTimeMillis());
-			event.query().put("response", response);
-			event.reply().wakeup();
-		}
-		public void failed(final Exception e) {
-			System.out.println("Failed " + e);
-		}
-		public void cancelled() {
-			System.out.println("Cancelled");
+			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
+			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=test@test.com");
+			client.execute(one, new FutureCallback<HttpResponse>() {
+				public void completed(final HttpResponse response) {
+					event.query().put("poll", response);
+					event.reply().wakeup();
+				}
+				public void failed(final Exception e) { e.printStackTrace();
+				public void cancelled() {}
+			});
+			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
+				HttpResponse response;
+				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
+				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
+					event.query().put("chunk", buf.toString());
+					if(event.reply().wakeup() != Reply.OK)
+						ioctrl.shutdown();
+				}
+				protected void releaseResources() {  }
+				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
+			}, null);
 		}
 	}
 }
