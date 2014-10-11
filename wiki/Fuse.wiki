@@ -31,7 +31,7 @@ public static class Fuse extends Service {
 		}
 		else {
 			HttpGet one = new HttpGet("http://strip.rupy.se/?=martin+kellerman&body");
-			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=test@test.com");
+			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
 			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
 			client.start();
 			client.execute(one, new FutureCallback<HttpResponse>() {
@@ -49,8 +49,6 @@ public static class Fuse extends Service {
 					event.query().put("chunk", buf.toString());
 					if(event.reply().wakeup() != Reply.OK {
 						ioctrl.shutdown();
-						client.close();
-						System.out.println("shutdown");
 					}
 				}
 				protected void releaseResources() {  }
