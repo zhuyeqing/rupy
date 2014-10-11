@@ -32,7 +32,7 @@ public static class Fuse extends Service {
 			out.flush();
 		}
 		else {
-			HttpGet one = new HttpGet("http://strip.rupy.se/?=martin+kellerman&body");
+			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
 			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
 			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
 			client.start();
