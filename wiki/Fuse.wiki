@@ -49,8 +49,10 @@ public static class Fuse extends Service {
 				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
 				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
 					event.query().put("chunk", buf.toString());
-					if(event.reply().wakeup() != Reply.OK)
+					if(event.reply().wakeup() != Reply.OK) {
 						ioctrl.shutdown();
+						client.stop();
+					}
 				}
 				protected void releaseResources() {}
 				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
