@@ -16,7 +16,7 @@ http://rupy.se/fuse.gif
 If you wan't to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 
 {{{
-public static class Fuse extends Service {
+public class Fuse extends Service {
 	public String path() { return "/fuse"; }
 	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
