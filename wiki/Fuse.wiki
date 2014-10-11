@@ -21,15 +21,15 @@ public class Fuse extends Service {
 	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
 			Output out = event.output();
-			HttpResponse one = (HttpResponse) event.query().get("poll");
+			HttpResponse one = (HttpResponse) event.query().get("one");
 			if(one != null) {
 				Deploy.pipe(one.getEntity().getContent(), out);
-				event.query().put("poll", null);
+				event.query().put("one", null);
 			}
-			String two = (String) event.query().get("chunk");
+			String two = (String) event.query().get("two");
 			if(two != null) {
 				out.println(two);
-				event.query().put("chunk", null);
+				event.query().put("two", null);
 			}
 			out.flush();
 		}
@@ -40,7 +40,7 @@ public class Fuse extends Service {
 			client.start();
 			client.execute(one, new FutureCallback<HttpResponse>() {
 				public void completed(final HttpResponse response) {
-					event.query().put("poll", response);
+					event.query().put("one", response);
 					event.reply().wakeup();
 				}
 				public void failed(final Exception e) {}
@@ -51,7 +51,7 @@ public class Fuse extends Service {
 				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
 				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
 				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
-					event.query().put("chunk", buf.toString());
+					event.query().put("two", buf.toString());
 					if(event.reply().wakeup() != Reply.OK) {
 						ioctrl.shutdown();
 					}
