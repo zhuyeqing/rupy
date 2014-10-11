@@ -7,7 +7,7 @@ Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
   # Server & client sync.
   # Client async.
-  # Fuse server & client async.
+  # Fused server & client async.
 
 http://rupy.se/fuse.gif
 
