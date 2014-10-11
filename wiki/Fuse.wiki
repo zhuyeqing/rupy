@@ -41,7 +41,7 @@ public static class Fuse extends Service {
 					event.query().put("poll", response);
 					event.reply().wakeup();
 				}
-				public void failed(final Exception e) { e.printStackTrace(); }
+				public void failed(final Exception e) {}
 				public void cancelled() {}
 			});
 			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
