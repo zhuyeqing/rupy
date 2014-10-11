@@ -15,14 +15,6 @@ If you wan't to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is 
 
 {{{
 public static class Fuse extends Service {
-	static CloseableHttpAsyncClient client;
-	public void create(Daemon daemon) {
-		client = HttpAsyncClients.createMinimal();
-		client.start();
-	}
-	public void destroy() throws Exception {
-		client.close();
-	}
 	public String path() { return "/fuse"; }
 	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
@@ -38,14 +30,16 @@ public static class Fuse extends Service {
 			out.flush();
 		}
 		else {
-			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
+			HttpGet one = new HttpGet("http://strip.rupy.se/?=martin+kellerman&body");
 			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=test@test.com");
+			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
+			client.start();
 			client.execute(one, new FutureCallback<HttpResponse>() {
 				public void completed(final HttpResponse response) {
 					event.query().put("poll", response);
 					event.reply().wakeup();
 				}
-				public void failed(final Exception e) {}
+				public void failed(final Exception e) { e.printStackTrace(); }
 				public void cancelled() {}
 			});
 			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
@@ -53,8 +47,11 @@ public static class Fuse extends Service {
 				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
 				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
 					event.query().put("chunk", buf.toString());
-					if(event.reply().wakeup() != Reply.OK)
+					if(event.reply().wakeup() != Reply.OK {
 						ioctrl.shutdown();
+						client.close();
+						System.out.println("shutdown");
+					}
 				}
 				protected void releaseResources() {  }
 				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
