@@ -51,7 +51,6 @@ public static class Fuse extends Service {
 					event.query().put("chunk", buf.toString());
 					if(event.reply().wakeup() != Reply.OK) {
 						ioctrl.shutdown();
-						client.stop();
 					}
 				}
 				protected void releaseResources() {}
