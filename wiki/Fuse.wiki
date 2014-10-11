@@ -47,6 +47,7 @@ public static class Fuse extends Service {
 			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
 				HttpResponse response;
 				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
+				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
 				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
 					event.query().put("chunk", buf.toString());
 					if(event.reply().wakeup() != Reply.OK) {
@@ -54,7 +55,6 @@ public static class Fuse extends Service {
 					}
 				}
 				protected void releaseResources() {}
-				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
 			}, null);
 		}
 	}
