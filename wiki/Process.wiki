@@ -3,7 +3,7 @@
 
 === 1. Guide===
 
-  # *µSOA^1^*: _One developer per service._ HTTP is the only interface between developers.
+  # *µSOA^1^*: _One developer per microservice._ HTTP is the only interface between developers.
   # *Agile*: You need to be able to hot-deploy _everywhere_ because you'll want to work with others remotely at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages, tools, persistence etc.) of the service.
   # *Turnaround*: Maximum build & deploy time on _live_ is how long it takes for you to switch to the test client. (1-2 seconds)
