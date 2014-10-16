@@ -35,7 +35,7 @@
     # Client requests; if you can concurrently build the response to reduce latency.
     # For top performance and speed [https://code.google.com/p/rupy/wiki/Fuse fuse] both.
   # Use the same keyboard and OS everywhere.
-  # Use XSS for modularity.
+  # Use JavaScript injection for modularity, over; chunked response, CO-XHR or even XSS (careful with the cookies though).
 
 
 === 5. Host===
