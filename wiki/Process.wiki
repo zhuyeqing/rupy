@@ -26,7 +26,7 @@
     # Simple index; use the file system.
     # Many-to-many relations; use a database.
     # Full text search; use "[http://lucene.apache.org/core/ lucene]" or [http://www.google.com/enterprise/search/products/gsa.html google].
-  # Your persistence should support HTTP!
+  # Your networked persistence should use HTTP.
 
 === 4. Develop===
 
