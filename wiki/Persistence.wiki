@@ -11,7 +11,7 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 
 On the other hand modern file systems are now B-Tree indexed and capable of scaling.
 
-I will add a relational [http://rupy.se/sprout/se/rupy/sprout/Node.html node graph] API, [https://code.google.com/p/rupy/wiki/Fuse async] and 2 phase commit.
+I will add [https://code.google.com/p/rupy/wiki/Fuse async] and 2 phase commit.
 
 <font color="red">
 _Work in progress:<br><br>This current version is redundant for reads, but not for writes, meaning for example:<br>If part of the cluster is down; you will still be able to login, but registrations will fail.<br>The tradeoffs for write uptime are under consideration._
