@@ -47,4 +47,4 @@
   # Install, configure, [http://monitor.rupy.se monitor] and notify yourself; even the hardcore [http://one.rupy.se/panel stuff].
 
 *^1^* [http://martinfowler.com/articles/microservices.html Microservices]<br>
-*^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried]<br>
+*^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely]<br>
