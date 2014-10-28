@@ -11,7 +11,7 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 
 On the other hand modern file systems are now B-Tree indexed and capable of scaling.
 
-My first implementation of this "database" will be a hopefully "final" solution to the never ending user registration/login duplication.
+My first implementation of this "database" will be a solution to the never ending user registration/login duplication.
 
 TODO:
 
