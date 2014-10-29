@@ -17,7 +17,7 @@ TODO:
 
   # [https://code.google.com/p/rupy/wiki/Fuse async]
   # incremental recovery write uptime
-  # two phase commit
+  # folder file diff
   # sync any file
   # hard link indexes
 
