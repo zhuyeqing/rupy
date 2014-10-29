@@ -16,7 +16,7 @@ My first implementation of this "database" will be a solution to the never endin
 TODO:
 
   # [https://code.google.com/p/rupy/wiki/Fuse async]
-  # chronological recovery write uptime
+  # rsync recovery write uptime
   # folder file diff
   # sync any file
   # hard link indexes
