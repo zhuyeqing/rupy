@@ -17,7 +17,6 @@ TODO:
 
   # [https://code.google.com/p/rupy/wiki/Fuse async]
   # rsync recovery write uptime
-  # folder file diff
   # sync any file
   # hard link indexes
 
