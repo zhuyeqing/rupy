@@ -25,9 +25,9 @@ Current `<`id`>` file:
 {{{
 {
 	"key": "as4df5gh6jk7zx4c", 
-	"name": "xxx", 
-	"mail": "yyy@zzz.com", 
-	"pass": "xyz", 
+	"name": "xxxxx", // 5 char min
+	"mail": "yy@zz.com", // 4 char before the . min
+	"pass": "xyz", // 3 char min, I hate forced security, if you want '1234' good for you!
 	"data": {
 		"www.aeonalpha.com": <blabla>, 
 		"www.bitcoinbankbook.com": <blabla>
