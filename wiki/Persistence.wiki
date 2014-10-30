@@ -28,10 +28,6 @@ TODO:
 	"name": "xxxxx", // unique, non updateable, matches [a-z.]
 	"mail": "yyy@zzz.com",
 	"pass": "xyz", // SHA
-	"data": {
-		"www.aeonalpha.com": <blabla>,
-		"www.bitcoinbankbook.com": <blabla>
-	}
 	"date": 123456789
 }
 }}}
