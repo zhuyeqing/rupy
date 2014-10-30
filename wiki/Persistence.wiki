@@ -21,9 +21,9 @@ TODO:
 
 {{{
 {
+	"key": "as4df5gh6jk7zx4c", 
 	"name": "xxx", 
 	"mail": "yyy@zzz.com", 
-	"key": "as4df5gh6jk7zx4c", 
 	"data": {
 		"www.aeonalpha.com": <blabla>, 
 		"www.bitcoinbankbook.com": <blabla>
