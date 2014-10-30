@@ -16,6 +16,7 @@ My first implementation of this "database" will be a solution to the never endin
 TODO:
 
   # [https://code.google.com/p/rupy/wiki/Fuse async]
+  # 2 phase commit
   # link key index
   # add name and mail link index
   # add pass field
