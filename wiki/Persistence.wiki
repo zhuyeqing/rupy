@@ -23,6 +23,7 @@ TODO:
 
 {{{
 {
+	"id": 123456789
 	"key": "as4df5gh6jk7zx4c",
 	"name": "xxxxx",
 	"mail": "yy@zz.com",
@@ -31,6 +32,7 @@ TODO:
 		"www.aeonalpha.com": <blabla>,
 		"www.bitcoinbankbook.com": <blabla>
 	}
+	"date": 123456789
 }
 }}}
 
