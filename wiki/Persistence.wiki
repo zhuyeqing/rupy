@@ -18,12 +18,14 @@ TODO:
   # [https://code.google.com/p/rupy/wiki/Fuse async]
   # link key index
   # add name and mail link index
+  # add pass field
 
 {{{
 {
 	"key": "as4df5gh6jk7zx4c", 
 	"name": "xxx", 
 	"mail": "yyy@zzz.com", 
+	"pass": "xyz", 
 	"data": {
 		"www.aeonalpha.com": <blabla>, 
 		"www.bitcoinbankbook.com": <blabla>
