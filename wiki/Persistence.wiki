@@ -25,9 +25,9 @@ TODO:
 {
 	"id": 123456789
 	"key": "as4df5gh6jk7zx4c",
-	"name": "xxxxx",
-	"mail": "yy@zz.com",
-	"pass": "xyz",
+	"name": "xxxxx", // unique, non updateable
+	"mail": "yyy@zzz.com",
+	"pass": "xyz", // SHA
 	"data": {
 		"www.aeonalpha.com": <blabla>,
 		"www.bitcoinbankbook.com": <blabla>
