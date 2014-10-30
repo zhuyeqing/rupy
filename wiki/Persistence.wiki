@@ -17,7 +17,7 @@ TODO:
 
   # [https://code.google.com/p/rupy/wiki/Fuse async]
   # 2-phase commit
-  # link key index
+  # key link index
   # add name and mail link index
   # add pass field
   # refactor `<`id`>` file:
