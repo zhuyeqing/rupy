@@ -20,7 +20,7 @@ TODO:
   # add name and mail link index
   # add pass field
 
-Current &lt;id&gt; file:
+Current `<`id`>` file:
 
 {{{
 {
