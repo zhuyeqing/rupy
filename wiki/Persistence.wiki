@@ -23,12 +23,12 @@ TODO:
 
 {{{
 {
-	"key": "as4df5gh6jk7zx4c", 
-	"name": "xxxxx",     // 5 char min
-	"mail": "yy@zz.com", // 4 char before the . min
-	"pass": "xyz",       // 3 char min, SHA hashed
+	"key": "as4df5gh6jk7zx4c",
+	"name": "xxxxx",
+	"mail": "yy@zz.com",
+	"pass": "xyz",
 	"data": {
-		"www.aeonalpha.com": <blabla>, 
+		"www.aeonalpha.com": <blabla>,
 		"www.bitcoinbankbook.com": <blabla>
 	}
 }
