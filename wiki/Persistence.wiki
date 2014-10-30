@@ -36,7 +36,7 @@ TODO:
 
 For the code below:
 
-  # sync any file
+  # sync normal files
 
 <font color="red">
 _Work in progress:<br><br>This current version is redundant for reads, but not for writes, meaning for example:<br>If part of the cluster is down; you will still be able to login, but registrations will fail.<br>The tradeoffs for write uptime are under consideration._
