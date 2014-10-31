@@ -17,22 +17,6 @@ If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is t
 
 {{{
 public class Fuse extends Service {
-	static CloseableHttpAsyncClient client;
-	public void create(Daemon daemon) {
-		RequestConfig config = RequestConfig.custom()
-			.setSocketTimeout(1000)
-			.setStaleConnectionCheckEnabled(true)
-			.setConnectTimeout(1000)
-			.setConnectionRequestTimeout(1000).build();
-		client = HttpAsyncClients.custom()
-			.setDefaultRequestConfig(config)
-			.setMaxConnPerRoute(10)
-			.setMaxConnTotal(10).build();
-		client.start();
-	}
-	public void destroy() throws Exception {
-		client.close();
-	}
 	public String path() { return "/fuse"; }
 	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
@@ -52,6 +36,8 @@ public class Fuse extends Service {
 		else {
 			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
 			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
+			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
+			client.start();
 			client.execute(one, new FutureCallback<HttpResponse>() {
 				public void completed(final HttpResponse response) {
 					event.query().put("one", response);
