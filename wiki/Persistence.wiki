@@ -15,8 +15,8 @@ My first implementation of this "database" will be a solution to the never endin
 
 TODO:
 
-  # [https://code.google.com/p/rupy/wiki/Fuse async]
-  # key hard link index
+  # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
+  # ~~key hard link index~~
   # add name and mail hard link index
   # add pass field
   # build soft link relation
