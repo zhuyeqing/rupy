@@ -34,10 +34,10 @@ public class Fuse extends Service {
 			out.flush();
 		}
 		else {
-			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
-			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
 			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
 			client.start();
+
+			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
 			client.execute(one, new FutureCallback<HttpResponse>() {
 				public void completed(final HttpResponse response) {
 					event.query().put("one", response);
@@ -46,6 +46,8 @@ public class Fuse extends Service {
 				public void failed(final Exception e) {}
 				public void cancelled() {}
 			});
+
+			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
 			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
 				HttpResponse response;
 				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
