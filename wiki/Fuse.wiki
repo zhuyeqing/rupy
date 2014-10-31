@@ -21,16 +21,19 @@ public class Fuse extends Service {
 	public void filter(final Event event) throws Event, Exception {
 		if(event.push()) {
 			Output out = event.output();
+
 			HttpResponse one = (HttpResponse) event.query().get("one");
 			if(one != null) {
 				Deploy.pipe(one.getEntity().getContent(), out);
 				event.query().put("one", null);
 			}
+
 			String two = (String) event.query().get("two");
 			if(two != null) {
 				out.println(two);
 				event.query().put("two", null);
 			}
+
 			out.flush();
 		}
 		else {
