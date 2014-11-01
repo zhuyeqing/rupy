@@ -19,6 +19,7 @@ TODO:
   # ~~key hard link index~~
   # ~~create~~ [http://root.rupy.se/api api]
   # add key data in private /root for public /file files
+  # date index and timezones
   # add name and mail hard link index
   # add pass field
   # build soft link relation
