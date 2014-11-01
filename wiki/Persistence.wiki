@@ -17,6 +17,7 @@ TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~ [http://root.rupy.se/create try it!]
+  # add update [http://root.rupy.se/update try it!]
   # add name and mail hard link index
   # add pass field
   # build soft link relation
