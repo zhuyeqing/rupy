@@ -17,8 +17,8 @@ TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
-  # ~~add create API~~ [http://root.rupy.se/create create]
-  # ~~add update API~~ [http://root.rupy.se/update update]
+  # ~~create~~ [http://root.rupy.se/api api]
+  # add key data in private /root for public /file files
   # add name and mail hard link index
   # add pass field
   # build soft link relation
