@@ -25,9 +25,9 @@ TODO:
 {{{
 {
 	"key": "as4df5gh6jk7zx4c",
-	"name": "xxxxx", // unique, non updateable, matches [a-z.]
+	"name": "xxxxx", //matches [a-z.]
 	"mail": "yyy@zzz.com",
-	"pass": "xyz", // SHA salted with one of [id, key, name, mail, date] at random
+	"pass": "xyz", // SHA
 	"date": 123456789
 }
 }}}
