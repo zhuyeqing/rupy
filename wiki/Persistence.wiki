@@ -18,11 +18,9 @@ TODO:
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
   # ~~create~~ [http://root.rupy.se/api api]
-  # add key data in private /root for public /file files
-  # date index and timezones
-  # add name and mail hard link index
-  # add pass field
-  # build soft link relation
+  # sync normal files
+  # add hard link indexes
+  # build soft link relations
   # refactor `<`id`>` file:
 
 {{{
@@ -36,14 +34,43 @@ TODO:
 }
 }}}
 
-For the code below:
-
-  # sync normal files
-
 <font color="red">
 _Work in progress:<br><br>This current version is redundant for reads, but not for writes, meaning for example:<br>If part of the cluster is down; you will still be able to login, but registrations will fail.<br>The tradeoffs for write uptime are under consideration._
 
 {{{
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.concurrent.FutureCallback;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.json.JSONObject;
+import org.json.JSONException;
+
+import se.rupy.http.Daemon;
+import se.rupy.http.Deploy;
+import se.rupy.http.Event;
+import se.rupy.http.Output;
+import se.rupy.http.Query;
+import se.rupy.http.Service;
+
 /**
  * Secure Unique Identity Cluster.
  * 
@@ -59,33 +86,52 @@ _Work in progress:<br><br>This current version is redundant for reads, but not f
  * If you want to index by e-mail or username you need to change 
  * that part of the code too.
  */
+
+/*
+ * Codes:
+ * 
+ * ""   = ready for write
+ * "2"  = writing
+ * "1"  = write completed successfully
+ * "0"  = write conflict
+ * "-1" = write fail (remote error)
+ * "-2" = resend
+ * 
+ * Other error codes:
+ * 
+ * java.net.SocketTimeoutException       = write fail (benign network error)
+ * java.net.ConnectException             = write fail (malign network error)
+ * java.util.concurrent.TimeoutException = write fail
+ * 
+ * On benign we retry, on malign we terminate.
+ */
+
 public class Root extends Service {
 	static {
 		// Since your DNS provider is VERY likely to screw things up: use IPs!
 		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 	}
-	
+
+	final static int LENGTH = 24;
 	static String local;
 	static Deploy.Archive archive;
-	
-	static String[] hosts = {"one", "two", "tre"};
-	static String[] ips = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
+
+	static String[] ip = {"89.221.241.32", "89.221.241.33", "92.63.174.125"};
+	static String[] host = {"one", "two", "tre"};
+	static String[] cookie = {"", "", ""};
 
 	public String path() { return "/root"; }
 
 	public void create(Daemon daemon) throws Exception {
 		local = InetAddress.getLocalHost().getHostName();
 		archive = (Deploy.Archive) Thread.currentThread().getContextClassLoader();
-		
-		// TODO: connect to other cluster nodes and compare checksum of root folder!
-		// If mismatch, make files checksum diff and sync!
 	}
 
 	public void filter(Event event) throws Event, Exception {
 		boolean found = false;
 
-		for(int i = 0; i < ips.length; i++) {
-			if(ips[i].equals(event.remote())) {
+		for(int i = 0; i < ip.length; i++) {
+			if(ip[i].equals(event.remote())) {
 				found = true;
 			}
 		}
@@ -95,12 +141,21 @@ public class Root extends Service {
 		if(event.query().method() == Query.POST && found) {
 			ByteArrayOutputStream data = new ByteArrayOutputStream();
 			Deploy.pipe(event.input(), data);
-			String key = decrypt(data.toByteArray());
+			String file = decrypt(data.toByteArray());
+			String path = event.query().header("path");
 
-			//System.out.println(key);
+			boolean create = path.startsWith("/init");
+			String type = "user";
+
+			int equals = path.indexOf("=");
+			int and = path.indexOf("&");
+			
+			if(equals > 0) {
+				type = path.substring(equals + 1, (and > 0 ? and : path.length()));
+			}
 
 			try {
-				store(key);
+				store(new JSONObject(file), type, create);
 				out.print(1);
 			}
 			catch(KeyException e) {
@@ -112,86 +167,152 @@ public class Root extends Service {
 			}
 		}
 		else {
-			out.print(-1);
+			out.println("<pre>Hello, nice of you to stop by!</pre>");
 		}
 	}
 
-	static int send(int id, byte[] data) throws Exception {
-		String url = "http://" + ips[id] + "/root";
-		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-		conn.addRequestProperty("Content-length", "" + data.length);
-		conn.addRequestProperty("Host", hosts[id] + "." + archive.host());
-		conn.setRequestMethod("POST");
-		conn.setConnectTimeout(500);
-		conn.setDoOutput(true);
-
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		OutputStream out = conn.getOutputStream();
-
-		Deploy.pipe(in, out);
-
-		out.close();
-
-		if(conn.getResponseCode() == 200) {
-			return new BufferedReader(new InputStreamReader(conn.getInputStream())).read();
+	public static String toString(HttpResponse response) {
+		try {
+			InputStream in = response.getEntity().getContent();
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			Deploy.pipe(in, out);
+			out.close();
+			in.close();
+			return new String(out.toByteArray());			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 
-		return -1;
+		return null;
+	}
+
+	static void send(final int i, final String key, byte[] data, final Event event, CloseableHttpAsyncClient client) throws Exception {
+		boolean trace = event.query().bit("trace", true);
+		
+		if(trace) {
+			Output out = event.output();
+			out.println("> " + host[i] + " (" + key + ")");
+			out.flush();
+		}
+
+		HttpPost post = new HttpPost("http://" + ip[i] + "/root");
+		post.setEntity(new ByteArrayEntity(data, ContentType.APPLICATION_JSON));
+		post.addHeader("Host", host[i] + ".root.rupy.se");
+		post.addHeader("Path", event.query().path() + "?" + event.query().parameters());
+		if(Root.cookie[i].length() > 0)
+			post.addHeader("Cookie", Root.cookie[i]);
+		client.execute(post, new FutureCallback<HttpResponse>() {
+			public void completed(final HttpResponse response) {
+				Header header = response.getFirstHeader("Set-Cookie");
+				if(header != null)
+					cookie[i] = header.getValue();
+				if(!event.query().string(host[i]).equals("-2"))
+					event.query().put(host[i], Root.toString(response));
+				event.query().put("in_" + host[i] + "_key", key);
+				event.query().put("wakeup", host[i]);
+				wakeup(event);
+			}
+			public void failed(final Exception e) {
+				if(e instanceof java.util.concurrent.TimeoutException)
+					e.printStackTrace();
+				else
+					System.out.println(host[i] + " " + e);
+				event.query().put(host[i], e.toString());
+				event.query().put("wakeup", host[i]);
+				wakeup(event);
+			}
+			public void cancelled() {}
+		});
+	}
+
+	private static void wakeup(Event event) {
+		int state = 0;
+		do {
+			state = event.reply().wakeup();
+			try { Thread.sleep(10); } catch(Exception e) {}
+		} while(state < 0);
 	}
 
 	/**
-	 * Create and synchronize a unique user key and identity across the cluster.
+	 * Create and synchronize a unique root key and identity across the cluster.
 	 * The id is generated by hashing the key with {@link #hash(String)}.
 	 */
-	public static String create() throws Exception {
-		String key;
-
-		do {
-			key = Event.random(16);
+	public static JSONObject sync(Event event, String type, CloseableHttpAsyncClient client, boolean create) throws Exception {
+		JSONObject json = json(event);
+		//System.out.println(json);
+		//System.out.println(create);
+		if(create) {
+			json = create();
 		}
-		while(exists(key, true) == 0);
+		while(exists(json, type, event, client, create) == 0) {
+			json = create();
+		}
+		return json;
+	}
 
-		store(key);
-
-		return key;
+	private static JSONObject create() throws JSONException {
+		String key = Event.random(LENGTH);
+		return new JSONObject("{\n\t\"key\": \"" + key + "\",\n\t\"date\": " + new Date().getTime() + "\n}");
 	}
 
 	/**
-	 * Fetch the identity of a user key. Equivalent of "login". The validation of 
-	 * the user key is that the file is present. 
+	 * Fetch the root for a key.
 	 */
-	public static long id(String key) throws Exception {
-		JSONObject o = new JSONObject(file("app/" + archive.host() + "/root/key" + path(key)));
+	public static long id(String key, String type) throws Exception {
+		JSONObject o = new JSONObject(file("app/" + archive.host() + "/root/" + type + "/key" + path(key)));
 
-		return o.getLong("id");
+		if(o.getString("key").equals(key))
+			return hash(key);
+		else
+			throw new KeyException("Root [" + type + "/" + key + "] not found!");
 	}
 
-	static int exists(String key, boolean remote) throws Exception {
+	static int exists(JSONObject json, String type, Event event, CloseableHttpAsyncClient client, boolean create) throws Exception {
+		String key = json.getString("key");
 		long id = hash(key);
 
-		String prefix = "app/" + archive.host() + "/root";
-		
+		String prefix = "app/" + archive.host() + "/root/" + type;
+
 		if(id < 4) // Reserved for developer
 			return 0;
 
-		if(new File(prefix + path(key)).exists() || new File(prefix + path(id)).exists())
-			return 0;
+		//System.out.println(create + " " + Files.exists(Paths.get(prefix + "/key" + path(key))) + " " + new File(prefix + "/id" + path(id)).exists());
 
-		if(!remote)
+		//if(event == null) // TODO: This is to test remote collisions, set LENGTH to 2 and uncomment this
+			if(create && (Files.exists(Paths.get(prefix + "/key" + path(key))) || new File(prefix + "/id" + path(id)).exists()))
+				return 0;
+
+		if(event == null)
 			return 1;
 
-		byte[] data = encrypt(key);
+		if(!create && event.query().path().startsWith("/node") && !Files.exists(Paths.get(prefix + "/key" + path(key))) && !new File(prefix + "/id" + path(id)).exists())
+			throw new Exception("Node does not exist!");
 
-		for(int i = 0; i < hosts.length; i++) {
-			if(!hosts[i].equals(local)) {
-				int result = send(i, data);
-				
-				if(result < 0) {
-					throw new KeyException("Node [" + hosts[i] + "] failed.");
-				}
-				
-				if(result < 1) {
-					return 0;
+		byte[] encrypted = encrypt(json.toString());
+
+		for(int i = 0; i < host.length; i++) {
+			String state = event.string(host[i]);
+			String out_key = event.string("out_" + host[i] + "_key");
+
+			if(!host[i].equals(local)) {
+				//if(out_key.length() > 0 && state.equals("") && out_key.equals(key)) {
+				//	Output out = event.output();
+				//	out.println("    key " + host[i] + " " + state + " (" + out_key + "/" + key + ")");
+				//	out.flush();
+				//}
+
+				if(((state.equals("") || state.equals("0")) && !out_key.equals(key)) || state.equals("-2")) {
+					event.query().put(host[i], "2");
+
+					//if(out_key.equals(key)) {
+						//Output out = event.output();
+						//out.println("    resend " + host[i] + " (" + key + ")");
+						//out.flush();
+					//}
+
+					event.query().put("out_" + host[i] + "_key", key);
+					send(i, key, encrypted, event, client);
 				}
 			}
 		}
@@ -203,27 +324,32 @@ public class Root extends Service {
 		public KeyException(String message) { super(message); }
 	}
 
-	static void store(String key) throws Exception {
-		if(exists(key, false) == 0)
+	static void store(JSONObject json, String type, boolean create) throws Exception {
+		if(exists(json, type, null, null, create) == 0)
 			throw new KeyException("Node [" + local + "] collision.");
 
+		String key = json.getString("key");
 		long id = hash(key);
 
-		String prefix = "app/" + archive.host() + "/root";
-		
-		write(new File(prefix + "/key" + path(key)), "{\"id\": " + id + "}");
-		write(new File(prefix + "/id" + path(id)), "{\"key\": \"" + key + "\"}");
-	}
+		String prefix = "app/" + archive.host() + "/root/" + type;
 
-	static void write(File file, String content) throws Exception {
-		File path = new File(file.getPath().substring(0, file.getPath().lastIndexOf("/")));
-		path.mkdirs();
+		String id_path = prefix + "/id" + path(id);
+		String key_path = prefix + "/key" + path(key);
 
-		file.createNewFile();
+		new File(id_path.substring(0, id_path.lastIndexOf("/"))).mkdirs();
+		new File(key_path.substring(0, key_path.lastIndexOf("/"))).mkdirs();
+
+		File file = new File(id_path);
+
+		if(create)
+			file.createNewFile();
 
 		BufferedWriter output = new BufferedWriter(new FileWriter(file));
-		output.write(content);
+		output.write(json.toString());
 		output.close();
+
+		if(create)
+			Files.createLink(Paths.get(key_path), Paths.get(id_path));
 	}
 
 	static long hash(String key) throws Exception {
@@ -240,18 +366,24 @@ public class Root extends Service {
 		return path(String.valueOf(id));
 	}
 
-	/* The path is folders of the first four characters then a file of the remainder.
-	 * With Ext4 this shouldn't be required, but I think it might offload the index?
-	 */
-	static String path(String key) {
-		StringBuilder path = new StringBuilder("/");
+	static int length = 3;
 
-		for(int i = 0; i < key.length(); i++) {
-			if(i < 5) {
+	/* Make a path of the first 3 chars then a file of the remainder.
+	 */
+	static String path(String name) {
+		int index = name.indexOf('.');
+
+		if((index > 0 && index <= length) || name.length() <= length) // Unless we can't!
+			return "/" + name;
+
+		StringBuilder path = new StringBuilder();
+
+		for(int i = 0; i < name.length(); i++) {
+			if(i <= length) {
 				path.append("/");
 			}
 
-			path.append(key.charAt(i));
+			path.append(name.charAt(i));
 		}
 
 		return path.toString();
@@ -260,12 +392,12 @@ public class Root extends Service {
 	/*
 	 * Encryption stuff
 	 */
-	
+
 	static String secret;
 
 	static String secret() throws Exception {
 		if(secret == null) {
-			secret = file("app/" + archive.host() + "/secret");
+			secret = file("app/" + archive.host() + "/root/secret");
 		}
 
 		return secret;
@@ -275,18 +407,8 @@ public class Root extends Service {
 		RandomAccessFile file = new RandomAccessFile(new File(path), "r");
 		String content = file.readLine();
 		file.close();
-		
-		return content;
-	}
-	
-	public static class Protect extends Service {
-		public String path() {
-			return "/secret";
-		}
 
-		public void filter(Event event) throws Event, Exception {
-			event.output().println("Nice try!");
-		}
+		return content;
 	}
 
 	static byte[] encrypt(String text) throws Exception {
@@ -299,6 +421,211 @@ public class Root extends Service {
 		Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		aes.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secret().getBytes(), "AES"));
 		return new String(aes.doFinal(data));
+	}
+
+	static JSONObject json(Event event) throws Exception {
+		Object json = event.query().get("json");
+
+		if(json == null)
+			return null;
+
+		if(json instanceof JSONObject)
+			return (JSONObject) json;
+		else if(json instanceof String)
+			return new JSONObject((String) json);
+		else
+			throw new Exception("JSON is wrong type!");
+	}
+
+	public static class Hash extends Service {
+		public String path() {
+			return "/hash";
+		}
+
+		public void filter(Event event) throws Event, Exception {
+			event.query().parse();
+			String key = event.string("key");
+			Output out = event.output();
+
+			if(key.length() != LENGTH) {
+				out.println("<pre>Input " + LENGTH + "-digit key:</pre>");
+				out.println("<form action=\"hash\" method=\"get\">");
+				out.println("  <input type=\"text\" name=\"key\" value=\"" + key + "\">");
+				out.println("  <input type=\"submit\"/>");
+				out.println("</form>");
+			}
+			else
+				out.println("<pre>" + hash(key) + "</pre>");
+		}
+	}
+
+	public static class Link extends Service {
+		public String path() {
+			return "/link";
+		}
+
+		public void filter(Event event) throws Event, Exception {
+			event.query().parse();
+			String key = event.string("key");
+			Output out = event.output();
+
+			if(key.length() != LENGTH) {
+				out.println("<pre>Input " + LENGTH + "-digit key:</pre>");
+				out.println("<form action=\"hash\" method=\"get\">");
+				out.println("  <input type=\"text\" name=\"key\" value=\"" + key + "\">");
+				out.println("  <input type=\"submit\"/>");
+				out.println("</form>");
+			}
+			else
+				out.println("<pre>" + hash(key) + "</pre>");
+		}
+	}
+
+	public static class API extends Service {
+		static CloseableHttpAsyncClient client;
+		public void create(Daemon daemon) {
+			RequestConfig config = RequestConfig.custom()
+					.setSocketTimeout(900)
+					.setStaleConnectionCheckEnabled(true)
+					.setConnectTimeout(1000)
+					.setConnectionRequestTimeout(1000).build();
+			client = HttpAsyncClients.custom()
+					.setDefaultRequestConfig(config)
+					.setMaxConnPerRoute(10)
+					.setMaxConnTotal(10).build();
+			client.start();
+		}
+		public void destroy() throws Exception {
+			client.close();
+		}
+		public String path() { return "/init:/node"; }
+		public void filter(final Event event) throws Event, Exception {
+			Output out = event.output();
+
+			if(event.push()) {
+				JSONObject json = json(event);
+				int working = 0, complete = 0, collision = 0, failed = 0;
+				long time = event.big("time");
+				boolean trace = event.query().bit("trace", true);
+				
+				if(trace)
+					out.println("  < " + event.string("wakeup") + " " + (System.currentTimeMillis() - time) + " ms.");
+
+				for(int i = 0; i < host.length; i++) {
+					if(!host[i].equals(local)) {						
+						String success = event.string(host[i]);
+						String key = event.string("in_" + host[i] + "_key");
+
+						if(trace)
+							out.println("      " + host[i] + " " + success + " " + (success.equals("0") || success.equals("1") ? "(" + key + ") " : ""));
+
+						if(success.equals("2"))
+							working++;
+						else if(success.equals("1"))
+							complete++;
+						else if(success.equals("0")) {
+							event.query().put(host[i], "");
+							if(json.getString("key").equals(key)) {
+								if(trace)
+									out.println("        collision match");
+								
+								collision++;
+							}
+							else {
+								if(trace)
+									out.println("        collision fail");
+								
+								failed++;
+							}
+						}
+						else if(success.length() > 0) {
+							if(success.equals("-1"))
+								throw new Exception("Node [" + host[i] + "] failed.");
+							if(success.equals("-2"))
+								event.query().put(host[i], "");
+							if(success.equals("java.net.SocketTimeoutException"))
+								event.query().put(host[i], "-2");
+							if(success.equals("java.util.concurrent.TimeoutException"))
+								throw new Exception("Node [" + host[i] + "] timed out.");
+							if(success.startsWith("java.net.ConnectException"))
+								throw new Exception("Node [" + host[i] + "] down.");
+
+							failed++;
+						}
+					}
+				}
+
+				out.flush();
+
+				if(complete == host.length - 1) {
+					store(json, event.query().string("type", "user"), event.query().path().equals("/init"));
+
+					for(int i = 0; i < host.length; i++) {
+						event.query().put(host[i], "");
+					}
+
+					out.println(json);
+					out.finish();
+					out.flush();
+				}
+				else if(failed > 0 || collision > 0) {
+					if(collision > 0)
+						for(int i = 0; i < host.length; i++) {
+							String state = event.string(host[i]);
+							if(state.equals("0") || state.equals("1") || state.equals("2")) {
+								if(trace) {
+									out.println("        invalidated " + host[i] + " " + state);
+									out.flush();
+								}
+								
+								event.query().put(host[i], "");
+							}
+						}
+
+					async(event, collision > 0);
+				}
+			}
+			else {
+				event.hold();
+				event.query().parse();
+				event.query().put("time", System.currentTimeMillis());
+
+				if(event.query().path().equals("/node")) {
+					if(event.query().method() == Query.GET) {
+						out.println("<form action=\"node\" method=\"post\">");
+						out.println("  <textarea rows=\"5\" cols=\"100\" name=\"json\"></textarea><br><br>");
+						out.println("  <input type=\"submit\"/>");
+						out.println("</form>");
+						out.finish();
+						out.flush();
+
+						throw event;
+					}
+					else if(event.query().method() == Query.POST) {
+						//System.out.println(event.query().header());
+
+						//application/x-www-form-urlencoded
+						//text/plain
+
+						if(event.query().header("content-type").equals("application/octet-stream")) {
+							ByteArrayOutputStream data = new ByteArrayOutputStream();
+							Deploy.pipe(event.input(), data);
+							byte[] file = data.toByteArray();
+
+
+						}
+					}
+				}
+
+				out.println("<pre>");
+				async(event, event.query().path().equals("/init"));
+			}
+		}
+
+		private void async(Event event, boolean create) throws Exception {
+			JSONObject json = Root.sync(event, event.query().string("type", "user"), client, create);
+			event.query().put("json", json);
+		}
 	}
 }
 }}}
