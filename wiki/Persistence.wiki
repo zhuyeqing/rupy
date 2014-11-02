@@ -15,7 +15,7 @@ TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
-  # ~~create~~ [http://root.rupy.se/api api]
+  # ~~create~~ [http://root.rupy.se MVP]
   # sync normal files
   # add hard link indexes
   # build soft link relations
