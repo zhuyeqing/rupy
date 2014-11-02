@@ -4,13 +4,11 @@
 This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
-
 Ordinary databases are not secure or redundant in a distributed cluster environment, but most of all:
 
   * Databases don't have NIO; you can't scale them.
 
 On the other hand modern file systems are now B-Tree indexed and capable of scaling.
-
 My first implementation of this "database" will be a solution to the never ending user registration/login duplication.
 
 TODO:
