@@ -30,7 +30,7 @@ TODO:
 	"mail": "yyy@zzz.com",
 	"pass": "xyz", // SHA
 	"date": 123456789
-	"zone": +1
+	"zone": -6
 }
 }}}
 
