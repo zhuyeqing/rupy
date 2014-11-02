@@ -21,6 +21,7 @@ TODO:
   # sync normal files
   # add hard link indexes
   # build soft link relations
+  # date & zone index?
   # refactor `<`id`>` file:
 
 {{{
