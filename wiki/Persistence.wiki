@@ -4,7 +4,7 @@
 This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
-Ordinary databases are not secure or redundant in a distributed cluster environment, but most of all:
+Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
 
   * Databases don't have NIO async HTTP; you can't scale them.
 
