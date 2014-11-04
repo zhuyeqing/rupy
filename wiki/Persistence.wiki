@@ -17,8 +17,8 @@ TODO:
   # ~~key hard link index~~
   # ~~create~~ [http://root.rupy.se MVP]
   # sync any file
-  # hard node index
-  # soft link relation
+  # hard _node_ index
+  # soft _link_ relation
   # date & zone index?
   # refactored `<`id`>` file:
 
