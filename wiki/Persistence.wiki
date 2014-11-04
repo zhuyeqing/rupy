@@ -16,7 +16,7 @@ Try the current state [http://root.rupy.se MVP].
 TODO:
 
   # ~~key hard link index~~
-  # [http://rupy.se/Async.java async]
+  # new [http://rupy.se/Async.java async] client
   # sync any file
   # hard _node_ index
   # soft _link_ relation
