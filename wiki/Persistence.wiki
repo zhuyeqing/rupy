@@ -37,4 +37,4 @@ TODO:
 <font color="red">
 _Work in progress:<br><br>This current version is redundant for reads, but not for writes, meaning for example:<br>If part of the cluster is down; you will still be able to login, but registrations will fail.<br>The tradeoffs for write uptime are under consideration._
 
-[http://rupy.se/Root.java Root.java]
+Source: [http://rupy.se/Root.java Root.java]
