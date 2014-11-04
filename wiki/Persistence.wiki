@@ -19,6 +19,7 @@ TODO:
   # sync any file
   # hard _node_ index
   # soft _link_ relation
+  # private & public access
   # date & zone index?
   # refactored `<`id`>` file:
 
