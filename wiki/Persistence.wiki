@@ -17,7 +17,7 @@ TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
-  # HTTP [http://rupy.se/Root.java Root.java] client
+  # HTTP [http://rupy.se/Async.java Async.java] client
   # sync any file
   # hard _node_ index
   # soft _link_ relation
