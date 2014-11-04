@@ -11,11 +11,12 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 On the other hand modern file systems are now cheap, fast (B-Tree index on SSD) and capable of scaling.
 My first implementation of this distributed file index will be a solution to user management with simple _node_ value index and complex _link_ relations.
 
+Try the current state [http://root.rupy.se MVP].
+
 TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
-  # ~~create~~ [http://root.rupy.se MVP]
   # sync any file
   # hard _node_ index
   # soft _link_ relation
