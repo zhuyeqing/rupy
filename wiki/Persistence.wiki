@@ -17,6 +17,7 @@ TODO:
 
   # ~~[https://code.google.com/p/rupy/wiki/Fuse async]~~
   # ~~key hard link index~~
+  # HAC is not stable, write own NIO client!
   # sync any file
   # hard _node_ index
   # soft _link_ relation
