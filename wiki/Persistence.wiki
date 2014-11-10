@@ -6,7 +6,7 @@ This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode ~~and [http:/
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
 
-  _*database interfaces don't use NIO async HTTP; you can't scale them easily.*_
+  _Database interfaces don't use NIO async HTTP; you can't scale them easily._
 
 On the other hand modern file systems are now cheap, fast (SSD) and capable of scaling (ext4).
 My first implementation of this distributed file index will be a solution to user management with simple _node_ value index and complex _link_ relations.
