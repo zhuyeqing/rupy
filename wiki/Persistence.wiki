@@ -8,7 +8,7 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 
   * Databases don't use NIO async HTTP; you can't scale them.
 
-On the other hand modern file systems are now cheap, fast (SSD) and capable of scaling (B-Tree).
+On the other hand modern file systems are now cheap, fast (SSD) and capable of scaling (ext4).
 My first implementation of this distributed file index will be a solution to user management with simple _node_ value index and complex _link_ relations.
 
 Try the current state [http://root.rupy.se MVP].
