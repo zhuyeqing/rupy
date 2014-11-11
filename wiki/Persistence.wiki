@@ -22,7 +22,7 @@ TODO:
   # private & public access?
   # date & zone index?
   # sync any file?
-  # refactored `<`id`>` file:
+  # refactor `<`id`>` file:
 
 {{{
 {
