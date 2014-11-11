@@ -17,6 +17,7 @@ TODO:
 
   # ~~key hard link index~~
   # ~~new [http://rupy.se/Async.java async] client~~
+  # child keys as permission logic
   # hard _node_ index
   # soft _link_ relation
   # private & public access?
