@@ -27,7 +27,7 @@ TODO:
 {{{
 {
 	"key": "riA4Ky7Ha6JFnGya",
-	"name": "xxxxx", //matches [a-z.]
+	"name": "xxxxx", // matches [a-z.]
 	"mail": "yyy@zzz.com",
 	"pass": "xyz", // SHA
 	"date": 123456789
