@@ -17,7 +17,6 @@ TODO:
 
   # ~~key hard link index~~
   # ~~new [http://rupy.se/Async.java async] client~~
-  # child keys as permission logic
   # hard _node_ index
   # soft _link_ relation
   # private & public access?
@@ -28,11 +27,9 @@ TODO:
 {{{
 {
 	"key": "riA4Ky7Ha6JFnGya",
-	"name": "xxxxx",  // matches [a-z.]
+	"name": "xxxxx", // matches [a-z.]
 	"mail": "yyy@zzz.com",
-	"pass": "xyz",    // SHA
-	"seed": 123456789 // used to generate child keys
-        "public": { ... } // visible when browsing to the public id
+	"pass": "xyz", // SHA
 	"date": 123456789
 	"zone": -6
 }
