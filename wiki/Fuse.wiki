@@ -3,7 +3,7 @@
 
 This requires latest [http://rupy.se/rupy.zip rupy] and [http://rupy.se/async.jar async] lib.
 
-<font color="red">HAC is pretty slow (adds 50 ms.) and borked in many ways (leaks selectors and pools on hot-deploy, rarely blocks forever stuck in sun.misc.Unsafe.park(), etc.) so I'm writing my own [http://rupy.se/Async.java async] client for [https://code.google.com/p/rupy/wiki/Persistence custom] purposes.</font>
+<font color="red">HAC is pretty slow (adds ~40 ms.) and borked in many ways (leaks selectors and pools on hot-deploy, rarely blocks forever stuck in sun.misc.Unsafe.park(), etc.) so I'm writing my own [http://rupy.se/Async.java async] client for [https://code.google.com/p/rupy/wiki/Persistence custom] purposes.</font>
 
 This [http://test.rupy.se/fuse example] fuses data asynchronously from multiple sources (of which one is a never ending realtime chunked stream) to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
 
