@@ -1,7 +1,7 @@
 #summary Secure Unique Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
-This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode ~~and [http://rupy.se/async.jar async] lib~~.
+This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
@@ -16,7 +16,7 @@ Try the current state [http://root.rupy.se MVP].
 TODO:
 
   # ~~key hard link index~~
-  # new [http://rupy.se/Async.java async] client
+  # ~~new [http://rupy.se/Async.java async] client~~
   # sync any file
   # hard _node_ index
   # soft _link_ relation
