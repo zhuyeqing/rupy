@@ -15,7 +15,7 @@ Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
 http://rupy.se/fuse.gif
 
-If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
+If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] [http://rupy.se/Async.java this] is the most performant way to build your services network. You can even use this as a load balancer.
 
 _The code below is wrong but "works", I know you shouldn't instantiate one client per request but the streaming portion of the code doesn't work without it!_
 
