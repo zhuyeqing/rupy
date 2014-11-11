@@ -30,6 +30,8 @@ TODO:
 	"name": "xxxxx", // matches [a-z.]
 	"mail": "yyy@zzz.com",
 	"pass": "xyz", // SHA
+	"seed": 123456789 // used to generate child keys
+        "public": { ... } // visible when browsing to the public id
 	"date": 123456789
 	"zone": -6
 }
