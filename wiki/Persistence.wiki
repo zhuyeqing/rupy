@@ -17,11 +17,11 @@ TODO:
 
   # ~~key hard link index~~
   # ~~new [http://rupy.se/Async.java async] client~~
-  # sync any file
   # hard _node_ index
   # soft _link_ relation
-  # private & public access
+  # private & public access?
   # date & zone index?
+  # sync any file?
   # refactored `<`id`>` file:
 
 {{{
