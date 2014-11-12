@@ -1,4 +1,4 @@
-#summary How to fuse async realtime HTTP proxy chains for µSOA.
+#summary How to fuse end-to-end async HTTP proxy chains.
 #labels Phase-Design
 
 This requires latest [http://rupy.se/rupy.zip rupy] and [http://rupy.se/async.jar HAC] lib.
