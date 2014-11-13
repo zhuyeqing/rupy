@@ -3,6 +3,12 @@
 
 This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/code Async.java].
 
+<font color="red">
+_Work in progress:
+
+Async.java should be stable, but we are working on it so sometimes it might not work propely._
+</font>
+
 This [http://root.rupy.se/fuse example] fuses data asynchronously from multiple sources to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (darkblue is IO-wait).
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
