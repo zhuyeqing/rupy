@@ -15,6 +15,8 @@ http://rupy.se/fuse.gif
 
 If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 
+TODO: Improve latch.
+
 {{{
 public static class Fuse extends Service {
 	static Async async;
