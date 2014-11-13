@@ -21,7 +21,6 @@ public static class Fuse extends Service {
 
 	public void create(Daemon daemon) throws Exception { async = new Async(true); async.start(5); }
 	public void destroy() throws Exception { async.stop(); }
-	public int index() { return 1; }
 	public String path() { return "/fuse"; }
 
 	public void filter(final Event event) throws Event, Exception {
