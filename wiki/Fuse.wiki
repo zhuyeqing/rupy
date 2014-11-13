@@ -85,7 +85,8 @@ public static class Fuse extends Service {
 
 		public boolean print() throws Exception {
 			if(event.query().get(name) instanceof Http) {
-				System.out.println("  " + name + " " + (System.currentTimeMillis() - event.big("time")) + " ms.");
+				long time = System.currentTimeMillis() - event.big("time");
+				System.out.println("  " + name + " " + time + " ms.");
 				event.output().println(body);
 				event.query().put(name, "done");
 				return true;
