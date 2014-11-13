@@ -52,6 +52,7 @@ public static class Fuse extends Service {
 		else {
 			event.query().put("time", System.currentTimeMillis());
 			event.reply().type("text/html; charset=UTF-8");
+			event.hold();
 
 			Http[] http = new Http[2];
 
