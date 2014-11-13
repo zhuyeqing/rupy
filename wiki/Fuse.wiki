@@ -28,6 +28,7 @@ public static class Fuse extends Service {
 
 		if(event.push()) {
 			Http[] http = (Http[]) event.query().get("http");
+
 			int done = 0;
 
 			for(int i = 0; i < http.length; i++) {
