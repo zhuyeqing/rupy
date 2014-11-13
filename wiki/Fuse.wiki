@@ -61,7 +61,8 @@ public static class Fuse extends Service {
 
 			for(int i = 0; i < http.length; i++) {
 				// The 10 at the end is very important.
-				// It means the socket will be kept alive for 10 seconds.
+				// It means the socket will be kept alive 
+				// for 10 seconds since last active.
 				async.send(http[i].host, http[i], 10);
 			}
 
