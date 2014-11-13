@@ -3,10 +3,12 @@
 
 This requires latest [http://rupy.se/rupy.zip rupy] and [http://rupy.se/async.jar HAC] lib.
 
+
+
 <font color="red">_This is a proof of concept that is not production ready!_</font>
 For performance and stability use [http://root.rupy.se/code Async.java].
 
-This [http://test.rupy.se/fuse example] fuses data asynchronously from multiple sources (of which one is a never ending realtime chunked stream) to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
+This [http://root.rupy.se/fuse example] fuses data asynchronously from multiple sources to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (blue is IO-wait).
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
@@ -18,57 +20,107 @@ http://rupy.se/fuse.gif
 
 If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 
-_The code below is wrong but "works", I know you shouldn't instantiate one client per request but the streaming portion of the code doesn't work without it!_
-
 {{{
-public class Fuse extends Service {
-	public String path() { return "/fuse"; }
-	public void filter(final Event event) throws Event, Exception {
-		if(event.push()) {
+	public static class Fuse extends Service {
+		static Async async;
+
+		public void create(Daemon daemon) throws Exception { async = new Async(true); async.start(5); }
+		public void destroy() throws Exception { async.stop(); }
+		public int index() { return 1; }
+		public String path() { return "/fuse"; }
+
+		public void filter(final Event event) throws Event, Exception {
 			Output out = event.output();
 
-			HttpResponse one = (HttpResponse) event.query().get("one");
-			if(one != null) {
-				Deploy.pipe(one.getEntity().getContent(), out);
-				event.query().put("one", null);
-			}
+			if(event.push()) {
+				Http[] http = (Http[]) event.query().get("http");
+				int done = 0;
 
-			String two = (String) event.query().get("two");
-			if(two != null) {
-				out.println(two);
-				event.query().put("two", null);
-			}
-
-			out.flush();
-		}
-		else {
-			final CloseableHttpAsyncClient client = HttpAsyncClients.createMinimal();
-			client.start();
-
-			HttpGet one = new HttpGet("http://strip.rupy.se/?a=martin+kellerman&body");
-			client.execute(one, new FutureCallback<HttpResponse>() {
-				public void completed(final HttpResponse response) {
-					event.query().put("one", response);
-					event.reply().wakeup();
-				}
-				public void failed(final Exception e) {}
-				public void cancelled() {}
-			});
-
-			HttpGet two = new HttpGet("http://bank.rupy.se/pull?mail=" + System.currentTimeMillis());
-			client.execute(HttpAsyncMethods.create(two), new AsyncCharConsumer<HttpResponse>() {
-				HttpResponse response;
-				protected void onResponseReceived(final HttpResponse response) { this.response = response; }
-				protected HttpResponse buildResult(final HttpContext context) { return this.response; }
-				protected void onCharReceived(final CharBuffer buf, final IOControl ioctrl) throws IOException {
-					event.query().put("two", buf.toString());
-					if(event.reply().wakeup() != Reply.OK) {
-						ioctrl.shutdown();
+				for(int i = 0; i < http.length; i++) {
+					if(http[i].print()) {
+						done++;
 					}
 				}
-				protected void releaseResources() {}
-			}, null);
+
+				if(done == http.length) {
+					out.println("</body></html>");
+					out.finish();
+				}
+
+				out.flush();
+			}
+			else {
+				event.query().put("time", System.currentTimeMillis());
+
+				event.hold();
+				event.reply().type("text/html; charset=UTF-8");
+
+				Http[] http = new Http[2];
+
+				http[0] = new Http("one", "strip.rupy.se", "/?a=martin+kellerman&body", event);
+				http[1] = new Http("two", "query.yahooapis.com", "/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20(%22USDSEK%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", event);
+				//http[2] = new Http("tre", "www.hemlistan.se", "/?o=5&t=1&l=30011,30012&d=1&r=0&p=0&s=10&b", event);
+
+				for(int i = 0; i < http.length; i++) {
+					async.send(http[i].host, http[i], 0);
+				}
+
+				event.query().put("http", http);
+			}
 		}
+
+		public static class Http extends Work {
+			private String name;
+			private String host;
+			private String path;
+			private String body;
+			private Event event;
+
+			public Http(String name, String host, String path, Event event) {
+				this.name = name;
+				this.host = host;
+				this.path = path;
+				this.event = event;
+			}
+
+			public boolean print() throws Exception {
+				if(event.query().get(name) instanceof Http) {
+					System.out.println("  " + name + " " + (System.currentTimeMillis() - event.big("time")) + " ms.");
+					if(name.equals("two"))
+						event.output().println("<script>sek = " + body + "; json2html();</script>");
+					else
+						event.output().println(body);
+					event.query().put(name, "done");
+					return true;
+				}
+				else if(event.query().get(name) instanceof String) {
+					return ((String) event.query().get(name)).equals("done");
+				}
+
+				return false;
+			}
+
+			public void send(Call call) throws Exception {
+				call.get(path, "Host: " + host + "\r\n");
+			}
+
+			public void read(String body) throws Exception {
+				this.body = body;
+				event.query().put(name, this);
+				System.out.println("  " + name + " success " + event.reply().wakeup());
+			}
+
+			public void fail(String host, Exception e) throws Exception {
+				if(e instanceof Timeout) {
+					System.out.println("  " + e);
+					async.send(host, this, 60);
+				}
+				else {
+					e.printStackTrace();
+					event.query().put("response", e.toString());
+					System.out.println("  " + name + " failure " + event.reply().wakeup());
+				}
+			}
+		};
 	}
-}
 }}}
