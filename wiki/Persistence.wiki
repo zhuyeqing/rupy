@@ -11,6 +11,14 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD).
 My first implementation of this distributed file index will be a solution to user management with simple _node_ value index and complex _link_ relations.
 
+<font color="red">
+_Work in progress:
+
+This current version is redundant for reads, but not for writes, meaning for example:
+If part of the cluster is down; you will still be able to login, but registrations will fail.
+The tradeoffs for write uptime are under consideration._
+</font>
+
 Try the current state [http://root.rupy.se root.rupy.se].
 
 TODO:
@@ -34,13 +42,5 @@ TODO:
 	"zone": -6
 }
 }}}
-
-<font color="red">
-_Work in progress:
-
-This current version is redundant for reads, but not for writes, meaning for example:
-If part of the cluster is down; you will still be able to login, but registrations will fail.
-The tradeoffs for write uptime are under consideration._
-</font>
 
 Source: [http://root.rupy.se/code Async.java]
