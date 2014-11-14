@@ -26,7 +26,7 @@ The idea is to wait only in the network and to do things at the same time, our f
                            +----------+
 }}}
 
-For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data <font color="CD5C5C">*sync*</font>.
+For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a `server` is probably something which <font color="CD5C5C">*sync*</font> `req` & `res` data.
 
   * `brow` = <font color="CD5C5C">*sync*</font> `req`
   * `node` = <font color="5CCD5C">*asyn*</font> `req` & `res` <font color="grey">= Fuse</font>
