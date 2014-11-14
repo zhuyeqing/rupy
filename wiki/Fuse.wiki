@@ -1,4 +1,4 @@
-#summary How to fuse end-to-end async HTTP proxy chains.
+#summary How to fuse network async HTTP proxy chains.
 #labels Phase-Design
 
 This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/code Async.java].
