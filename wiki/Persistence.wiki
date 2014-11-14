@@ -1,7 +1,7 @@
 #summary Secure Unique Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
-This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode and [http://root.rupy.se/code Async.java].fdsa
+This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode and [http://root.rupy.se/code Async.java].
 
 For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
