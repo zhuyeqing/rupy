@@ -29,14 +29,14 @@ The whole idea is to wait in the network and to do things at the same time:
 For this we introduce a new concept; the `node`, so today only your database is a `server`.
 
   * `client`: Requests data.
-  * `node`: Responds and requests data.
+  * `node`: Requests & responds data.
   * `server`: Responds data.
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
-  # Server & client sync.
-  # Client async.
-  # Fused server & client async.
+  * Request & response sync.
+  * Request async.
+  * Request & response async. (Fuse)
 
 http://rupy.se/fuse.gif
 
