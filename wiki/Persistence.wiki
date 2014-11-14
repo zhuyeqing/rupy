@@ -6,7 +6,7 @@ This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode and [http://r
 For true redundancy you need to use some custom cluster database since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
 
-  _Database interfaces don't use async HTTP; you can't scale them easily._
+  _Database protocols don't use async HTTP; you can't scale them easily._
 
 On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD).
 See the entry on [https://code.google.com/p/rupy/wiki/Fuse fuse] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster.
