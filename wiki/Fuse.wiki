@@ -55,7 +55,7 @@ wait      ↓↓↓↓           ↓↓   ↓↓           ↓↓↓↓
   * `asyn` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font> <font color="grey">`node)`</font>
   * `serv` = <font color="CD5C5C">`sync`</font> `res`         <font color="grey"> `(database)`</font>
 
-For this we introduce a new concept; the <font color="green">`fuse`</font> `node`; you can clearly see that the compounded savings in terms of time and wait are huge, specially when the system scales in concurrency and depth.
+For this we introduce a new concept; the <font color="green">`fuse`</font> `node`; you can clearly see that the compounded savings in terms of time and wait are huge, specially when the system scales in concurrency and depth. As a matter of fact, you can't scale without <font color="5CCD5C">`asyn`</font>!
 
 Another way to describe this is time and <font color="red">`IO-wait`</font> shown in the graph below:
 
