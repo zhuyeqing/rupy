@@ -3,14 +3,14 @@
 
 This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode and [http://root.rupy.se/code Async.java].
 
-For true redundancy you need to use some custom cluster datastore since we [http://host.rupy.se host] across multiple colocations!
+For true redundancy you need to use some custom cluster database since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
 
   _Database interfaces don't use async HTTP; you can't scale them easily._
 
 On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD).
 See the entry on [https://code.google.com/p/rupy/wiki/Fuse fuse] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster.
-My first implementation of this database will be a solution to user management with simple _node_ value index and complex _link_ relations.
+My first implementation of this cluster database will be a solution to user management with simple _node_ value index and complex _link_ relations.
 
 <font color="red">
 _Work in progress: This current version is redundant for reads, but not for writes, meaning for example: If part of the cluster is down; you will still be able to login, but registrations will fail. The tradeoffs for write uptime are under consideration._
