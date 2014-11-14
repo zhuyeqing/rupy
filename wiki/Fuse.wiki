@@ -10,21 +10,21 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 This is how the current client/server tools we use work in a scalable solution:
 
 {{{
-TIME <----------------  goes forth & back  -------------------------->
+TIME <----------------  goes forth & back  ------------------>
 
-WAIT      ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+WAIT      ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-+--------+    +---------+                   +---------+    +---------+
-|        | -> |         | ------------+---> |         |    |         |
-|  brow  |    |  crap1  |             |     |  crap2  | .. |  serv2  |
-|        | <- |         | <-------------+-- |         |    |         |
-+--------+    +---------+             | |   +---------+    +---------+
-                                      | |
-                                  +---------+
-                                  |         |
-                                  |  serv1  |
-                                  |         |
-                                  +---------+
++--------+    +---------+           +---------+    +---------+
+|        | -> |         | ----+---> |         |    |         |
+|  brow  |    |  crap1  |     |     |  crap2  | .. |  serv2  |
+|        | <- |         | <-----+-- |         |    |         |
++--------+    +---------+     | |   +---------+    +---------+
+                              | |
+                         +---------+
+                         |         |
+                         |  serv1  |
+                         |         |
+                         +---------+
 }}}
 
 The idea is to only wait in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
@@ -40,14 +40,14 @@ WAIT      ↓↓↓↓           ↓↓↓↓↓↓↓↓↓           ↓↓↓
 |        | <- |         | <---+-- |         |    |         |
 +--------+    +---------+   | |   +---------+    +---------+
                             | |
-                            | +---------+
-                            +---------+ |
-                                      | |
-                                  +---------+
-                                  |         |
-                                  |  serv1  |
-                                  |         |
-                                  +---------+
+                            | +----+
+                            +----+ |
+                                 | |
+                             +---------+
+                             |         |
+                             |  serv1  |
+                             |         |
+                             +---------+
 }}}
 
   * `brow` = <font color="CD5C5C">`sync`</font> `req`         <font color="grey">= `browser`</font>
