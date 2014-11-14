@@ -7,16 +7,26 @@ This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/cod
 _Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
 </font>
 
-The whole idea is to wait in the network:
+The whole idea is to wait in the network and to do things at the same time:
 
 {{{
+Time ------------------------------------------------------>
+
 Wait:       ↓↓↓↓            ↓↓↓↓            ↓↓↓↓
 
 +----------+    +----------+    +----------+    +----------+
 |          | -> |          | -> |          |    |          |
-|  client  |    |  sercli  |    |  sercli  | .. |  servur  |
+|  client  |    |   node   |    |   node   | .. |  server  |
 |          | <- |          | <- |          |    |          |
 +----------+    +----------+    +----------+    +----------+
+
+                    ↑  |
+                    |  |
+                    |  |        +----------+
+                    |  +------> |          |
+                    |           |  server  |
+                    +---------- |          |
+                                +----------+
 }}}
 This [http://root.rupy.se/fuse example] fuses data asynchronously from multiple sources to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (darkblue is IO-wait).
 
