@@ -29,7 +29,7 @@ The idea is to wait only in the network and to do things at the same time, our f
 For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data *sync*.
 
   * `brow` *sync* `Req`
-  * `node` *asyn* `Req` & `Res`
+  * `node` *asyn* `Req` & `Res` (Fuse)
   * `serv` *sync* `Res`
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
