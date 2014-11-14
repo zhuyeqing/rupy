@@ -59,7 +59,7 @@ For this we introduce a new concept; the <font color="green">`fuse`</font> `node
 
 Time and <font color="red">`IO-wait`</font> is shown in the graph below:
 
-  # = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey">= `your web server`</font>
+  # = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey">= `your web-server`</font>
   # = <font color="5CCD5C">`asyn`</font> `req` <font color="grey">= `netflix`</font>
   # = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="green">= `fuse`</font>
 
