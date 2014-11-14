@@ -9,11 +9,11 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 
 The whole idea is to wait in the network and to do things at the same time:
 
-For this we introduce a new concept; the `Node`.
+For this we introduce a new concept; the `Node`, so today only your database is a server.
 
-Client - requests data.
-Node   - responds and requests data.
-Server - responds data.
+  Client - requests data.
+  Node   - responds and requests data.
+  Server - responds data.
 
 {{{
             ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
