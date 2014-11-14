@@ -26,11 +26,11 @@ The idea is to wait only in the network and to do things at the same time:
                            +----------+
 }}}
 
-For this we introduce a new concept; the `node`, so today only your database is a `server`.
+For this we introduce a new concept; the `node`, so today only your database is a `server`. Today what you have as a web-server is probably a broken `node` which requests & responds data sync.
 
-  * `client`: Requests data.
-  * `node`: Requests & responds data asynchronously.
-  * `server`: Responds data.
+  * `client`: Requests data sync.
+  * `node`: Requests & responds data *async*.
+  * `server`: Responds data sync.
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
