@@ -26,7 +26,7 @@ The whole idea is to wait in the network and to do things at the same time:
                            +----------+
 }}}
 
-For this we introduce a new concept; the `Node`, so today only your database is a server.
+For this we introduce a new concept; the `node`, so today only your database is a `server`.
 
   * `client`: Requests data.
   * `node`: Responds and requests data.
