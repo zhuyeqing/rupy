@@ -7,7 +7,7 @@ This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/cod
 _Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
 </font>
 
-The idea is to wait only in the network (no network related <font color="red">`IO-wait`</font>) and to do multiple things while we wait:
+The idea is to wait only in the network (no related <font color="red">`IO-wait`</font>) and to do multiple things while we wait:
 
 {{{
             ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
