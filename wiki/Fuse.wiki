@@ -27,7 +27,7 @@ WAIT      ↓↓↓↓   ↓↓↓↓↓   ↓↓↓↓↓↓↓↓↓↓↓   �
                          +---------+
 }}}
 
-The idea is to only wait in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
+The idea is to only "wait" in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
 
 {{{
 TIME <----------------  goes forth & back  ---------------->
