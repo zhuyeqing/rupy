@@ -42,7 +42,7 @@ Time and <font color="red">`IO-wait`</font> is shown in the graph below:
 
 http://rupy.se/fuse.gif
 
-This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">*asyn*</font> from multiple servers to your browser via a rupy <font color="green">`fuse`</font> `node` on a raspberry pi with zero thread <font color="red">`IO-wait`</font>.
+This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser via a rupy <font color="green">`fuse`</font> `node` on a raspberry pi with zero thread <font color="red">`IO-wait`</font>.
 
 Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence root].
 
