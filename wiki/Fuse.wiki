@@ -26,7 +26,7 @@ The idea is to wait only in the network and to do things at the same time:
                            +----------+
 }}}
 
-For this we introduce a new concept; the `node`, so today only your database is a `server`. Today what you have as a web-server is probably a broken `node` which requests & responds data sync.
+For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data *sync*.
 
   * `client`: Requests data sync.
   * `node`: Requests & responds data *async*.
