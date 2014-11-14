@@ -69,7 +69,7 @@ If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is t
 
 Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence root].
 
-This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser via a rupy <font color="green">`fuse`</font> on a raspberry pi with zero thread <font color="red">`IO-wait`</font>:
+This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser via <font color="green">`fuse`</font> on a raspberry pi with zero thread <font color="red">`IO-wait`</font>:
 {{{
 // TODO: Improve latch.
 public static class Fuse extends Service {
