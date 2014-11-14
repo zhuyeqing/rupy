@@ -26,19 +26,19 @@ The idea is to wait only in the network (no network related <font color="red">`I
                            +----------+
 }}}
 
-  * `brow` = <font color="CD5C5C">*sync*</font> `req`
-  * `node` = <font color="5CCD5C">*asyn*</font> `req` & `res` <font color="grey">= `fuse`</font>
-  * `serv` = <font color="CD5C5C">*sync*</font> `res`
+  * `brow` = <font color="CD5C5C">`sync`</font> `req`
+  * `node` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">= `fuse`</font>
+  * `serv` = <font color="CD5C5C">`sync`</font> `res`
 
 For this we introduce a new concept; the <font color="green">`fuse`</font> `node`;
 so today only your database is a true `server`. 
-What you have as a `"server"` is probably something which <font color="CD5C5C">*sync*</font> `req` & `res` data.
+What you have as a `"server"` is probably something which <font color="CD5C5C">`sync`</font> `req` & `res` data.
 
 Time and <font color="red">`IO-wait`</font> is shown in the graph below:
 
-  # = <font color="CD5C5C">*sync*</font> `req` & `res`
-  # = <font color="5CCD5C">*asyn*</font> `req`
-  # = <font color="5CCD5C">*asyn*</font> `req` & `res` <font color="grey">= `fuse`</font>
+  # = <font color="CD5C5C">`sync`</font> `req` & `res`
+  # = <font color="5CCD5C">`asyn`</font> `req`
+  # = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">= `fuse`</font>
 
 http://rupy.se/fuse.gif
 
