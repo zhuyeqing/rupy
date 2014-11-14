@@ -140,7 +140,7 @@ public static class Fuse extends Service {
 		public void fail(String host, Exception e) throws Exception {
 			if(e instanceof Timeout) {
 				System.out.println("  " + e);
-				async.send(host, this, 0);
+				async.send(host, this, 10);
 			}
 			else {
 				e.printStackTrace();
