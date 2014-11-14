@@ -10,7 +10,7 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 This is how the current client/server tools we use work:
 
 {{{
-TIME <----------------  goes forth & back  --------------------->
+TIME <----------------  goes forth & back  ------------------------------------->
 
 WAIT        ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
