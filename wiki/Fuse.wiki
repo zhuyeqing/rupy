@@ -34,9 +34,9 @@ For this we introduce a new concept; the `node`; so today only your database is 
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
-  1 *sync* `Request` & `Respond`
-  2 *asyn* `Request`
-  3 *asyn* `Request` & `Respond` (Fuse)
+  # *sync* `Request` & `Respond`
+  # *asyn* `Request`
+  # *asyn* `Request` & `Respond` (Fuse)
 
 http://rupy.se/fuse.gif
 
