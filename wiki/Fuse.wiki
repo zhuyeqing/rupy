@@ -7,6 +7,29 @@ This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/cod
 _Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
 </font>
 
+This is how the current client/server tools we use work:
+
+{{{
+TIME <----------------  goes forth & back  --------------------->
+
+WAIT        ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
++----------+    +----------+                         +----------+    +----------+
+|          | -> |          | --+-------------------> |          |    |          |
+|   brow   |    |   node   |   |                     |   node   | .. |   serv   |
+|          | <- |          | <---+------------------ |          |    |          |
++----------+    +----------+   | |                   +----------+    +----------+
+                               | |
+                               | +---------+
+                               +---------+ |
+                                         | |
+                                     +----------+
+                                     |          |
+                                     |   serv   |
+                                     |          |
+                                     +----------+
+}}}
+
 The idea is to wait only in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
 
 {{{
