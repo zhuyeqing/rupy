@@ -5,7 +5,7 @@
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
-Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
+Ordinary databases are not secure, scalable or redundant in a distributed cluster environment out of the box:
 
   * Database connections between colocations are not encrypted.
   * Database clients don't have NIO; you can't scale them.
