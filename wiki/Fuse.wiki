@@ -52,16 +52,16 @@ wait      ↓↓↓↓           ↓↓   ↓↓           ↓↓↓↓
 
   * `brow` = <font color="CD5C5C">`sync`</font> `req`         <font color="grey"> `(browser)`</font>
   * `sync` = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey"> `(your web-server)`</font>
-  * `asyn` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font> <font color="grey">`node)`</font>
+  * `asyn` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font><font color="grey">`)`</font>
   * `serv` = <font color="CD5C5C">`sync`</font> `res`         <font color="grey"> `(database)`</font>
 
-For this we introduce a new concept; the <font color="green">`fuse`</font> `node`; you can clearly see that the compounded savings in terms of time and wait are huge, specially when the system scales in concurrency and depth. As a matter of fact, you can't scale without <font color="5CCD5C">`asyn`</font> `req`, and with <font color="5CCD5C">`asyn`</font> `req` & `res` you're even better off.
+For this we introduce a new concept; <font color="green">`fuse`</font>; you can clearly see that the compounded savings in terms of time and wait are huge, specially when the system scales in concurrency and depth. As a matter of fact, you can't scale without <font color="5CCD5C">`asyn`</font> `req`, and with <font color="5CCD5C">`asyn`</font> `req` & `res` you're even better off.
 
 Another way to describe this is time and <font color="red">`IO-wait`</font> shown in the graph below:
 
   # = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey"> `(your web-server)`</font>
   # = <font color="5CCD5C">`asyn`</font> `req` <font color="grey"> `(netflix)`</font>
-  # = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font> <font color="grey">`node)`</font>
+  # = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font><font color="grey">`)`</font>
 
 http://rupy.se/fuse.gif
 
@@ -69,7 +69,7 @@ If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is t
 
 Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence root].
 
-This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser via a rupy <font color="green">`fuse`</font> `node` on a raspberry pi with zero thread <font color="red">`IO-wait`</font>:
+This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser via a rupy <font color="green">`fuse`</font> on a raspberry pi with zero thread <font color="red">`IO-wait`</font>:
 {{{
 // TODO: Improve latch.
 public static class Fuse extends Service {
