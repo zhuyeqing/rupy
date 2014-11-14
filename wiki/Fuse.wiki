@@ -10,8 +10,6 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 The whole idea is to wait in the network and to do things at the same time:
 
 {{{
-Time ------------------------------------------------------>
-
 Wait:       ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
 
 +----------+    +----------+         +----------+    +----------+
