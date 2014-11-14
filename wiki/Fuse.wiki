@@ -28,15 +28,15 @@ The idea is to wait only in the network and to do things at the same time, our f
 
 For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data *sync*.
 
-  * *sync* `brow`: `Request`
-  * *asyn* `node`: `Request` & `Respond`
-  * *sync* `serv`: `Respond`
+  * *sync* `brow`: `Req`
+  * *asyn* `node`: `Req` & `Res`
+  * *sync* `serv`: `Res`
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
-  # *sync* `Request` & `Respond`
-  # *asyn* `Request`
-  # *asyn* `Request` & `Respond` (Fuse)
+  # *sync* `Req` & `Res`
+  # *asyn* `Req`
+  # *asyn* `Req` & `Res` (Fuse)
 
 http://rupy.se/fuse.gif
 
