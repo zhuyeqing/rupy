@@ -7,7 +7,7 @@ This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/cod
 _Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
 </font>
 
-The idea is to wait only in the network and to do things at the same time, our first use case for this is a cluster [https://code.google.com/p/rupy/wiki/Persistence database]:
+The idea is to wait only in the network and to do things at the same time:
 
 {{{
             ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
@@ -43,6 +43,8 @@ Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 http://rupy.se/fuse.gif
 
 This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">*asyn*</font> from multiple servers to your browser via a rupy `node` on a raspberry pi with zero thread <font color="red">*IO-wait*</font>.
+
+Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence root].
 
 If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 {{{
