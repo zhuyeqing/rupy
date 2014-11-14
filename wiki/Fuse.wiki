@@ -13,28 +13,28 @@ The idea is to wait only in the network and to do things at the same time, our f
 
 +----------+    +----------+         +----------+    +----------+
 |          | -> |          | --+---> |          |    |          |
-|   <font color="blue">brow</font>   |    |   <font color="green">node</font>   |   |     |   <font color="green">node</font>   | .. |   <font color="red">serv</font>   |
+|   brow   |    |   node   |   |     |   node   | .. |   serv   |
 |          | <- |          | <---+-- |          |    |          |
 +----------+    +----------+   | |   +----------+    +----------+
                                | |
                                | |
                            +----------+
                            |          |
-                           |   <font color="red">serv</font>   |
+                           |   serv   |
                            |          |
                            +----------+
 
 For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data *sync* = very slow and weak.
 
-  * `brow` *sync* `req`
-  * `node` *asyn* `req` & `res` (Fuse)
-  * `serv` *sync* `res`
+  * `brow` <font color="red">*sync*</font> `req`
+  * `node` <font color="green">*asyn*</font> `req` & `res` (Fuse)
+  * `serv` <font color="red">*sync*</font> `res`
 
 Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
-  # *sync* `req` & `res`
-  # *asyn* `req`
-  # *asyn* `req` & `res` (Fuse)
+  # <font color="red">*sync*</font> `req` & `res`
+  # <font color="blue">*asyn*</font> `req`
+  # <font color="green">*asyn*</font> `req` & `res` (Fuse)
 
 http://rupy.se/fuse.gif
 
