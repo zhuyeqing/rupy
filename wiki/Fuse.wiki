@@ -32,7 +32,7 @@ The idea is to only wait in the network (no related <font color="red">`IO-wait`<
 {{{
 TIME <----------------  goes forth & back  ---------------->
 
-WAIT      ↓↓↓↓           ↓↓↓↓↓↓↓↓↓           ↓↓↓↓           <--- LOOK AT THIS
+WAIT      ↓↓↓↓           ↓↓↓↓↓↓↓↓↓           ↓↓↓↓
 
 +--------+    +---------+         +---------+    +---------+
 |        | -> |         | --+---> |         |    |         |
