@@ -8,7 +8,7 @@ For true redundancy you need to use some custom cluster datastore since we now h
 Ordinary databases are not secure, scalable or redundant in a distributed cluster environment:
 
   * Database connections between colocations are not encrypted.
-  * Databases don't have NIO; you can't scale them.
+  * Database clients don't have NIO; you can't scale them.
   * If the colocation where you host your database is down, your site will be down.
   * You need to backup your data.
 
