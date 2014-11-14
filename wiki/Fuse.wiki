@@ -10,7 +10,9 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 The idea is to wait only in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
 
 {{{
-            ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
+`TIME` ----------------------------------------------->
+
+`WAIT`        ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
 
 +----------+    +----------+         +----------+    +----------+
 |          | -> |          | --+---> |          |    |          |
@@ -18,12 +20,14 @@ The idea is to wait only in the network (no related <font color="red">`IO-wait`<
 |          | <- |          | <---+-- |          |    |          |
 +----------+    +----------+   | |   +----------+    +----------+
                                | |
-                               | |
-                           +----------+
-                           |          |
-                           |   serv   |
-                           |          |
-                           +----------+
+                               | +---------+
+                               +---------+ |
+                                         | |
+                                     +----------+
+                                     |          |
+                                     |   serv   |
+                                     |          |
+                                     +----------+
 }}}
 
   * `brow` = <font color="CD5C5C">`sync`</font> `req`         <font color="grey">= `browser`</font>
