@@ -10,7 +10,7 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 The idea is to wait only in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
 
 {{{
-TIME ----------------------------------------------->
+TIME <---------------- goes back and forth --------------------->
 
 WAIT        ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
 
