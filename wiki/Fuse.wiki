@@ -9,7 +9,6 @@ _Work in progress: Async.java is very stable, but we have not implemented chunke
 
 The idea is to wait only in the network and to do things at the same time, our first use case for this is a cluster [https://code.google.com/p/rupy/wiki/Persistence database]:
 
-<pre>
             ↓↓↓↓            ↓↓↓↓↓↓↓↓↓            ↓↓↓↓
 
 +----------+    +----------+         +----------+    +----------+
@@ -24,7 +23,6 @@ The idea is to wait only in the network and to do things at the same time, our f
                            |   <font color="red">serv</font>   |
                            |          |
                            +----------+
-</pre>
 
 For this we introduce a new concept; the `node`; so today only your database is a true `server`. What you have as a web-server is probably something which requests & responds data *sync* = very slow and weak.
 
