@@ -54,7 +54,7 @@ WAIT      ↓↓↓↓           ↓↓↓↓↓↓↓↓↓           ↓↓↓
 }}}
 
   * `brow` = <font color="CD5C5C">`sync`</font> `req`         <font color="grey">= `browser`</font>
-  * `crap` = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="green">= `your grandma's web`</font>
+  * `crap` = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey">= `your grandma's web`</font>
   * `node` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="green">= `fuse`</font>
   * `serv` = <font color="CD5C5C">`sync`</font> `res`         <font color="grey">= `server`</font>
 
