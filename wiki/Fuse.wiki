@@ -14,14 +14,14 @@ The idea is to wait only in the network and to do things at the same time, our f
 
 +----------+    +----------+         +----------+    +----------+
 |          | -> |          | --+---> |          |    |          |
-|   brow   |    |   node   |   |     |   node   | .. |   serv   |
+|   <font color="blue">brow</font>   |    |   <font color="green">node</font>   |   |     |   <font color="green">node</font>   | .. |   <font color="red">serv</font>   |
 |          | <- |          | <---+-- |          |    |          |
 +----------+    +----------+   | |   +----------+    +----------+
                                | |
                                | |
                            +----------+
                            |          |
-                           |   serv   |
+                           |   <font color="red">serv</font>   |
                            |          |
                            +----------+
 }}}
@@ -40,7 +40,7 @@ Time and <font color="red">*IO-wait*</font> is shown in the graph below:
 
 http://rupy.se/fuse.gif
 
-This [http://root.rupy.se/fuse example] fuses data asynchronously from multiple sources to your browser via a rupy instance on a raspberry pi with zero thread <font color="red">*IO-wait*</font> and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (darkblue is IO-wait).
+This [http://root.rupy.se/fuse example] fuses data asynchronously from multiple sources to your browser via a rupy instance on a raspberry pi with zero thread IO-wait and low memory footprint. You can view the [http://monitor.rupy.se monitor] to see CPU usage (darkblue is IO-wait).
 
 If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network. You can even use this as a load balancer.
 {{{
