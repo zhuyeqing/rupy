@@ -20,14 +20,11 @@ Try the [http://root.rupy.se latest] version.
 
 TODO:
 
-  # ~~key hard link index~~
   # ~~new [http://root.rupy.se/code async] client~~
   # ~~_node_ sort index~~
   # _link_ relation graph
-  # private & public access?
-  # date & zone index?
   # sync any file?
-  # refactor `<`id`>` file:
+  # `<`id`>` file:
 
 {{{
 {
