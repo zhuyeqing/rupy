@@ -22,8 +22,8 @@ TODO:
 
   # ~~key hard link index~~
   # ~~new [http://root.rupy.se/code async] client~~
-  # ~~hard _node_ sort~~
-  # soft _link_ relation
+  # ~~_node_ sort index~~
+  # _link_ relation graph
   # private & public access?
   # date & zone index?
   # sync any file?
