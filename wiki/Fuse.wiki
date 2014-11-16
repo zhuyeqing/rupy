@@ -14,7 +14,8 @@ This is how the current client/server tools work in a co-operative solution:
 
 {{{
 time <----------------  goes forth & back  ------------------>
-wait      ↓↓↓↓   ↓↓↓↓↓   ↓↓↓↓↓↓↓↓↓↓↓   ↓↓↓↓↓   ↓↓↓↓
+wait      ↓↓↓↓           ↓↓↓↓↓↓↓↓↓↓↓           ↓↓↓↓           
+loss             ↓↓↓↓↓                 ↓↓↓↓↓                  (CPU)
 
 +--------+    +---------+           +---------+    +---------+
 |        | -> |         | ---+----> |         |    |         |
