@@ -138,11 +138,11 @@ public static class Fuse extends Service {
 			this.event = event;
 		}
 
-		public boolean print() throws Exception {
+		public boolean print(Output out) throws Exception {
 			if(event.query().get(name) instanceof Http) {
 				long time = System.currentTimeMillis() - event.big("time");
 				System.out.println("  " + name + " " + time + " ms.");
-				event.output().println(body);
+				out.println(body);
 				event.query().put(name, "done");
 				return true;
 			}
