@@ -128,7 +128,7 @@ public static class Fuse extends Service {
 		}
 	}
 
-	public static class Http extends Work {
+	public static class Http extends Async.Work {
 		private String name;
 		private String host;
 		private String path;
