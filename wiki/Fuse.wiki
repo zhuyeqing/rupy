@@ -83,15 +83,13 @@ public static class Fuse extends Service {
 	public String path() { return "/fuse"; }
 
 	public void filter(final Event event) throws Event, Exception {
-		Output out = event.output();
-
 		if(event.push()) {
 			Http[] http = (Http[]) event.query().get("http");
-
+			Output out = event.output();
 			int done = 0;
 
 			for(int i = 0; i < http.length; i++) {
-				if(http[i].print()) {
+				if(http[i].print(out)) {
 					done++;
 				}
 			}
@@ -105,8 +103,6 @@ public static class Fuse extends Service {
 		}
 		else {
 			event.query().put("time", System.currentTimeMillis());
-			event.reply().type("text/html; charset=UTF-8");
-			event.hold();
 
 			Http[] http = new Http[2];
 
