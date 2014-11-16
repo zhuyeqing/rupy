@@ -157,7 +157,7 @@ public static class Fuse extends Service {
 			return false;
 		}
 
-		public void send(Call call) throws Exception {
+		public void send(Async.Call call) throws Exception {
 			call.get(path, "Host: " + host + "\r\n");
 		}
 
@@ -168,7 +168,7 @@ public static class Fuse extends Service {
 		}
 
 		public void fail(String host, Exception e) throws Exception {
-			if(e instanceof Timeout) {
+			if(e instanceof Async.Timeout) {
 				System.out.println("  " + e);
 				async.send(host, this, 10);
 			}
