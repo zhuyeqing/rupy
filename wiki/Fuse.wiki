@@ -32,7 +32,7 @@ loss             ↓↓↓↓↓                 ↓↓↓↓↓                
 
   * `sync` = <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey"> `(old web-server)`</font>
 
-The idea is to only "wait" in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
+The idea is to only wait in the network (no related <font color="red">`IO-wait`</font>) and to wait for multiple things at the same time:
 
 {{{
 time <---------------  goes forth & back  --------------->
