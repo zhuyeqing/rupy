@@ -39,4 +39,4 @@ TODO:
 
 Source: [http://root.rupy.se/code Async.java], [http://root.rupy.se/code?path=/Root.java Root.java]
 
-<sup>1</sup> Because of the nature of distributed systems, this cannot be guaranteed. The only recourse is to resend on failure after delay and pray. This functionality will not be provided by the database in this first version.
+<sup>1</sup> Because of the nature of distributed systems, the integrity of relations will not be guaranteed in this first version.
