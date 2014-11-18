@@ -22,7 +22,7 @@ TODO:
 
   # ~~new [http://root.rupy.se/code async] client~~
   # ~~sort _node_ index~~
-  # ~~link _node_ graph~~
+  # ~~link _node_ graph~~ 2-phase commit
   # sync any file?
   # `<`user`>` file:
 
