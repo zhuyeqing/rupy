@@ -22,7 +22,7 @@ TODO:
 
   # ~~new [http://root.rupy.se/code async] client~~
   # ~~sort _node_ index~~
-  # ~~link _node_ graph~~ 2-phase commit
+  # ~~link _node_ graph~~<sup>1</sup>
   # sync any file?
   # `<`user`>` file:
 
@@ -38,3 +38,5 @@ TODO:
 }}}
 
 Source: [http://root.rupy.se/code Async.java], [http://root.rupy.se/code?path=/Root.java Root.java]
+
+<sup>1</sup> Because of the nature of distributed systems, this cannot be guaranteed. The only recourse is to resend on failure after delay and pray. This functionality will not be provided by the database.
