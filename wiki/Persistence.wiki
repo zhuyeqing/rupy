@@ -41,4 +41,4 @@ TODO:
 
 Source: [http://root.rupy.se/code Async.java], [http://root.rupy.se/code?path=/Root.java Root.java]
 
-<sup>1</sup> The root cluster database will not synchronize data for you after a failure.
+<sup>1</sup> The root cluster database will not synchronize data for you after a failure. It will however perfectly replicate and make sure nothing gets linked twice when all nodes are up.
