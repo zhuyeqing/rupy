@@ -12,6 +12,10 @@ On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD).
 See the entry on [https://code.google.com/p/rupy/wiki/Fuse fuse] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster.
 My first implementation of this cluster database will be a solution to user and node management with sort index and link graph.
 
+Root takes a little bit from all NoSQL databases: document, key-value and graph; It's basically a key-value (Base58-JSON) store with custom indexing of fields in the JSON and graph relationships between the key-values.
+
+The JSON objects are stored a simple files and so are the indexes (symbolic hard links) and the relations is just a file with longs (the hashed Base58 key) to relations. Simple, powerful and in line with Moore's and Murphy's laws.
+
 <font color="red">
 _Work in progress: This current version is redundant for reads, but not for writes, meaning for example: If part of the cluster is down; you will still be able to login, but registrations will fail. The tradeoffs for write uptime are under consideration._
 </font>
