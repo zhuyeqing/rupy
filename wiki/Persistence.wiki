@@ -24,7 +24,7 @@ TODO:
   # ~~edit _node_~~<sup>1</sup>
   # ~~sort _node_ index~~
   # ~~link _node_ graph~~<sup>1</sup>
-  # privileges
+  # user join/auth
   # `<`user`>` file:
 
 {{{
