@@ -113,7 +113,7 @@ public static class Fuse extends Service {
 				// The 10 at the end is very important.
 				// It means the socket will be kept alive 
 				// for 10 seconds since last active.
-				async.send(http[i].host, http[i], 10);
+				event.daemon().client().send(http[i].host, http[i], 10);
 			}
 
 			event.query().put("http", http);
@@ -162,7 +162,7 @@ public static class Fuse extends Service {
 		public void fail(String host, Exception e) throws Exception {
 			if(e instanceof Async.Timeout) {
 				System.out.println("  " + e);
-				async.send(host, this, 10);
+				event.daemon().client().send(host, this, 10);
 			}
 			else {
 				e.printStackTrace();
