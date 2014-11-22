@@ -1,7 +1,7 @@
 #summary Secure Unique Identity Cluster.
 #labels Phase-Design,Phase-Implementation
 
-This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode and [http://root.rupy.se/code Async.java].
+This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
 
 For true redundancy you need to use some custom cluster database since we [http://host.rupy.se host] across multiple colocations!
 Ordinary databases are not secure or redundant in a distributed cluster environment out of the box, but most of all:
@@ -24,6 +24,6 @@ TODO:
   # ~~sort _node_ index~~<sup>1</sup>
   # ~~link _node_ graph~~<sup>1</sup>
 
-Source: [http://root.rupy.se/code?path=/User.java User.java], [http://root.rupy.se/code?path=/Root.java Root.java], [http://root.rupy.se/code Async.java]
+Source: [http://root.rupy.se/code?path=/User.java User.java], [http://root.rupy.se/code?path=/Root.java Root.java]
 
 <sup>1</sup> The root cluster database will not re-synchronize data for you after a failed operation (edit/link node down), you will have to do that manually. It will however perfectly replicate and make sure nothing gets linked twice when all nodes are up. It's write sensitive, but read strong.
