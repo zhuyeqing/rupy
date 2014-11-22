@@ -21,9 +21,8 @@ TODO:
 
   # ~~new [http://root.rupy.se/code async] client~~
   # ~~edit _node_~~<sup>1</sup>
-  # ~~sort _node_ index~~
+  # ~~sort _node_ index~~<sup>1</sup>
   # ~~link _node_ graph~~<sup>1</sup>
-  # auth
 
 Source: [http://root.rupy.se/code?path=/User.java User.java], [http://root.rupy.se/code?path=/Root.java Root.java], [http://root.rupy.se/code Async.java]
 
