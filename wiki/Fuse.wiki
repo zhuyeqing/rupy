@@ -76,10 +76,6 @@ This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</
 {{{
 // TODO: Improve latch.
 public static class Fuse extends Service {
-	static Async async;
-
-	public void create(Daemon daemon) throws Exception { async = new Async(true); async.start(5); }
-	public void destroy() throws Exception { async.stop(); }
 	public String path() { return "/fuse"; }
 
 	public void filter(final Event event) throws Event, Exception {
