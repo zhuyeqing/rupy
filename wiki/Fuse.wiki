@@ -1,7 +1,7 @@
 #summary How to fuse HTTP network async.
 #labels Phase-Design
 
-This requires latest [http://rupy.se/rupy.zip rupy] and [http://root.rupy.se/code Async.java].
+This requires latest [http://rupy.se/rupy.zip rupy].
 
 <font color="red">
 _Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
