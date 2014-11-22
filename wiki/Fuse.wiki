@@ -3,10 +3,6 @@
 
 This requires latest [http://rupy.se/rupy.zip rupy].
 
-<font color="red">
-_Work in progress: Async.java is very stable, but we have not implemented chunked responses yet._
-</font>
-
 This is how the current client/server tools work in a co-operative solution:
 
   * `brow` = <font color="CD5C5C">`sync`</font> `req`         <font color="grey"> `(browser)`</font>
