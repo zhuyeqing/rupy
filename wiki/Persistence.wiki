@@ -11,7 +11,7 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD) and async is becoming common place; See the entry on [https://code.google.com/p/rupy/wiki/Fuse fuse] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster with async HTTP.
 My first implementation of this cluster database will be a solution to user and node management with sort index and link graph.
 
-Root takes a little bit from all NoSQL databases: document, key-value and graph; It's basically a key-value (Base58-JSON) store with indexing (that we call sort) on custom fields in the JSON and graph relationships between the key-values.
+Root takes a little bit from all NoSQL databases: document, key-value and graph; It's basically a key-value (Base58-JSON) store with indexing (that we call sort) on custom fields (including full text index) in the JSON and graph relationships between the key-values.
 
 The JSON objects and indexes are stored as a plain file (symbolic hard link). The relations is just a binary file with a list of longs (the hashed Base58 key). Simple, powerful and in line with _Moore's_ and _Murphy's_ laws.
 
