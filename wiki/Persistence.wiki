@@ -20,9 +20,9 @@ TODO:
 
   # ~~new [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java async] client~~
   # ~~_edit node_~~<sup>1</sup>
-  # ~~_sort _node_ text index~~<sup>1</sup>
-  # ~~_link _node_ relation graph~~<sup>1</sup>
-  # ~~_find _node_ full text search~~<sup>2</sup>
+  # ~~_sort node_ text index~~<sup>1</sup>
+  # ~~_link node_ relation graph~~<sup>1</sup>
+  # ~~_find node_ full text search~~<sup>2</sup>
   # _list path sort_ folders
   # _trim node_ & _link_
 
