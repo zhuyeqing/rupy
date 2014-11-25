@@ -23,7 +23,7 @@ TODO:
   # ~~sort _node_ text index~~<sup>1</sup>
   # ~~link _node_ relation graph~~<sup>1</sup>
   # ~~find _node_ full text search~~<sup>2</sup>
-  # delete _node_ _sort_ _link_
+  # delete _node_ & _link_
 
 WISH:
 
