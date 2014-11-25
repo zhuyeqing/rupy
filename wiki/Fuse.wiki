@@ -52,7 +52,7 @@ wait      ↓↓↓↓           ↓↓   ↓↓           ↓↓↓↓
 
   * `asyn` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font><font color="grey">`)`</font>
 
-For this we introduce a new concept; <font color="green">`fuse`</font>. You can imagine that the compounded savings in terms of time and wait are huge, specially when the system grows in concurrency and depth. As a matter of fact, you can't scale at all without <font color="5CCD5C">`asyn`</font> `req` and with <font color="5CCD5C">`asyn`</font> `req` & `res` you're far better off.
+For this we introduce a new concept; <font color="green">`fuse`</font>.
 
 Another way to describe this is time and <font color="red">`IO-wait`</font> shown in the graph below:
 
@@ -61,6 +61,8 @@ Another way to describe this is time and <font color="red">`IO-wait`</font> show
   # <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font><font color="grey">`)`</font>
 
 http://rupy.se/fuse.gif
+
+You can imagine that the compounded savings in terms of time and wait are huge, specially when the system grows in concurrency and depth. As a matter of fact, you can't scale at all without <font color="5CCD5C">`asyn`</font> `req` and with <font color="5CCD5C">`asyn`</font> `req` & `res` you're far better off.
 
 If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is the most performant way to build your services network.
 
