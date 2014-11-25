@@ -19,12 +19,12 @@ The JSON objects and indexes are stored as a plain file (symbolic hard link). Th
 TODO:
 
   # ~~new [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java async] client~~
-  # ~~edit _node_~~<sup>1</sup>
-  # ~~sort _node_ text index~~<sup>1</sup>
-  # ~~link _node_ relation graph~~<sup>1</sup>
-  # ~~find _node_ full text search~~<sup>2</sup>
-  # list _path_ _sort_ folders
-  # delete _node_ & _link_
+  # ~~_edit node_~~<sup>1</sup>
+  # ~~_sort _node_ text index~~<sup>1</sup>
+  # ~~_link _node_ relation graph~~<sup>1</sup>
+  # ~~_find _node_ full text search~~<sup>2</sup>
+  # _list path sort_ folders
+  # _trim node_ & _link_
 
 WISH:
 
