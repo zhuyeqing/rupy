@@ -24,6 +24,10 @@ TODO:
   # ~~sort _node_ text index~~<sup>1</sup>
   # ~~link _node_ relation graph~~<sup>1</sup>
   # ~~find _node_ full text search~~<sup>2</sup>
+
+WISH:
+
+  # link _node_ many-to-many relations
   # sort _node_ integer index<sup>3</sup>
   # replicate any file<sup>4</sup>
 
@@ -31,5 +35,5 @@ Source: [http://root.rupy.se/code?path=/User.java User.java], [http://root.rupy.
 
 <sup>1</sup> The root cluster database will not re-synchronize data for you after a failed operation (edit/link node down), you will have to do that manually. It will however perfectly replicate and make sure nothing gets linked twice when all nodes are up. It's write sensitive, but read strong.<br>
 <sup>2</sup> Only searches full words.<br>
-<sup>3</sup> Hm, how does one do that?<br>
+<sup>3</sup> RAM sort is how you would solve this now.<br>
 <sup>4</sup> Images would be nice!
