@@ -23,6 +23,7 @@ TODO:
   # ~~sort _node_ text index~~<sup>1</sup>
   # ~~link _node_ relation graph~~<sup>1</sup>
   # ~~find _node_ full text search~~<sup>2</sup>
+  # list _date_ folders
   # delete _node_ & _link_
 
 WISH:
