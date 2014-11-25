@@ -27,7 +27,7 @@ TODO:
 
 WISH:
 
-  # link _node_ many-to-many relations
+  # link _node_ n:th many-to-many relation graph
   # sort _node_ integer index<sup>3</sup>
   # replicate any file<sup>4</sup>
 
