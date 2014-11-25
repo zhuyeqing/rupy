@@ -14,7 +14,7 @@ Root takes a little bit from all NoSQL databases: document, key-value and graph;
 
 The JSON objects and indexes are stored as a plain file (symbolic hard link). The relations and full text search are just binary files with lists of longs (the hashed Base58 key). Simple, powerful and in line with _Moore's_ and _Murphy's_ laws.
 
-<font color="red">_*Try the current version:</font> [http://root.rupy.se root.rupy.se]*_
+<font color="red">_*Try the current version:*</font> [http://root.rupy.se root.rupy.se]_
 
 TODO:
 
