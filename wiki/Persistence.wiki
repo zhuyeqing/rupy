@@ -12,7 +12,7 @@ On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD) 
 
 Root takes a little bit from all NoSQL databases: document, key-value and graph; It's basically a key-value store (Base58-JSON) with indexing (that we call sort) on custom fields (including full text search) in the JSON and graph relationships between the key-values.
 
-The JSON objects and indexes are stored as a plain file (symbolic hard link). The relations and full text search are just binary files with lists of longs (the hashed Base58 key). Simple, powerful and in line with _Moore's_ and _Murphy's_ laws.
+The JSON objects and indexes are stored as a plain file (symbolic hard link). The relations and full text search are just binary files with lists of longs (the hashed Base58 key). Simple, powerful and in line with both _Moore's_ and _Murphy's_ laws.
 
 <font color="red">_Try the current version:</font> [http://root.rupy.se root.rupy.se]_
 
