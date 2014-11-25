@@ -23,8 +23,9 @@ TODO:
   # ~~edit _node_~~<sup>1</sup>
   # ~~sort _node_ index~~<sup>1</sup>
   # ~~link _node_ graph~~<sup>1</sup>
-  # ~~full _text_ search~~
+  # ~~full _text_ search~~<sup>2</sup>
 
 Source: [http://root.rupy.se/code?path=/User.java User.java], [http://root.rupy.se/code?path=/Root.java Root.java]
 
 <sup>1</sup> The root cluster database will not re-synchronize data for you after a failed operation (edit/link node down), you will have to do that manually. It will however perfectly replicate and make sure nothing gets linked twice when all nodes are up. It's write sensitive, but read strong.
+<sup>2</sup> Only searches full words.
