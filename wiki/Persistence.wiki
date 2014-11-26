@@ -24,7 +24,7 @@ TODO:
   # ~~_link node_ relation graph~~<sup>1</sup>
   # ~~_find node_ full text search~~<sup>2</sup>
   # _list path sort_ folders
-  # pagination max in lists and path folders
+  # pagination size in _link list_ and _path sort_ folder
   # _trim node_ & _link_
 
 WISH:
