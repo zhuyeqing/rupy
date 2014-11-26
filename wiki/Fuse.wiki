@@ -68,7 +68,7 @@ If you want to use [https://code.google.com/p/rupy/wiki/Process µSOA] this is t
 
 You can even use this as a load balancer.
 
-Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence root].
+Another use case for this is our cluster database [https://code.google.com/p/rupy/wiki/Persistence ROOT].
 
 This [http://root.rupy.se/fuse example] fuses data <font color="5CCD5C">`asyn`</font> from multiple servers to your browser ASAP on a raspberry pi with zero thread <font color="red">`IO-wait`</font>:
 {{{
