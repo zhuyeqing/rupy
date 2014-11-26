@@ -57,7 +57,7 @@ For this we introduce a new concept; <font color="green">`fuse`</font>. With <fo
 Another way to describe this is time and <font color="red">`IO-wait`</font> shown in the graph below:
 
   # <font color="CD5C5C">`sync`</font> `req` & `res` <font color="grey"> `(old web-server)`</font>
-  # <font color="5CCD5C">`asyn`</font> `req` <font color="grey">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`(netflix)`</font>
+  # <font color="5CCD5C">`asyn`</font> `req` <font color="grey"> `(netflix)`</font>
   # <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`fuse`</font><font color="grey">`)`</font>
 
 http://rupy.se/fuse.gif
