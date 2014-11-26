@@ -111,6 +111,7 @@ public static class Fuse extends Service {
 				// The 10 at the end is very important.
 				// It means the socket will be kept alive 
 				// for 10 seconds since last active.
+				// This is our Murphy's law solution.
 				event.daemon().client().send(http[i].host, http[i], 10);
 			}
 
