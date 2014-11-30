@@ -23,8 +23,7 @@ TODO:
   # ~~_sort node_ text index~~<sup>1</sup>
   # ~~_link node_ relation graph~~<sup>1</sup>
   # ~~_find node_ full text search~~<sup>2</sup>
-  # _list path sort_ folders
-  # pagination size in _link list_ and _path sort_ folder
+  # pagination in _link list_
   # _trim node_ & _link_
 
 WISH:
