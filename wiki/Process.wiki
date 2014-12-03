@@ -21,7 +21,7 @@
 
 === 3. Store===
 
-  # If persistence can be a file, make it a file.
+  # If [https://code.google.com/p/rupy/wiki/Persistence persistence] can be a file, make it a file.
   # If you need:
     # Index; use the file system.
     # Relations; use a graph.
