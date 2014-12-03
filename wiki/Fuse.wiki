@@ -156,6 +156,7 @@ public static class Fuse extends Service {
 			this.body = body;
 			event.query().put(name, this);
 			System.out.println("  " + name + " success " + event.reply().wakeup());
+			// Normally it's better to wakeup the response after all client requests are finished, but we wan't to show you the parts as they complete on-the-fly!
 		}
 
 		public void fail(String host, Exception e) throws Exception {
