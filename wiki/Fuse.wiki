@@ -52,7 +52,7 @@ wait      ↓↓↓↓           ↓↓   ↓↓           ↓↓↓↓
 
   * `asyn` = <font color="5CCD5C">`asyn`</font> `req` & `res` <font color="grey">`(`</font><font color="green">`FUSE`</font><font color="grey">`)`</font>
 
-For this we introduce a new concept; <font color="green">`FUSE`</font>. With <font color="green">`FUSE`</font> all threads are <font color="5CCD5C">`asyn`</font> end-to-end, they never wait for anything.
+For this we introduce a new concept; <font color="green">`FUSE`</font>. With <font color="green">`FUSE`</font> all threads <font color="5CCD5C">`asyn`</font> end-to-end or socket-to-socket if you will, they never wait for anything.
 
 Another way to describe this is time and <font color="red">`IO-wait`</font> shown in the graph below:
 
