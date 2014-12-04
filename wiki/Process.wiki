@@ -32,9 +32,9 @@
 
   # Each module describes it's own use: f.ex. if you browse to [http://sprout.rupy.se/login /login] you should be able to login! ([http://rupy.se/sprout/se/rupy/sprout/Node.html model], [https://code.google.com/p/sprout/source/browse/trunk/res/jar/login.html view] and [https://code.google.com/p/sprout/source/browse/trunk/src/se/rupy/sprout/User.java#207 controller])
   # Use async for:
-    # Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait or realtime services.
-    # Client [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java requests]; if you can concurrently build the response to reduce latency.
-    # For top performance and speed [https://code.google.com/p/rupy/wiki/Fuse FUSE] both.
+    * Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait or realtime services.
+    * Client [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java requests]; if you can concurrently build the response to reduce latency.
+    * For top performance and speed [https://code.google.com/p/rupy/wiki/Fuse FUSE] both.
   # Use the same keyboard and OS everywhere.
   # Use JavaScript injection for modularity, over; chunked response, CO-XHR or even XSS (careful with the cookies though).
 
@@ -42,8 +42,8 @@
 === 5. Host===
 
   # Minimum two subdomains per service (f.ex. dev.`<`name`>`.host.com and `<`name`>`.host.com):
-    # On same server provider.
-    # Port 80 only.
+    * On same server provider.
+    * Port 80 only.
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
   # If it makes economical sense to use Akamai your software is probably bad.
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
