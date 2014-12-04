@@ -1,7 +1,7 @@
 #summary How to deploy a MySQL connection pool on host.rupy.se
 #labels Phase-Implementation
 
-<font color="red">We are working on our own cluster database:</font> [https://code.google.com/p/rupy/wiki/Persistence root]
+<font color="red">We now have our own cluster database:</font> [https://code.google.com/p/rupy/wiki/Persistence root]
 
 For true redundancy you need to use some custom cluster datastore since we now have hosting across multiple colocations!
 
