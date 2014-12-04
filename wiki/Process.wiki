@@ -25,7 +25,7 @@
   # If you need:
     * Index; use the file system.
     * Relations; use a graph.
-    * Full text search; combine the [http://root.rupy.se/node/data/text/full%20text%20search two]?
+    * Full text search; combine the [http://root.rupy.se/node/data/text/full%20text%20search two]!
   # Your networked persistence should use HTTP.
 
 === 4. Develop===
