@@ -42,7 +42,7 @@
 === 5. Host===
 
   # Three subdomains per service (f.ex. `<`name`>`-dev.host.com, `<`name`>`-stage.host.com and `<`name`>`.host.com):
-    # On same provider.
+    # On same server provider.
     # Port 80 only.
   # Increase socket memory if you [https://code.google.com/p/rupy/wiki/ServeLargeFiles serve large files].
   # If it makes economical sense to use Akamai your software is probably bad.
