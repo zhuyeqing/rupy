@@ -1,4 +1,4 @@
-#summary Secure Unique Identity Cluster.
+#summary Cloud Database.
 #labels Phase-Design,Phase-Implementation
 
 This requires latest [http://rupy.se/rupy.zip rupy] in hosted mode.
