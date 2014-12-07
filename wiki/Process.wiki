@@ -3,7 +3,7 @@
 
 === 1. Guide===
 
-  # *µSOA^1^*: _One developer per microservice._ HTTP is the only interface between _everything_.
+  # *µSOA^1^*: _One developer per microservice.*^2^*_ HTTP is the only interface between _everything_.
   # *Agile*: You need to be able to hot-deploy _everywhere_ because you'll want to work with others remotely at high iteration speeds.
   # *Architecture*: The developer is completely free to choose any software (languages, tools, persistence etc.) of the service.
   # *Turnaround*: Maximum build & deploy time on _live_ is how long it takes for you to switch to the test client. (1-2 seconds)
@@ -13,7 +13,7 @@
 
 === 2. Manage===
 
-  # The data -producer, -consumer and developer trio have 1 minute per person remote*^2^* daily yester/morrow meetings.
+  # The data -producer, -consumer and developer trio have 1 minute per person remote*^3^* daily yester/morrow meetings.
   # No other mandatory scheduled meetings.
   # You should be able to work from home.
   # If you finish quicker than expected, you own that remaining time.
@@ -50,4 +50,5 @@
   # Install, configure, [http://monitor.rupy.se monitor] and notify yourself; even the hardcore [http://one.rupy.se/panel stuff].
 
 *^1^* [http://martinfowler.com/articles/microservices.html Microservices]<br>
-*^2^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely]<br>
+*^2^* If two people choose the same tools they can work many on the same project.
+*^3^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely]<br>
