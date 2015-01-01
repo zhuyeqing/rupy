@@ -19,24 +19,22 @@ The JSON objects and indexes are stored as a plain file (symbolic hard link). Th
 TODO:
 
   # ~~new [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java async] client~~
-  # ~~_edit node_~~<sup>1</sup>
-  # ~~_sort node_ text index~~<sup>1</sup>
-  # ~~_link node_ relation graph~~<sup>1</sup>
-  # ~~_find node_ full text search~~<sup>2</sup>
+  # ~~_edit node_~~
+  # ~~_sort node_ text index~~
+  # ~~_link node_ relation graph~~
+  # ~~_find node_ full text search~~
   # pagination in _link list_
   # binary file table data log
   # _trim node_ & _link_
 
 WISH:
 
-  # link _node_ many-to-many-to-many... relations<sup>3</sup>
-  # sort _node_ table index<sup>4</sup>
-  # replicate any file<sup>5</sup>
+  # link _node_ many-to-many-to-many... relations<sup>1</sup>
+  # sort _node_ table index<sup>2</sup>
+  # replicate any file<sup>3</sup>
 
 Source: [http://root.rupy.se/code?path=/User.java User], [http://root.rupy.se/code?path=/Root.java Root]
 
-<sup>1</sup> The ROOT cluster database will not re-synchronize data for you after a failed operation (node down), you will have to do that manually. It will however perfectly replicate and make sure nothing gets linked twice when all nodes are up. It's write sensitive, but read strong.<br>
-<sup>2</sup> Only searches full words.<br>
-<sup>3</sup> You can do this by folder path.<br>
-<sup>4</sup> In memory index is how you would solve this now.<br>
-<sup>5</sup> Images would be nice!
+<sup>1</sup> You can do this by folder path.<br>
+<sup>2</sup> In memory index is how you would solve this now.<br>
+<sup>3</sup> Images would be nice!
