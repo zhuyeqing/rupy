@@ -23,7 +23,7 @@ TODO:
   # ~~_sort node_ text index~~
   # ~~_link node_ relation graph~~
   # ~~_find node_ full text search~~
-  # pagination in _link list_
+  # pagination in lists
   # binary file table data log
   # _trim node_ & _link_
 
