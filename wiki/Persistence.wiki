@@ -29,10 +29,7 @@ TODO:
 
 WISH:
 
-  # link _node_ many-to-many-to-many... relations<sup>1</sup>
-  # replicate any file<sup>2</sup>
+  # link _node_ many-to-many-to-many... relations<sup>1</sup>, you can do this by folder path.
+  # replicate any file<sup>2</sup>, images would be nice!
 
 Source: [http://root.rupy.se/code?path=/User.java User], [http://root.rupy.se/code?path=/Root.java Root]
-
-<sup>1</sup> You can do this by folder path.<br>
-<sup>2</sup> Images would be nice!
