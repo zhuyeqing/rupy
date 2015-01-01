@@ -30,7 +30,7 @@ TODO:
 WISH:
 
   # link _node_ many-to-many-to-many... relations<sup>1</sup>
-  # replicate any file<sup>3</sup>
+  # replicate any file<sup>2</sup>
 
 Source: [http://root.rupy.se/code?path=/User.java User], [http://root.rupy.se/code?path=/Root.java Root]
 
