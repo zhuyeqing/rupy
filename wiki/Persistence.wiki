@@ -30,11 +30,9 @@ TODO:
 WISH:
 
   # link _node_ many-to-many-to-many... relations<sup>1</sup>
-  # sort _node_ table index<sup>2</sup>
   # replicate any file<sup>3</sup>
 
 Source: [http://root.rupy.se/code?path=/User.java User], [http://root.rupy.se/code?path=/Root.java Root]
 
 <sup>1</sup> You can do this by folder path.<br>
-<sup>2</sup> In memory index is how you would solve this now.<br>
-<sup>3</sup> Images would be nice!
+<sup>2</sup> Images would be nice!
