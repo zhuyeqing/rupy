@@ -24,7 +24,7 @@ TODO:
   # ~~_link node_ relation graph~~
   # ~~_find node_ full text search~~
   # pagination in lists
-  # binary file table data log
+  # binary file table data
   # _trim node_ & _link_
 
 WISH:
