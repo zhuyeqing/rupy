@@ -51,4 +51,4 @@
 
 *^1^* [http://martinfowler.com/articles/microservices.html Microservices]<br>
 *^2^* If two people choose the exact same tools they can work on the same service; the whole point is that nobody should have to compromise with their tools. The work should not be to configure others tools, but to design a specific product, the inventors of the wheel had to reinvent the wheel!<br>
-*^3^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely]<br>
+*^3^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely], [http://stet.editorially.com/articles/making-remote-teams-work/ Mandy Brown]<br>
