@@ -49,6 +49,6 @@
   # DNS Roundrobin across backbones allows for 100% uptime. But this requires a new kind of real-time distributed [https://code.google.com/p/rupy/wiki/Persistence persistence].
   # Install, configure, [http://monitor.rupy.se monitor] and notify yourself; even the hardcore [http://one.rupy.se/panel stuff].
 
-*^1^* Micro Service Oriented Architecture an evolution of [http://martinfowler.com/articles/microservices.html Microservices] and [http://queue.acm.org/detail.cfm?id=1142065 SOA]<br>
-*^2^* If two people choose the exact same tools they can work on the same service; the whole point is that nobody should have to compromise with their tools. The work should not be to configure others tools, but to design a specific product with clear separation of responsibilities between developers, the inventors of the wheel had to reinvent the wheel!<br>
-*^3^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely], [http://stet.editorially.com/articles/making-remote-teams-work/ Mandy Brown]<br>
+*^1^* Micro Service Oriented Architecture an evolution of [http://martinfowler.com/articles/microservices.html Microservices] and [http://queue.acm.org/detail.cfm?id=1142065 SOA].<br>
+*^2^* If two people choose the exact same tools they can work on the same service; the whole point is that nobody should have to compromise with their tools. The work should not be to configure others tools, but to design a specific product with clear separation of responsibilities between developers.<br>
+*^3^* [https://www.youtube.com/watch?v=5XD2kNopsUs Jason Fried], [https://weworkremotely.com We Work Remotely], [http://stet.editorially.com/articles/making-remote-teams-work/ Mandy Brown].<br>
