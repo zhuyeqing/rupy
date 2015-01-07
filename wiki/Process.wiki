@@ -35,7 +35,7 @@
     * Server [https://code.google.com/p/rupy/wiki/AsyncResponse response]; if you have high iowait or realtime services.
     * Client [https://code.google.com/p/rupy/source/browse/trunk/src/se/rupy/http/Async.java requests]; if you can concurrently build the response to reduce latency.
     * For top performance and speed [https://code.google.com/p/rupy/wiki/Fuse FUSE] both.
-  # Use the same keyboard and OS everywhere.
+  # Use the same development keyboard and OS everywhere.
   # Use JavaScript injection for modularity, over; chunked response, CO-XHR or even XSS (careful with the cookies though).
 
 
