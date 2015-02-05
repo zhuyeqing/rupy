@@ -29,7 +29,7 @@ Event -+-- Query <-- Input <--- +---------+
 
 }}}
 
-*[Hot-Deployment#hot-deploy]*
+*Hot-Deployment*
 
 When you upload your application jar over HTTP or put it manually in the /app folder it will be extracted so that all .java files are loaded into a separate classloader (Service implementations are instantiated) and all other files are copied into a subfolder (/content on standalone and /your.host on hosted).
 
