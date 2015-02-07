@@ -8,7 +8,7 @@ Ordinary databases are not secure or redundant in a distributed cluster environm
 
   _Database clients don't use async HTTP; you can't scale them easily._
 
-On the other hand modern file systems are now cheap and fast (ext4 on PCIe SSD) and async is becoming common place; See the entry on [https://code.google.com/p/rupy/wiki/Fuse FUSE] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster with async HTTP.
+On the other hand modern file systems are now cheap and fast (ext4) and async is becoming common place; See the entry on [https://code.google.com/p/rupy/wiki/Fuse FUSE] to learn more on how you can scale any [https://code.google.com/p/rupy/wiki/Process µSOA] cluster with async HTTP.
 
 ROOT takes a little bit from all NoSQL databases: document, key-value and graph; It's basically a key-value store (Base58-JSON) with indexing (that we call sort) on custom fields (including full text search) in the JSON and graph relationships between the key-values.
 
