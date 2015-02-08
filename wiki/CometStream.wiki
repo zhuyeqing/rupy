@@ -7,7 +7,7 @@ You can now [http://rupy.googlecode.com/files/talk-1.1.zip stream] messages over
 
 As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RFC] I supply this reference implementation.<font color="red"> - Termination is now \n for this text based implementation.</font>
 
-The message performance of the test included above:<br>
+The message energy performance of the test included above:<br>
 
 ||CPU||usage||in/s||out/s||total/s||||watt||||score||arch.||
 ||3770S||0%||4.000||9.000||13.000||/||20||=||650||x86||
