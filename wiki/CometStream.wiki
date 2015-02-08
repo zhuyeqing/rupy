@@ -12,6 +12,7 @@ The message performance of the test included above:<br>
 ||CPU (s)||usage||in/s||out/s||total/s||
 ||3770S (4)||0%||~4.000||~9.000||~13.000||
 ||D510MO (2)||80-120%||~3.000||~6.000||~9.000||
+||RPi2 (4)||50%||~2.000||~4.500||~6.500||
 ||RPi (1)||99%||~300||~700||~1.000||
 
 You can try it quickly by going to this flash demo:
