@@ -9,12 +9,12 @@ As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RF
 
 The message performance of the test included above:<br>
 
-||CPU||usage||in/s||out/s||total/s||
-||3770S||0%||4.000||9.000||13.000||
-||4010U||7.5%||3.000||6.000||9.000||
-||D510MO||50%||3.000||6.000||9.000||
-||RPi 2||12.5%||1.500||4.500||6.000||
-||RPi||99%||300||700||1.000||
+||CPU||usage||in/s||out/s||total/s||watt||
+||3770S||0%||4.000||9.000||13.000||20||
+||4010U||7.5%||3.000||6.000||9.000||10||
+||D510MO||50%||3.000||6.000||9.000||10||
+||RPi 2||12.5%||1.500||4.500||6.000||1||
+||RPi||99%||300||700||1.000||2||
 
 You can try it quickly by going to this flash demo:
 
