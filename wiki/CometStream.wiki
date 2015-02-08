@@ -9,7 +9,7 @@ As [https://rupy.googlecode.com/files/draft-talk-comet-stream-protocol-00.txt RF
 
 The message performance of the test included above:<br>
 
-||CPU||usage||in/s||out/s||total/s||watt||Arch.||
+||CPU||usage||in/s||out/s||total/s||watt||arch.||
 ||3770S||0%||4.000||9.000||13.000||20||X86||
 ||4010U||7.5%||3.000||6.000||9.000||10||X86||
 ||D510MO||50%||3.000||6.000||9.000||15||X86||
