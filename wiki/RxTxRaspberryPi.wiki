@@ -1,6 +1,8 @@
 #summary COM port development remote Hot-Deploy
 #labels Featured,Phase-Implementation
 
+<font color="red">*_NEW_*</font> [http://radiomesh.org Radio Mesh] is an example of RxTx hot-deploy with rupy.
+
 Now I have added so that you can hot-deploy to your pi with rupy on projects that use a COM port integration to increase development speed of all your Java hardware projects.
 
 Install RXTX on your pi:
