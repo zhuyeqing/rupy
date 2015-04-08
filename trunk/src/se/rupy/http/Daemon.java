@@ -28,7 +28,7 @@ public class Daemon implements Runnable {
 	static DateFormat DATE;
 
 	private int selected, valid, accept, readwrite; // panel stats
-	private HashMap archive, service;
+	private TreeMap archive, service;
 	private Heart heart;
 	private Selector selector;
 	private String domain, name, bind;
@@ -41,6 +41,46 @@ public class Daemon implements Runnable {
 	int threads, timeout, cookie, delay, size, port, cache, async_timeout;
 	boolean verbose, debug, host, alive, panel;
 	Async client;
+
+	/* Rupy 1.3 introduces measuring of metrics.
+	 * Also see ram on the archive.
+	 */
+	static class Metric {
+		static String header = "<tr><td></td><td>CPU</td><td colspan=\"2\">R&R</td><td colspan=\"2\">SSD</td><td colspan=\"2\">NET</td></tr>" +
+				               "<tr><td></td><td>&mu;s</td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td></tr>";
+		//static String header = "Glossary {CPU, R&R, SSD, NET}";
+		protected long cpu; // CPU time
+		protected Data req = new Data(); // requests and async response chunks
+		protected Data ssd = new Data(); // disk operations
+		protected Data net = new Data(); // network traffic
+
+		class Data {
+			long in;
+			long out;
+
+			void add(Data data) {
+				in += data.in;
+				out += data.out;
+			}
+			
+			public String toString() {
+				return in + "</td><td>" + out;
+			}
+		}
+
+		void add(Metric metric) {
+			cpu += metric.cpu;
+
+			req.add(metric.req);
+			ssd.add(metric.ssd);
+			net.add(metric.net);
+		}
+
+		public String toString() {
+			return "</td><td>" + cpu/1000 + "</td><td>" + req + "</td><td>" + ssd + "</td><td>" + net + "</td>";
+			//return "{" + cpu/1000 + "μs, " + req + ", " + ssd + ", " + net + "}";
+		}
+	}
 
 	/**
 	 * Don't forget to call {@link #start()}.
@@ -196,7 +236,7 @@ public class Daemon implements Runnable {
 				"true");
 
 		bind = properties.getProperty("bind", null);
-		
+
 		if(multi) {
 			try {
 				setup();
@@ -221,8 +261,8 @@ public class Daemon implements Runnable {
 		//	debug = false;
 		//}
 
-		archive = new HashMap();
-		service = new HashMap();
+		archive = new TreeMap();
+		service = new TreeMap();
 		session = new ConcurrentHashMap();
 		events = new ConcurrentHashMap();
 
@@ -244,7 +284,7 @@ public class Daemon implements Runnable {
 	public Async client() throws Exception {
 		return client;
 	}
-	
+
 	/**
 	 * Disabled for hosted mode.
 	 * @param id
@@ -254,10 +294,10 @@ public class Daemon implements Runnable {
 		if(!host) {
 			return (Event) events.get(new Integer(id));
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * @return hostname
 	 */
@@ -386,7 +426,7 @@ public class Daemon implements Runnable {
 
 			client = new Async(this, async_timeout, false);
 			client.start(threads);
-			
+
 			alive = true;
 
 			Thread thread = new Thread(this);
@@ -433,7 +473,7 @@ public class Daemon implements Runnable {
 		Deploy.Archive old = (Deploy.Archive) this.archive.get(archive.name());
 
 		if (old != null) {
-			Iterator it = old.service().iterator();
+			Iterator it = old.service().values().iterator();
 
 			while (it.hasNext()) {
 				final Service service = (Service) it.next();
@@ -457,7 +497,7 @@ public class Daemon implements Runnable {
 			}
 		}
 
-		Iterator it = archive.service().iterator();
+		Iterator it = archive.service().values().iterator();
 
 		while (it.hasNext()) {
 			Service service = (Service) it.next();
@@ -467,14 +507,24 @@ public class Daemon implements Runnable {
 		this.archive.put(archive.name(), archive);
 	}
 
-	public Deploy.Archive archive(String name) {
+
+	// TODO: Sums up all metrics for an archive and resets it.
+	// For host to create bill.
+	public Daemon.Metric metric(String name) {
+		Metric metric = new Metric();
+		return metric;
+	}
+
+	public Deploy.Archive archive(String name, boolean deployer) {
 		if(!name.endsWith(".jar")) {
 			name += ".jar";
 		}
 
 		if(host) {
-			if(name.equals(domain + ".jar")) {
-				return Deploy.Archive.deployer;
+			if(deployer) {
+				if(name.equals(domain + ".jar")) {
+					return Deploy.Archive.deployer;
+				}
 			}
 
 			try {
@@ -482,7 +532,12 @@ public class Daemon implements Runnable {
 				String ok = (String) send(message);
 
 				if(ok.equals("OK")) {
-					return Deploy.Archive.deployer;
+					if(deployer) {
+						return Deploy.Archive.deployer;
+					}
+					else {
+						return (Deploy.Archive) this.archive.get(domain + ".jar");
+					}
 				}
 			}
 			catch(Exception e) {
@@ -500,8 +555,14 @@ public class Daemon implements Runnable {
 					//System.out.println(base);
 
 					archive = (Deploy.Archive) this.archive.get(base);
+
+					if(archive == null) {
+						archive = (Deploy.Archive) this.archive.get("www." + base);
+					}
 				}
 			}
+
+			//System.out.println(archive);
 
 			return archive;
 		}
@@ -514,7 +575,7 @@ public class Daemon implements Runnable {
 	private Chain listeners; // ClusterListeners
 	private ErrorListener errlis;
 	private Com com;
-	
+
 	/**
 	 * Send Object to JVM listener. We recommend you only send bootclasspath loaded 
 	 * classes here otherwise hotdeploy will fail.
@@ -576,37 +637,37 @@ public class Daemon implements Runnable {
 		 */
 		public Object receive(Object message) throws Exception;
 	}
-	
+
 	/**
 	 * Receives COM port data.
 	 */
 	public interface Listen {
 		public void read(byte[] data, int length) throws Exception;
 	}
-	
+
 	/**
 	 * COM port.
 	 */
 	public static abstract class Com {
 		public Listen listen;
-		
+
 		/**
 		 * To set the hot-deploy as listener.
 		 */
 		public void set(Listen listen) {
 			this.listen = listen;
 		}
-		
+
 		public abstract void write(byte[] data) throws Exception;
 	}
-	
+
 	/**
 	 * To get the COM port.
 	 */
 	public Com com() {
 		return com;
 	}
-	
+
 	/**
 	 * To use the COM interface you should boot rupy with your own main method. 
 	 * And call {@link Daemon#init(String[])} from there to be able to use this method.
@@ -616,7 +677,7 @@ public class Daemon implements Runnable {
 	public void set(Com com) {
 		this.com = com;
 	}
-	
+
 	/**
 	 * Cross cluster-node communication interface. So that applications deployed 
 	 * on one node can send messages to instances deployed in other nodes.
@@ -817,7 +878,7 @@ public class Daemon implements Runnable {
 			add(this.service, service, null);
 	}
 
-	protected void add(HashMap map, final Service service, final Deploy.Archive archive) throws Exception {
+	protected void add(TreeMap map, final Service service, final Deploy.Archive archive) throws Exception {
 		String path = null;
 
 		if(host) {
@@ -920,7 +981,7 @@ public class Daemon implements Runnable {
 				final Service service = (Service) chain.get(i);
 
 				if(host) {
-					final HashMap a = this.archive;
+					final TreeMap a = this.archive;
 					final int j = i;
 					Thread.currentThread().setContextClassLoader(archive);
 					AccessController.doPrivileged(new PrivilegedExceptionAction() {
@@ -989,6 +1050,12 @@ public class Daemon implements Runnable {
 				return new Deploy.Big(file);
 			}
 
+			file = new File("app" + File.separator + "www." + base + File.separator + path);
+
+			if(file.exists() && !file.isDirectory()) {
+				return new Deploy.Big(file);
+			}
+
 			try {
 				String message = "{\"type\": \"host\", \"file\": \"" + host + ".jar\"}";
 				String ok = (String) send(message);
@@ -1017,7 +1084,7 @@ public class Daemon implements Runnable {
 			return chain("content", event.query().path(), event.push());
 		}
 	}
-	
+
 	public Chain chain(Event event, String path) {
 		if(host) {
 			return chain(event.query().header("host"), path, event.push());
@@ -1028,14 +1095,6 @@ public class Daemon implements Runnable {
 	}
 
 	protected Chain chain(String host, String path, boolean wakeup) {
-		synchronized (this.service) {
-			Chain chain = (Chain) this.service.get(path);
-
-			if (chain != null) {
-				return chain;
-			}
-		}
-
 		if(!this.host) {
 			host = "content";
 		}
@@ -1057,6 +1116,10 @@ public class Daemon implements Runnable {
 					//System.out.println(base);
 
 					archive = (Deploy.Archive) this.archive.get(base + ".jar");
+
+					if(archive == null) {
+						archive = (Deploy.Archive) this.archive.get("www." + base + ".jar");
+					}
 
 					if(archive == null) {
 						try {
@@ -1095,7 +1158,7 @@ public class Daemon implements Runnable {
 						}
 						else if(wakeup) {
 							chain = (Chain) archive.chain().get("null");
-							
+
 							if (chain != null) {
 								return chain;
 							}
@@ -1105,7 +1168,40 @@ public class Daemon implements Runnable {
 			}
 		}
 
+		synchronized (this.service) {
+			Chain chain = (Chain) this.service.get(path);
+
+			if (chain != null) {
+				return chain;
+			}
+		}
+		
 		return null;
+	}
+
+	private String metric(Deploy.Archive archive, String path) {
+		Chain chain = (Chain) archive.chain().get(path);
+		Daemon.Metric metric = new Daemon.Metric();
+
+		if(chain != null) {
+			Iterator it = chain.iterator();
+
+			while(it.hasNext()) {
+				Service service = (Service) it.next();
+				Daemon.Metric part = (Daemon.Metric) service.metric.get(path);
+
+				//System.out.println(path + " " + part);
+
+				if(part != null)
+					metric.add(part);
+			}
+
+			//System.out.println("api " + metric.hashCode() + " " + metric);
+
+			return metric.toString();
+		}
+
+		return "</td><td colspan=\"7\"></td>";
 	}
 
 	public void run() {
@@ -1115,12 +1211,12 @@ public class Daemon implements Runnable {
 		try {
 			selector = Selector.open();
 			server = ServerSocketChannel.open();
-			
+
 			if(bind == null)
 				server.socket().bind(new InetSocketAddress(port));
 			else
 				server.socket().bind(new InetSocketAddress(bind, port));
-			
+
 			server.configureBlocking(false);
 			server.register(selector, SelectionKey.OP_ACCEPT);
 
@@ -1155,7 +1251,7 @@ public class Daemon implements Runnable {
 
 			if (pass != null && pass.length() > 0 || host) {
 				Service deploy = null;
-				
+
 				if(host) {
 					deploy = new Deploy("app" + File.separator);
 				}
@@ -1164,7 +1260,7 @@ public class Daemon implements Runnable {
 				}
 
 				add(this.service, deploy, null);
-				
+
 				File[] app = new File(Deploy.path).listFiles(new Filter());
 				File domain = null;
 
@@ -1239,47 +1335,72 @@ public class Daemon implements Runnable {
 							event.output().print("Async client not started yet.");
 					}
 				};
-				
+
 				Service api = new Service() {
 					public String path() { return "/api"; }
 					public void filter(Event event) throws Event, Exception {
+						event.query().parse();
+						boolean files = event.bit("files");
 						Iterator it = archive.values().iterator();
 						Output out = event.output();
 						out.println("<pre>");
+						out.println("<table cellspacing=\"0\" cellpadding=\"2\">");
+						
+						if(!event.query().header("host").equals(domain))
+							out.println(Metric.header);
+						
 						while(it.hasNext()) {
 							Deploy.Archive archive = (Deploy.Archive) it.next();
 							boolean host = !archive.host().equals("content");
 							String title = host ? archive.host() : archive.name();
-							String name = null;
+							String name = "localhost";
 
 							if(host) {
 								name = event.query().header("host");
 							}
-							
-							if(name.equals("host.rupy.se")) {
-								out.println("<a href=\"http://" + title + "/api\">" + title + "</a>");
+
+							if(name.equals(domain)) {
+								if(!title.equals(domain)) {
+									out.println("<tr><td>");
+									out.println("<a href=\"http://" + title + "/api\">" + title + "</a>");
+									out.println("</td></tr>");
+								}
 							}
-							else if(name == null || name.equals(archive.host())) {
+							else if(name.equals("localhost") || name.equals(archive.host())) {
 								if(host) {
-									out.println("<a href=\"http://" + title + "\">" + title + "</a>");
+									out.println("<tr><td><a href=\"http://" + title + "\">" + title + "</a>" + "&nbsp;" + archive.ram + "&nbsp;" + metric(archive, "/") + "</td></tr>");
 								}
 								else {
-									out.println(title);
+									out.println("<tr><td>" + title + "&nbsp;" + archive.ram + "&nbsp;" + metric(archive, "/") + "</td></tr>");
 								}
-								
+
 								Iterator it2 = archive.chain().keySet().iterator();
+
 								while(it2.hasNext()) {
 									String path = (String) it2.next();
 
-									if(path.startsWith("/") && path.length() > 1)
-										out.println("  <a href=\"" + path + "\">" + path + "</a>");
+									if(path.startsWith("/") && path.length() > 1) {
+										out.println("<tr><td>&nbsp;&nbsp;<a href=\"" + path + "\">" + path + "</a>&nbsp;" + metric(archive, path) + "</tr>");
+									}
+								}
+
+								if(files) {
+									Iterator it3 = archive.files().keySet().iterator();
+
+									while(it3.hasNext()) {
+										String path = (String) it3.next();
+										Metric metric = (Metric) archive.files().get(path);
+										out.println("<tr><td>&nbsp;&nbsp;<a href=\"" + path + "\">" + path + "</a>&nbsp;" + metric + "</tr>");
+									}
 								}
 							}
 						}
-						event.output().println("</pre>");
+						
+						out.println("</table>");
+						out.println("</pre>");
 					}
 				};
-				
+
 				add(this.service, panel, null);
 				add(this.service, debug, null);
 				add(this.service, api, null);
@@ -1609,10 +1730,10 @@ public class Daemon implements Runnable {
 			out.close();
 		}
 		catch(Exception e) {}
-		
+
 		return daemon;
 	}
-	
+
 	public static void main(String[] args) {
 		Daemon daemon = init(args);
 		daemon.start();

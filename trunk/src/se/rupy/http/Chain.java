@@ -1,16 +1,11 @@
 package se.rupy.http;
 
-import java.io.File;
-import java.io.FilePermission;
-import java.net.SocketPermission;
-import java.security.AccessControlContext;
 import java.security.AccessControlException;
 import java.security.AccessController;
-import java.security.PermissionCollection;
-import java.security.Permissions;
+
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.security.ProtectionDomain;
+
 import java.util.*;
 
 /**
@@ -43,6 +38,10 @@ public class Chain extends LinkedList {
 	}
 
 	public void filter(final Event event) throws Event, Exception {
+		filter(event, true);
+	}
+	
+	protected void filter(final Event event, boolean write) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			final Service service = (Service) get(i);
 
@@ -50,9 +49,11 @@ public class Chain extends LinkedList {
 				event.session(service, event);
 			}
 
+			long cpu = Event.bean.getThreadCpuTime(Thread.currentThread().getId());
+			
 			if(event.daemon().host) {
 				try {
-					final Deploy.Archive archive = event.daemon().archive(event.query().header("host"));
+					final Deploy.Archive archive = event.daemon().archive(event.query().header("host"), true);
 					try {
 						Thread.currentThread().setContextClassLoader(archive);
 					}
@@ -87,6 +88,28 @@ public class Chain extends LinkedList {
 			else {
 				service.filter(event);
 			}
+			
+			String path = event.query().path();
+			Daemon.Metric metric = (Daemon.Metric) service.metric.get(path);
+			
+			if(metric == null) {
+				metric = new Daemon.Metric();
+				service.metric.put(path, metric);
+			}
+			
+			if(i == 0) {
+				if(!write)
+					metric.req.in++;
+				metric.req.out++;
+			}
+			metric.cpu += Event.bean.getThreadCpuTime(Thread.currentThread().getId()) - cpu;
+			metric.net.in += event.query().input.total;
+			metric.net.out += event.reply().output.total;
+			
+			//System.out.println("add " + metric.hashCode() + " " + metric);
+			
+			event.query().input.total = 0;
+			event.reply().output.total = 0;
 		}
 	}
 

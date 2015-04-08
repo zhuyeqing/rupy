@@ -194,7 +194,7 @@ public class Deploy extends Service {
 
 	protected static String deploy(Daemon daemon, File file, Event event) throws Exception {
 		Archive archive = new Archive(daemon, file, event);
-
+		
 		daemon.chain(archive);
 		daemon.verify(archive);
 
@@ -209,12 +209,12 @@ public class Deploy extends Service {
 	 */
 	public static class Archive extends ClassLoader {
 		private AccessControlContext access;
-		private HashSet service;
-		private HashMap chain;
-		private String name;
-		private String host;
+		private TreeMap service, chain, files;
+		private String name, host;
 		private long date;
 
+		long ram;
+		
 		Vector classes = new Vector();
 
 		Archive() { // Archive for deployment.
@@ -231,13 +231,20 @@ public class Deploy extends Service {
 		}
 
 		Archive(Daemon daemon, File file, Event event) throws Exception {
-			service = new HashSet();
-			chain = new HashMap();
+			service = new TreeMap();
+			chain = new TreeMap();
+			files = new TreeMap();
 			name = file.getName();
 			date = file.lastModified();
 
 			JarInputStream in = new JarInput(new FileInputStream(file));
 
+			Archive old = daemon.archive(file.getName(), false);
+			
+			if(old != null && old.files() != null) {
+				files = old.files();
+			}
+			
 			if(daemon.host) {
 				host = name.substring(0, name.lastIndexOf('.'));
 				String path = "app" + File.separator + host + File.separator;
@@ -257,17 +264,18 @@ public class Deploy extends Service {
 				permissions.add(new PropertyPermission("sun.net.http.allowRestrictedHeaders", "write"));
 				permissions.add(new PropertyPermission("java.version", "read"));
 				permissions.add(new RuntimePermission("getStackTrace"));
-				
-				if(host.equals("root.rupy.se")) {
+
+				if(host.equals("root.rupy.se")) { // Nasty hardcode, but it will go away with SSD metrics file API.
 					try {
 						permissions.add(new java.nio.file.LinkPermission("hard"));
 						permissions.add(new java.nio.file.LinkPermission("symbolic"));
 					}
 					catch(Error e) {}
 				}
-				
+
 				access = new AccessControlContext(new ProtectionDomain[] {
 						new ProtectionDomain(null, permissions)});
+				
 				new File(path).mkdirs();
 			}
 			else {
@@ -286,8 +294,12 @@ public class Deploy extends Service {
 
 					String name = name(entry.getName());
 					classes.add(new Small(name, data));
+					ram += data.length;
 				} else if (!entry.isDirectory()) {
 					Big.write(host, "/" + entry.getName(), entry, in);
+					
+					if(!files.containsKey("/" + entry.getName()))
+						files.put("/" + entry.getName(), new Daemon.Metric());
 				}
 
 				if(event != null) {
@@ -310,7 +322,7 @@ public class Deploy extends Service {
 			while (classes.size() > 0) {
 				small = (Small) classes.elementAt(0);
 				classes.removeElement(small);
-				instantiate(small, daemon);
+				instantiate(small, daemon, old);
 			}
 
 			if(event != null) {
@@ -318,11 +330,13 @@ public class Deploy extends Service {
 				event.output().flush();
 			}
 		}
-
+		
 		protected Class findClass(String name) throws ClassNotFoundException {
 			Small small = null;
+			
 			for(int i = 0; i < classes.size(); i++) {
 				small = (Small) classes.get(i);
+				
 				if(small.name.equals(name)) {
 					small.clazz = defineClass(small.name, small.data, 0,
 							small.data.length);
@@ -330,10 +344,11 @@ public class Deploy extends Service {
 					return small.clazz;
 				}
 			}
+			
 			throw new ClassNotFoundException();
 		}
 
-		private void instantiate(final Small small, Daemon daemon) throws Exception {
+		private void instantiate(final Small small, Daemon daemon, Deploy.Archive old) throws Exception {
 			if (small.clazz == null) {
 				small.clazz = defineClass(small.name, small.data, 0,
 						small.data.length);
@@ -352,26 +367,35 @@ public class Deploy extends Service {
 
 			if(service) {
 				try {
+					Service s = null;
+					
 					if(daemon.host) {
 						final Deploy.Archive archive = this;
 						Thread.currentThread().setContextClassLoader(archive);
-						Service s = (Service) AccessController.doPrivileged(new PrivilegedExceptionAction() {
+						s = (Service) AccessController.doPrivileged(new PrivilegedExceptionAction() {
 							public Object run() throws Exception {
 								return (Service) small.clazz.newInstance();
 							}
 						}, access());
-
-						this.service.add(s);
 					}
 					else {
-						this.service.add(small.clazz.newInstance());
+						s = (Service) small.clazz.newInstance();
 					}
+					
+					if(old != null && old.service() != null) {
+						Service o = (Service) old.service().get(small.name());
+						
+						if(o != null)
+							s.metric = o.metric;
+					}
+					
+					this.service.put(small.name, s);
 				}
 				catch(Exception e) {
 					if(daemon.verbose) {
 						daemon.out.println(small.name + " couldn't be instantiated!");
 					}
-					
+
 					throw new Exception(small.name() + " could not be instantiated, make it public (static if inner class) with no or a zero argument constructor.");
 				}
 			}
@@ -410,11 +434,15 @@ public class Deploy extends Service {
 			return date;
 		}
 
-		protected HashMap chain() {
+		protected TreeMap files() {
+			return files;
+		}
+		
+		protected TreeMap chain() {
 			return chain;
 		}
 
-		protected HashSet service() {
+		protected TreeMap service() {
 			return service;
 		}
 
@@ -428,14 +456,7 @@ public class Deploy extends Service {
 		private FileInputStream in;
 		private String name;
 		private long date;
-		/*
-		private Big(String host, String name, InputStream in, long date) throws IOException {
-			file = write(host, name, in);
 
-			this.name = name;
-			this.date = date - date % 1000;
-		}
-		 */
 		public Big(File file) {
 			long date = file.lastModified();
 			this.name = file.getName();
@@ -450,7 +471,7 @@ public class Deploy extends Service {
 			new File(root + path).mkdirs();
 			File file = new File(root + name);
 			file.createNewFile();
-						
+
 			OutputStream out = new FileOutputStream(file);
 
 			pipe(in, out);
@@ -458,9 +479,8 @@ public class Deploy extends Service {
 			out.flush();
 			out.close();
 
-			//System.out.println(name + " " + new Date(entry.getTime()));
 			file.setLastModified(entry.getTime());
-			
+
 			return file;
 		}
 
@@ -724,7 +744,7 @@ public class Deploy extends Service {
 		md.update(hash.getBytes(), 0, hash.length());
 		return hex(md.digest());
 	}
-	
+
 	/**
 	 * Hash file to hex.
 	 */
@@ -741,7 +761,7 @@ public class Deploy extends Service {
 		}
 		return hex(md.digest());
 	}
-	
+
 	private static String hex(byte[] data) {
 		StringBuilder builder = new StringBuilder();
 
@@ -750,7 +770,7 @@ public class Deploy extends Service {
 
 			if(hex.length() < 2)
 				hex = "0" + hex;
-			
+
 			builder.append(hex);
 		}
 
