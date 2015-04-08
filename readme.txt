@@ -4,6 +4,8 @@ INTRODUCTION:
     in Java without forcing me or the CPU to work 
     slowly.
 
+LICENSE: LGPL
+
 RUN:
 
     You need java 1.5 or later installed and 
@@ -322,29 +324,47 @@ VERSION:
     1.2 Fixes
     
     - Catches UDP multicast receive Exceptions.
-    - Allow access to individual cluster nodes for any domain:
-      So now one.project.domain.com can be pointed to cluster 
-      node one and the project.domain.com deploy will reply.
-    - All request paths that starts with "/root/" are now forbidden 
-      in hosted mode.
-    - Uninstantiable services now complain upon hot-deploy.
+    - Allow access to individual cluster nodes 
+      for any domain: So now one.project.domain.com 
+      can be pointed to cluster node one and the 
+      project.domain.com deploy will reply.
+    - All request paths that starts with "/root/" 
+      are now forbidden in hosted mode.
+    - Uninstantiable services now complain upon 
+      hot-deploy.
     - Threadlock prints stacktrace.
-    - Added /api with all service endpoints when -panel is used.
+    - Added /api with all service endpoints when 
+      -panel is used.
     - Accepts http://host prefix URIs now.
-    - Added 400 Bad Request if host header is missing.
-    - Fixed wildcard "null" path service on host and 
-      a potential hosted security problem.
-    - Added a simple but high performance Async client.
+    - Added 400 Bad Request if host header is 
+      missing.
+    - Fixed wildcard "null" path service on host 
+      and a potential hosted security problem.
+    - Added a simple but high performance Async 
+      client.
     - Added timeout for the async client.
-    - Added COM port compatibility for p2p mesh radio.
-    - Fixed some wildcard stuff, preparing for both proxy and load-balancing.
+    - Added COM port compatibility for p2p mesh 
+      radio.
+    - Fixed some wildcard stuff, preparing for 
+      both proxy and load-balancing.
     
-    1.3 Cluster (WIP)
+    1.3 Metrics
     
-    TODO:
+    - Measures:
+      1) the time worker threads spend filtering 
+         services. (CPU)
+      2) the amount of bytes:
+         a) loaded by the classloader. (RAM)
+         b) read from / written to:
+            - disk. (SSD)
+            - network. (NET)
+    - CPU metrics don't work on Windows.
+    - NET metrics doesn't work at all on non-hosted.
     
-    - Integrate ROOT.
-    - Add deploy rollback.
-    - Store CPU/SSD/NET for everyone.
+    // TODO:
+    
+    - Not modified is free!
+    - Event redirect is free!
+    - Measure async client NET and file SSD.
     
 have fun!

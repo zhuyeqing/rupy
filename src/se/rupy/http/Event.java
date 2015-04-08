@@ -1,6 +1,8 @@
 package se.rupy.http;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.net.*;
 import java.nio.*;
 import java.security.AccessControlException;
@@ -73,6 +75,14 @@ public class Event extends Throwable implements Chain.Link {
 	private boolean close;
 	private long touch;
 
+	static ThreadMXBean bean;
+	
+	static {
+		bean = ManagementFactory.getThreadMXBean();
+		bean.setThreadContentionMonitoringEnabled(true);
+		//System.out.println(bean.isThreadCpuTimeSupported() + " " + bean.isThreadCpuTimeEnabled() + " " + bean.isThreadContentionMonitoringSupported() + " " + bean.isThreadContentionMonitoringEnabled() + " " + bean.isCurrentThreadCpuTimeSupported());
+	}
+	
 	/*
 	 * Since variable chunk length on HTTP requests implementations
 	 * are sparse I needed a way to remove all of the irrelevant 
@@ -247,14 +257,14 @@ public class Event extends Throwable implements Chain.Link {
 			reply.code("400 Bad Request");
 		}
 		else {
-			if(!service(daemon.chain(this))) {
+			if(!service(daemon.chain(this), false)) {
 				if(daemon.host && query.path().startsWith("/root/")) {
 					reply.code("403 Forbidden");
 					reply.output().print(
 							"<pre>'" + query.path() + "' is forbidden.</pre>");
 				}
 				else if(!content()) {
-					if(!service(daemon.chain(this, "null"))) {
+					if(!service(daemon.chain(this, "null"), false)) {
 						reply.code("404 Not Found");
 						reply.output().print(
 								"<pre>'" + query.path() + "' was not found.</pre>");
@@ -296,6 +306,20 @@ public class Event extends Throwable implements Chain.Link {
 		reply.modified(stream.date());
 
 		if(query.modified() == 0 || query.modified() < reply.modified()) {
+			Daemon.Metric metric = null;
+			
+			if(daemon.host) {
+				Deploy.Archive archive = daemon.archive(query.header("host"), false);
+				metric = (Daemon.Metric) archive.files().get(query.path());
+				
+				if(metric == null) {
+					metric = new Daemon.Metric();
+					archive.files().put(query.path(), metric);
+				}
+			}
+			
+			long cpu = bean.getThreadCpuTime(Thread.currentThread().getId());
+			
 			try {
 				Deploy.pipe(stream.input(), reply.output(stream.length()));
 			}
@@ -303,6 +327,16 @@ public class Event extends Throwable implements Chain.Link {
 				stream.close();
 			}
 
+			if(daemon.host) {
+				metric.req.in++;
+				metric.req.out++;
+				metric.cpu += bean.getThreadCpuTime(Thread.currentThread().getId()) - cpu;
+				metric.net.in += query.input.total;
+				metric.net.out += reply.output.total;
+				query.input.total = 0;
+				reply.output.total = 0;
+			}
+			
 			if(Event.LOG) {
 				log("content " + type, VERBOSE);
 			}
@@ -313,12 +347,12 @@ public class Event extends Throwable implements Chain.Link {
 		return true;
 	}
 
-	protected boolean service(Chain chain) throws IOException {
+	protected boolean service(Chain chain, boolean write) throws IOException {
 		if(chain == null)
 			return false;
 
 		try {
-			chain.filter(this);
+			chain.filter(this, write);
 		} catch (Failure f) {
 			throw f;
 		} catch (Event e) {
@@ -348,7 +382,7 @@ public class Event extends Throwable implements Chain.Link {
 
 	protected void write() throws IOException {
 		touch();
-		service(daemon.chain(this));
+		service(daemon.chain(this), true);
 		finish();
 	}
 
@@ -535,7 +569,7 @@ public class Event extends Throwable implements Chain.Link {
 		int index = 0;
 
 		if(daemon.host) {
-			final Deploy.Archive archive = daemon.archive(query().header("host"));
+			final Deploy.Archive archive = daemon.archive(query().header("host"), true);
 			try {
 				Thread.currentThread().setContextClassLoader(archive);
 			}
