@@ -128,10 +128,10 @@ public static class Fuse extends Service {
 		private Event event;
 
 		public Http(String name, String host, String path, Event event) {
+			super(event);
 			this.name = name;
 			this.host = host;
 			this.path = path;
-			this.event = event;
 		}
 
 		public boolean print(Output out) throws Exception {
