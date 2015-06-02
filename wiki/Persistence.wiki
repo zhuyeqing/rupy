@@ -23,7 +23,8 @@ TODO:
   # ~~_sort node_ text index~~
   # ~~_link node_ relation graph~~
   # ~~_find node_ full text search~~
-  # pagination in lists
+  # ~~pagination in lists~~
+  # optimize full text search
   # _trim node_ & _link_
 
 Source: [http://root.rupy.se/code?path=/User.java User], [http://root.rupy.se/code?path=/Root.java Root]
