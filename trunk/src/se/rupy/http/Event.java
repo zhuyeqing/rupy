@@ -11,8 +11,9 @@ import java.security.PrivilegedExceptionAction;
 import java.security.SecureRandom;
 import java.text.*;
 import java.util.*;
-
 import java.nio.channels.*;
+
+import se.rupy.http.Daemon.Lock;
 
 /**
  * Asynchronous HTTP request/response, this virtually represents a client
@@ -71,7 +72,8 @@ public class Event extends Throwable implements Chain.Link {
 	private Worker worker;
 
 	private int index, interest;
-	private String remote;
+	private String remote, host;
+	protected boolean wakeup = false;
 	private boolean close;
 	private long touch;
 
@@ -111,6 +113,10 @@ public class Event extends Throwable implements Chain.Link {
 		this.key = key;
 	}
 
+	protected String host() {
+		return host;
+	}
+	
 	protected int interest() {
 		return interest;
 	}
@@ -257,6 +263,9 @@ public class Event extends Throwable implements Chain.Link {
 			reply.code("400 Bad Request");
 		}
 		else {
+			if(host == null)
+				host = query.header("host");
+			
 			if(!service(daemon.chain(this), false)) {
 				if(daemon.host && query.path().startsWith("/root/")) {
 					reply.code("403 Forbidden");
@@ -264,7 +273,22 @@ public class Event extends Throwable implements Chain.Link {
 							"<pre>'" + query.path() + "' is forbidden.</pre>");
 				}
 				else if(!content()) {
-					if(!service(daemon.chain(this, "null"), false)) {
+					//System.out.println(daemon.host + " " + 
+					//		query.path().startsWith("/root") + " " + 
+					//		query.path().startsWith("/node") + " " + 
+					//		query.path().startsWith("/link"));
+					if(daemon.host && (
+							query.path().startsWith("/root") || 
+							query.path().startsWith("/node") || 
+							query.path().startsWith("/link")) && 
+							!host.equals("root.rupy.se")) {
+						if(!service(daemon.root(), false)) {
+							reply.code("404 Not Found");
+							reply.output().print(
+									"<pre>'" + query.path() + "' was not found.</pre>");
+						}
+					}
+					else if(!service(daemon.chain(this, "null"), false)) {
 						reply.code("404 Not Found");
 						reply.output().print(
 								"<pre>'" + query.path() + "' was not found.</pre>");
@@ -347,12 +371,14 @@ public class Event extends Throwable implements Chain.Link {
 		return true;
 	}
 
-	protected boolean service(Chain chain, boolean write) throws IOException {
+	protected boolean service(Daemon.Lock chain, boolean write) throws IOException {
 		if(chain == null)
 			return false;
 
 		try {
-			chain.filter(this, write);
+			//System.out.println("ROOT " + chain.root);
+			
+			chain.chain.filter(this, write, chain.root);
 		} catch (Failure f) {
 			throw f;
 		} catch (Event e) {
@@ -542,6 +568,8 @@ public class Event extends Throwable implements Chain.Link {
 	protected final void session(final Service service, Event event) throws Exception {
 		String key = cookie(query.header("cookie"), "key");
 
+		//System.out.println("KEY " + key + " " + query.header("cookie"));
+		
 		if(key == null && query.method() == Query.GET) {
 			// XSS comet cookie: this means first GETs are parsed!
 			// TODO: This should be removed because you can use a P3P header to fix this, go figure!
@@ -578,7 +606,13 @@ public class Event extends Throwable implements Chain.Link {
 			}
 			Integer i = (Integer) AccessController.doPrivileged(new PrivilegedExceptionAction() {
 				public Object run() throws Exception {
-					return new Integer(service.index());
+					try {
+						return new Integer(service.index());
+					}
+					catch(Throwable t) {
+						t.printStackTrace();
+						return new Integer(0);
+					}
 				}
 			}, daemon.control);
 

@@ -1,7 +1,11 @@
 package se.rupy.http;
 
 import java.io.*;
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
 import java.net.*;
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -12,8 +16,8 @@ import java.security.ProtectionDomain;
 import java.text.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 import java.nio.channels.*;
+import java.nio.file.LinkPermission;
 
 /**
  * A tiny HTTP daemon. The whole server is non-static so that you can launch
@@ -39,20 +43,23 @@ public class Daemon implements Runnable {
 	AccessControlContext control, no_control;
 	ConcurrentHashMap events, session;
 	int threads, timeout, cookie, delay, size, port, cache, async_timeout;
-	boolean verbose, debug, host, alive, panel;
+	boolean verbose, debug, host, alive, panel, root;
 	Async client;
 
 	/* Rupy 1.3 introduces measuring of metrics.
 	 * Also see ram on the archive.
 	 */
 	static class Metric {
-		static String header = "<tr><td></td><td>CPU</td><td colspan=\"2\">R&R</td><td colspan=\"2\">SSD</td><td colspan=\"2\">NET</td></tr>" +
-				               "<tr><td></td><td>&mu;s</td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td></tr>";
-		//static String header = "Glossary {CPU, R&R, SSD, NET}";
+		static String header = "<tr><td></td><td>CPU</td><td>RAM</td><td colspan=\"2\">R&R</td><td colspan=\"2\">SSD</td><td colspan=\"2\">NET</td></tr>" +
+				"<tr><td></td><td>&mu;s</td><td></td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td><td>&darr;</td><td>&uarr;</td></tr>";
+
 		protected long cpu; // CPU time
 		protected Data req = new Data(); // requests and async response chunks
 		protected Data ssd = new Data(); // disk operations
-		protected Data net = new Data(); // network traffic
+		protected Data net = new Data(); // server network traffic
+		protected Data cli = new Data(); // client network traffic
+		protected long ram; // how much memory allocated; used by {@link #Daemon.metric(String name)} and the heartbeat.
+		protected long rom; // how many bytes of class definitions stored.
 
 		class Data {
 			long in;
@@ -62,7 +69,7 @@ public class Daemon implements Runnable {
 				in += data.in;
 				out += data.out;
 			}
-			
+
 			public String toString() {
 				return in + "</td><td>" + out;
 			}
@@ -70,16 +77,106 @@ public class Daemon implements Runnable {
 
 		void add(Metric metric) {
 			cpu += metric.cpu;
-
+			ram += metric.ram;
+			
 			req.add(metric.req);
 			ssd.add(metric.ssd);
 			net.add(metric.net);
+			cli.add(metric.cli);
 		}
 
 		public String toString() {
-			return "</td><td>" + cpu/1000 + "</td><td>" + req + "</td><td>" + ssd + "</td><td>" + net + "</td>";
-			//return "{" + cpu/1000 + "μs, " + req + ", " + ssd + ", " + net + "}";
+			return "</td><td>" + cpu/1000 + "</td><td>" + ram + "</td><td>" + req + "</td><td>" + ssd + "</td><td>" + net + "</td>";
 		}
+	}
+
+	static Instrumentation inst;
+
+	public static void premain(String agentArgs, Instrumentation inst) {
+		Daemon.inst = inst;
+	}
+
+	protected static long size(Object o) {
+		if(inst == null)
+			return 0;
+
+		return size(o, new HashMap(), 0);
+	}
+
+	private static String indent(int depth) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < depth; i++)
+			builder.append("  ");
+		return builder.toString();
+	}
+
+	private static long size(Object o, HashMap map, int depth) {
+		if(inst == null || map.containsKey(o) || o instanceof Daemon)
+			return 0;
+
+		map.put(o, null);
+
+		long size = inst.getObjectSize(o);
+
+		//System.out.println(indent(depth) + " > " + o + " " + size);
+
+		if(o instanceof Object[]) {
+			Object[] obj = (Object[]) o;
+
+			for (int i = 0; i < obj.length; i++) {
+				size += size(obj, map, depth + 1);
+			}
+		}
+		else {
+			Field[] fields = o.getClass().getDeclaredFields();
+
+			for(int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				field.setAccessible(true);
+
+				try {
+					Object obj = field.get(o);
+
+					if(!primitive(field.getType())) {
+						size += size(obj, map, depth + 1);
+					}
+				}
+				catch(Exception e) {}
+			}
+		}
+
+		return size;
+	}
+
+	private static boolean primitive(Class clazz) {
+		if(clazz == java.lang.Boolean.TYPE)
+			return true;
+
+		if(clazz == java.lang.Character.TYPE)
+			return true;
+
+		if(clazz == java.lang.Byte.TYPE)
+			return true;
+
+		if(clazz == java.lang.Short.TYPE)
+			return true;
+
+		if(clazz == java.lang.Integer.TYPE)
+			return true;
+
+		if(clazz == java.lang.Long.TYPE)
+			return true;
+
+		if(clazz == java.lang.Float.TYPE)
+			return true;
+
+		if(clazz == java.lang.Double.TYPE)
+			return true;
+
+		if(clazz == java.lang.Void.TYPE)
+			return true;
+
+		return false;
 	}
 
 	/**
@@ -210,6 +307,11 @@ public class Daemon implements Runnable {
 &nbsp;&nbsp;&nbsp;&nbsp;{"type": "packet", "from": "[ip]"}<br>
 <br></tt>
 	 * </td></tr>
+	 * <tr><td valign="top"><b>root</b> (false)
+	 * </td><td>
+	 *            Root is a distributed index of JSON objects and graph of their relationships in the filesystem. 
+	 *            It supports full text search but has rough naming conventions and no order guarantee, it's a work in progress.
+	 * </td></tr>
 	 * </table>
 	 */
 	public Daemon(Properties properties) {
@@ -232,6 +334,8 @@ public class Daemon implements Runnable {
 				"true");
 		panel = properties.getProperty("panel", "false").toLowerCase().equals(
 				"true");
+		root = properties.getProperty("root", "false").toLowerCase().equals(
+				"true");
 		boolean multi = properties.getProperty("multi", "false").toLowerCase().equals(
 				"true");
 
@@ -250,6 +354,9 @@ public class Daemon implements Runnable {
 			domain = properties.getProperty("domain", "host.rupy.se");
 			PermissionCollection permissions = new Permissions();
 			permissions.add(new RuntimePermission("setContextClassLoader"));
+			permissions.add(new LinkPermission("hard"));
+			permissions.add(new LinkPermission("symbolic"));
+			permissions.add(new PropertyPermission("host", "read"));
 			control = new AccessControlContext(new ProtectionDomain[] {
 					new ProtectionDomain(null, permissions)});
 			permissions = new Permissions();
@@ -483,7 +590,12 @@ public class Daemon implements Runnable {
 						Thread.currentThread().setContextClassLoader(archive);
 						AccessController.doPrivileged(new PrivilegedExceptionAction() {
 							public Object run() throws Exception {
-								service.destroy();
+								try {
+									service.destroy();
+								}
+								catch(Throwable t) {
+									t.printStackTrace();
+								}
 								return null;
 							}
 						}, archive.access());
@@ -507,11 +619,26 @@ public class Daemon implements Runnable {
 		this.archive.put(archive.name(), archive);
 	}
 
-
-	// TODO: Sums up all metrics for an archive and resets it.
-	// For host to create bill.
+	/* Sums up all metrics for an archive.
+	 * For host to create bill.
+	 */
 	public Daemon.Metric metric(String name) {
 		Metric metric = new Metric();
+		Deploy.Archive archive = (Deploy.Archive) this.archive.get(name);
+		Iterator it = archive.service().values().iterator();
+
+		while (it.hasNext()) {
+			Service service = (Service) it.next();
+			Iterator it2 = service.metric.values().iterator();
+			
+			while(it2.hasNext()) {
+				Metric m = (Metric) it2.next();
+				metric.add(m);
+			}
+		}
+		
+		metric.rom = archive.rom;
+		
 		return metric;
 	}
 
@@ -529,7 +656,7 @@ public class Daemon implements Runnable {
 
 			try {
 				String message = "{\"type\": \"host\", \"file\": \"" + name + "\"}";
-				String ok = (String) send(message);
+				String ok = (String) send(null, message);
 
 				if(ok.equals("OK")) {
 					if(deployer) {
@@ -580,16 +707,17 @@ public class Daemon implements Runnable {
 	 * Send Object to JVM listener. We recommend you only send bootclasspath loaded 
 	 * classes here otherwise hotdeploy will fail.
 	 * 
+	 * @param event if applicable attach event
 	 * @param message to send
 	 * @return reply message
 	 * @throws Exception
 	 */
-	public Object send(Object message) throws Exception {
+	public Object send(Event event, Object message) throws Exception {
 		if(listener == null) {
 			return message;
 		}
 
-		return listener.receive(message);
+		return listener.receive(event, message);
 	}
 
 	/**
@@ -631,11 +759,12 @@ public class Daemon implements Runnable {
 	 */
 	public interface Listener {
 		/**
-		 * @param message
+		 * @param event if applicable attach event
+		 * @param message most likely a json string
 		 * @return the reply message to the sender.
 		 * @throws Exception
 		 */
-		public Object receive(Object message) throws Exception;
+		public Object receive(Event event, Object message) throws Exception;
 	}
 
 	/**
@@ -885,7 +1014,13 @@ public class Daemon implements Runnable {
 			Thread.currentThread().setContextClassLoader(archive);
 			path = (String) AccessController.doPrivileged(new PrivilegedExceptionAction() {
 				public Object run() throws Exception {
-					return service.path();
+					try {
+						return service.path();
+					}
+					catch(Throwable t) {
+						t.printStackTrace();
+						return "";
+					}
 				}
 			}, control);
 		}
@@ -916,9 +1051,18 @@ public class Daemon implements Runnable {
 				AccessController.doPrivileged(new PrivilegedExceptionAction() {
 					public Object run() throws Exception {
 						if (old != null) {
+							int index = 0;
+
+							try {
+								index = service.index();
+							}
+							catch(Throwable t) {
+								t.printStackTrace();
+							}
+
 							throw new Exception(service.getClass().getName()
 									+ " with path '" + p + "' and index ["
-									+ service.index() + "] is conflicting with "
+									+ index + "] is conflicting with "
 									+ old.getClass().getName()
 									+ " for the same path and index.");
 						}
@@ -946,7 +1090,13 @@ public class Daemon implements Runnable {
 					Thread.currentThread().setContextClassLoader(archive);
 					Event e = (Event) AccessController.doPrivileged(new PrivilegedExceptionAction() {
 						public Object run() throws Exception {
-							service.create(daemon);
+							try {
+								service.create(daemon);
+							}
+							catch(Throwable t) {
+								t.printStackTrace();
+							}
+
 							return null;
 						}
 					}, archive == null ? control : archive.access());
@@ -988,9 +1138,19 @@ public class Daemon implements Runnable {
 						public Object run() throws Exception {
 							if (j != service.index()) {
 								a.remove(archive.name());
+
+								int index = 0;
+
+								try {
+									index = service.index();
+								}
+								catch(Throwable t) {
+									t.printStackTrace();
+								}
+
 								throw new Exception(service.getClass().getName()
 										+ " with path '" + path + "' has index ["
-										+ service.index() + "] which is too high.");
+										+ index + "] which is too high.");
 							}
 
 							return null;
@@ -1058,7 +1218,7 @@ public class Daemon implements Runnable {
 
 			try {
 				String message = "{\"type\": \"host\", \"file\": \"" + host + ".jar\"}";
-				String ok = (String) send(message);
+				String ok = (String) send(null, message);
 
 				if(ok.equals("OK")) {
 					file = new File("app" + File.separator + domain + path);
@@ -1076,7 +1236,7 @@ public class Daemon implements Runnable {
 		return null;
 	}
 
-	protected Chain chain(Event event) {
+	protected Lock chain(Event event) {
 		if(host) {
 			return chain(event.query().header("host"), event.query().path(), event.push());
 		}
@@ -1085,7 +1245,7 @@ public class Daemon implements Runnable {
 		}
 	}
 
-	public Chain chain(Event event, String path) {
+	public Lock chain(Event event, String path) {
 		if(host) {
 			return chain(event.query().header("host"), path, event.push());
 		}
@@ -1093,8 +1253,18 @@ public class Daemon implements Runnable {
 			return chain("content", path, event.push());
 		}
 	}
+	
+	public class Lock {
+		public Chain chain;
+		boolean root;
+		
+		protected Lock(Chain chain, boolean root) {
+			this.chain = chain;
+			this.root = root;
+		}
+	}
 
-	protected Chain chain(String host, String path, boolean wakeup) {
+	protected Lock chain(String host, String path, boolean wakeup) {
 		if(!this.host) {
 			host = "content";
 		}
@@ -1124,7 +1294,7 @@ public class Daemon implements Runnable {
 					if(archive == null) {
 						try {
 							String message = "{\"type\": \"host\", \"file\": \"" + host + ".jar\"}";
-							String ok = (String) send(message);
+							String ok = (String) send(null, message);
 
 							if(ok.equals("OK")) {
 								archive = (Deploy.Archive) this.archive.get(domain + ".jar");
@@ -1138,9 +1308,9 @@ public class Daemon implements Runnable {
 
 				if(archive != null) {
 					Chain chain = (Chain) archive.chain().get(path);
-
+					
 					if (chain != null) {
-						return chain;
+						return new Lock(chain, false);
 					}
 				}
 			}
@@ -1154,13 +1324,13 @@ public class Daemon implements Runnable {
 						Chain chain = (Chain) archive.chain().get(path);
 
 						if (chain != null) {
-							return chain;
+							return new Lock(chain, false);
 						}
 						else if(wakeup) {
 							chain = (Chain) archive.chain().get("null");
 
 							if (chain != null) {
-								return chain;
+								return new Lock(chain, false);
 							}
 						}
 					}
@@ -1168,17 +1338,30 @@ public class Daemon implements Runnable {
 			}
 		}
 
+		if(root && path.equals("null"))
+			return null;
+		
 		synchronized (this.service) {
 			Chain chain = (Chain) this.service.get(path);
-
+			
 			if (chain != null) {
-				return chain;
+				return new Lock(chain, true);
 			}
 		}
-		
+
 		return null;
 	}
 
+	protected Lock root() {
+		Chain chain = (Chain) this.service.get("null");
+			
+		if (chain != null) {
+			return new Lock(chain, true);
+		}
+			
+		return null;
+	}
+	
 	private String metric(Deploy.Archive archive, String path) {
 		Chain chain = (Chain) archive.chain().get(path);
 		Daemon.Metric metric = new Daemon.Metric();
@@ -1192,8 +1375,14 @@ public class Daemon implements Runnable {
 
 				//System.out.println(path + " " + part);
 
-				if(part != null)
+				if(part != null) {
+					Daemon.Metric ram = (Daemon.Metric) service.metric.get("RAM");
+					
+					if(ram != null)
+						metric.add(ram);
+					
 					metric.add(part);
+				}
 			}
 
 			//System.out.println("api " + metric.hashCode() + " " + metric);
@@ -1201,7 +1390,7 @@ public class Daemon implements Runnable {
 			return metric.toString();
 		}
 
-		return "</td><td colspan=\"7\"></td>";
+		return null;
 	}
 
 	public void run() {
@@ -1288,6 +1477,8 @@ public class Daemon implements Runnable {
 				}
 			}
 
+			new Thread(heart).start(); // moved this to get metrics immediately during development.
+			
 			/*
 			 * Used to debug thread locks and file descriptor leaks.
 			 */
@@ -1345,10 +1536,10 @@ public class Daemon implements Runnable {
 						Output out = event.output();
 						out.println("<pre>");
 						out.println("<table cellspacing=\"0\" cellpadding=\"2\">");
-						
+
 						if(!event.query().header("host").equals(domain))
 							out.println(Metric.header);
-						
+
 						while(it.hasNext()) {
 							Deploy.Archive archive = (Deploy.Archive) it.next();
 							boolean host = !archive.host().equals("content");
@@ -1367,12 +1558,18 @@ public class Daemon implements Runnable {
 								}
 							}
 							else if(name.equals("localhost") || name.equals(archive.host())) {
-								if(host) {
-									out.println("<tr><td><a href=\"http://" + title + "\">" + title + "</a>" + "&nbsp;" + archive.ram + "&nbsp;" + metric(archive, "/") + "</td></tr>");
-								}
-								else {
-									out.println("<tr><td>" + title + "&nbsp;" + archive.ram + "&nbsp;" + metric(archive, "/") + "</td></tr>");
-								}
+								String s = metric(archive, "/");
+								
+								if(s == null)
+									s = metric(archive, "null");
+								
+								if(s == null)
+									s = "</td><td colspan=\"8\"></td>";
+								
+								if(host)
+									out.println("<tr><td><a href=\"http://" + title + "\">" + title + "</a>" + "&nbsp;" + archive.rom + "&nbsp;" + s + "</td></tr>");
+								else
+									out.println("<tr><td>" + title + "&nbsp;" + archive.rom + "&nbsp;" + s + "</td></tr>");
 
 								Iterator it2 = archive.chain().keySet().iterator();
 
@@ -1395,7 +1592,7 @@ public class Daemon implements Runnable {
 								}
 							}
 						}
-						
+
 						out.println("</table>");
 						out.println("</pre>");
 					}
@@ -1405,7 +1602,16 @@ public class Daemon implements Runnable {
 				add(this.service, debug, null);
 				add(this.service, api, null);
 			}
-
+			
+			if(root) {
+				Properties prop = new Properties();
+				prop.load(new FileInputStream("root.txt"));
+				add(this.service, new Root(prop), null);
+				add(this.service, new Root.Node(), null);
+				add(this.service, new Root.Link(), null);
+				add(this.service, new Root.Find(), null);
+			}
+			
 			if (properties.getProperty("test", "false").toLowerCase().equals(
 					"true")) {
 				new Test(this, 1);
@@ -1619,7 +1825,6 @@ public class Daemon implements Runnable {
 
 		Heart() {
 			alive = true;
-			new Thread(this).start();
 		}
 
 		protected void stop() {
@@ -1628,7 +1833,8 @@ public class Daemon implements Runnable {
 
 		public void run() {
 			int socket = 300000;
-
+			int timer = 60 * 60 + 1;
+			
 			if(timeout > 0) {
 				socket = timeout;
 			}
@@ -1674,6 +1880,39 @@ public class Daemon implements Runnable {
 							event.disconnect(null);
 						}
 					}
+					
+					if(host && timer > 60 * 60) { // Once per hour
+						it = archive.values().iterator();
+
+						while(it.hasNext()) {
+							Deploy.Archive archive = (Deploy.Archive) it.next();
+
+							if(archive != null && archive.name() != null) {
+								long time = System.currentTimeMillis();
+								Iterator it2 = archive.service().values().iterator();
+
+								while(it2.hasNext()) {
+									Service service = (Service) it2.next();
+									long size = Daemon.size(service);
+									
+									Daemon.Metric metric = (Daemon.Metric) service.metric.get("RAM");
+
+									if(metric == null) {
+										metric = new Daemon.Metric();
+										service.metric.put("RAM", metric);
+									}
+									
+									metric.ram = size;
+									
+									//System.out.println(archive.name() + service.path() + " " + (System.currentTimeMillis() - time) + " " + size);
+								}
+							}
+						}
+						
+						timer = 0;
+					}
+					
+					timer++;
 				} catch (Exception e) {
 					e.printStackTrace(out);
 				}

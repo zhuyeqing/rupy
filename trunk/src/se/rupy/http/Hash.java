@@ -9,6 +9,7 @@ import java.util.Iterator;
  * @author marc
  */
 public class Hash extends HashMap {
+	protected static int MAX = 4096;
 	private boolean secure;
 	
 	public Hash(boolean secure) {
@@ -185,7 +186,14 @@ public class Hash extends HashMap {
 	
 	public Object put(Object key, Object value) {
 		if(secure && key instanceof String && ((String) key).equals("host"))
-			return null;
+			return "Host header put not allowed!";
+		
+		if(value instanceof String) {
+			String v = (String) value;
+			
+			if(v.length() > MAX)
+				return null;
+		}
 		
 		return super.put(key, value);
 	}
