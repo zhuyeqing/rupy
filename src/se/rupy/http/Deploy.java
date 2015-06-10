@@ -2,16 +2,13 @@ package se.rupy.http;
 
 import java.io.*;
 import java.lang.reflect.ReflectPermission;
-import java.math.BigInteger;
+import javax.net.ssl.SSLPermission;
 import java.net.*;
+import java.nio.file.LinkPermission;
 import java.security.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.*;
-
-import javax.net.ssl.SSLPermission;
-
-import se.rupy.http.Daemon.Listener;
 
 /**
  * Hot-deploys an application containing one or many service filters from disk
@@ -53,18 +50,21 @@ public class Deploy extends Service {
 	public void filter(Event event) throws Event, Exception {
 		/*
 		 * concurrent deploys will fail without sessions.
-		 * added this just so instances without session can hot-deply.
+		 * added this just so instances without session can hot-deploy.
 		 */
 		if(event.session() == null) {
+			//System.out.println("1 " + cookie);
 			if(cookie == null)
 				cookie = Event.random(4);
 		}
 		else {
+			//System.out.println("2 " + cookie);
 			cookie = event.session().key();
 		}
 
+		//System.out.println(cookie + " " + event.session().key());
+		
 		if(event.query().method() == Query.GET) {
-			//System.out.println(cookie);
 			event.output().print(cookie);
 			throw event;
 		}
@@ -124,7 +124,7 @@ public class Deploy extends Service {
 
 		if (Deploy.pass == null) {
 			String message = "{\"type\": \"auth\", \"file\": \"" + name + "\", \"pass\": \"" + pass + "\", \"cookie\": \"" + cookie + "\", \"cluster\": " + cluster + "}";
-			String auth = (String) event.daemon().send(message);
+			String auth = (String) event.daemon().send(event, message);
 
 			if(auth.equals(message)) {
 				Properties properties = new Properties();
@@ -143,7 +143,8 @@ public class Deploy extends Service {
 			}
 			else {
 				if(auth.equals("OK")) {
-					event.reply().output().println("Deploy is propagating on cluster.");
+					if(!cluster)
+						event.reply().output().println("Deploy is propagating on cluster.");
 				}
 				else {
 					// doesen't work :(
@@ -179,7 +180,8 @@ public class Deploy extends Service {
 		 */
 
 		try {
-			event.reply().output().println("Application '" + deploy(event.daemon(), file, event) + "' deployed on '" + event.daemon().name() + "'.");
+			event.reply().output().println("Application '" + deploy(event.daemon(), file, null) + "' deployed on '" + event.daemon().name() + "'.");
+			//event.reply().output().println("Application '" + deploy(event.daemon(), file, cluster ? null : event) + "' deployed on '" + event.daemon().name() + "'.");
 		}
 		catch(Error e) {
 			StringWriter trace = new StringWriter();
@@ -213,7 +215,7 @@ public class Deploy extends Service {
 		private String name, host;
 		private long date;
 
-		long ram;
+		long rom;
 		
 		Vector classes = new Vector();
 
@@ -226,6 +228,7 @@ public class Deploy extends Service {
 			permissions.add(new PropertyPermission("user.dir", "read"));
 			permissions.add(new RuntimePermission("createClassLoader"));
 			permissions.add(new RuntimePermission("setContextClassLoader"));
+			//permissions.add(new PropertyPermission("host", "read"));
 			access = new AccessControlContext(new ProtectionDomain[] {
 					new ProtectionDomain(null, permissions)});
 		}
@@ -264,11 +267,12 @@ public class Deploy extends Service {
 				permissions.add(new PropertyPermission("sun.net.http.allowRestrictedHeaders", "write"));
 				permissions.add(new PropertyPermission("java.version", "read"));
 				permissions.add(new RuntimePermission("getStackTrace"));
+				//permissions.add(new PropertyPermission("host", "read"));
 
 				if(host.equals("root.rupy.se")) { // Nasty hardcode, but it will go away with SSD metrics file API.
 					try {
-						permissions.add(new java.nio.file.LinkPermission("hard"));
-						permissions.add(new java.nio.file.LinkPermission("symbolic"));
+						permissions.add(new LinkPermission("hard"));
+						permissions.add(new LinkPermission("symbolic"));
 					}
 					catch(Error e) {}
 				}
@@ -294,7 +298,7 @@ public class Deploy extends Service {
 
 					String name = name(entry.getName());
 					classes.add(new Small(name, data));
-					ram += data.length;
+					rom += data.length;
 				} else if (!entry.isDirectory()) {
 					Big.write(host, "/" + entry.getName(), entry, in);
 					
@@ -374,7 +378,12 @@ public class Deploy extends Service {
 						Thread.currentThread().setContextClassLoader(archive);
 						s = (Service) AccessController.doPrivileged(new PrivilegedExceptionAction() {
 							public Object run() throws Exception {
-								return (Service) small.clazz.newInstance();
+								try {
+									return (Service) small.clazz.newInstance();
+								}
+								catch(Throwable t) {
+									throw new Exception();
+								}
 							}
 						}, access());
 					}
@@ -695,8 +704,29 @@ public class Deploy extends Service {
 		}
 	}
 
+	/**
+	 * Sync hot-deploy.
+	 * @param host
+	 * @param file
+	 * @param pass
+	 * @throws IOException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static void deploy(String host, File file, String pass) throws IOException, NoSuchAlgorithmException {
 		deploy(host, file, pass, true);
+	}
+	
+	/**
+	 * Async hot-deploy.
+	 * @param event
+	 * @param host
+	 * @param file
+	 * @param pass
+	 * @throws Exception
+	 */
+	
+	public static void deploy(Event event, String host, File file, String pass) throws Exception {
+		deploy(event, host, file, pass, true);
 	}
 
 	/**
@@ -706,7 +736,7 @@ public class Deploy extends Service {
 	 * <br>
 	 * Basically: don't put passwords in clear text in the deployment 
 	 * jar and you will be fine! To get your host, pass and database IP on <i>host.rupy.se</i>
-	 * call {@link Daemon#send(Object message)} with "{"type": "account"}"
+	 * call {@link Daemon#send(Event event, Object message)} with "{"type": "account"}"
 	 * like so:
 <tt><br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;String account = (String) daemon.send("{\"type\": \"account\"}");<br>
@@ -723,6 +753,51 @@ public class Deploy extends Service {
 		return hash;
 	}
 
+	private static void deploy(Event event, final String host, final File file, final String pass, final boolean cluster) throws Exception {
+		Async.Work work = new Async.Work(event) {
+			public void send(Async.Call call) throws Exception {
+				call.get("/deploy", "Host:" + host);
+			}
+
+			public void read(final String host, final String body) throws Exception {
+				//System.out.println("cookie " + body);
+				
+				Async.Work work = new Async.Work(event) {
+					public void send(Async.Call call) throws Exception {
+						String key = hash(file, pass, body);
+						
+						String head = "File:" + file.getName() + Output.EOL + 
+									  "Size:" + file.length() + Output.EOL + 
+									  "Cluster:" + cluster + Output.EOL + 
+									  "Cookie:" + "key=" + body + Output.EOL + 
+									  "Host:" + host + Output.EOL + 
+									  "Pass:" + key;
+
+						//System.out.println(head);
+						
+						call.post("/deploy", head, file);
+					}
+
+					public void read(String host, String body) throws Exception {
+						System.out.println(body);
+					}
+
+					public void fail(String host, Exception e) throws Exception {
+						e.printStackTrace();
+					}
+				};
+				
+				event.daemon().client().send(host, work, 30);
+			}
+
+			public void fail(String host, Exception e) throws Exception {
+				e.printStackTrace();
+			}
+		};
+
+		event.daemon().client().send(host, work, 30);
+	}
+	
 	private static void deploy(String host, File file, String pass, boolean cluster) throws IOException, NoSuchAlgorithmException {
 		URL url = new URL("http://" + host + "/deploy");
 		Client client = new Client();
@@ -731,7 +806,7 @@ public class Deploy extends Service {
 		InputStream in = client.send(url, file, key, cluster, true);
 		System.out.println(new SimpleDateFormat("H:mm").format(new Date()));
 		Client.toStream(in, System.out);
-
+		
 		// test cookie reuse hack
 		//in = client.send(url, file, port, cluster, true);
 	}
@@ -780,7 +855,11 @@ public class Deploy extends Service {
 	public static void main(String[] args) {
 		if (args.length > 2) {
 			try {
-				deploy(args[0], new File(args[1]), args[2], false);
+				// To test async hot-deploy
+				//Async client = new Async();
+				//client.start(1);
+				//deploy(client, args[0], new File(args[1]), args[2], false);
+				deploy(args[0], new File(args[1]), args[2], false); // TODO: return after local deploy works.
 			} catch (ConnectException ce) {
 				System.out
 				.println("Connection failed, is there a server running on "
@@ -788,7 +867,10 @@ public class Deploy extends Service {
 			} catch (NoSuchAlgorithmException nsae) {
 				System.out.println("Could not hash with SHA-256?");
 			} catch (Exception e) {
-				//e.printStackTrace();
+				e.printStackTrace();
+			}
+			finally {
+				//System.exit(1);
 			}
 		} else {
 			System.out.println("Usage: Deploy [host] [file] [pass]");

@@ -1,5 +1,6 @@
 package se.rupy.http;
 
+import java.lang.reflect.Field;
 import java.security.AccessControlException;
 import java.security.AccessController;
 
@@ -38,10 +39,10 @@ public class Chain extends LinkedList {
 	}
 
 	public void filter(final Event event) throws Event, Exception {
-		filter(event, true);
+		filter(event, true, false);
 	}
-	
-	protected void filter(final Event event, boolean write) throws Event, Exception {
+
+	protected void filter(final Event event, boolean write, boolean root) throws Event, Exception {
 		for (int i = 0; i < size(); i++) {
 			final Service service = (Service) get(i);
 
@@ -50,16 +51,20 @@ public class Chain extends LinkedList {
 			}
 
 			long cpu = Event.bean.getThreadCpuTime(Thread.currentThread().getId());
-			
-			if(event.daemon().host) {
+
+			if(event.daemon().host && !root) {
 				try {
 					final Deploy.Archive archive = event.daemon().archive(event.query().header("host"), true);
+
+					//System.out.println(archive + " " + event.query().header("host"));
+
 					try {
 						Thread.currentThread().setContextClassLoader(archive);
 					}
 					catch(AccessControlException e) {
 						// recursive chaining fails here, no worries! ;)
 					}
+
 					Object o = AccessController.doPrivileged(new PrivilegedExceptionAction() {
 						public Object run() throws Exception {
 							try {
@@ -68,6 +73,11 @@ public class Chain extends LinkedList {
 							}
 							catch(Event event) {
 								return event;
+							}
+							catch(Throwable t) {
+								Exception e = new Exception();
+								e.initCause(t);
+								throw e;
 							}
 						}
 					}, archive.access());
@@ -86,17 +96,28 @@ public class Chain extends LinkedList {
 				}
 			}
 			else {
+				if(root) {
+					final Deploy.Archive archive = event.daemon().archive(event.query().header("host"), true);
+
+					try {
+						Thread.currentThread().setContextClassLoader(archive);
+					}
+					catch(AccessControlException e) {
+						// recursive chaining fails here, no worries! ;)
+					}
+				}
+
 				service.filter(event);
 			}
-			
+
 			String path = event.query().path();
 			Daemon.Metric metric = (Daemon.Metric) service.metric.get(path);
-			
+
 			if(metric == null) {
 				metric = new Daemon.Metric();
 				service.metric.put(path, metric);
 			}
-			
+
 			if(i == 0) {
 				if(!write)
 					metric.req.in++;
@@ -105,9 +126,9 @@ public class Chain extends LinkedList {
 			metric.cpu += Event.bean.getThreadCpuTime(Thread.currentThread().getId()) - cpu;
 			metric.net.in += event.query().input.total;
 			metric.net.out += event.reply().output.total;
-			
+
 			//System.out.println("add " + metric.hashCode() + " " + metric);
-			
+
 			event.query().input.total = 0;
 			event.reply().output.total = 0;
 		}
@@ -121,7 +142,12 @@ public class Chain extends LinkedList {
 				Thread.currentThread().setContextClassLoader(null);
 				AccessController.doPrivileged(new PrivilegedExceptionAction() {
 					public Object run() throws Exception {
-						service.session(session, type);
+						try {
+							service.session(session, type);
+						}
+						catch(Throwable t) {
+							t.printStackTrace();
+						}
 						return null;
 					}
 				}, session.daemon().control);
