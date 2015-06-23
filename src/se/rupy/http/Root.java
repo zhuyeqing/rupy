@@ -13,6 +13,7 @@ import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +44,7 @@ import se.rupy.http.Service;
  */
 public class Root extends Service {
 	static int LENGTH = 16;
-	static String local;
+	public static String local;
 	static String secret;
 	//static String home;
 	static String[] ip = {"89.221.241.32", "89.221.241.33", "92.63.174.125", "2.248.42.217", "2.248.42.217", "2.248.42.217", "2.248.42.217"};
@@ -91,12 +92,7 @@ public class Root extends Service {
 	public String path() { return "/root"; }
 
 	public void create(Daemon daemon) throws Exception {
-		local = InetAddress.getLocalHost().getHostName();
-		//System.out.println(local);
 		local = System.getProperty("host", "none");
-		//System.out.println(local);
-		//archive = (Deploy.Archive) Thread.currentThread().getContextClassLoader();
-		//home = "app/" + archive.host() + "/root";
 	}
 
 	private static String home() {
@@ -422,7 +418,7 @@ public class Root extends Service {
 				if(value.indexOf("/") > 0)
 					sort = home + "/" + key + "/" + value;
 				else
-					sort = home + "/" + key + path(value, 3);
+					sort = home + "/" + key + path(value);
 
 				boolean exists = new File(sort).exists();
 
@@ -663,23 +659,19 @@ public class Root extends Service {
 		return Math.abs(h);
 	}
 
-	static String path(long id) {
+	public static String path(long id) {
 		return path(String.valueOf(id), 3);
 	}
 
-	static String path(String name) {
+	public static String path(String name) {
 		return path(name, 2);
 	}
 
 	/* Make a path of the first X chars then a file of the remainder.
 	 * 58^2=3364 this is how you calculate if you need more or less folders.
 	 * 10^3=1000 this is why the id needs one more folder.
-	 * 
-	 * At further thought the index for user input fields like mail and name 
-	 * should probably have a depth of 3 since few will index zzz... for example 
-	 * but dan... or joh... will have alot of entries. Fixed!
 	 */
-	static String path(String name, int length) {
+	private static String path(String name, int length) {
 		int index = name.indexOf('.');
 
 		if((index > 0 && index <= length) || name.length() <= length) // Unless we can't!
@@ -713,11 +705,11 @@ public class Root extends Service {
 		return secret;
 	}
 
-	static String file(String path) throws Exception {
+	public static String file(String path) throws Exception {
 		return file(new File(path));
 	}
 
-	static String file(File file) throws Exception {
+	public static String file(File file) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		String content = in.readLine();
 		in.close();
@@ -842,7 +834,7 @@ public class Root extends Service {
 					File file = new File(full);
 
 					if(file.exists()) {
-						write_last(event, sort, new RandomAccessFile(file, "rw"), from, size, remove);
+						write_last(event, sort, new RandomAccessFile(file, "rw"), type, last, from, size, remove);
 					}
 					else {
 						event.reply().type("application/json; charset=UTF-8");
@@ -873,17 +865,17 @@ public class Root extends Service {
 								list = remove(next, list);
 							}
 
-							print_list(event, type, list, list.size(), remove);
+							print_list(event, type, list, null, null, list.size(), remove);
 						}
 						else {
 							full = home() + "/node/" + type + "/" + sort + "/";
 
-							write_last(event, type, new RandomAccessFile(full + last, "r"), from, size, remove);
+							write_last(event, type, new RandomAccessFile(full + last, "r"), null, null, from, size, remove);
 						}
 					}
 					else { // node sort index
 						if(last.matches("[a-zA-Z0-9.@\\+]+"))
-							full = home() + "/node/" + type + "/" + sort + Root.path(last, sort.equals("key") ? 2 : 3);
+							full = home() + "/node/" + type + "/" + sort + Root.path(last);
 
 						if(last.matches("[0-9]+")) {
 							full = home() + "/node/" + type + "/" + sort + Root.path(Long.parseLong(last));
@@ -897,7 +889,7 @@ public class Root extends Service {
 
 						if(file.exists()) {
 							event.reply().type("application/json; charset=UTF-8");
-							JSONObject obj = new JSONObject(file(full));
+							JSONObject obj = new JSONObject(file(file));
 							
 							if(remove) {
 								obj.put("id", hash(obj.getString("key")));
@@ -920,7 +912,7 @@ public class Root extends Service {
 			}
 		}
 
-		private void write_last(Event event, String type, RandomAccessFile file, int from, int size, boolean remove) throws Exception {
+		private void write_last(Event event, String type, RandomAccessFile file, String poll, String last, int from, int size, boolean remove) throws Event, Exception {
 			LinkedList list = new LinkedList();
 			int length = (int) (file.length() > 8 * size ? 8 * size : file.length());
 			long start = length + from * 8;
@@ -941,11 +933,39 @@ public class Root extends Service {
 					break;
 			}
 			
-			print_list(event, type, list, file.length() / 8, remove);
+			print_list(event, type, list, poll, last, file.length() / 8, remove);
 		}
 
-		private void print_list(Event event, String type, List list, long total, boolean remove) throws Exception {
-			event.reply().type("application/json; charset=UTF-8");
+		private void print_list(Event event, String type, List list, String poll, String last, long total, boolean remove) throws Event, Exception {
+			boolean secure = poll != null && last != null && last.matches("[0-9]+") && type.equals("user");
+			String key = "";
+			
+			if(secure) {
+				event.query().parse();
+				
+				String hash = event.string("hash");
+				String salt = event.string("salt");
+				
+				if(Salt.salt.containsKey(salt)) {
+					Salt.salt.remove(salt);
+				}
+				else {
+					event.reply().code("400 Bad Request");
+					event.output().print("<pre>Salt not found.</pre>");
+					throw event;
+				}
+				
+				JSONObject object = new JSONObject(file(home() + "/node/" + poll + "/id/" + Root.path(last)));
+				key = object.getString("key");
+				
+				String match = Deploy.hash(Deploy.hash(key, "SHA") + salt, "SHA");
+				
+				if(!hash.equals(match)) {
+					event.reply().code("400 Bad Request");
+					event.output().print("<pre>Auth did not match.</pre>");
+					throw event;
+				}
+			}
 			
 			StringBuilder builder = new StringBuilder();
 			builder.append("{\"total\":" + total + ", \"list\":[");
@@ -980,7 +1000,14 @@ public class Root extends Service {
 
 			builder.append("]}");
 			
-			byte[] data = builder.toString().getBytes("UTF-8");
+			String result = builder.toString();
+			
+			if(secure) {
+				event.reply().header("Hash", Deploy.hash(Deploy.hash(result, "SHA") + key, "SHA"));
+			}
+			
+			event.reply().type("application/json; charset=UTF-8");
+			byte[] data = result.getBytes("UTF-8");
 			Output out = event.reply().output(data.length);
 			out.write(data);
 		}
@@ -1039,6 +1066,25 @@ public class Root extends Service {
 		}
 	}
 
+	public static class Salt extends Service {
+		static HashMap salt = new HashMap();
+		
+		public String path() {
+			return "/salt";
+		}
+
+		public void filter(Event event) throws Event, Exception {
+			String salt = Event.random(8);
+			
+			while(this.salt.containsKey(salt)) {
+				salt = Event.random(8);
+			}
+			
+			this.salt.put(salt, null);
+			event.output().print(salt);
+		}
+	}
+	
 	public static class Hash extends Service {
 		public String path() {
 			return "/hash";
