@@ -7,6 +7,7 @@ import java.net.*;
 import java.nio.*;
 import java.security.AccessControlException;
 import java.security.AccessController;
+import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.security.SecureRandom;
 import java.text.*;
@@ -280,7 +281,8 @@ public class Event extends Throwable implements Chain.Link {
 					if(daemon.root && (
 							query.path().startsWith("/root") || 
 							query.path().startsWith("/node") || 
-							query.path().startsWith("/link")) && 
+							query.path().startsWith("/link") || 
+							query.path().startsWith("/salt")) && 
 							!host.equals("root.rupy.se")) {
 						if(!service(daemon.root(), false)) {
 							reply.code("404 Not Found");
@@ -376,14 +378,23 @@ public class Event extends Throwable implements Chain.Link {
 			return false;
 
 		try {
-			//System.out.println("ROOT " + chain.root);
-			
 			chain.chain.filter(this, write, chain.root);
+			
+			// Fixes FUSE "opened output without flush" cascade.
+			if(reply().output.init)
+				reply().output.flush();
 		} catch (Failure f) {
 			throw f;
 		} catch (Event e) {
 			// Break the filter chain.
 		} catch (Exception e) {
+			if(daemon.host && 
+			   e instanceof PrivilegedActionException && 
+			   e.getCause() != null && 
+			   e.getCause() instanceof Exception) {
+				e = (Exception) e.getCause();
+			}
+			
 			if(Event.LOG) {
 				log(e);
 			}
@@ -395,7 +406,7 @@ public class Event extends Throwable implements Chain.Link {
 			e.printStackTrace(print);
 			
 			reply.code("500 Internal Server Error");
-			reply.output().print("<pre>" + trace.toString() + "</pre>");
+			reply.output().print("<pre>" + System.getProperty("host", "???") + " " + trace.toString() + "</pre>");
 			
 			if(reply.push()) {
 				reply.output().finish();
@@ -682,10 +693,13 @@ public class Event extends Throwable implements Chain.Link {
 	public static String random(int length) {
 		StringBuilder builder = new StringBuilder();
 
-		while (builder.length() < length) {
-			builder.append(BASE_58[Math.abs(random.nextInt() % BASE_58.length)]);
-		}
-
+		//do {
+			while (builder.length() < length) {
+				builder.append(BASE_58[Math.abs(random.nextInt() % BASE_58.length)]);
+			}
+		//}
+		//while(!builder.toString().matches("[a-zA-Z]+"));
+		
 		return builder.toString();
 	}
 
