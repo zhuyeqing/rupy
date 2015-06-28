@@ -204,7 +204,7 @@ public class Root extends Service {
 			out.println("");
 			out.println("                <font color=\"grey\"><i><b>sort</b></i></font>");
 			out.println("       ┌──────┬──────┬──────┐");
-			out.println(" open  │ <a href=\"/node/data/text/" + search + "\">text</a> │ <a href=\"/node/data/date/14/11/25/example\">path</a> │ <a href=\"/link/user/data/884953893672469819\">list</a> │");
+			out.println(" open  │ <a href=\"/node/data/text/" + search + "\">text</a> │ <a href=\"/node/data/date/14/11/25/example\">path</a> │ <a href=\"/link/user/data/" + hash(key) + "\">list</a> │");
 			out.println("       └──────┴──────┴──────┘");
 			out.println("");
 			out.println("<font color=\"red\"><sup>*</sup></font><i>Source:</i> <a href=\"http://root.rupy.se/code\">Async</a>, <a href=\"http://root.rupy.se/code?path=/User.java\">User</a>, <a href=\"http://root.rupy.se/code?path=/Root.java\">Root</a>");
@@ -819,7 +819,7 @@ public class Root extends Service {
 							full = home() + "/link/" + type + "/" + sort + Root.path(last);
 
 							if(last.matches("[0-9]+")) {
-								full = home() + "/node/" + type + "/id" + Root.path(Long.parseLong(last));
+								full = home() + "/node/" + type + "/id" + Root.path(last, 3);
 
 								File file = new File(full);
 
@@ -964,7 +964,7 @@ public class Root extends Service {
 					throw event;
 				}
 				
-				JSONObject object = new JSONObject(file(home() + "/node/" + poll + "/id/" + Root.path(last)));
+				JSONObject object = new JSONObject(file(home() + "/node/" + poll + "/id/" + Root.path(last, 3)));
 				key = object.getString("key");
 				
 				String match = Deploy.hash(Deploy.hash(key, "SHA") + salt, "SHA");
@@ -1024,7 +1024,10 @@ public class Root extends Service {
 		private void fail(Event event, String path, String poll, String type, String sort, String last) throws Event, Exception {
 			JSONObject obj = new JSONObject("{\"path\":\"" + path + "\",\"poll\":\"" + poll + "\",\"type\":\"" + type + "\",\"sort\":\"" + sort + "\",\"last\":\"" + last + "\"}");
 			event.reply().code("404 Not Found");
-			event.output().print("<pre>Node '" + event.query().path() + "' was not found.<br>" + obj.toString(4) + "</pre>");
+			event.output().print("<pre>Node '" + event.query().path() + "' was not found on host " + local + ".</pre>");
+			
+			System.out.println(obj.toString(4));
+			
 			throw event;
 		}
 	}
